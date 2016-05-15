@@ -46,6 +46,7 @@ scene.add(camera);
 let points = new Points(new TorusKnotBufferGeometry(1, 1, 64, 64), new PointsMaterial({
   color: 0xffffff, size: 1, sizeAttenuation: false
 }));
+
 scene.add(points);
 
 let bbox = new THREE.Box3();
@@ -66,7 +67,7 @@ scene.add(new OctreeHelper(octree));
 
 
 ## Demo
-[OctreeHelper and Raycasting](http://vanruesc.github.io/sparse-octree/public/index.html)
+[Octree Raycasting](http://vanruesc.github.io/sparse-octree/public/index.html)
 
 
 ## Documentation
