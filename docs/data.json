@@ -1,0 +1,1144 @@
+{
+    "project": {
+        "name": "sparse-octree",
+        "description": "A sparse octree data structure for three.js.",
+        "version": "0.0.0",
+        "url": "https://github.com/vanruesc/sparse-octree"
+    },
+    "files": {
+        "src\\helper.js": {
+            "name": "src\\helper.js",
+            "modules": {},
+            "classes": {
+                "OctreeHelper": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\index.js": {
+            "name": "src\\index.js",
+            "modules": {
+                "octree": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\octant.js": {
+            "name": "src\\octant.js",
+            "modules": {},
+            "classes": {
+                "Octant": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\octree.js": {
+            "name": "src\\octree.js",
+            "modules": {},
+            "classes": {
+                "Octree": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\raycasting.js": {
+            "name": "src\\raycasting.js",
+            "modules": {},
+            "classes": {
+                "Raycasting": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "octree": {
+            "name": "octree",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "OctreeHelper": 1,
+                "Octant": 1,
+                "Octree": 1,
+                "Raycasting": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src\\raycasting.js",
+            "line": 1,
+            "description": "Exposure of the library components.",
+            "itemtype": "main"
+        }
+    },
+    "classes": {
+        "OctreeHelper": {
+            "name": "OctreeHelper",
+            "shortname": "OctreeHelper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "octree",
+            "file": "src\\helper.js",
+            "line": 3,
+            "description": "An octree helper.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "tree",
+                    "description": "- The octree to visualise.",
+                    "type": "Octree"
+                }
+            ]
+        },
+        "Octant": {
+            "name": "Octant",
+            "shortname": "Octant",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "octree",
+            "namespace": "",
+            "file": "src\\octant.js",
+            "line": 21,
+            "description": "An octant.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- The lower bounds.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "max",
+                    "description": "- The upper bounds.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "level",
+                    "description": "- The depth level.",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Octree": {
+            "name": "Octree",
+            "shortname": "Octree",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "octree",
+            "namespace": "",
+            "file": "src\\octree.js",
+            "line": 5,
+            "description": "An octree that subdivides 3D space into regular cells for \nfast spatial searches.\n\nThe Octree extends Object3D for smooth raycasting integration. \nIt doesn't respect scale, rotation or position translations.",
+            "is_constructor": 1,
+            "extends": "Object3D",
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- The lower bounds of the tree.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "max",
+                    "description": "- The upper bounds of the tree.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "bias",
+                    "description": "- A threshold for proximity checks.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0.0"
+                },
+                {
+                    "name": "maxPoints",
+                    "description": "- Number of distinct points per octant before it's split up.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "8"
+                },
+                {
+                    "name": "maxDepth",
+                    "description": "- The maximum tree depth level, starting at 0.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "8"
+                }
+            ]
+        },
+        "Raycasting": {
+            "name": "Raycasting",
+            "shortname": "Raycasting",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "octree",
+            "namespace": "",
+            "file": "src\\raycasting.js",
+            "line": 1,
+            "description": "A collection of utility functions for octree raycasting.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000)."
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "src\\helper.js",
+            "line": 17,
+            "description": "The octree.",
+            "itemtype": "property",
+            "name": "tree",
+            "type": "Octree",
+            "class": "OctreeHelper"
+        },
+        {
+            "file": "src\\helper.js",
+            "line": 30,
+            "description": "Updates the helper geometry.",
+            "itemtype": "method",
+            "name": "update",
+            "class": "OctreeHelper"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 9,
+            "description": "A computation helper.",
+            "itemtype": "property",
+            "name": "v",
+            "type": "Vector3",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "final": 1,
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 35,
+            "description": "The lower bounds of this octant.",
+            "itemtype": "property",
+            "name": "min",
+            "type": "Vector3",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 44,
+            "description": "The upper bounds of the octant.",
+            "itemtype": "property",
+            "name": "max",
+            "type": "Vector3",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 53,
+            "description": "The depth level of this octant.",
+            "itemtype": "property",
+            "name": "level",
+            "type": "Number",
+            "final": 1,
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 63,
+            "description": "The amount of points in this octant.",
+            "itemtype": "property",
+            "name": "totalPoints",
+            "type": "Number",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 72,
+            "description": "The points that are inside this node.",
+            "itemtype": "property",
+            "name": "points",
+            "type": "Array",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 81,
+            "description": "Additional data that is kept in sets for individual points.",
+            "itemtype": "property",
+            "name": "dataSets",
+            "type": "Array",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 90,
+            "description": "The children of this node.",
+            "itemtype": "property",
+            "name": "children",
+            "type": "Array",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 101,
+            "description": "Computes the center of this octant.",
+            "itemtype": "method",
+            "name": "center",
+            "return": {
+                "description": "The center of this octant.",
+                "type": "Vector3"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 114,
+            "description": "Computes the size of this octant.",
+            "itemtype": "method",
+            "name": "size",
+            "return": {
+                "description": "The size of this octant.",
+                "type": "Vector3"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 127,
+            "description": "Computes the distance squared from the center of this octant to \nthe given point.",
+            "itemtype": "method",
+            "name": "distanceToCenterSquared",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The distance squared.",
+                "type": "Number"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 148,
+            "description": "Checks if the given point lies inside this octant's boundaries.",
+            "itemtype": "method",
+            "name": "intersects",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "bias",
+                    "description": "- A padding that extends the boundaries temporarily.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "Whether the given point lies inside this octant.",
+                "type": "Boolean"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 173,
+            "description": "Adds a given point to this node. If this octant isn't a leaf node, \nthe point will be added to a child octant.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that will be associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Whether the point was a unique addition.",
+                "type": "Boolean"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 255,
+            "description": "Adds the given point to a child node that covers the point's position.",
+            "itemtype": "method",
+            "name": "addToChild",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that will be associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Whether the point was a unique addition.",
+                "type": "Boolean"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 295,
+            "description": "Splits this octant up into eight smaller ones.",
+            "itemtype": "method",
+            "name": "split",
+            "access": "private",
+            "tagname": "",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 365,
+            "description": "Removes the given point from this octant. If this octant is not a leaf node, \nthe point will be removed from a child node. If no data is provided, the point \nand all its respective data entries will be removed completely.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- The point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that is associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Whether the removed point was unique.",
+                "type": "Boolean"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 454,
+            "description": "Removes the given point from a child node.",
+            "itemtype": "method",
+            "name": "removeFromChild",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- The point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that is associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Whether the removed point was unique.",
+                "type": "Boolean"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 494,
+            "description": "Gathers all points from the children. The children are \nexpected to be leaf nodes and will be dropped afterwards.",
+            "itemtype": "method",
+            "name": "merge",
+            "access": "private",
+            "tagname": "",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 528,
+            "description": "Refreshes this octant and its children to make sure that all \nconstraints are satisfied.",
+            "itemtype": "method",
+            "name": "update",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 566,
+            "description": "Retrieves the data of the point at the specified position.",
+            "itemtype": "method",
+            "name": "fetch",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A position.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "A set of data entries that are associated with the given point or null if it doesn't exist.",
+                "type": "Set"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 613,
+            "description": "Finds the closest point to the given one, excluding itself.",
+            "itemtype": "method",
+            "name": "findNearestPoint",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- The point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "maxDistance",
+                    "description": "- The maximum distance.",
+                    "type": "Number"
+                },
+                {
+                    "name": "skipSelf",
+                    "description": "- Whether a point that is exactly at the given position should be skipped.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "An object representing the nearest point or null if there is none. The object has a point and a data property.",
+                "type": "Object"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 708,
+            "description": "Finds points that are inside the specified radius around a given position.",
+            "itemtype": "method",
+            "name": "findPoints",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A position.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "r",
+                    "description": "- A radius.",
+                    "type": "Number"
+                },
+                {
+                    "name": "skipSelf",
+                    "description": "- Whether a point that is exactly at the given position should be skipped.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "result",
+                    "description": "- An array to be filled with objects, each containing a point and a data property.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 765,
+            "description": "Fetches all octants with the specified level.",
+            "itemtype": "method",
+            "name": "getOctantsByLevel",
+            "params": [
+                {
+                    "name": "level",
+                    "description": "- The depth level.",
+                    "type": "Number"
+                },
+                {
+                    "name": "result",
+                    "description": "- An array to be filled with octants. Empty octants will be excluded.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 797,
+            "description": "Finds the current tree depth recursively.",
+            "itemtype": "method",
+            "name": "getDepth",
+            "return": {
+                "description": "The depth.",
+                "type": "Number"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 830,
+            "description": "Finds all points that intersect with the given ray.",
+            "itemtype": "method",
+            "name": "raycast",
+            "params": [
+                {
+                    "name": "tx0",
+                    "description": "- Ray projection parameter. tx0 = (minX - rayOriginX) / rayDirectionX.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty0",
+                    "description": "- Ray projection parameter. ty0 = (minY - rayOriginY) / rayDirectionY.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz0",
+                    "description": "- Ray projection parameter. tz0 = (minZ - rayOriginZ) / rayDirectionZ.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tx1",
+                    "description": "- Ray projection parameter. tx1 = (maxX - rayOriginX) / rayDirectionX.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty1",
+                    "description": "- Ray projection parameter. ty1 = (maxY - rayOriginY) / rayDirectionY.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz1",
+                    "description": "- Ray projection parameter. tz1 = (maxZ - rayOriginZ) / rayDirectionZ.",
+                    "type": "Number"
+                },
+                {
+                    "name": "raycaster",
+                    "description": "- The raycaster.",
+                    "type": "Raycaster"
+                },
+                {
+                    "name": "intersects",
+                    "description": "- An array to be filled with the intersecting points.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 933,
+            "description": "A threshold for proximity checks.",
+            "itemtype": "property",
+            "name": "bias",
+            "type": "Number",
+            "static": 1,
+            "default": "0.0",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 944,
+            "description": "The proximity threshold squared.",
+            "itemtype": "property",
+            "name": "biasSquared",
+            "type": "Number",
+            "static": 1,
+            "default": "0.0",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 955,
+            "description": "The maximum tree depth level.",
+            "itemtype": "property",
+            "name": "maxDepth",
+            "type": "Number",
+            "static": 1,
+            "default": "8",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 966,
+            "description": "Number of points per octant before a split occurs.",
+            "itemtype": "property",
+            "name": "maxPoints",
+            "type": "Number",
+            "static": 1,
+            "default": "8",
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 28,
+            "description": "The root node.",
+            "itemtype": "property",
+            "name": "root",
+            "type": "Octant",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 46,
+            "description": "A threshold for proximity checks.",
+            "itemtype": "property",
+            "name": "bias",
+            "type": "Number",
+            "default": "0.0",
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 67,
+            "description": "The maximum tree depth level.\nSetting this value refreshes the entire tree.\n\nIt's possible to set this value to Infinity, but be aware that allowing \ninfinitely small octants can have a negative impact on performance. \nFinding a value that works best for a specific scene is advisable.",
+            "itemtype": "property",
+            "name": "maxDepth",
+            "type": "Number",
+            "default": "8",
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 93,
+            "description": "Number of points per octant before a split occurs.\nSetting this value refreshes the entire tree.\n\nThis value works together with the maximum depth as a secondary \nlimiting factor. Smaller values cause splits to occur earlier \nand the tree to grow deep faster.",
+            "itemtype": "property",
+            "name": "maxPoints",
+            "type": "Number",
+            "default": "8",
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 119,
+            "description": "Adds a point to the tree.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An arbitrary object that will be associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 137,
+            "description": "Adds all points that are described by a given array of position \nvalues to the tree.",
+            "itemtype": "method",
+            "name": "addPoints",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- An array containing point position triples.",
+                    "type": "Float32Array"
+                },
+                {
+                    "name": "data",
+                    "description": "- An arbitrary object that will be associated with the points.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 160,
+            "description": "Removes a point from the tree.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that is associated with the point.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 178,
+            "description": "Removes all points that are described by a given array of position \nvalues from the tree.",
+            "itemtype": "method",
+            "name": "removePoints",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- An array containing point position triples.",
+                    "type": "Float32Array"
+                },
+                {
+                    "name": "data",
+                    "description": "- An object that is associated with the points.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 201,
+            "description": "Retrieves the data of the point at the specified position.",
+            "itemtype": "method",
+            "name": "fetch",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A position.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "A set of data entries that are associated with the given point or null if it doesn't exist.",
+                "type": "Set"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 215,
+            "description": "Finds the closest point to the given one.",
+            "itemtype": "method",
+            "name": "findNearestPoint",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "maxDistance",
+                    "description": "- An upper limit for the distance between the points.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "Infinity"
+                },
+                {
+                    "name": "skipSelf",
+                    "description": "- Whether a point that is exactly at the given position should be skipped.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "An object representing the nearest point or null if there is none. The object has a point and a data property.",
+                "type": "Object"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 234,
+            "description": "Finds points that are in the specified radius around the given position.",
+            "itemtype": "method",
+            "name": "findPoints",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A position.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "r",
+                    "description": "- A radius.",
+                    "type": "Number"
+                },
+                {
+                    "name": "skipSelf",
+                    "description": "- Whether a point that is exactly at the given position should be skipped.",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "An array of objects, each containing a point and a data property.",
+                "type": "Array"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 256,
+            "description": "Finds the points that intersect with the given ray.",
+            "itemtype": "method",
+            "name": "raycast",
+            "params": [
+                {
+                    "name": "raycaster",
+                    "description": "- The raycaster.",
+                    "type": "Raycaster"
+                },
+                {
+                    "name": "intersects",
+                    "description": "- An array to be filled with the intersecting points.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 338,
+            "description": "Fetches all nodes with the specified level.",
+            "itemtype": "method",
+            "name": "getOctantsByLevel",
+            "params": [
+                {
+                    "name": "level",
+                    "description": "- The depth level.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The nodes.",
+                "type": "Array"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 356,
+            "description": "Returns the amount of points that are currently in the tree.",
+            "itemtype": "method",
+            "name": "getTotalPoints",
+            "return": {
+                "description": "The total amount of points in the tree.",
+                "type": "Number"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 369,
+            "description": "Calculates the current tree depth.",
+            "itemtype": "method",
+            "name": "getDepth",
+            "return": {
+                "description": "The depth.",
+                "type": "Number"
+            },
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\raycasting.js",
+            "line": 13,
+            "description": "Contains bytes used for bitwise operations. The last byte \nis used to store raycasting flags.",
+            "itemtype": "property",
+            "name": "flags",
+            "type": "Uint8Array",
+            "static": 1,
+            "class": "Raycasting",
+            "module": "octree"
+        },
+        {
+            "file": "src\\raycasting.js",
+            "line": 24,
+            "description": "A lookup-table containing octant ids. Used to determine \nthe exit plane from an octant.",
+            "itemtype": "property",
+            "name": "octantTable",
+            "type": "Array",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "final": 1,
+            "class": "Raycasting",
+            "module": "octree"
+        },
+        {
+            "file": "src\\raycasting.js",
+            "line": 46,
+            "description": "Determines the entry plane of the first octant that a \nray travels through.\n\nDetermining the first octant requires knowing which of \nthe t0's is the largest. The tm's of the other axes must \nalso be compared against that largest t0.",
+            "itemtype": "method",
+            "name": "getFirstOctant",
+            "static": 1,
+            "params": [
+                {
+                    "name": "tx0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "txm",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tym",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tzm",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The index of the first octant that the ray travels through.",
+                "type": "Number"
+            },
+            "class": "Raycasting",
+            "module": "octree"
+        },
+        {
+            "file": "src\\raycasting.js",
+            "line": 94,
+            "description": "Fetches the next octant for raycasting based on the exit \nplane of the current one.",
+            "itemtype": "method",
+            "name": "getNextOctant",
+            "static": 1,
+            "params": [
+                {
+                    "name": "currentOctant",
+                    "description": "- The index of the current octant.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tx1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The index of the next octant that the ray travels through.",
+                "type": "Number"
+            },
+            "class": "Raycasting",
+            "module": "octree"
+        },
+        {
+            "file": "src\\raycasting.js",
+            "line": 135,
+            "description": "Collects points that intersect with the ray.",
+            "itemtype": "method",
+            "name": "testPoints",
+            "static": 1,
+            "params": [
+                {
+                    "name": "raycaster",
+                    "description": "- The raycaster.",
+                    "type": "Raycaster"
+                },
+                {
+                    "name": "octants",
+                    "description": "- An array containing octants that intersect with the ray.",
+                    "type": "Array"
+                },
+                {
+                    "name": "intersects",
+                    "description": "- An array to be filled with the intersecting points.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Raycasting",
+            "module": "octree"
+        }
+    ],
+    "warnings": []
+}

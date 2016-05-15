@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\helper.js - sparse-octree</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Octant.html">Octant</a></li>
+                                <li><a href="../classes/Octree.html">Octree</a></li>
+                                <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/Raycasting.html">Raycasting</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/octree.html">octree</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src\helper.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import THREE from &quot;three&quot;;
+
+/**
+ * An octree helper.
+ *
+ * @class OctreeHelper
+ * @constructor
+ * @param {Octree} tree - The octree to visualise.
+ */
+
+export class OctreeHelper extends THREE.Object3D {
+
+	constructor(tree) {
+
+		super();
+
+		/**
+		 * The octree.
+		 *
+		 * @property tree
+		 * @type Octree
+		 */
+
+		this.tree = (tree !== undefined) ? tree : null;
+
+		this.update();
+
+	}
+
+	/**
+	 * Updates the helper geometry.
+	 *
+	 * @method update
+	 */
+
+	update() {
+
+		let i, j, k, il, kl;
+		let octants, octant;
+
+		let vertices, v, c;
+		let entry, key;
+
+		let geometry, lineSegments, material;
+
+		let indexCount;
+		let indices = null;
+		let positions = null;
+		let vertexMap = new Map();
+
+		let level = 0;
+		let depth = (this.tree !== null) ? this.tree.getDepth() : -1;
+
+		let connections = [
+			/* 0 */ [1, 4],
+			/* 1 */ [2, 5],
+			/* 2 */ [3, 6],
+			/* 3 */ [0, 7],
+			/* 4 */ [5],
+			/* 5 */ [6],
+			/* 6 */ [7],
+			/* 7 */ [4]
+		];
+
+		// Remove existing geometry.
+		for(i = 0, il = this.children.length; i &lt; il; ++i) {
+
+			this.children[i].geometry.dispose();
+			this.children[i].material.dispose();
+
+		}
+
+		this.children = [];
+
+		while(level &lt;= depth) {
+
+			octants = this.tree.getOctantsByLevel(level);
+
+			indexCount = 0;
+			vertexMap.clear();
+
+			for(i = 0, j = 0, il = octants.length; i &lt; il; ++i) {
+
+				octant = octants[i];
+
+				vertices = [
+					/* 0 */ [octant.max.x, octant.max.y, octant.max.z],
+					/* 1 */ [octant.min.x, octant.max.y, octant.max.z],
+					/* 2 */ [octant.min.x, octant.min.y, octant.max.z],
+					/* 3 */ [octant.max.x, octant.min.y, octant.max.z],
+					/* 4 */ [octant.max.x, octant.max.y, octant.min.z],
+					/* 5 */ [octant.min.x, octant.max.y, octant.min.z],
+					/* 6 */ [octant.min.x, octant.min.y, octant.min.z],
+					/* 7 */ [octant.max.x, octant.min.y, octant.min.z]
+				];
+
+				// Update the vertex map.
+				for(j = 0; j &lt; 8; ++j) {
+
+					v = vertices[j];
+					c = connections[j];
+
+					key = v.toString();
+					entry = vertexMap.get(key);
+
+					// Prevent duplicates.
+					if(entry !== undefined) {
+
+						// Adopt unique connections.
+						for(k = 0, kl = c.length; k &lt; kl; ++k) {
+
+							key = vertices[c[k]].toString();
+
+							if(entry.connectionKeys.indexOf(key) &lt; 0) {
+
+								entry.connectionKeys.push(key);
+								++indexCount;
+
+							}
+
+						}
+
+					} else {
+
+						// No duplicate, create new entry.
+						entry = {
+							position: v,
+							connectionKeys: [],
+							index: vertexMap.size
+						};
+
+						for(k = 0, kl = c.length; k &lt; kl; ++k) {
+
+							entry.connectionKeys.push(vertices[c[k]].toString());
+							++indexCount;
+
+						}
+
+						vertexMap.set(key, entry);
+
+					}
+
+				}
+
+			}
+
+			//console.log(&quot;level:&quot;, level, &quot;vertices:&quot;, vertexMap.size, &quot;ids:&quot;, indexCount * 2);
+
+			// Create the geometry for this level.
+			if(vertexMap.size &lt; 65536) {
+
+				indices = new Uint16Array(indexCount * 2);
+				positions = new Float32Array(vertexMap.size * 3);
+
+				i = 0; j = 0;
+
+				for(entry of vertexMap.values()) {
+
+					v = entry.position;
+
+					positions[i++] = v[0];
+					positions[i++] = v[1];
+					positions[i++] = v[2];
+
+					c = entry.connectionKeys;
+
+					// Add the index pairs that describe the lines.
+					for(k = 0, kl = c.length; k &lt; kl; ++k) {
+
+						indices[j++] = entry.index;
+						indices[j++] = vertexMap.get(c[k]).index;
+
+					}
+
+				}
+
+				geometry = new THREE.BufferGeometry();
+				geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+				geometry.addAttribute(&quot;position&quot;, new THREE.BufferAttribute(positions, 3));
+
+				material = new THREE.LineBasicMaterial({color: new THREE.Color(0xffffff * Math.random())});
+				lineSegments = new THREE.LineSegments(geometry, material);
+
+				this.add(lineSegments);
+
+			} else {
+
+				console.warn(&quot;Could not create geometry for Octree depth level&quot;, level, &quot;(vertex count of&quot;, vertexMap.size, &quot;exceeds limit of 65536)&quot;);
+
+			}
+
+			++level;
+
+		}
+
+	}
+
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
