@@ -68,6 +68,10 @@ export class Octree extends THREE.Object3D {
 	 * The maximum tree depth level.
 	 * Setting this value refreshes the entire tree.
 	 *
+	 * It's possible to set this value to Infinity, but be aware that allowing 
+	 * infinitely small octants can have a negative impact on performance. 
+	 * Finding a value that works best for a specific scene is advisable.
+	 *
 	 * @property maxDepth
 	 * @type Number
 	 * @default 8
@@ -89,6 +93,10 @@ export class Octree extends THREE.Object3D {
 	/**
 	 * Number of points per octant before a split occurs.
 	 * Setting this value refreshes the entire tree.
+	 *
+	 * This value works together with the maximum depth as a secondary 
+	 * limiting factor. Smaller values cause splits to occur earlier 
+	 * and the tree to grow deep faster.
 	 *
 	 * @property maxPoints
 	 * @type Number
@@ -348,7 +356,7 @@ export class Octree extends THREE.Object3D {
 	/**
 	 * Returns the amount of points that are currently in the tree.
 	 *
-	 * @method getDepth
+	 * @method getTotalPoints
 	 * @return {Number} The total amount of points in the tree.
 	 */
 

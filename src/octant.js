@@ -88,7 +88,7 @@ export class Octant {
 		this.dataSets = null;
 
 		/**
-		 * The child nodes of this node.
+		 * The children of this node.
 		 *
 		 * @property children
 		 * @type Array
@@ -955,10 +955,6 @@ Octant.biasSquared = 0.0;
 /**
  * The maximum tree depth level.
  *
- * It's possible to set this value to Infinity, but be aware that allowing 
- * infinitely small octants can have a negative impact on performance. 
- * Finding a value that works best for a specific scene is advisable.
- *
  * @property maxDepth
  * @type Number
  * @static
@@ -969,10 +965,6 @@ Octant.maxDepth = 8;
 
 /**
  * Number of points per octant before a split occurs.
- *
- * This value works together with the maximum depth as a secondary 
- * limiting factor. Smaller values cause splits to occur earlier 
- * and the tree to grow deep faster.
  *
  * @property maxPoints
  * @type Number
