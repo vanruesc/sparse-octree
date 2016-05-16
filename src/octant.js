@@ -37,6 +37,7 @@ export class Octant {
 		 *
 		 * @property min
 		 * @type Vector3
+		 * @final
 		 */
 
 		this.min = (min !== undefined) ? min: new THREE.Vector3();
@@ -46,6 +47,7 @@ export class Octant {
 		 *
 		 * @property max
 		 * @type Vector3
+		 * @final
 		 */
 
 		this.max = (max !== undefined) ? max: new THREE.Vector3();

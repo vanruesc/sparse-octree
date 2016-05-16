@@ -17,6 +17,7 @@ import THREE from "three";
  * @property flags
  * @type Uint8Array
  * @static
+ * @final
  */
 
 export const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
