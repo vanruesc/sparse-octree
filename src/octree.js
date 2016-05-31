@@ -36,13 +36,16 @@ const vectors = [
  * @param {Number} [bias=0.0] - A threshold for proximity checks.
  * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
  * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
+ * @param {Number} [minSize] - The minimum octant size.
  */
 
 export class Octree extends THREE.Object3D {
 
-	constructor(min, max, bias, maxPoints, maxDepth) {
+	constructor(min, max, bias, maxPoints, maxDepth, minSize) {
 
 		super();
+
+		this.name = "Octree";
 
 		/**
 		 * The root node.
@@ -59,6 +62,7 @@ export class Octree extends THREE.Object3D {
 		this.bias = bias;
 		this.maxDepth = maxDepth;
 		this.maxPoints = maxPoints;
+		this.minSize = minSize;
 
 	}
 
@@ -129,6 +133,33 @@ export class Octree extends THREE.Object3D {
 		if(typeof x === "number") {
 
 			Octant.maxPoints = Math.max(1, Math.round(x));
+			this.root.update();
+
+		}
+
+	}
+
+	/**
+	 * The minimum size of an octant.
+	 *
+	 * Octants won't split if their children would have a side 
+	 * that's smaller than the respective x, y or z minimum value.
+	 *
+	 * This value acts just like the maximum depth as a primary 
+	 * limiting factor.
+	 *
+	 * @property minSize
+	 * @type Vector3
+	 * @default Vector3(1e-12, 1e-12, 1e-12)
+	 */
+
+	get minSize() { return Octant.minSize; }
+
+	set minSize(x) {
+
+		if(x instanceof THREE.Vector3) {
+
+			Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
 			this.root.update();
 
 		}
