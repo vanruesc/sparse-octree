@@ -1,6 +1,6 @@
 {
 	"name": "sparse-octree",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "A sparse octree data structure for three.js.",
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "build/sparse-octree.js",
@@ -15,6 +15,8 @@
 		"sparse",
 		"octree",
 		"raycasting",
+		"frustum",
+		"culling",
 		"three",
 		"three.js"
 	],

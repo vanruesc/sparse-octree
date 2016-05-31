@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.0.0 build May 15 2016
+ * sparse-octree v0.1.0 build Jun 01 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -13,12 +13,24 @@
 	THREE = 'default' in THREE ? THREE['default'] : THREE;
 
 	/**
+	 * A collection of utility functions for octree raycasting.
+	 *
+	 * Based on:
+	 *  "An Efficient Parametric Algorithm for Octree Traversal"
+	 *  by J. Revelles et al. (2000).
+	 *
+	 * @class Raycasting
+	 * @static
+	 */
+
+	/**
 	 * Contains bytes used for bitwise operations. The last byte 
 	 * is used to store raycasting flags.
 	 *
 	 * @property flags
 	 * @type Uint8Array
 	 * @static
+	 * @final
 	 */
 
 	const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
@@ -139,12 +151,12 @@
 	 *
 	 * @method testPoints
 	 * @static
-	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} octants - An array containing octants that intersect with the ray.
+	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} intersects - An array to be filled with the intersecting points.
 	 */
 
-	function testPoints(raycaster, octants, intersects) {
+	function testPoints(octants, raycaster, intersects) {
 
 		const threshold = raycaster.params.Points.threshold;
 		const thresholdSq = threshold * threshold;
@@ -152,7 +164,7 @@
 
 		let intersectPoint;
 		let distance, distanceToRay;
-		let rayPointDistanceSq = raycaster.ray.distanceSqToPoint(p);
+		let rayPointDistanceSq;
 
 		let i, j, il, jl;
 		let octant, dataSet, data;
@@ -242,6 +254,7 @@
 			 *
 			 * @property min
 			 * @type Vector3
+			 * @final
 			 */
 
 			this.min = (min !== undefined) ? min: new THREE.Vector3();
@@ -251,6 +264,7 @@
 			 *
 			 * @property max
 			 * @type Vector3
+			 * @final
 			 */
 
 			this.max = (max !== undefined) ? max: new THREE.Vector3();
@@ -293,7 +307,7 @@
 			this.dataSets = null;
 
 			/**
-			 * The child nodes of this node.
+			 * The children of this node.
 			 *
 			 * @property children
 			 * @type Array
@@ -353,13 +367,13 @@
 		/**
 		 * Checks if the given point lies inside this octant's boundaries.
 		 *
-		 * @method intersects
+		 * @method containsPoint
 		 * @param {Vector3} p - A point.
 		 * @param {Number} bias - A padding that extends the boundaries temporarily.
 		 * @return {Boolean} Whether the given point lies inside this octant.
 		 */
 
-		intersects(p, bias) {
+		containsPoint(p, bias) {
 
 			const min = this.min;
 			const max = this.max;
@@ -372,6 +386,38 @@
 				p.y <= max.y + bias &&
 				p.z <= max.z + bias
 			);
+
+		}
+
+		/**
+		 * Collects leaf octants that lie inside the given frustum.
+		 *
+		 * @method cull
+		 * @param {Frustum} frustum - A frustum.
+		 * @param {Array} intersects - An array to be filled with the intersecting octants.
+		 */
+
+		cull(frustum, intersects) {
+
+			let i, l;
+
+			if(frustum.intersectsBox(this)) {
+
+				if(this.children !== null) {
+
+					for(i = 0, l = this.children.length; i < l; ++i) {
+
+						this.children[i].cull(frustum, intersects);
+
+					}
+
+				} else {
+
+					intersects.push(this);
+
+				}
+
+			}
 
 		}
 
@@ -392,6 +438,7 @@
 
 			let i, l;
 			let points, point;
+			let halfSize;
 
 			if(this.children !== null) {
 
@@ -429,7 +476,10 @@
 
 					unique = true;
 
-					if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth) {
+					halfSize = this.size().multiplyScalar(0.5);
+
+					if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth &&
+						halfSize.x >= Octant.minSize.x && halfSize.y >= Octant.minSize.y && halfSize.z >= Octant.minSize.z) {
 
 						// At maximum capacity and can still split.
 						this.split();
@@ -476,7 +526,7 @@
 
 			for(i = 0, l = this.children.length; !hit && i < l; ++i) {
 
-				hit = this.children[i].intersects(p, Octant.bias);
+				hit = this.children[i].containsPoint(p, Octant.bias);
 
 				if(hit) {
 
@@ -505,6 +555,8 @@
 		 */
 
 		split() {
+
+			const p = new THREE.Vector3();
 
 			const min = this.min;
 			const mid = this.center().clone();
@@ -541,20 +593,20 @@
 
 			while(i >= 0) {
 
-				v.fromArray(this.points[i]);
+				p.fromArray(this.points[i]);
 
 				if(this.dataSets[i].size > 0) {
 
 					// Unfold data aggregations. Each entry is one point.
 					for(data of this.dataSets[i].values()) {
 
-						this.addToChild(v, data);
+						this.addToChild(p, data);
 
 					}
 
 				} else {
 
-					this.addToChild(v);
+					this.addToChild(p);
 
 				}
 
@@ -675,7 +727,7 @@
 
 			for(i = 0, l = this.children.length; !hit && i < l; ++i) {
 
-				hit = this.children[i].intersects(p, Octant.bias);
+				hit = this.children[i].containsPoint(p, Octant.bias);
 
 				if(hit) {
 
@@ -742,6 +794,7 @@
 			const children = this.children;
 
 			let i, l;
+			let halfSize;
 
 			if(children !== null) {
 
@@ -752,9 +805,12 @@
 
 				}
 
-				if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth) {
+				halfSize = this.size().multiplyScalar(0.5);
 
-					// Points fit into one octant or the level is too high.
+				if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth ||
+					halfSize.x < Octant.minSize.x || halfSize.y < Octant.minSize.y || halfSize.z < Octant.minSize.z) {
+
+					// All points fit into one octant or the level is too high or the child octants are too small.
 					this.merge();
 
 				}
@@ -783,7 +839,7 @@
 
 			let i, l;
 
-			if(this.intersects(p, Octant.bias)) {
+			if(this.containsPoint(p, Octant.bias)) {
 
 				if(this.children !== null) {
 
@@ -883,7 +939,7 @@
 					// Unpack octant.
 					child = sortedChildren[i].octant;
 
-					if(child.totalPoints > 0 && child.intersects(p, bestDist)) {
+					if(child.totalPoints > 0 && child.containsPoint(p, bestDist)) {
 
 						childResult = child.findNearestPoint(p, bestDist, skipSelf);
 
@@ -955,7 +1011,7 @@
 
 					child = children[i];
 
-					if(child.totalPoints > 0 && child.intersects(p, r)) {
+					if(child.totalPoints > 0 && child.containsPoint(p, r)) {
 
 						child.findPoints(p, r, skipSelf, result);
 
@@ -1033,17 +1089,17 @@
 		}
 
 		/**
-		 * Finds all points that intersect with the given ray.
+		 * Finds all octants that intersect with the given ray.
 		 *
 		 * @method raycast
-		 * @param {Number} tx0 - Ray projection parameter. tx0 = (minX - rayOriginX) / rayDirectionX.
-		 * @param {Number} ty0 - Ray projection parameter. ty0 = (minY - rayOriginY) / rayDirectionY.
-		 * @param {Number} tz0 - Ray projection parameter. tz0 = (minZ - rayOriginZ) / rayDirectionZ.
-		 * @param {Number} tx1 - Ray projection parameter. tx1 = (maxX - rayOriginX) / rayDirectionX.
-		 * @param {Number} ty1 - Ray projection parameter. ty1 = (maxY - rayOriginY) / rayDirectionY.
-		 * @param {Number} tz1 - Ray projection parameter. tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
+		 * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
+		 * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
+		 * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.
+		 * @param {Number} tx1 - Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.
+		 * @param {Number} ty1 - Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.
+		 * @param {Number} tz1 - Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
 		 * @param {Raycaster} raycaster - The raycaster.
-		 * @param {Array} intersects - An array to be filled with the intersecting points.
+		 * @param {Array} intersects - An array to be filled with the intersecting octants.
 		 */
 
 		raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {
@@ -1160,10 +1216,6 @@
 	/**
 	 * The maximum tree depth level.
 	 *
-	 * It's possible to set this value to Infinity, but be aware that allowing 
-	 * infinitely small octants can have a negative impact on performance. 
-	 * Finding a value that works best for a specific scene is advisable.
-	 *
 	 * @property maxDepth
 	 * @type Number
 	 * @static
@@ -1175,10 +1227,6 @@
 	/**
 	 * Number of points per octant before a split occurs.
 	 *
-	 * This value works together with the maximum depth as a secondary 
-	 * limiting factor. Smaller values cause splits to occur earlier 
-	 * and the tree to grow deep faster.
-	 *
 	 * @property maxPoints
 	 * @type Number
 	 * @static
@@ -1186,6 +1234,36 @@
 	 */
 
 	Octant.maxPoints = 8;
+
+	/**
+	 * The minimum size of an octant.
+	 *
+	 * @property minSize
+	 * @type Vector3
+	 * @static
+	 * @default Vector3(1e-12, 1e-12, 1e-12)
+	 */
+
+	Octant.minSize = new THREE.Vector3(1e-12, 1e-12, 1e-12);
+
+	/**
+	 * A collection of vectors. Used for computations.
+	 *
+	 * @property vectors
+	 * @type Array
+	 * @private
+	 * @static
+	 * @final
+	 */
+
+	const vectors = [
+		new THREE.Vector3(),
+		new THREE.Vector3(),
+		new THREE.Vector3(),
+		new THREE.Vector3(),
+		new THREE.Vector3(),
+		new THREE.Vector3()
+	];
 
 	/**
 	 * An octree that subdivides 3D space into regular cells for 
@@ -1202,13 +1280,16 @@
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
+	 * @param {Number} [minSize] - The minimum octant size.
 	 */
 
 	class Octree extends THREE.Object3D {
 
-		constructor(min, max, bias, maxPoints, maxDepth) {
+		constructor(min, max, bias, maxPoints, maxDepth, minSize) {
 
 			super();
+
+			this.name = "Octree";
 
 			/**
 			 * The root node.
@@ -1225,6 +1306,7 @@
 			this.bias = bias;
 			this.maxDepth = maxDepth;
 			this.maxPoints = maxPoints;
+			this.minSize = minSize;
 
 		}
 
@@ -1253,6 +1335,10 @@
 		 * The maximum tree depth level.
 		 * Setting this value refreshes the entire tree.
 		 *
+		 * It's possible to set this value to Infinity, but be aware that allowing 
+		 * infinitely small octants can have a negative impact on performance. 
+		 * Finding a value that works best for a specific scene is advisable.
+		 *
 		 * @property maxDepth
 		 * @type Number
 		 * @default 8
@@ -1275,6 +1361,10 @@
 		 * Number of points per octant before a split occurs.
 		 * Setting this value refreshes the entire tree.
 		 *
+		 * This value works together with the maximum depth as a secondary 
+		 * limiting factor. Smaller values cause splits to occur earlier 
+		 * which results in a faster and deeper tree growth.
+		 *
 		 * @property maxPoints
 		 * @type Number
 		 * @default 8
@@ -1294,6 +1384,33 @@
 		}
 
 		/**
+		 * The minimum size of an octant.
+		 *
+		 * Octants won't split if their children would have a side 
+		 * that's smaller than the respective x, y or z minimum value.
+		 *
+		 * This value acts just like the maximum depth as a primary 
+		 * limiting factor.
+		 *
+		 * @property minSize
+		 * @type Vector3
+		 * @default Vector3(1e-12, 1e-12, 1e-12)
+		 */
+
+		get minSize() { return Octant.minSize; }
+
+		set minSize(x) {
+
+			if(x instanceof THREE.Vector3) {
+
+				Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
+				this.root.update();
+
+			}
+
+		}
+
+		/**
 		 * Adds a point to the tree.
 		 *
 		 * @method add
@@ -1303,7 +1420,7 @@
 
 		add(p, data) {
 
-			if(this.root.intersects(p, this.bias)) {
+			if(this.root.containsPoint(p, this.bias)) {
 
 				this.root.add(p, data);
 
@@ -1322,7 +1439,7 @@
 
 		addPoints(array, data) {
 
-			const v = new THREE.Vector3();
+			const v = vectors[0];
 
 			let i, l;
 
@@ -1344,7 +1461,7 @@
 
 		remove(p, data) {
 
-			if(this.root.intersects(p, this.bias)) {
+			if(this.root.containsPoint(p, this.bias)) {
 
 				this.root.remove(p, data);
 
@@ -1363,7 +1480,7 @@
 
 		removePoints(array, data) {
 
-			const v = new THREE.Vector3();
+			const v = vectors[0];
 
 			let i, l;
 
@@ -1431,29 +1548,28 @@
 		}
 
 		/**
-		 * Finds the points that intersect with the given ray.
+		 * Finds the octants that intersect with the given ray.
 		 *
-		 * @method raycast
+		 * @method raycastOctants
 		 * @param {Raycaster} raycaster - The raycaster.
-		 * @param {Array} intersects - An array to be filled with the intersecting points.
+		 * @param {Array} octants - An array to be filled with the intersecting octants.
 		 */
 
-		raycast(raycaster, intersects) {
+		raycastOctants(raycaster, octants) {
 
-			const octants = [];
 			const root = this.root;
 
-			const size = root.size().clone();
-			const halfSize = size.clone().multiplyScalar(0.5);
+			const size = vectors[0].copy(root.size());
+			const halfSize = vectors[1].copy(size).multiplyScalar(0.5);
 
-			// Translate the extents to the origin.
-			const min = root.min.clone().sub(root.min);
-			const max = root.max.clone().sub(root.min);
+			// Translate the octree extents to the center of the octree.
+			const min = vectors[2].copy(root.min).sub(root.min);
+			const max = vectors[3].copy(root.max).sub(root.min);
 
-			const direction = raycaster.ray.direction.clone();
-			const origin = raycaster.ray.origin.clone();
+			const direction = vectors[4].copy(raycaster.ray.direction);
+			const origin = vectors[5].copy(raycaster.ray.origin);
 
-			// Translate the ray to the center of the tree.
+			// Translate the ray to the center of the octree.
 			origin.sub(root.center()).add(halfSize);
 
 			let invDirX, invDirY, invDirZ;
@@ -1505,10 +1621,48 @@
 
 				root.raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
 
+			}
+
+		}
+
+		/**
+		 * Finds the points that intersect with the given ray.
+		 *
+		 * @method raycast
+		 * @param {Raycaster} raycaster - The raycaster.
+		 * @param {Array} containsPoint - An array to be filled with the intersecting points.
+		 */
+
+		raycast(raycaster, containsPoint) {
+
+			const octants = [];
+
+			this.raycastOctants(raycaster, octants);
+
+			if(octants.length > 0) {
+
 				// Collect intersecting points.
-				testPoints(raycaster, octants, intersects);
+				testPoints(octants, raycaster, containsPoint);
 
 			}
+
+		}
+
+		/**
+		 * Collects octants that lie inside the specified frustum.
+		 *
+		 * @method cull
+		 * @param {Frustum} frustum - A frustum.
+		 * @return {Array} The octants.
+		 */
+
+		cull(frustum) {
+
+			const result = [];
+
+			this.root.cull(frustum, result);
+
+			return result;
 
 		}
 
@@ -1533,7 +1687,7 @@
 		/**
 		 * Returns the amount of points that are currently in the tree.
 		 *
-		 * @method getDepth
+		 * @method getTotalPoints
 		 * @return {Number} The total amount of points in the tree.
 		 */
 
@@ -1563,6 +1717,7 @@
 	 *
 	 * @class OctreeHelper
 	 * @constructor
+	 * @extends Object3D
 	 * @param {Octree} tree - The octree to visualise.
 	 */
 
@@ -1571,6 +1726,8 @@
 		constructor(tree) {
 
 			super();
+
+			this.name = "OctreeHelper";
 
 			/**
 			 * The octree.
@@ -1593,6 +1750,20 @@
 
 		update() {
 
+			const vertexMap = new Map();
+			const depth = (this.tree !== null) ? this.tree.getDepth() : -1;
+
+			const connections = [
+				/* 0 */ [1, 4],
+				/* 1 */ [2, 5],
+				/* 2 */ [3, 6],
+				/* 3 */ [0, 7],
+				/* 4 */ [5],
+				/* 5 */ [6],
+				/* 6 */ [7],
+				/* 7 */ [4]
+			];
+
 			let i, j, k, il, kl;
 			let octants, octant;
 
@@ -1604,21 +1775,8 @@
 			let indexCount;
 			let indices = null;
 			let positions = null;
-			let vertexMap = new Map();
 
 			let level = 0;
-			let depth = (this.tree !== null) ? this.tree.getDepth() : -1;
-
-			let connections = [
-				/* 0 */ [1, 4],
-				/* 1 */ [2, 5],
-				/* 2 */ [3, 6],
-				/* 3 */ [0, 7],
-				/* 4 */ [5],
-				/* 5 */ [6],
-				/* 6 */ [7],
-				/* 7 */ [4]
-			];
 
 			// Remove existing geometry.
 			for(i = 0, il = this.children.length; i < il; ++i) {
@@ -1628,7 +1786,11 @@
 
 			}
 
-			this.children = [];
+			while(this.children.length > 0) {
+
+				this.remove(this.children[0]);
+
+			}
 
 			while(level <= depth) {
 
