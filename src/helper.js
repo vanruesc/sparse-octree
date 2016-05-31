@@ -5,6 +5,7 @@ import THREE from "three";
  *
  * @class OctreeHelper
  * @constructor
+ * @extends Object3D
  * @param {Octree} tree - The octree to visualise.
  */
 
@@ -13,6 +14,8 @@ export class OctreeHelper extends THREE.Object3D {
 	constructor(tree) {
 
 		super();
+
+		this.name = "OctreeHelper";
 
 		/**
 		 * The octree.
@@ -35,6 +38,20 @@ export class OctreeHelper extends THREE.Object3D {
 
 	update() {
 
+		const vertexMap = new Map();
+		const depth = (this.tree !== null) ? this.tree.getDepth() : -1;
+
+		const connections = [
+			/* 0 */ [1, 4],
+			/* 1 */ [2, 5],
+			/* 2 */ [3, 6],
+			/* 3 */ [0, 7],
+			/* 4 */ [5],
+			/* 5 */ [6],
+			/* 6 */ [7],
+			/* 7 */ [4]
+		];
+
 		let i, j, k, il, kl;
 		let octants, octant;
 
@@ -46,21 +63,8 @@ export class OctreeHelper extends THREE.Object3D {
 		let indexCount;
 		let indices = null;
 		let positions = null;
-		let vertexMap = new Map();
 
 		let level = 0;
-		let depth = (this.tree !== null) ? this.tree.getDepth() : -1;
-
-		let connections = [
-			/* 0 */ [1, 4],
-			/* 1 */ [2, 5],
-			/* 2 */ [3, 6],
-			/* 3 */ [0, 7],
-			/* 4 */ [5],
-			/* 5 */ [6],
-			/* 6 */ [7],
-			/* 7 */ [4]
-		];
 
 		// Remove existing geometry.
 		for(i = 0, il = this.children.length; i < il; ++i) {
@@ -70,7 +74,11 @@ export class OctreeHelper extends THREE.Object3D {
 
 		}
 
-		this.children = [];
+		while(this.children.length > 0) {
+
+			this.remove(this.children[0]);
+
+		}
 
 		while(level <= depth) {
 
