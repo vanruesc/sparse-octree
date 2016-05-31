@@ -3,6 +3,25 @@ import { flags, testPoints } from "./raycasting";
 import THREE from "three";
 
 /**
+ * A collection of vectors. Used for computations.
+ *
+ * @property vectors
+ * @type Array
+ * @private
+ * @static
+ * @final
+ */
+
+const vectors = [
+	new THREE.Vector3(),
+	new THREE.Vector3(),
+	new THREE.Vector3(),
+	new THREE.Vector3(),
+	new THREE.Vector3(),
+	new THREE.Vector3()
+];
+
+/**
  * An octree that subdivides 3D space into regular cells for 
  * fast spatial searches.
  *
@@ -145,7 +164,7 @@ export class Octree extends THREE.Object3D {
 
 	addPoints(array, data) {
 
-		const v = new THREE.Vector3();
+		const v = vectors[0];
 
 		let i, l;
 
@@ -186,7 +205,7 @@ export class Octree extends THREE.Object3D {
 
 	removePoints(array, data) {
 
-		const v = new THREE.Vector3();
+		const v = vectors[0];
 
 		let i, l;
 
@@ -266,17 +285,17 @@ export class Octree extends THREE.Object3D {
 		const octants = [];
 		const root = this.root;
 
-		const size = root.size().clone();
-		const halfSize = size.clone().multiplyScalar(0.5);
+		const size = vectors[0].copy(root.size());
+		const halfSize = vectors[1].copy(size).multiplyScalar(0.5);
 
-		// Translate the extents to the origin.
-		const min = root.min.clone().sub(root.min);
-		const max = root.max.clone().sub(root.min);
+		// Translate the octree extents to the center of the octree.
+		const min = vectors[2].copy(root.min).sub(root.min);
+		const max = vectors[3].copy(root.max).sub(root.min);
 
-		const direction = raycaster.ray.direction.clone();
-		const origin = raycaster.ray.origin.clone();
+		const direction = vectors[4].copy(raycaster.ray.direction);
+		const origin = vectors[5].copy(raycaster.ray.origin);
 
-		// Translate the ray to the center of the tree.
+		// Translate the ray to the center of the octree.
 		origin.sub(root.center()).add(halfSize);
 
 		let invDirX, invDirY, invDirZ;
