@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.0</em>
+            <em>API Docs for: 0.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -218,6 +218,14 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_containsPoint">containsPoint</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_cull">cull</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_distanceToCenterSquared">distanceToCenterSquared</a>
 
                             </li>
@@ -239,10 +247,6 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_getOctantsByLevel">getOctantsByLevel</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_intersects">intersects</a>
 
                             </li>
                             <li class="index-item method private">
@@ -321,6 +325,11 @@
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_minSize">minSize</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_points">points</a>
 
                             </li>
@@ -369,7 +378,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l173"><code>src\octant.js:173</code></a>
+        <a href="../files/src_octant.js.html#l207"><code>src\octant.js:207</code></a>
         </p>
 
 
@@ -456,7 +465,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l255"><code>src\octant.js:255</code></a>
+        <a href="../files/src_octant.js.html#l293"><code>src\octant.js:293</code></a>
         </p>
 
 
@@ -532,7 +541,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l101"><code>src\octant.js:101</code></a>
+        <a href="../files/src_octant.js.html#l103"><code>src\octant.js:103</code></a>
         </p>
 
 
@@ -554,6 +563,162 @@ the point will be added to a child octant.</p>
 
             </div>
         </div>
+
+
+</div>
+<div id="method_containsPoint" class="method item">
+    <h3 class="name"><code>containsPoint</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p</code>
+                </li>
+                <li class="arg">
+                        <code>bias</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l150"><code>src\octant.js:150</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Checks if the given point lies inside this octant's boundaries.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p</code>
+                        <span class="type">Vector3</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A point.</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">bias</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A padding that extends the boundaries temporarily.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>Whether the given point lies inside this octant.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_cull" class="method item">
+    <h3 class="name"><code>cull</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>frustum</code>
+                </li>
+                <li class="arg">
+                        <code>intersects</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l175"><code>src\octant.js:175</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Collects leaf octants that lie inside the given frustum.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">frustum</code>
+                        <span class="type">Frustum</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A frustum.</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">intersects</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>An array to be filled with the intersecting octants.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -581,7 +746,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l127"><code>src\octant.js:127</code></a>
+        <a href="../files/src_octant.js.html#l129"><code>src\octant.js:129</code></a>
         </p>
 
 
@@ -650,7 +815,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l566"><code>src\octant.js:566</code></a>
+        <a href="../files/src_octant.js.html#l610"><code>src\octant.js:610</code></a>
         </p>
 
 
@@ -724,7 +889,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l613"><code>src\octant.js:613</code></a>
+        <a href="../files/src_octant.js.html#l657"><code>src\octant.js:657</code></a>
         </p>
 
 
@@ -824,7 +989,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l708"><code>src\octant.js:708</code></a>
+        <a href="../files/src_octant.js.html#l752"><code>src\octant.js:752</code></a>
         </p>
 
 
@@ -916,7 +1081,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l797"><code>src\octant.js:797</code></a>
+        <a href="../files/src_octant.js.html#l841"><code>src\octant.js:841</code></a>
         </p>
 
 
@@ -965,7 +1130,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l765"><code>src\octant.js:765</code></a>
+        <a href="../files/src_octant.js.html#l809"><code>src\octant.js:809</code></a>
         </p>
 
 
@@ -1013,90 +1178,6 @@ the given point.</p>
 
 
 </div>
-<div id="method_intersects" class="method item">
-    <h3 class="name"><code>intersects</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>bias</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l148"><code>src\octant.js:148</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Checks if the given point lies inside this octant's boundaries.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">bias</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A padding that extends the boundaries temporarily.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the given point lies inside this octant.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_merge" class="method item private">
     <h3 class="name"><code>merge</code></h3>
 
@@ -1113,7 +1194,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l494"><code>src\octant.js:494</code></a>
+        <a href="../files/src_octant.js.html#l534"><code>src\octant.js:534</code></a>
         </p>
 
 
@@ -1172,7 +1253,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l830"><code>src\octant.js:830</code></a>
+        <a href="../files/src_octant.js.html#l874"><code>src\octant.js:874</code></a>
         </p>
 
 
@@ -1180,7 +1261,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
     </div>
 
     <div class="description">
-        <p>Finds all points that intersect with the given ray.</p>
+        <p>Finds all octants that intersect with the given ray.</p>
 
     </div>
 
@@ -1195,7 +1276,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. tx0 = (minX - rayOriginX) / rayDirectionX.</li>
+<li>Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.</li>
 </ul>
 
                     </div>
@@ -1208,7 +1289,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. ty0 = (minY - rayOriginY) / rayDirectionY.</li>
+<li>Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.</li>
 </ul>
 
                     </div>
@@ -1221,7 +1302,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. tz0 = (minZ - rayOriginZ) / rayDirectionZ.</li>
+<li>Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.</li>
 </ul>
 
                     </div>
@@ -1234,7 +1315,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. tx1 = (maxX - rayOriginX) / rayDirectionX.</li>
+<li>Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.</li>
 </ul>
 
                     </div>
@@ -1247,7 +1328,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. ty1 = (maxY - rayOriginY) / rayDirectionY.</li>
+<li>Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.</li>
 </ul>
 
                     </div>
@@ -1260,7 +1341,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Ray projection parameter. tz1 = (maxZ - rayOriginZ) / rayDirectionZ.</li>
+<li>Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.</li>
 </ul>
 
                     </div>
@@ -1286,7 +1367,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
 
                     <div class="param-description">
                         <ul>
-<li>An array to be filled with the intersecting points.</li>
+<li>An array to be filled with the intersecting octants.</li>
 </ul>
 
                     </div>
@@ -1325,7 +1406,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l365"><code>src\octant.js:365</code></a>
+        <a href="../files/src_octant.js.html#l405"><code>src\octant.js:405</code></a>
         </p>
 
 
@@ -1413,7 +1494,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l454"><code>src\octant.js:454</code></a>
+        <a href="../files/src_octant.js.html#l494"><code>src\octant.js:494</code></a>
         </p>
 
 
@@ -1489,7 +1570,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l114"><code>src\octant.js:114</code></a>
+        <a href="../files/src_octant.js.html#l116"><code>src\octant.js:116</code></a>
         </p>
 
 
@@ -1530,7 +1611,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l295"><code>src\octant.js:295</code></a>
+        <a href="../files/src_octant.js.html#l333"><code>src\octant.js:333</code></a>
         </p>
 
 
@@ -1561,7 +1642,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l528"><code>src\octant.js:528</code></a>
+        <a href="../files/src_octant.js.html#l568"><code>src\octant.js:568</code></a>
         </p>
 
 
@@ -1595,7 +1676,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l933"><code>src\octant.js:933</code></a>
+        <a href="../files/src_octant.js.html#l977"><code>src\octant.js:977</code></a>
         </p>
 
 
@@ -1622,7 +1703,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l944"><code>src\octant.js:944</code></a>
+        <a href="../files/src_octant.js.html#l988"><code>src\octant.js:988</code></a>
         </p>
 
 
@@ -1648,7 +1729,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l90"><code>src\octant.js:90</code></a>
+        <a href="../files/src_octant.js.html#l92"><code>src\octant.js:92</code></a>
         </p>
 
 
@@ -1673,7 +1754,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l81"><code>src\octant.js:81</code></a>
+        <a href="../files/src_octant.js.html#l83"><code>src\octant.js:83</code></a>
         </p>
 
 
@@ -1699,7 +1780,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l53"><code>src\octant.js:53</code></a>
+        <a href="../files/src_octant.js.html#l55"><code>src\octant.js:55</code></a>
         </p>
 
 
@@ -1719,12 +1800,13 @@ constraints are satisfied.</p>
 
 
 
+        <span class="flag final">final</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l44"><code>src\octant.js:44</code></a>
+        <a href="../files/src_octant.js.html#l45"><code>src\octant.js:45</code></a>
         </p>
 
 
@@ -1750,7 +1832,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l955"><code>src\octant.js:955</code></a>
+        <a href="../files/src_octant.js.html#l999"><code>src\octant.js:999</code></a>
         </p>
 
 
@@ -1777,7 +1859,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l966"><code>src\octant.js:966</code></a>
+        <a href="../files/src_octant.js.html#l1010"><code>src\octant.js:1010</code></a>
         </p>
 
 
@@ -1798,6 +1880,7 @@ constraints are satisfied.</p>
 
 
 
+        <span class="flag final">final</span>
 
 
     <div class="meta">
@@ -1817,6 +1900,33 @@ constraints are satisfied.</p>
 
 
 </div>
+<div id="property_minSize" class="property item">
+    <h3 class="name"><code>minSize</code></h3>
+    <span class="type">Vector3</span>
+
+
+
+
+        <span class="flag static">static</span>
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l1021"><code>src\octant.js:1021</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The minimum size of an octant.</p>
+
+    </div>
+
+        <p><strong>Default:</strong> Vector3(1e-12, 1e-12, 1e-12)</p>
+
+
+</div>
 <div id="property_points" class="property item">
     <h3 class="name"><code>points</code></h3>
     <span class="type">Array</span>
@@ -1828,7 +1938,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l72"><code>src\octant.js:72</code></a>
+        <a href="../files/src_octant.js.html#l74"><code>src\octant.js:74</code></a>
         </p>
 
 
@@ -1853,7 +1963,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l63"><code>src\octant.js:63</code></a>
+        <a href="../files/src_octant.js.html#l65"><code>src\octant.js:65</code></a>
         </p>
 
 

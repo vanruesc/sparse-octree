@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.0.0</em>
+            <em>API Docs for: 0.1.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -84,6 +84,8 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import THREE from &quot;three&quot;;
+
 /**
  * A collection of utility functions for octree raycasting.
  *
@@ -92,9 +94,8 @@
  *  by J. Revelles et al. (2000).
  *
  * @class Raycasting
+ * @static
  */
-
-import THREE from &quot;three&quot;;
 
 /**
  * Contains bytes used for bitwise operations. The last byte 
@@ -103,6 +104,7 @@ import THREE from &quot;three&quot;;
  * @property flags
  * @type Uint8Array
  * @static
+ * @final
  */
 
 export const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
@@ -223,12 +225,12 @@ export function getNextOctant(currentOctant, tx1, ty1, tz1) {
  *
  * @method testPoints
  * @static
- * @param {Raycaster} raycaster - The raycaster.
  * @param {Array} octants - An array containing octants that intersect with the ray.
+ * @param {Raycaster} raycaster - The raycaster.
  * @param {Array} intersects - An array to be filled with the intersecting points.
  */
 
-export function testPoints(raycaster, octants, intersects) {
+export function testPoints(octants, raycaster, intersects) {
 
 	const threshold = raycaster.params.Points.threshold;
 	const thresholdSq = threshold * threshold;
@@ -236,7 +238,7 @@ export function testPoints(raycaster, octants, intersects) {
 
 	let intersectPoint;
 	let distance, distanceToRay;
-	let rayPointDistanceSq = raycaster.ray.distanceSqToPoint(p);
+	let rayPointDistanceSq;
 
 	let i, j, il, jl;
 	let octant, dataSet, data;
