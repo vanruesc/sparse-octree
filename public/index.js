@@ -32,11 +32,11 @@ function setupScene(assets) {
 
 	// Camera.
 
-	var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
+	var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
 	var controls = new THREE.OrbitControls(camera, renderer.domElement);
 	controls.target.set(0, 0, 0);
 	controls.maxDistance = 15;
-	camera.position.set(3, 1, 6);
+	camera.position.set(5, 6, 8);
 	camera.lookAt(controls.target);
 
 	scene.add(camera);
@@ -71,25 +71,61 @@ function setupScene(assets) {
 
 	// Points.
 
-	var material = new THREE.PointsMaterial({color: 0xffffff, size: 1, sizeAttenuation: false});
+	function createPlaneGeometry(particles, n, z) {
 
-	var m = 64, n = 64;
-	var r = 0.0, rStep = 0.25;
-	var k = 6;
+		var geometry = new THREE.BufferGeometry();
 
-	var points;
-	var spheres = [];
+		var positions = new Float32Array(particles * 3);
 
-	while(0 < k--) {
+		var x, y;
+		var n2 = n / 2;
+		var i;
 
-		r += rStep;
-		points = new THREE.Points(new THREE.SphereBufferGeometry(r, m, n), material);
-		material = material.clone();
+		for(i = 0; i < positions.length; i += 3) {
 
-		scene.add(points);
-		spheres.push(points);
+			x = Math.random() * n - n2;
+			y = Math.random() * n - n2;
+
+			positions[i] = x;
+			positions[i + 1] = y;
+			positions[i + 2] = z;
+
+		}
+
+		geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+		geometry.computeBoundingSphere();
+
+		return geometry;
 
 	}
+
+	var material = new THREE.PointsMaterial({
+		color: 0xc00000, size: 1, sizeAttenuation: false
+	});
+
+	var w = 128;
+	var h = 128;
+	var d = 8;
+
+	var size = 6;
+
+	var zStep = size / (d - 1);
+	var z = size * -0.5;
+
+	var p;
+	var points = new THREE.Object3D();
+
+	while(0 < d--) {
+
+		p = new THREE.Points(createPlaneGeometry(w * h, size, z), material);
+		material = material.clone();
+		z += zStep;
+
+		points.add(p);
+
+	}
+
+	scene.add(points);
 
 	// Octree.
 
@@ -98,11 +134,12 @@ function setupScene(assets) {
 
 	var time = performance.now();
 
-	var octree = new OCTREE.Octree(bbox.min, bbox.max, 0.0, 8, 8);
+	var octree = new OCTREE.Octree(bbox.min, bbox.max, 0.0, 8, 7);
 
-	for(k = spheres.length - 1; k >= 0; --k) {
+	for(k = points.children.length - 1; k >= 0; --k) {
 
-		octree.addPoints(spheres[k].geometry.getAttribute("position").array, spheres[k]);
+		p = points.children[k];
+		octree.addPoints(p.geometry.getAttribute("position").array, p);
 
 	}
 
@@ -125,7 +162,7 @@ function setupScene(assets) {
 	var raycasting = true;
 	var selection = null;
 
-	raycaster.params.Points.threshold = 0.01;
+	raycaster.params.Points.threshold = 0.1;
 
 	viewport.addEventListener("mousemove", function raycast(event) {
 
@@ -147,7 +184,7 @@ function setupScene(assets) {
 
 			// Brute force, checks every point in every sphere.
 			t0 = performance.now();
-			intersects = raycaster.intersectObjects(spheres);
+			intersects = raycaster.intersectObjects(points.children);
 			t = performance.now();
 
 		}
@@ -156,7 +193,7 @@ function setupScene(assets) {
 
 		if(selection !== null) {
 
-			selection.material.color.setHex(0xffffff);
+			selection.material.color.setHex(0xc00000);
 			selection = null;
 
 		}
@@ -166,7 +203,7 @@ function setupScene(assets) {
 			if(intersects[0].object !== undefined) {
 
 				selection = intersects[0].object;
-				selection.material.color.setHex(0x00ff00);
+				selection.material.color.setHex(0xccff00);
 
 			} else {
 
@@ -178,14 +215,105 @@ function setupScene(assets) {
 
 	});
 
+	// Frustum culling.
+
+	var frustum = new THREE.Frustum();
+	var cullCamera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.5, 5);
+	cullCamera.matrixAutoUpdate = false;
+
+	var s = new THREE.Spherical(5, Math.PI / 3, Math.PI * 1.75);
+	var m = new THREE.Matrix4();
+
+	function updateCamera() {
+
+		cullCamera.position.setFromSpherical(s);
+		cullCamera.lookAt(scene.position);
+
+		cullCamera.updateMatrix();
+		cullCamera.updateMatrixWorld();
+		cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
+
+		m.identity().multiplyMatrices(cullCamera.projectionMatrix, cullCamera.matrixWorldInverse);
+		frustum.setFromMatrix(m)
+
+	}
+
+	material = material.clone();
+	material.color.setHex(0xccff00);
+
+	var culledOctants = new THREE.Points(new THREE.BufferGeometry(), material);
+	culledOctants.visible = false;
+
+	function cull() {
+
+		var t0, t;
+		var i, j, l;
+		var octant, octants;
+		var positions;
+
+		if(params["show culling"]) {
+
+			updateCamera();
+
+			t0 = performance.now();
+			octants = octree.cull(frustum);
+			t = performance.now();
+
+			if(octants.length > 0) {
+
+				positions = new Float32Array(octants.length * 3 * 2);
+
+				for(i = 0, j = 0, l = octants.length; i < l; ++i) {
+
+					octant = octants[i];
+					positions[j++] = octant.min.x;
+					positions[j++] = octant.min.y;
+					positions[j++] = octant.min.z;
+					positions[j++] = octant.max.x;
+					positions[j++] = octant.max.y;
+					positions[j++] = octant.max.z;
+
+				}
+
+				culledOctants.geometry.removeAttribute("position");
+				culledOctants.geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+				scene.add(culledOctants);
+
+			} else {
+
+				scene.remove(culledOctants);
+
+			}
+
+			params["cull time"] = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
+
+		}
+
+	}
+
+	var cameraHelper = new THREE.CameraHelper(cullCamera);
+	cameraHelper.visible = false;
+
+	scene.add(cullCamera);
+	scene.add(cameraHelper);
+
 	// Configuration.
 
 	var params = {
+		"show points": points.visible,
 		"show octree": helper.visible,
 		"level mask": helper.children.length,
 		"use octree": true,
-		"search time": ""
+		"search time": "",
+		"show culling": false,
+		"radius": s.radius,
+		"phi": s.phi,
+		"theta": s.theta,
+		"cull time": "",
 	};
+
+	gui.add(params, "show points").onChange(function() { points.visible = params["show points"]; });
 
 	var f = gui.addFolder("Octree Helper");
 	f.add(params, "show octree").onChange(function() { helper.visible = params["show octree"]; });
@@ -201,10 +329,21 @@ function setupScene(assets) {
 
 	});
 	f.open();
+
 	f = gui.addFolder("Raycasting");
 	f.add(params, "use octree");
 	f.add(params, "search time").listen();
 	f.open();
+
+	f = gui.addFolder("Frustum Culling");
+	f.add(params, "show culling").onChange(function() { cameraHelper.visible = culledOctants.visible = params["show culling"]; cull(); });
+	f.add(params, "cull time").listen();
+	f.open();
+
+	var ff = f.addFolder("Camera Adjustment");
+	ff.add(params, "radius").min(0.1).max(10.0).step(0.1).onChange(function() { s.radius = params["radius"]; cull(); });
+	ff.add(params, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(function() { s.phi = params["phi"]; cull(); });
+	ff.add(params, "theta").min(0.0).max(Math.PI * 2.0).onChange(function() { s.theta = params["theta"]; cull(); });
 
 	/**
 	 * Handles resizing.
@@ -230,6 +369,8 @@ function setupScene(assets) {
 		requestAnimationFrame(render);
 
 		stats.begin();
+
+		cameraHelper.update();
 
 		renderer.render(scene, camera);
 

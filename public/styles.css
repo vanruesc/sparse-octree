@@ -85,6 +85,18 @@ div[role="complementary"] p {
  color: rgb(90, 95, 90);
 }
 
+canvas {
+ cursor: -webkit-grab;
+ cursor: -moz-grab;
+ cursor: grab;
+}
+
+canvas:active {
+ cursor: -webkit-grabbing;
+ cursor: -moz-grabbing;
+ cursor: grabbing;
+}
+
 #viewport p {
  left: 0;
  position: fixed;
