@@ -840,7 +840,7 @@ export class Octant {
 	}
 
 	/**
-	 * Finds all points that intersect with the given ray.
+	 * Finds all octants that intersect with the given ray.
 	 *
 	 * @method raycast
 	 * @param {Number} tx0 - Ray projection parameter. tx0 = (minX - rayOriginX) / rayDirectionX.
@@ -850,7 +850,7 @@ export class Octant {
 	 * @param {Number} ty1 - Ray projection parameter. ty1 = (maxY - rayOriginY) / rayDirectionY.
 	 * @param {Number} tz1 - Ray projection parameter. tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
 	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
+	 * @param {Array} intersects - An array to be filled with the intersecting octants.
 	 */
 
 	raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {

@@ -304,14 +304,14 @@ export class Octree extends THREE.Object3D {
 	}
 
 	/**
-	 * Finds the points that intersect with the given ray.
+	 * Finds the octants that intersect with the given ray.
 	 *
-	 * @method raycast
+	 * @method raycastOctants
 	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
+	 * @param {Array} octants - An array to be filled with the intersecting octants.
 	 */
 
-	raycast(raycaster, intersects) {
+	raycastOctants(raycaster, octants) {
 
 		const octants = [];
 		const root = this.root;
@@ -378,8 +378,28 @@ export class Octree extends THREE.Object3D {
 
 			root.raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
 
+		}
+
+	}
+
+	/**
+	 * Finds the points that intersect with the given ray.
+	 *
+	 * @method raycast
+	 * @param {Raycaster} raycaster - The raycaster.
+	 * @param {Array} containsPoint - An array to be filled with the intersecting points.
+	 */
+
+	raycast(raycaster, containsPoint) {
+
+		const octants = [];
+
+		this.raycastOctants(raycaster, octants);
+
+		if(octants.length > 0) {
+
 			// Collect intersecting points.
-			testPoints(raycaster, octants, intersects);
+			testPoints(octants, raycaster, containsPoint);
 
 		}
 
