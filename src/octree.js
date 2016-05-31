@@ -126,7 +126,7 @@ export class Octree extends THREE.Object3D {
 
 	add(p, data) {
 
-		if(this.root.intersects(p, this.bias)) {
+		if(this.root.containsPoint(p, this.bias)) {
 
 			this.root.add(p, data);
 
@@ -167,7 +167,7 @@ export class Octree extends THREE.Object3D {
 
 	remove(p, data) {
 
-		if(this.root.intersects(p, this.bias)) {
+		if(this.root.containsPoint(p, this.bias)) {
 
 			this.root.remove(p, data);
 

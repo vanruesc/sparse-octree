@@ -150,13 +150,13 @@ export class Octant {
 	/**
 	 * Checks if the given point lies inside this octant's boundaries.
 	 *
-	 * @method intersects
+	 * @method containsPoint
 	 * @param {Vector3} p - A point.
 	 * @param {Number} bias - A padding that extends the boundaries temporarily.
 	 * @return {Boolean} Whether the given point lies inside this octant.
 	 */
 
-	intersects(p, bias) {
+	containsPoint(p, bias) {
 
 		const min = this.min;
 		const max = this.max;
@@ -273,7 +273,7 @@ export class Octant {
 
 		for(i = 0, l = this.children.length; !hit && i < l; ++i) {
 
-			hit = this.children[i].intersects(p, Octant.bias);
+			hit = this.children[i].containsPoint(p, Octant.bias);
 
 			if(hit) {
 
@@ -472,7 +472,7 @@ export class Octant {
 
 		for(i = 0, l = this.children.length; !hit && i < l; ++i) {
 
-			hit = this.children[i].intersects(p, Octant.bias);
+			hit = this.children[i].containsPoint(p, Octant.bias);
 
 			if(hit) {
 
@@ -580,7 +580,7 @@ export class Octant {
 
 		let i, l;
 
-		if(this.intersects(p, Octant.bias)) {
+		if(this.containsPoint(p, Octant.bias)) {
 
 			if(this.children !== null) {
 
@@ -680,7 +680,7 @@ export class Octant {
 				// Unpack octant.
 				child = sortedChildren[i].octant;
 
-				if(child.totalPoints > 0 && child.intersects(p, bestDist)) {
+				if(child.totalPoints > 0 && child.containsPoint(p, bestDist)) {
 
 					childResult = child.findNearestPoint(p, bestDist, skipSelf);
 
@@ -752,7 +752,7 @@ export class Octant {
 
 				child = children[i];
 
-				if(child.totalPoints > 0 && child.intersects(p, r)) {
+				if(child.totalPoints > 0 && child.containsPoint(p, r)) {
 
 					child.findPoints(p, r, skipSelf, result);
 
