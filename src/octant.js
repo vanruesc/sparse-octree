@@ -173,6 +173,38 @@ export class Octant {
 	}
 
 	/**
+	 * Collects leaf octants that lie inside the given frustum.
+	 *
+	 * @method cull
+	 * @param {Frustum} frustum - A frustum.
+	 * @param {Array} intersects - An array to be filled with the intersecting octants.
+	 */
+
+	cull(frustum, intersects) {
+
+		let i, l;
+
+		if(frustum.intersectsBox(this)) {
+
+			if(this.children !== null) {
+
+				for(i = 0, l = this.children.length; i < l; ++i) {
+
+					this.children[i].cull(frustum, intersects);
+
+				}
+
+			} else {
+
+				intersects.push(this);
+
+			}
+
+		}
+
+	}
+
+	/**
 	 * Adds a given point to this node. If this octant isn't a leaf node, 
 	 * the point will be added to a child octant.
 	 *

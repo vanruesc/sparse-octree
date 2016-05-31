@@ -406,6 +406,24 @@ export class Octree extends THREE.Object3D {
 	}
 
 	/**
+	 * Collects octants that lie inside the specified frustum.
+	 *
+	 * @method cull
+	 * @param {Frustum} frustum - A frustum.
+	 * @return {Array} The octants.
+	 */
+
+	cull(frustum) {
+
+		const result = [];
+
+		this.root.cull(frustum, result);
+
+		return result;
+
+	}
+
+	/**
 	 * Fetches all nodes with the specified level.
 	 *
 	 * @method getOctantsByLevel
