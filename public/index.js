@@ -134,7 +134,7 @@ function setupScene(assets) {
 
 	var time = performance.now();
 
-	var octree = new OCTREE.Octree(bbox.min, bbox.max, 0.0, 8, 7);
+	var octree = new OCTREE.Octree(bbox.min, bbox.max, 0.0, 8, 5);
 
 	for(k = points.children.length - 1; k >= 0; --k) {
 
