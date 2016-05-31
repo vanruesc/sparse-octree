@@ -120,6 +120,18 @@ module.exports = {
 
 		},
 
+		"can remove multiple points": function(test) {
+
+			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
+
+			octree.addPoints([-1, -1, -1, 0, 0, 0, 1, 1, 1], data);
+			octree.addPoints([-1, -1, -1, 1, 1, 1], data);
+			test.ok(octree.getTotalPoints(), 1, "should be able to remove multiple points");
+
+			test.done();
+
+		},
+
 		"adds points to intersecting octants": function(test) {
 
 			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
