@@ -119,7 +119,7 @@ export class Octree extends THREE.Object3D {
 	 *
 	 * This value works together with the maximum depth as a secondary 
 	 * limiting factor. Smaller values cause splits to occur earlier 
-	 * and the tree to grow deep faster.
+	 * which results in a faster and deeper tree growth.
 	 *
 	 * @property maxPoints
 	 * @type Number
@@ -313,7 +313,6 @@ export class Octree extends THREE.Object3D {
 
 	raycastOctants(raycaster, octants) {
 
-		const octants = [];
 		const root = this.root;
 
 		const size = vectors[0].copy(root.size());

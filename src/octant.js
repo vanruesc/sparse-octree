@@ -875,12 +875,12 @@ export class Octant {
 	 * Finds all octants that intersect with the given ray.
 	 *
 	 * @method raycast
-	 * @param {Number} tx0 - Ray projection parameter. tx0 = (minX - rayOriginX) / rayDirectionX.
-	 * @param {Number} ty0 - Ray projection parameter. ty0 = (minY - rayOriginY) / rayDirectionY.
-	 * @param {Number} tz0 - Ray projection parameter. tz0 = (minZ - rayOriginZ) / rayDirectionZ.
-	 * @param {Number} tx1 - Ray projection parameter. tx1 = (maxX - rayOriginX) / rayDirectionX.
-	 * @param {Number} ty1 - Ray projection parameter. ty1 = (maxY - rayOriginY) / rayDirectionY.
-	 * @param {Number} tz1 - Ray projection parameter. tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
+	 * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
+	 * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
+	 * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.
+	 * @param {Number} tx1 - Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.
+	 * @param {Number} ty1 - Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.
+	 * @param {Number} tz1 - Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
 	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} intersects - An array to be filled with the intersecting octants.
 	 */

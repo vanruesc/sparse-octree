@@ -8,6 +8,7 @@ import THREE from "three";
  *  by J. Revelles et al. (2000).
  *
  * @class Raycasting
+ * @static
  */
 
 /**
