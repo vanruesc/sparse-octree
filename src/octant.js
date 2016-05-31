@@ -307,6 +307,8 @@ export class Octant {
 
 	split() {
 
+		const p = new THREE.Vector3();
+
 		const min = this.min;
 		const mid = this.center().clone();
 		const max = this.max;
@@ -342,20 +344,20 @@ export class Octant {
 
 		while(i >= 0) {
 
-			v.fromArray(this.points[i]);
+			p.fromArray(this.points[i]);
 
 			if(this.dataSets[i].size > 0) {
 
 				// Unfold data aggregations. Each entry is one point.
 				for(data of this.dataSets[i].values()) {
 
-					this.addToChild(v, data);
+					this.addToChild(p, data);
 
 				}
 
 			} else {
 
-				this.addToChild(v);
+				this.addToChild(p);
 
 			}
 
