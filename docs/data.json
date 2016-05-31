@@ -1040,7 +1040,7 @@
                     "type": "Raycaster"
                 },
                 {
-                    "name": "containsPoint",
+                    "name": "intersects",
                     "description": "- An array to be filled with the intersecting points.",
                     "type": "Array"
                 }

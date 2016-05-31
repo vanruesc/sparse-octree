@@ -1630,10 +1630,10 @@
 		 *
 		 * @method raycast
 		 * @param {Raycaster} raycaster - The raycaster.
-		 * @param {Array} containsPoint - An array to be filled with the intersecting points.
+		 * @param {Array} intersects - An array to be filled with the intersecting points.
 		 */
 
-		raycast(raycaster, containsPoint) {
+		raycast(raycaster, intersects) {
 
 			const octants = [];
 
@@ -1642,7 +1642,7 @@
 			if(octants.length > 0) {
 
 				// Collect intersecting points.
-				testPoints(octants, raycaster, containsPoint);
+				testPoints(octants, raycaster, intersects);
 
 			}
 
