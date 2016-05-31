@@ -43,9 +43,12 @@ let scene = new Scene();
 let camera = new PerspectiveCamera();
 scene.add(camera);
 
-let points = new Points(new TorusKnotBufferGeometry(1, 1, 64, 64), new PointsMaterial({
-  color: 0xffffff, size: 1, sizeAttenuation: false
-}));
+let points = new Points(
+  new TorusKnotBufferGeometry(1, 1, 64, 64),
+  new PointsMaterial({
+    color: 0xffffff, size: 1, sizeAttenuation: false
+  })
+);
 
 scene.add(points);
 
@@ -59,8 +62,8 @@ scene.add(new OctreeHelper(octree));
 
 (function render(now) {
 
-	requestAnimationFrame(render);
-	renderer.render(scene, camera);
+  requestAnimationFrame(render);
+  renderer.render(scene, camera);
 
 }());
 ```
