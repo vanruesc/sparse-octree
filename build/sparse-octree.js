@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.1.0 build Jun 01 2016
+ * sparse-octree v0.1.1 build Jun 01 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -1269,12 +1269,8 @@
 	 * An octree that subdivides 3D space into regular cells for 
 	 * fast spatial searches.
 	 *
-	 * The Octree extends Object3D for smooth raycasting integration. 
-	 * It doesn't respect scale, rotation or position translations.
-	 *
 	 * @class Octree
 	 * @constructor
-	 * @extends Object3D
 	 * @param {Vector3} min - The lower bounds of the tree.
 	 * @param {Vector3} max - The upper bounds of the tree.
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
@@ -1283,13 +1279,9 @@
 	 * @param {Number} [minSize] - The minimum octant size.
 	 */
 
-	class Octree extends THREE.Object3D {
+	class Octree {
 
 		constructor(min, max, bias, maxPoints, maxDepth, minSize) {
-
-			super();
-
-			this.name = "Octree";
 
 			/**
 			 * The root node.
@@ -1309,6 +1301,15 @@
 			this.minSize = minSize;
 
 		}
+
+		/**
+		 * The children of the root node.
+		 *
+		 * @property children
+		 * @type Array
+		 */
+
+		get children() { return this.root.children; }
 
 		/**
 		 * A threshold for proximity checks.
