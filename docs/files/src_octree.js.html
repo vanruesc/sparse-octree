@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.1.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -111,12 +111,8 @@ const vectors = [
  * An octree that subdivides 3D space into regular cells for 
  * fast spatial searches.
  *
- * The Octree extends Object3D for smooth raycasting integration. 
- * It doesn&#x27;t respect scale, rotation or position translations.
- *
  * @class Octree
  * @constructor
- * @extends Object3D
  * @param {Vector3} min - The lower bounds of the tree.
  * @param {Vector3} max - The upper bounds of the tree.
  * @param {Number} [bias=0.0] - A threshold for proximity checks.
@@ -125,13 +121,9 @@ const vectors = [
  * @param {Number} [minSize] - The minimum octant size.
  */
 
-export class Octree extends THREE.Object3D {
+export class Octree {
 
 	constructor(min, max, bias, maxPoints, maxDepth, minSize) {
-
-		super();
-
-		this.name = &quot;Octree&quot;;
 
 		/**
 		 * The root node.
@@ -151,6 +143,15 @@ export class Octree extends THREE.Object3D {
 		this.minSize = minSize;
 
 	}
+
+	/**
+	 * The children of the root node.
+	 *
+	 * @property children
+	 * @type Array
+	 */
+
+	get children() { return this.root.children; }
 
 	/**
 	 * A threshold for proximity checks.

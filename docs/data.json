@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure for three.js.",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -139,9 +139,8 @@
             "namespace": "",
             "file": "src\\octree.js",
             "line": 24,
-            "description": "An octree that subdivides 3D space into regular cells for \nfast spatial searches.\n\nThe Octree extends Object3D for smooth raycasting integration. \nIt doesn't respect scale, rotation or position translations.",
+            "description": "An octree that subdivides 3D space into regular cells for \nfast spatial searches.",
             "is_constructor": 1,
-            "extends": "Object3D",
             "params": [
                 {
                     "name": "min",
@@ -777,7 +776,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 50,
+            "line": 42,
             "description": "The root node.",
             "itemtype": "property",
             "name": "root",
@@ -790,7 +789,17 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 69,
+            "line": 61,
+            "description": "The children of the root node.",
+            "itemtype": "property",
+            "name": "children",
+            "type": "Array",
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 70,
             "description": "A threshold for proximity checks.",
             "itemtype": "property",
             "name": "bias",
@@ -801,7 +810,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 90,
+            "line": 91,
             "description": "The maximum tree depth level.\nSetting this value refreshes the entire tree.\n\nIt's possible to set this value to Infinity, but be aware that allowing \ninfinitely small octants can have a negative impact on performance. \nFinding a value that works best for a specific scene is advisable.",
             "itemtype": "property",
             "name": "maxDepth",
@@ -812,7 +821,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 116,
+            "line": 117,
             "description": "Number of points per octant before a split occurs.\nSetting this value refreshes the entire tree.\n\nThis value works together with the maximum depth as a secondary \nlimiting factor. Smaller values cause splits to occur earlier \nwhich results in a faster and deeper tree growth.",
             "itemtype": "property",
             "name": "maxPoints",
@@ -823,7 +832,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 142,
+            "line": 143,
             "description": "The minimum size of an octant.\n\nOctants won't split if their children would have a side \nthat's smaller than the respective x, y or z minimum value.\n\nThis value acts just like the maximum depth as a primary \nlimiting factor.",
             "itemtype": "property",
             "name": "minSize",
@@ -834,7 +843,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 169,
+            "line": 170,
             "description": "Adds a point to the tree.",
             "itemtype": "method",
             "name": "add",
@@ -856,7 +865,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 187,
+            "line": 188,
             "description": "Adds all points that are described by a given array of position \nvalues to the tree.",
             "itemtype": "method",
             "name": "addPoints",
@@ -878,7 +887,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 210,
+            "line": 211,
             "description": "Removes a point from the tree.",
             "itemtype": "method",
             "name": "remove",
@@ -900,7 +909,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 228,
+            "line": 229,
             "description": "Removes all points that are described by a given array of position \nvalues from the tree.",
             "itemtype": "method",
             "name": "removePoints",
@@ -922,7 +931,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 251,
+            "line": 252,
             "description": "Retrieves the data of the point at the specified position.",
             "itemtype": "method",
             "name": "fetch",
@@ -942,7 +951,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 265,
+            "line": 266,
             "description": "Finds the closest point to the given one.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -976,7 +985,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 284,
+            "line": 285,
             "description": "Finds points that are in the specified radius around the given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -1008,7 +1017,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 306,
+            "line": 307,
             "description": "Finds the octants that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycastOctants",
@@ -1029,7 +1038,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 384,
+            "line": 385,
             "description": "Finds the points that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycast",
@@ -1050,7 +1059,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 407,
+            "line": 408,
             "description": "Collects octants that lie inside the specified frustum.",
             "itemtype": "method",
             "name": "cull",
@@ -1070,7 +1079,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 425,
+            "line": 426,
             "description": "Fetches all nodes with the specified level.",
             "itemtype": "method",
             "name": "getOctantsByLevel",
@@ -1090,7 +1099,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 443,
+            "line": 444,
             "description": "Returns the amount of points that are currently in the tree.",
             "itemtype": "method",
             "name": "getTotalPoints",
@@ -1103,7 +1112,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 456,
+            "line": 457,
             "description": "Calculates the current tree depth.",
             "itemtype": "method",
             "name": "getDepth",
