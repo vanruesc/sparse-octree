@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.1.1 build Jun 01 2016
+ * sparse-octree v0.1.2 build Jun 04 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -11,6 +11,585 @@
 }(this, function (exports,THREE) { 'use strict';
 
 	THREE = 'default' in THREE ? THREE['default'] : THREE;
+
+	/**
+	 * A vector with three components.
+	 *
+	 * This class is a copy of THREE.Vector3. It can be removed 
+	 * as soon as three.js starts supporting ES6 modules.
+	 *
+	 * @class Vector3
+	 * @submodule math
+	 * @constructor
+	 * @param {Number} [x=0] - The x value.
+	 * @param {Number} [y=0] - The y value.
+	 * @param {Number} [z=0] - The z value.
+	 */
+
+	class Vector3 {
+
+		constructor(x, y, z) {
+
+			/**
+			 * The x component.
+			 *
+			 * @property x
+			 * @type Number
+			 */
+
+			this.x = (x !== undefined) ? x : 0;
+
+			/**
+			 * The y component.
+			 *
+			 * @property y
+			 * @type Number
+			 */
+
+			this.y = (y !== undefined) ? y : 0;
+
+			/**
+			 * The z component.
+			 *
+			 * @property z
+			 * @type Number
+			 */
+
+			this.z = (z !== undefined) ? z : 0;
+
+		}
+
+		/**
+		 * Sets the values of this vector
+		 *
+		 * @method set
+		 * @param {Number} x - The x value.
+		 * @param {Number} y - The y value.
+		 * @param {Number} z - The z value.
+		 * @return {Vector3} This vector.
+		 */
+
+		set(x, y, z) {
+
+			this.x = x;
+			this.y = y;
+			this.z = z;
+
+			return this;
+
+		}
+
+		/**
+		 * Copies the values of another vector.
+		 *
+		 * @method copy
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		copy(v) {
+
+			this.x = v.x;
+			this.y = v.y;
+			this.z = v.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Copies values from an array.
+		 *
+		 * @method fromArray
+		 * @param {Array} array - An array.
+		 * @param {Number} offset - An offset.
+		 * @return {Vector3} This vector.
+		 */
+
+		fromArray(array, offset) {
+
+			if(offset === undefined) { offset = 0; }
+
+			this.x = array[offset];
+			this.y = array[offset + 1];
+			this.z = array[offset + 2];
+
+			return this;
+
+		}
+
+		/**
+		 * Stores this vector in an array.
+		 *
+		 * @method toArray
+		 * @param {Array} [array] - A target array.
+		 * @param {Number} offset - An offset.
+		 * @return {Vector3} The array.
+		 */
+
+		toArray(array, offset) {
+
+			if(array === undefined) { array = []; }
+			if(offset === undefined) { offset = 0; }
+
+			array[offset] = this.x;
+			array[offset + 1] = this.y;
+			array[offset + 2] = this.z;
+
+			return array;
+
+		}
+
+		/**
+		 * Checks if this vector equals the given one.
+		 *
+		 * @method equals
+		 * @param {Vector3} v - A vector.
+		 * @return {Boolean} Whether this vector equals the given one.
+		 */
+
+		equals(v) {
+
+			return (v.x === this.x && v.y === this.y && v.z === this.z);
+
+		}
+
+		/**
+		 * Clones this vector.
+		 *
+		 * @method clone
+		 * @return {Vector3} A clone of this vector.
+		 */
+
+		clone() {
+
+			return new this.constructor(this.x, this.y, this.z);
+
+		}
+
+		/**
+		 * Adds a vector to this one.
+		 *
+		 * @method add
+		 * @param {Vector3} v - The vector to add.
+		 * @return {Vector3} This vector.
+		 */
+
+		add(v) {
+
+			this.x += v.x;
+			this.y += v.y;
+			this.z += v.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Adds a scalar to this vector.
+		 *
+		 * @method addScalar
+		 * @param {Vector3} s - The scalar to add.
+		 * @return {Vector3} This vector.
+		 */
+
+		addScalar(s) {
+
+			this.x += s;
+			this.y += s;
+			this.z += s;
+
+			return this;
+
+		}
+
+		/**
+		 * Sets this vector to the sum of two given vectors.
+		 *
+		 * @method addVectors
+		 * @param {Vector3} a - A vector.
+		 * @param {Vector3} b - Another vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		addVectors(a, b) {
+
+			this.x = a.x + b.x;
+			this.y = a.y + b.y;
+			this.z = a.z + b.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Subtracts a vector from this vector.
+		 *
+		 * @method sub
+		 * @param {Vector3} v - The vector to subtract.
+		 * @return {Vector3} This vector.
+		 */
+
+		sub(v) {
+
+			this.x -= v.x;
+			this.y -= v.y;
+			this.z -= v.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Subtracts a scalar to this vector.
+		 *
+		 * @method subScalar
+		 * @param {Vector3} s - The scalar to subtract.
+		 * @return {Vector3} This vector.
+		 */
+
+		subScalar(s) {
+
+			this.x -= s;
+			this.y -= s;
+			this.z -= s;
+
+			return this;
+
+		}
+
+		/**
+		 * Sets this vector to the difference between two given vectors.
+		 *
+		 * @method subVectors
+		 * @param {Vector3} a - A vector.
+		 * @param {Vector3} b - A second vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		subVectors(a, b) {
+
+			this.x = a.x - b.x;
+			this.y = a.y - b.y;
+			this.z = a.z - b.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Multiplies this vector with another vector.
+		 *
+		 * @method multiply
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		multiply(v) {
+
+			this.x *= v.x;
+			this.y *= v.y;
+			this.z *= v.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Multiplies this vector with a given scalar.
+		 *
+		 * @method multiplyScalar
+		 * @param {Vector3} s - A scalar.
+		 * @return {Vector3} This vector.
+		 */
+
+		multiplyScalar(s) {
+
+			if(isFinite(s)) {
+
+				this.x *= s;
+				this.y *= s;
+				this.z *= s;
+
+			} else {
+
+				this.x = 0;
+				this.y = 0;
+				this.z = 0;
+
+			}
+
+			return this;
+
+		}
+
+		/**
+		 * Sets this vector to the product of two given vectors.
+		 *
+		 * @method multiplyVectors
+		 * @param {Vector3} a - A vector.
+		 * @param {Vector3} b - Another vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		multiplyVectors(a, b) {
+
+			this.x = a.x * b.x;
+			this.y = a.y * b.y;
+			this.z = a.z * b.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Divides this vector by another vector.
+		 *
+		 * @method divide
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		divide(v) {
+
+			this.x /= v.x;
+			this.y /= v.y;
+			this.z /= v.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Divides this vector by a given scalar.
+		 *
+		 * @method divideScalar
+		 * @param {Vector3} s - A scalar.
+		 * @return {Vector3} This vector.
+		 */
+
+		divideScalar(s) {
+
+			return this.multiplyScalar(1 / s);
+
+		}
+
+		/**
+		 * Sets this vector to the quotient of two given vectors.
+		 *
+		 * @method divideVectors
+		 * @param {Vector3} a - A vector.
+		 * @param {Vector3} b - Another vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		divideVectors(a, b) {
+
+			this.x = a.x / b.x;
+			this.y = a.y / b.y;
+			this.z = a.z / b.z;
+
+			return this;
+
+		}
+
+		/**
+		 * Calculates the dot product with another vector.
+		 *
+		 * @method dot
+		 * @param {Vector3} v - A vector.
+		 * @return {Number} The dot product.
+		 */
+
+		dot(v) {
+
+			return this.x * v.x + this.y * v.y + this.z * v.z;
+
+		}
+
+		/**
+		 * Normalizes this vector.
+		 *
+		 * @method lengthSq
+		 * @return {Vector3} This vector.
+		 */
+
+		lengthSq() {
+
+			return this.x * this.x + this.y * this.y + this.z * this.z;
+
+		}
+
+		/**
+		 * Normalizes this vector.
+		 *
+		 * @method length
+		 * @return {Vector3} This vector.
+		 */
+
+		length() {
+
+			return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+
+		}
+
+		/**
+		 * Normalizes this vector.
+		 *
+		 * @method distanceTo
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		distanceTo(v) {
+
+			return Math.sqrt(this.distanceToSquared(v));
+
+		}
+
+		/**
+		 * Normalizes this vector.
+		 *
+		 * @method distanceToSquared
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		distanceToSquared(v) {
+
+			const dx = this.x - v.x;
+			const dy = this.y - v.y;
+			const dz = this.z - v.z;
+
+			return dx * dx + dy * dy + dz * dz;
+
+		}
+
+		/**
+		 * Normalizes this vector.
+		 *
+		 * @method normalize
+		 * @return {Vector3} This vector.
+		 */
+
+		normalize() {
+
+			const lengthSq = this.lengthSq();
+
+			if(Math.abs(lengthSq) < 1e-12) {
+
+				this.set(0, 0, 0);
+
+			} else {
+
+				this.multiplyScalar(1 / Math.sqrt(lengthSq));
+
+			}
+
+			return this;
+
+		}
+
+		/**
+		 * Selects the minimum value for each component of 
+		 * this vector and the given one.
+		 *
+		 * @method min
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		min(v) {
+
+			this.x = Math.min(this.x, v.x);
+			this.y = Math.min(this.y, v.y);
+			this.z = Math.min(this.z, v.z);
+
+			return this;
+
+		}
+
+		/**
+		 * Selects the maximum value for each component of 
+		 * this vector and the given one.
+		 *
+		 * @method max
+		 * @param {Vector3} v - A vector.
+		 * @return {Vector3} This vector.
+		 */
+
+		max(v) {
+
+			this.x = Math.max(this.x, v.x);
+			this.y = Math.max(this.y, v.y);
+			this.z = Math.max(this.z, v.z);
+
+			return this;
+
+		}
+
+		/**
+		 * Clamps this vector.
+		 *
+		 * @method clamp
+		 * @param {Vector3} min - A vector, assumed to be smaller than max.
+		 * @param {Vector3} max - A vector, assumed to be greater than min.
+		 * @return {Vector3} This vector.
+		 */
+
+		clamp(min, max) {
+
+			this.x = Math.max(min.x, Math.min(max.x, this.x));
+			this.y = Math.max(min.y, Math.min(max.y, this.y));
+			this.z = Math.max(min.z, Math.min(max.z, this.z));
+
+			return this;
+
+		}
+
+		/**
+		 * Applies a matrix to this vector.
+		 *
+		 * @method applyMatrix3
+		 * @param {Matrix3} m - A matrix.
+		 * @return {Vector3} This vector.
+		 */
+
+		applyMatrix3(m) {
+
+			const x = this.x, y = this.y, z = this.z;
+			const e = m.elements;
+
+			this.x = e[0] * x + e[3] * y + e[6] * z;
+			this.y = e[1] * x + e[4] * y + e[7] * z;
+			this.z = e[2] * x + e[5] * y + e[8] * z;
+
+			return this;
+
+		}
+
+		/**
+		 * Applies a matrix to this vector.
+		 *
+		 * @method applyMatrix4
+		 * @param {Matrix4} m - A matrix.
+		 * @return {Vector3} This vector.
+		 */
+
+		applyMatrix4(m) {
+
+			const x = this.x, y = this.y, z = this.z;
+			const e = m.elements;
+
+			this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
+			this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
+			this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+
+			return this;
+
+		}
+
+	}
 
 	/**
 	 * A collection of utility functions for octree raycasting.
@@ -160,7 +739,7 @@
 
 		const threshold = raycaster.params.Points.threshold;
 		const thresholdSq = threshold * threshold;
-		const p = new THREE.Vector3();
+		const p = new Vector3();
 
 		let intersectPoint;
 		let distance, distanceToRay;
@@ -233,7 +812,7 @@
 	 * @final
 	 */
 
-	const v = new THREE.Vector3();
+	const v = new Vector3();
 
 	/**
 	 * An octant.
@@ -257,7 +836,7 @@
 			 * @final
 			 */
 
-			this.min = (min !== undefined) ? min: new THREE.Vector3();
+			this.min = (min !== undefined) ? min: new Vector3();
 
 			/**
 			 * The upper bounds of the octant.
@@ -267,7 +846,7 @@
 			 * @final
 			 */
 
-			this.max = (max !== undefined) ? max: new THREE.Vector3();
+			this.max = (max !== undefined) ? max: new Vector3();
 
 			/**
 			 * The depth level of this octant.
@@ -556,7 +1135,7 @@
 
 		split() {
 
-			const p = new THREE.Vector3();
+			const p = new Vector3();
 
 			const min = this.min;
 			const mid = this.center().clone();
@@ -578,12 +1157,12 @@
 
 			this.children = [
 				new Octant(min, mid, nextLevel),
-				new Octant(new THREE.Vector3(min.x, min.y, mid.z), new THREE.Vector3(mid.x, mid.y, max.z), nextLevel),
-				new Octant(new THREE.Vector3(min.x, mid.y, min.z), new THREE.Vector3(mid.x, max.y, mid.z), nextLevel),
-				new Octant(new THREE.Vector3(min.x, mid.y, mid.z), new THREE.Vector3(mid.x, max.y, max.z), nextLevel),
-				new Octant(new THREE.Vector3(mid.x, min.y, min.z), new THREE.Vector3(max.x, mid.y, mid.z), nextLevel),
-				new Octant(new THREE.Vector3(mid.x, min.y, mid.z), new THREE.Vector3(max.x, mid.y, max.z), nextLevel),
-				new Octant(new THREE.Vector3(mid.x, mid.y, min.z), new THREE.Vector3(max.x, max.y, mid.z), nextLevel),
+				new Octant(new Vector3(min.x, min.y, mid.z), new Vector3(mid.x, mid.y, max.z), nextLevel),
+				new Octant(new Vector3(min.x, mid.y, min.z), new Vector3(mid.x, max.y, mid.z), nextLevel),
+				new Octant(new Vector3(min.x, mid.y, mid.z), new Vector3(mid.x, max.y, max.z), nextLevel),
+				new Octant(new Vector3(mid.x, min.y, min.z), new Vector3(max.x, mid.y, mid.z), nextLevel),
+				new Octant(new Vector3(mid.x, min.y, mid.z), new Vector3(max.x, mid.y, max.z), nextLevel),
+				new Octant(new Vector3(mid.x, mid.y, min.z), new Vector3(max.x, max.y, mid.z), nextLevel),
 				new Octant(mid, max, nextLevel)
 			];
 
@@ -1244,7 +1823,7 @@
 	 * @default Vector3(1e-12, 1e-12, 1e-12)
 	 */
 
-	Octant.minSize = new THREE.Vector3(1e-12, 1e-12, 1e-12);
+	Octant.minSize = new Vector3(1e-12, 1e-12, 1e-12);
 
 	/**
 	 * A collection of vectors. Used for computations.
@@ -1257,12 +1836,12 @@
 	 */
 
 	const vectors = [
-		new THREE.Vector3(),
-		new THREE.Vector3(),
-		new THREE.Vector3(),
-		new THREE.Vector3(),
-		new THREE.Vector3(),
-		new THREE.Vector3()
+		new Vector3(),
+		new Vector3(),
+		new Vector3(),
+		new Vector3(),
+		new Vector3(),
+		new Vector3()
 	];
 
 	/**
@@ -1402,7 +1981,7 @@
 
 		set minSize(x) {
 
-			if(x instanceof THREE.Vector3) {
+			if(x instanceof Vector3) {
 
 				Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
 				this.root.update();
