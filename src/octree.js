@@ -1,6 +1,6 @@
 import { Octant } from "./octant";
 import { flags, testPoints } from "./raycasting";
-import THREE from "three";
+import { Vector3 } from "./vector3";
 
 /**
  * A collection of vectors. Used for computations.
@@ -13,12 +13,12 @@ import THREE from "three";
  */
 
 const vectors = [
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3()
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3()
 ];
 
 /**
@@ -158,7 +158,7 @@ export class Octree {
 
 	set minSize(x) {
 
-		if(x instanceof THREE.Vector3) {
+		if(x instanceof Vector3) {
 
 			Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
 			this.root.update();

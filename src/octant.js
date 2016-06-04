@@ -1,10 +1,5 @@
-import {
-	flags,
-	getFirstOctant,
-	getNextOctant
-} from "./raycasting";
-
-import THREE from "three";
+import { flags, getFirstOctant, getNextOctant } from "./raycasting";
+import { Vector3 } from "./vector3";
 
 /**
  * A computation helper.
@@ -16,7 +11,7 @@ import THREE from "three";
  * @final
  */
 
-const v = new THREE.Vector3();
+const v = new Vector3();
 
 /**
  * An octant.
@@ -40,7 +35,7 @@ export class Octant {
 		 * @final
 		 */
 
-		this.min = (min !== undefined) ? min: new THREE.Vector3();
+		this.min = (min !== undefined) ? min: new Vector3();
 
 		/**
 		 * The upper bounds of the octant.
@@ -50,7 +45,7 @@ export class Octant {
 		 * @final
 		 */
 
-		this.max = (max !== undefined) ? max: new THREE.Vector3();
+		this.max = (max !== undefined) ? max: new Vector3();
 
 		/**
 		 * The depth level of this octant.
@@ -339,7 +334,7 @@ export class Octant {
 
 	split() {
 
-		const p = new THREE.Vector3();
+		const p = new Vector3();
 
 		const min = this.min;
 		const mid = this.center().clone();
@@ -361,12 +356,12 @@ export class Octant {
 
 		this.children = [
 			new Octant(min, mid, nextLevel),
-			new Octant(new THREE.Vector3(min.x, min.y, mid.z), new THREE.Vector3(mid.x, mid.y, max.z), nextLevel),
-			new Octant(new THREE.Vector3(min.x, mid.y, min.z), new THREE.Vector3(mid.x, max.y, mid.z), nextLevel),
-			new Octant(new THREE.Vector3(min.x, mid.y, mid.z), new THREE.Vector3(mid.x, max.y, max.z), nextLevel),
-			new Octant(new THREE.Vector3(mid.x, min.y, min.z), new THREE.Vector3(max.x, mid.y, mid.z), nextLevel),
-			new Octant(new THREE.Vector3(mid.x, min.y, mid.z), new THREE.Vector3(max.x, mid.y, max.z), nextLevel),
-			new Octant(new THREE.Vector3(mid.x, mid.y, min.z), new THREE.Vector3(max.x, max.y, mid.z), nextLevel),
+			new Octant(new Vector3(min.x, min.y, mid.z), new Vector3(mid.x, mid.y, max.z), nextLevel),
+			new Octant(new Vector3(min.x, mid.y, min.z), new Vector3(mid.x, max.y, mid.z), nextLevel),
+			new Octant(new Vector3(min.x, mid.y, mid.z), new Vector3(mid.x, max.y, max.z), nextLevel),
+			new Octant(new Vector3(mid.x, min.y, min.z), new Vector3(max.x, mid.y, mid.z), nextLevel),
+			new Octant(new Vector3(mid.x, min.y, mid.z), new Vector3(max.x, mid.y, max.z), nextLevel),
+			new Octant(new Vector3(mid.x, mid.y, min.z), new Vector3(max.x, max.y, mid.z), nextLevel),
 			new Octant(mid, max, nextLevel)
 		];
 
@@ -1027,4 +1022,4 @@ Octant.maxPoints = 8;
  * @default Vector3(1e-12, 1e-12, 1e-12)
  */
 
-Octant.minSize = new THREE.Vector3(1e-12, 1e-12, 1e-12);
+Octant.minSize = new Vector3(1e-12, 1e-12, 1e-12);

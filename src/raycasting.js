@@ -1,4 +1,4 @@
-import THREE from "three";
+import { Vector3 } from "./vector3";
 
 /**
  * A collection of utility functions for octree raycasting.
@@ -148,7 +148,7 @@ export function testPoints(octants, raycaster, intersects) {
 
 	const threshold = raycaster.params.Points.threshold;
 	const thresholdSq = threshold * threshold;
-	const p = new THREE.Vector3();
+	const p = new Vector3();
 
 	let intersectPoint;
 	let distance, distanceToRay;
