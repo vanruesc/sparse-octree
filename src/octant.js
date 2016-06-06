@@ -145,6 +145,9 @@ export class Octant {
 	/**
 	 * Checks if the given point lies inside this octant's boundaries.
 	 *
+	 * This method can also be used to check if this octant intersects 
+	 * a sphere by providing a radius as bias.
+	 *
 	 * @method containsPoint
 	 * @param {Vector3} p - A point.
 	 * @param {Number} bias - A padding that extends the boundaries temporarily.
@@ -189,7 +192,7 @@ export class Octant {
 
 				}
 
-			} else {
+			} else if(this.totalPoints > 0) {
 
 				intersects.push(this);
 
