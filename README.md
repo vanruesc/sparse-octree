@@ -3,9 +3,11 @@
 [![npm version](https://badge.fury.io/js/sparse-octree.svg)](http://badge.fury.io/js/sparse-octree) 
 [![Dependencies](https://david-dm.org/vanruesc/sparse-octree.svg?branch=master)](https://david-dm.org/vanruesc/sparse-octree)
 
-A sparse octree data structure for three.js. Sparse octrees can have empty nodes. Nodes that aren't empty can either have children themselves or they can be leaf nodes that contain point data. 
+A sparse octree data structure for three.js. Sparse octrees can have empty nodes. 
+Nodes that aren't empty can either have children themselves or they can be leaf nodes that contain point data. 
 
-This octree doesn't support moving objects and its focus lies on managing point data. Support for triangles and dynamic updates is planned, but has low priority. 
+This octree doesn't support moving objects and its focus lies on managing point data. Support for triangles and 
+dynamic updates is planned, but has low priority. 
 
 ## Preface
 
