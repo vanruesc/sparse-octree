@@ -122,6 +122,22 @@ export class Octant {
 	}
 
 	/**
+	 * Computes the distance squared from this octant to the given point.
+	 *
+	 * @method distanceToSquared
+	 * @param {Vector3} p - A point.
+	 * @return {Number} The distance squared.
+	 */
+
+	distanceToSquared(p) {
+
+		const clampedPoint = v.copy(p).clamp(this.min, this.max);
+
+		return clampedPoint.sub(p).lengthSq();
+
+	}
+
+	/**
 	 * Computes the distance squared from the center of this octant to 
 	 * the given point.
 	 *
