@@ -32,7 +32,7 @@ const vectors = [
  * @param {Number} [bias=0.0] - A threshold for proximity checks.
  * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
  * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
- * @param {Number} [minSize] - The minimum octant size.
+ * @param {Vector3} [minSize] - The minimum octant size.
  */
 
 export class Octree {
