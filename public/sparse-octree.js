@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.1.2 build Jun 04 2016
+ * sparse-octree v0.1.3 build Jun 06 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -923,6 +923,22 @@
 		}
 
 		/**
+		 * Computes the distance squared from this octant to the given point.
+		 *
+		 * @method distanceToSquared
+		 * @param {Vector3} p - A point.
+		 * @return {Number} The distance squared.
+		 */
+
+		distanceToSquared(p) {
+
+			const clampedPoint = v.copy(p).clamp(this.min, this.max);
+
+			return clampedPoint.sub(p).lengthSq();
+
+		}
+
+		/**
 		 * Computes the distance squared from the center of this octant to 
 		 * the given point.
 		 *
@@ -945,6 +961,9 @@
 
 		/**
 		 * Checks if the given point lies inside this octant's boundaries.
+		 *
+		 * This method can also be used to check if this octant intersects 
+		 * a sphere by providing a radius as bias.
 		 *
 		 * @method containsPoint
 		 * @param {Vector3} p - A point.
@@ -990,7 +1009,7 @@
 
 					}
 
-				} else {
+				} else if(this.totalPoints > 0) {
 
 					intersects.push(this);
 
@@ -1855,7 +1874,7 @@
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
-	 * @param {Number} [minSize] - The minimum octant size.
+	 * @param {Vector3} [minSize] - The minimum octant size.
 	 */
 
 	class Octree {
