@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.1</em>
+            <em>API Docs for: 0.1.3</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,10 +42,12 @@
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
                                 <li><a href="../classes/Raycasting.html">Raycasting</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                             </ul>
                         </div>
@@ -85,7 +87,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_octant.js.html#l21"><code>src\octant.js:21</code></a>
+            Defined in: <a href="../files/src_octant.js.html#l16"><code>src\octant.js:16</code></a>
         </div>
 
             Module: <a href="../modules/octree.html">octree</a>
@@ -127,7 +129,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l21"><code>src\octant.js:21</code></a>
+        <a href="../files/src_octant.js.html#l16"><code>src\octant.js:16</code></a>
         </p>
 
 
@@ -144,7 +146,7 @@
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">min</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -157,7 +159,7 @@
                 </li>
                 <li class="param">
                         <code class="param-name">max</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -227,6 +229,10 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_distanceToCenterSquared">distanceToCenterSquared</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_distanceToSquared">distanceToSquared</a>
 
                             </li>
                             <li class="index-item method">
@@ -378,7 +384,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l207"><code>src\octant.js:207</code></a>
+        <a href="../files/src_octant.js.html#l221"><code>src\octant.js:221</code></a>
         </p>
 
 
@@ -397,7 +403,7 @@ the point will be added to a child octant.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -465,7 +471,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l293"><code>src\octant.js:293</code></a>
+        <a href="../files/src_octant.js.html#l307"><code>src\octant.js:307</code></a>
         </p>
 
 
@@ -483,7 +489,7 @@ the point will be added to a child octant.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -529,7 +535,7 @@ the point will be added to a child octant.</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Vector3</span>
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
         </span>
 
 
@@ -541,7 +547,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l103"><code>src\octant.js:103</code></a>
+        <a href="../files/src_octant.js.html#l98"><code>src\octant.js:98</code></a>
         </p>
 
 
@@ -558,7 +564,7 @@ the point will be added to a child octant.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Vector3</span>:
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
                     <p>The center of this octant.</p>
 
             </div>
@@ -593,7 +599,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l150"><code>src\octant.js:150</code></a>
+        <a href="../files/src_octant.js.html#l161"><code>src\octant.js:161</code></a>
         </p>
 
 
@@ -602,6 +608,8 @@ the point will be added to a child octant.</p>
 
     <div class="description">
         <p>Checks if the given point lies inside this octant's boundaries.</p>
+<p>This method can also be used to check if this octant intersects
+a sphere by providing a radius as bias.</p>
 
     </div>
 
@@ -611,7 +619,7 @@ the point will be added to a child octant.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -674,7 +682,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l175"><code>src\octant.js:175</code></a>
+        <a href="../files/src_octant.js.html#l189"><code>src\octant.js:189</code></a>
         </p>
 
 
@@ -746,7 +754,7 @@ the point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l129"><code>src\octant.js:129</code></a>
+        <a href="../files/src_octant.js.html#l140"><code>src\octant.js:140</code></a>
         </p>
 
 
@@ -765,7 +773,75 @@ the given point.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A point.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>The distance squared.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_distanceToSquared" class="method item">
+    <h3 class="name"><code>distanceToSquared</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>p</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l124"><code>src\octant.js:124</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes the distance squared from this octant to the given point.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">p</code>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -815,7 +891,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l610"><code>src\octant.js:610</code></a>
+        <a href="../files/src_octant.js.html#l624"><code>src\octant.js:624</code></a>
         </p>
 
 
@@ -833,7 +909,7 @@ the given point.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -889,7 +965,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l657"><code>src\octant.js:657</code></a>
+        <a href="../files/src_octant.js.html#l671"><code>src\octant.js:671</code></a>
         </p>
 
 
@@ -907,7 +983,7 @@ the given point.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -989,7 +1065,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l752"><code>src\octant.js:752</code></a>
+        <a href="../files/src_octant.js.html#l766"><code>src\octant.js:766</code></a>
         </p>
 
 
@@ -1007,7 +1083,7 @@ the given point.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -1081,7 +1157,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l841"><code>src\octant.js:841</code></a>
+        <a href="../files/src_octant.js.html#l855"><code>src\octant.js:855</code></a>
         </p>
 
 
@@ -1130,7 +1206,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l809"><code>src\octant.js:809</code></a>
+        <a href="../files/src_octant.js.html#l823"><code>src\octant.js:823</code></a>
         </p>
 
 
@@ -1194,7 +1270,7 @@ the given point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l534"><code>src\octant.js:534</code></a>
+        <a href="../files/src_octant.js.html#l548"><code>src\octant.js:548</code></a>
         </p>
 
 
@@ -1253,7 +1329,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l874"><code>src\octant.js:874</code></a>
+        <a href="../files/src_octant.js.html#l888"><code>src\octant.js:888</code></a>
         </p>
 
 
@@ -1406,7 +1482,7 @@ expected to be leaf nodes and will be dropped afterwards.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l405"><code>src\octant.js:405</code></a>
+        <a href="../files/src_octant.js.html#l419"><code>src\octant.js:419</code></a>
         </p>
 
 
@@ -1426,7 +1502,7 @@ and all its respective data entries will be removed completely.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -1494,7 +1570,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l494"><code>src\octant.js:494</code></a>
+        <a href="../files/src_octant.js.html#l508"><code>src\octant.js:508</code></a>
         </p>
 
 
@@ -1512,7 +1588,7 @@ and all its respective data entries will be removed completely.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">p</code>
-                        <span class="type">Vector3</span>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
@@ -1558,7 +1634,7 @@ and all its respective data entries will be removed completely.</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Vector3</span>
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
         </span>
 
 
@@ -1570,7 +1646,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l116"><code>src\octant.js:116</code></a>
+        <a href="../files/src_octant.js.html#l111"><code>src\octant.js:111</code></a>
         </p>
 
 
@@ -1587,7 +1663,7 @@ and all its respective data entries will be removed completely.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Vector3</span>:
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
                     <p>The size of this octant.</p>
 
             </div>
@@ -1611,7 +1687,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l333"><code>src\octant.js:333</code></a>
+        <a href="../files/src_octant.js.html#l347"><code>src\octant.js:347</code></a>
         </p>
 
 
@@ -1642,7 +1718,7 @@ and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l568"><code>src\octant.js:568</code></a>
+        <a href="../files/src_octant.js.html#l582"><code>src\octant.js:582</code></a>
         </p>
 
 
@@ -1676,7 +1752,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l977"><code>src\octant.js:977</code></a>
+        <a href="../files/src_octant.js.html#l991"><code>src\octant.js:991</code></a>
         </p>
 
 
@@ -1703,7 +1779,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l988"><code>src\octant.js:988</code></a>
+        <a href="../files/src_octant.js.html#l1002"><code>src\octant.js:1002</code></a>
         </p>
 
 
@@ -1729,7 +1805,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l92"><code>src\octant.js:92</code></a>
+        <a href="../files/src_octant.js.html#l87"><code>src\octant.js:87</code></a>
         </p>
 
 
@@ -1754,7 +1830,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l83"><code>src\octant.js:83</code></a>
+        <a href="../files/src_octant.js.html#l78"><code>src\octant.js:78</code></a>
         </p>
 
 
@@ -1780,7 +1856,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l55"><code>src\octant.js:55</code></a>
+        <a href="../files/src_octant.js.html#l50"><code>src\octant.js:50</code></a>
         </p>
 
 
@@ -1796,7 +1872,7 @@ constraints are satisfied.</p>
 </div>
 <div id="property_max" class="property item">
     <h3 class="name"><code>max</code></h3>
-    <span class="type">Vector3</span>
+    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
 
@@ -1806,7 +1882,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l45"><code>src\octant.js:45</code></a>
+        <a href="../files/src_octant.js.html#l40"><code>src\octant.js:40</code></a>
         </p>
 
 
@@ -1832,7 +1908,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l999"><code>src\octant.js:999</code></a>
+        <a href="../files/src_octant.js.html#l1013"><code>src\octant.js:1013</code></a>
         </p>
 
 
@@ -1859,7 +1935,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l1010"><code>src\octant.js:1010</code></a>
+        <a href="../files/src_octant.js.html#l1024"><code>src\octant.js:1024</code></a>
         </p>
 
 
@@ -1876,7 +1952,7 @@ constraints are satisfied.</p>
 </div>
 <div id="property_min" class="property item">
     <h3 class="name"><code>min</code></h3>
-    <span class="type">Vector3</span>
+    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
 
@@ -1886,7 +1962,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l35"><code>src\octant.js:35</code></a>
+        <a href="../files/src_octant.js.html#l30"><code>src\octant.js:30</code></a>
         </p>
 
 
@@ -1902,7 +1978,7 @@ constraints are satisfied.</p>
 </div>
 <div id="property_minSize" class="property item">
     <h3 class="name"><code>minSize</code></h3>
-    <span class="type">Vector3</span>
+    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
 
@@ -1912,7 +1988,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l1021"><code>src\octant.js:1021</code></a>
+        <a href="../files/src_octant.js.html#l1035"><code>src\octant.js:1035</code></a>
         </p>
 
 
@@ -1938,7 +2014,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l74"><code>src\octant.js:74</code></a>
+        <a href="../files/src_octant.js.html#l69"><code>src\octant.js:69</code></a>
         </p>
 
 
@@ -1963,7 +2039,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l65"><code>src\octant.js:65</code></a>
+        <a href="../files/src_octant.js.html#l60"><code>src\octant.js:60</code></a>
         </p>
 
 
@@ -1979,7 +2055,7 @@ constraints are satisfied.</p>
 </div>
 <div id="property_v" class="property item private">
     <h3 class="name"><code>v</code></h3>
-    <span class="type">Vector3</span>
+    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
         <span class="flag private">private</span>
@@ -1991,7 +2067,7 @@ constraints are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l9"><code>src\octant.js:9</code></a>
+        <a href="../files/src_octant.js.html#l4"><code>src\octant.js:4</code></a>
         </p>
 
 

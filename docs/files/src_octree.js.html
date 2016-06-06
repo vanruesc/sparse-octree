@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.1</em>
+            <em>API Docs for: 0.1.3</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,10 +42,12 @@
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
                                 <li><a href="../classes/Raycasting.html">Raycasting</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                             </ul>
                         </div>
@@ -86,7 +88,7 @@
     <pre class="code prettyprint linenums">
 import { Octant } from &quot;./octant&quot;;
 import { flags, testPoints } from &quot;./raycasting&quot;;
-import THREE from &quot;three&quot;;
+import { Vector3 } from &quot;./vector3&quot;;
 
 /**
  * A collection of vectors. Used for computations.
@@ -99,12 +101,12 @@ import THREE from &quot;three&quot;;
  */
 
 const vectors = [
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3(),
-	new THREE.Vector3()
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3(),
+	new Vector3()
 ];
 
 /**
@@ -118,7 +120,7 @@ const vectors = [
  * @param {Number} [bias=0.0] - A threshold for proximity checks.
  * @param {Number} [maxPoints=8] - Number of distinct points per octant before it&#x27;s split up.
  * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
- * @param {Number} [minSize] - The minimum octant size.
+ * @param {Vector3} [minSize] - The minimum octant size.
  */
 
 export class Octree {
@@ -244,7 +246,7 @@ export class Octree {
 
 	set minSize(x) {
 
-		if(x instanceof THREE.Vector3) {
+		if(x instanceof Vector3) {
 
 			Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
 			this.root.update();

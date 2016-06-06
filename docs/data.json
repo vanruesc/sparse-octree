@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure for three.js.",
-        "version": "0.1.1",
+        "version": "0.1.3",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -50,26 +50,54 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "src\\vector3.js": {
+            "name": "src\\vector3.js",
+            "modules": {},
+            "classes": {
+                "Vector3": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
         "octree": {
             "name": "octree",
-            "submodules": {},
+            "submodules": {
+                "math": 1
+            },
             "elements": {},
             "classes": {
                 "OctreeHelper": 1,
                 "Octant": 1,
                 "Octree": 1,
-                "Raycasting": 1
+                "Raycasting": 1,
+                "Vector3": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "main",
-            "file": "src\\raycasting.js",
-            "line": 3,
+            "file": "src\\vector3.js",
+            "line": 1,
             "description": "Exposure of the library components.",
             "itemtype": "main"
+        },
+        "math": {
+            "name": "math",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Vector3": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "octree",
+            "namespace": "",
+            "description": "A vector with three components.\n\nThis class is a copy of THREE.Vector3. It can be removed \nas soon as three.js starts supporting ES6 modules.",
+            "file": "src\\vector3.js",
+            "line": 1
         }
     },
     "classes": {
@@ -106,7 +134,7 @@
             "module": "octree",
             "namespace": "",
             "file": "src\\octant.js",
-            "line": 21,
+            "line": 16,
             "description": "An octant.",
             "is_constructor": 1,
             "params": [
@@ -176,7 +204,7 @@
                 {
                     "name": "minSize",
                     "description": "- The minimum octant size.",
-                    "type": "Number",
+                    "type": "Vector3",
                     "optional": true
                 }
             ]
@@ -195,6 +223,45 @@
             "line": 3,
             "description": "A collection of utility functions for octree raycasting.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000).",
             "static": 1
+        },
+        "Vector3": {
+            "name": "Vector3",
+            "shortname": "Vector3",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "octree",
+            "namespace": "",
+            "file": "src\\vector3.js",
+            "line": 1,
+            "description": "A vector with three components.\n\nThis class is a copy of THREE.Vector3. It can be removed \nas soon as three.js starts supporting ES6 modules.",
+            "submodule": "math",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "x",
+                    "description": "- The x value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                },
+                {
+                    "name": "y",
+                    "description": "- The y value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                },
+                {
+                    "name": "z",
+                    "description": "- The z value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                }
+            ]
         }
     },
     "elements": {},
@@ -218,7 +285,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 9,
+            "line": 4,
             "description": "A computation helper.",
             "itemtype": "property",
             "name": "v",
@@ -232,7 +299,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 35,
+            "line": 30,
             "description": "The lower bounds of this octant.",
             "itemtype": "property",
             "name": "min",
@@ -243,7 +310,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 45,
+            "line": 40,
             "description": "The upper bounds of the octant.",
             "itemtype": "property",
             "name": "max",
@@ -254,7 +321,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 55,
+            "line": 50,
             "description": "The depth level of this octant.",
             "itemtype": "property",
             "name": "level",
@@ -265,7 +332,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 65,
+            "line": 60,
             "description": "The amount of points in this octant.",
             "itemtype": "property",
             "name": "totalPoints",
@@ -275,7 +342,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 74,
+            "line": 69,
             "description": "The points that are inside this node.",
             "itemtype": "property",
             "name": "points",
@@ -285,7 +352,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 83,
+            "line": 78,
             "description": "Additional data that is kept in sets for individual points.",
             "itemtype": "property",
             "name": "dataSets",
@@ -295,7 +362,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 92,
+            "line": 87,
             "description": "The children of this node.",
             "itemtype": "property",
             "name": "children",
@@ -305,7 +372,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 103,
+            "line": 98,
             "description": "Computes the center of this octant.",
             "itemtype": "method",
             "name": "center",
@@ -318,7 +385,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 116,
+            "line": 111,
             "description": "Computes the size of this octant.",
             "itemtype": "method",
             "name": "size",
@@ -331,7 +398,27 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 129,
+            "line": 124,
+            "description": "Computes the distance squared from this octant to the given point.",
+            "itemtype": "method",
+            "name": "distanceToSquared",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The distance squared.",
+                "type": "Number"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 140,
             "description": "Computes the distance squared from the center of this octant to \nthe given point.",
             "itemtype": "method",
             "name": "distanceToCenterSquared",
@@ -351,8 +438,8 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 150,
-            "description": "Checks if the given point lies inside this octant's boundaries.",
+            "line": 161,
+            "description": "Checks if the given point lies inside this octant's boundaries.\n\nThis method can also be used to check if this octant intersects \na sphere by providing a radius as bias.",
             "itemtype": "method",
             "name": "containsPoint",
             "params": [
@@ -376,7 +463,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 175,
+            "line": 189,
             "description": "Collects leaf octants that lie inside the given frustum.",
             "itemtype": "method",
             "name": "cull",
@@ -397,7 +484,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 207,
+            "line": 221,
             "description": "Adds a given point to this node. If this octant isn't a leaf node, \nthe point will be added to a child octant.",
             "itemtype": "method",
             "name": "add",
@@ -423,7 +510,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 293,
+            "line": 307,
             "description": "Adds the given point to a child node that covers the point's position.",
             "itemtype": "method",
             "name": "addToChild",
@@ -451,7 +538,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 333,
+            "line": 347,
             "description": "Splits this octant up into eight smaller ones.",
             "itemtype": "method",
             "name": "split",
@@ -462,7 +549,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 405,
+            "line": 419,
             "description": "Removes the given point from this octant. If this octant is not a leaf node, \nthe point will be removed from a child node. If no data is provided, the point \nand all its respective data entries will be removed completely.",
             "itemtype": "method",
             "name": "remove",
@@ -488,7 +575,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 494,
+            "line": 508,
             "description": "Removes the given point from a child node.",
             "itemtype": "method",
             "name": "removeFromChild",
@@ -516,7 +603,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 534,
+            "line": 548,
             "description": "Gathers all points from the children. The children are \nexpected to be leaf nodes and will be dropped afterwards.",
             "itemtype": "method",
             "name": "merge",
@@ -527,7 +614,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 568,
+            "line": 582,
             "description": "Refreshes this octant and its children to make sure that all \nconstraints are satisfied.",
             "itemtype": "method",
             "name": "update",
@@ -536,7 +623,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 610,
+            "line": 624,
             "description": "Retrieves the data of the point at the specified position.",
             "itemtype": "method",
             "name": "fetch",
@@ -556,7 +643,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 657,
+            "line": 671,
             "description": "Finds the closest point to the given one, excluding itself.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -586,7 +673,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 752,
+            "line": 766,
             "description": "Finds points that are inside the specified radius around a given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -617,7 +704,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 809,
+            "line": 823,
             "description": "Fetches all octants with the specified level.",
             "itemtype": "method",
             "name": "getOctantsByLevel",
@@ -638,7 +725,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 841,
+            "line": 855,
             "description": "Finds the current tree depth recursively.",
             "itemtype": "method",
             "name": "getDepth",
@@ -651,7 +738,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 874,
+            "line": 888,
             "description": "Finds all octants that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycast",
@@ -702,7 +789,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 977,
+            "line": 991,
             "description": "A threshold for proximity checks.",
             "itemtype": "property",
             "name": "bias",
@@ -714,7 +801,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 988,
+            "line": 1002,
             "description": "The proximity threshold squared.",
             "itemtype": "property",
             "name": "biasSquared",
@@ -726,7 +813,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 999,
+            "line": 1013,
             "description": "The maximum tree depth level.",
             "itemtype": "property",
             "name": "maxDepth",
@@ -738,7 +825,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 1010,
+            "line": 1024,
             "description": "Number of points per octant before a split occurs.",
             "itemtype": "property",
             "name": "maxPoints",
@@ -750,7 +837,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 1021,
+            "line": 1035,
             "description": "The minimum size of an octant.",
             "itemtype": "property",
             "name": "minSize",
@@ -1257,6 +1344,666 @@
             ],
             "class": "Raycasting",
             "module": "octree"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 19,
+            "description": "The x component.",
+            "itemtype": "property",
+            "name": "x",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 28,
+            "description": "The y component.",
+            "itemtype": "property",
+            "name": "y",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 37,
+            "description": "The z component.",
+            "itemtype": "property",
+            "name": "z",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 48,
+            "description": "Sets the values of this vector",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "- The x value.",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "- The y value.",
+                    "type": "Number"
+                },
+                {
+                    "name": "z",
+                    "description": "- The z value.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 68,
+            "description": "Copies the values of another vector.",
+            "itemtype": "method",
+            "name": "copy",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 86,
+            "description": "Copies values from an array.",
+            "itemtype": "method",
+            "name": "fromArray",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- An array.",
+                    "type": "Array"
+                },
+                {
+                    "name": "offset",
+                    "description": "- An offset.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 107,
+            "description": "Stores this vector in an array.",
+            "itemtype": "method",
+            "name": "toArray",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- A target array.",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "offset",
+                    "description": "- An offset.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The array.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 129,
+            "description": "Checks if this vector equals the given one.",
+            "itemtype": "method",
+            "name": "equals",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "Whether this vector equals the given one.",
+                "type": "Boolean"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 143,
+            "description": "Clones this vector.",
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "A clone of this vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 156,
+            "description": "Adds a vector to this one.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- The vector to add.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 174,
+            "description": "Adds a scalar to this vector.",
+            "itemtype": "method",
+            "name": "addScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- The scalar to add.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 192,
+            "description": "Sets this vector to the sum of two given vectors.",
+            "itemtype": "method",
+            "name": "addVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 211,
+            "description": "Subtracts a vector from this vector.",
+            "itemtype": "method",
+            "name": "sub",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- The vector to subtract.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 229,
+            "description": "Subtracts a scalar to this vector.",
+            "itemtype": "method",
+            "name": "subScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- The scalar to subtract.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 247,
+            "description": "Sets this vector to the difference between two given vectors.",
+            "itemtype": "method",
+            "name": "subVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- A second vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 266,
+            "description": "Multiplies this vector with another vector.",
+            "itemtype": "method",
+            "name": "multiply",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 284,
+            "description": "Multiplies this vector with a given scalar.",
+            "itemtype": "method",
+            "name": "multiplyScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- A scalar.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 312,
+            "description": "Sets this vector to the product of two given vectors.",
+            "itemtype": "method",
+            "name": "multiplyVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 331,
+            "description": "Divides this vector by another vector.",
+            "itemtype": "method",
+            "name": "divide",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 349,
+            "description": "Divides this vector by a given scalar.",
+            "itemtype": "method",
+            "name": "divideScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- A scalar.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 363,
+            "description": "Sets this vector to the quotient of two given vectors.",
+            "itemtype": "method",
+            "name": "divideVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 382,
+            "description": "Calculates the dot product with another vector.",
+            "itemtype": "method",
+            "name": "dot",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The dot product.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 396,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "lengthSq",
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 409,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "length",
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 422,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "distanceTo",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 436,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "distanceToSquared",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 454,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "normalize",
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 479,
+            "description": "Selects the minimum value for each component of \nthis vector and the given one.",
+            "itemtype": "method",
+            "name": "min",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 498,
+            "description": "Selects the maximum value for each component of \nthis vector and the given one.",
+            "itemtype": "method",
+            "name": "max",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 517,
+            "description": "Clamps this vector.",
+            "itemtype": "method",
+            "name": "clamp",
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- A vector, assumed to be smaller than max.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "max",
+                    "description": "- A vector, assumed to be greater than min.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 536,
+            "description": "Applies a matrix to this vector.",
+            "itemtype": "method",
+            "name": "applyMatrix3",
+            "params": [
+                {
+                    "name": "m",
+                    "description": "- A matrix.",
+                    "type": "Matrix3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\vector3.js",
+            "line": 557,
+            "description": "Applies a matrix to this vector.",
+            "itemtype": "method",
+            "name": "applyMatrix4",
+            "params": [
+                {
+                    "name": "m",
+                    "description": "- A matrix.",
+                    "type": "Matrix4"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "octree",
+            "submodule": "math"
         }
     ],
     "warnings": []
