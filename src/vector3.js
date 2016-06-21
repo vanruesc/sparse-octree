@@ -5,7 +5,6 @@
  * starts supporting ES6 modules.
  *
  * @class Vector3
- * @submodule math
  * @constructor
  * @param {Number} [x=0] - The x value.
  * @param {Number} [y=0] - The y value.

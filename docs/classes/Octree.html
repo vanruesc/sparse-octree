@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.3</em>
+            <em>API Docs for: 0.1.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,7 +47,6 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                             </ul>
                         </div>
@@ -87,7 +86,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_octree.js.html#l24"><code>src\octree.js:24</code></a>
+            Defined in: <a href="../files/src_octree.js.html#l5"><code>src\octree.js:5</code></a>
         </div>
 
             Module: <a href="../modules/octree.html">octree</a>
@@ -96,8 +95,7 @@
 
 
 <div class="box intro">
-    <p>An octree that subdivides 3D space into regular cells for
-fast spatial searches.</p>
+    <p>An octree that subdivides space into regular cells for fast spatial searches.</p>
 
 </div>
 
@@ -123,9 +121,6 @@ fast spatial searches.</p>
                 <li class="arg">
                         <code class="optional">[maxDepth=8]</code>
                 </li>
-                <li class="arg">
-                        <code class="optional">[minSize]</code>
-                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -139,7 +134,7 @@ fast spatial searches.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l24"><code>src\octree.js:24</code></a>
+        <a href="../files/src_octree.js.html#l5"><code>src\octree.js:5</code></a>
         </p>
 
 
@@ -202,7 +197,7 @@ fast spatial searches.</p>
 
                     <div class="param-description">
                         <ul>
-<li>Number of distinct points per octant before it's split up.</li>
+<li>Number of distinct points per octant before it splits up.</li>
 </ul>
 
                     </div>
@@ -217,20 +212,6 @@ fast spatial searches.</p>
                     <div class="param-description">
                         <ul>
 <li>The maximum tree depth level, starting at 0.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[minSize]</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The minimum octant size.</li>
 </ul>
 
                     </div>
@@ -301,10 +282,6 @@ fast spatial searches.</p>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_raycastOctants">raycastOctants</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_remove">remove</a>
 
                             </li>
@@ -335,18 +312,9 @@ fast spatial searches.</p>
                                 <a href="#property_maxPoints">maxPoints</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_minSize">minSize</a>
-
-                            </li>
                             <li class="index-item property private">
                                 <a href="#property_root">root</a>
 
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property_vectors">vectors</a>
-
-                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -381,7 +349,7 @@ fast spatial searches.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l170"><code>src\octree.js:170</code></a>
+        <a href="../files/src_octree.js.html#l121"><code>src\octree.js:121</code></a>
         </p>
 
 
@@ -454,7 +422,7 @@ fast spatial searches.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l188"><code>src\octree.js:188</code></a>
+        <a href="../files/src_octree.js.html#l139"><code>src\octree.js:139</code></a>
         </p>
 
 
@@ -462,8 +430,7 @@ fast spatial searches.</p>
     </div>
 
     <div class="description">
-        <p>Adds all points that are described by a given array of position
-values to the tree.</p>
+        <p>Adds all points from the given array of position triples to the tree.</p>
 
     </div>
 
@@ -528,7 +495,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l408"><code>src\octree.js:408</code></a>
+        <a href="../files/src_octree.js.html#l280"><code>src\octree.js:280</code></a>
         </p>
 
 
@@ -596,7 +563,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l252"><code>src\octree.js:252</code></a>
+        <a href="../files/src_octree.js.html#l202"><code>src\octree.js:202</code></a>
         </p>
 
 
@@ -670,7 +637,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l266"><code>src\octree.js:266</code></a>
+        <a href="../files/src_octree.js.html#l216"><code>src\octree.js:216</code></a>
         </p>
 
 
@@ -772,7 +739,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l285"><code>src\octree.js:285</code></a>
+        <a href="../files/src_octree.js.html#l235"><code>src\octree.js:235</code></a>
         </p>
 
 
@@ -861,7 +828,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l457"><code>src\octree.js:457</code></a>
+        <a href="../files/src_octree.js.html#l329"><code>src\octree.js:329</code></a>
         </p>
 
 
@@ -910,7 +877,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l426"><code>src\octree.js:426</code></a>
+        <a href="../files/src_octree.js.html#l298"><code>src\octree.js:298</code></a>
         </p>
 
 
@@ -972,7 +939,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l444"><code>src\octree.js:444</code></a>
+        <a href="../files/src_octree.js.html#l316"><code>src\octree.js:316</code></a>
         </p>
 
 
@@ -1021,7 +988,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l385"><code>src\octree.js:385</code></a>
+        <a href="../files/src_octree.js.html#l257"><code>src\octree.js:257</code></a>
         </p>
 
 
@@ -1069,78 +1036,6 @@ values to the tree.</p>
 
 
 </div>
-<div id="method_raycastOctants" class="method item">
-    <h3 class="name"><code>raycastOctants</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>raycaster</code>
-                </li>
-                <li class="arg">
-                        <code>octants</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l307"><code>src\octree.js:307</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Finds the octants that intersect with the given ray.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">raycaster</code>
-                        <span class="type">Raycaster</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The raycaster.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">octants</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with the intersecting octants.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_remove" class="method item">
     <h3 class="name"><code>remove</code></h3>
 
@@ -1165,7 +1060,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l211"><code>src\octree.js:211</code></a>
+        <a href="../files/src_octree.js.html#l161"><code>src\octree.js:161</code></a>
         </p>
 
 
@@ -1238,7 +1133,7 @@ values to the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l229"><code>src\octree.js:229</code></a>
+        <a href="../files/src_octree.js.html#l179"><code>src\octree.js:179</code></a>
         </p>
 
 
@@ -1246,8 +1141,8 @@ values to the tree.</p>
     </div>
 
     <div class="description">
-        <p>Removes all points that are described by a given array of position
-values from the tree.</p>
+        <p>Removes all points from the tree that are in the given array of position
+triples.</p>
 
     </div>
 
@@ -1304,7 +1199,7 @@ values from the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l70"><code>src\octree.js:70</code></a>
+        <a href="../files/src_octree.js.html#l48"><code>src\octree.js:48</code></a>
         </p>
 
 
@@ -1330,7 +1225,7 @@ values from the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l61"><code>src\octree.js:61</code></a>
+        <a href="../files/src_octree.js.html#l39"><code>src\octree.js:39</code></a>
         </p>
 
 
@@ -1355,7 +1250,7 @@ values from the tree.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l91"><code>src\octree.js:91</code></a>
+        <a href="../files/src_octree.js.html#l69"><code>src\octree.js:69</code></a>
         </p>
 
 
@@ -1365,8 +1260,8 @@ values from the tree.</p>
         <p>The maximum tree depth level.
 Setting this value refreshes the entire tree.</p>
 <p>It's possible to set this value to Infinity, but be aware that allowing
-infinitely small octants can have a negative impact on performance.
-Finding a value that works best for a specific scene is advisable.</p>
+infinitely small octants can have a negative impact on performance. Finding
+a value that works best for a specific scene is advisable.</p>
 
     </div>
 
@@ -1385,52 +1280,22 @@ Finding a value that works best for a specific scene is advisable.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l117"><code>src\octree.js:117</code></a>
+        <a href="../files/src_octree.js.html#l95"><code>src\octree.js:95</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Number of points per octant before a split occurs.
-Setting this value refreshes the entire tree.</p>
-<p>This value works together with the maximum depth as a secondary
-limiting factor. Smaller values cause splits to occur earlier
-which results in a faster and deeper tree growth.</p>
+        <p>Number of points per octant before a split occurs. Setting this value
+refreshes the entire tree.</p>
+<p>This value works together with the maximum depth as a secondary limiting
+factor. Smaller values cause splits to occur earlier which results in a
+faster and deeper tree growth.</p>
 
     </div>
 
         <p><strong>Default:</strong> 8</p>
-
-
-</div>
-<div id="property_minSize" class="property item">
-    <h3 class="name"><code>minSize</code></h3>
-    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l143"><code>src\octree.js:143</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The minimum size of an octant.</p>
-<p>Octants won't split if their children would have a side
-that's smaller than the respective x, y or z minimum value.</p>
-<p>This value acts just like the maximum depth as a primary
-limiting factor.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> Vector3(1e-12, 1e-12, 1e-12)</p>
 
 
 </div>
@@ -1447,7 +1312,7 @@ limiting factor.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l42"><code>src\octree.js:42</code></a>
+        <a href="../files/src_octree.js.html#l21"><code>src\octree.js:21</code></a>
         </p>
 
 
@@ -1455,34 +1320,6 @@ limiting factor.</p>
 
     <div class="description">
         <p>The root node.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_vectors" class="property item private">
-    <h3 class="name"><code>vectors</code></h3>
-    <span class="type">Array</span>
-
-
-        <span class="flag private">private</span>
-
-        <span class="flag final">final</span>
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l5"><code>src\octree.js:5</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>A collection of vectors. Used for computations.</p>
 
     </div>
 
