@@ -8,3 +8,4 @@
 export { Octree } from "./octree";
 export { Octant } from "./octant";
 export { OctreeHelper } from "./helper";
+export { Raycasting } from "./raycasting";
