@@ -3,25 +3,6 @@ import { flags, testPoints } from "./raycasting";
 import { Vector3 } from "./vector3";
 
 /**
- * A collection of vectors. Used for computations.
- *
- * @property vectors
- * @type Array
- * @private
- * @static
- * @final
- */
-
-const vectors = [
-	new Vector3(),
-	new Vector3(),
-	new Vector3(),
-	new Vector3(),
-	new Vector3(),
-	new Vector3()
-];
-
-/**
  * An octree that subdivides 3D space into regular cells for 
  * fast spatial searches.
  *
@@ -179,7 +160,7 @@ export class Octree {
 
 		if(this.root.containsPoint(p, this.bias)) {
 
-			this.root.add(p, data);
+			this.root.add(p.clone(), data);
 
 		}
 
@@ -196,13 +177,13 @@ export class Octree {
 
 	addPoints(array, data) {
 
-		const v = vectors[0];
+		const v = new Vector3();
 
 		let i, l;
 
 		for(i = 0, l = array.length; i < l; i += 3) {
 
-			this.add(v.fromArray(array, i), data);
+			this.add(v.fromArray(array, i).clone(), data);
 
 		}
 
@@ -237,7 +218,7 @@ export class Octree {
 
 	removePoints(array, data) {
 
-		const v = vectors[0];
+		const v = new Vector3();
 
 		let i, l;
 

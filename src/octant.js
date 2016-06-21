@@ -2,18 +2,6 @@ import { flags, getFirstOctant, getNextOctant } from "./raycasting";
 import { Vector3 } from "./vector3";
 
 /**
- * A computation helper.
- *
- * @property v
- * @type Vector3
- * @private
- * @static
- * @final
- */
-
-const v = new Vector3();
-
-/**
  * An octant.
  *
  * @class Octant
@@ -104,7 +92,7 @@ export class Octant {
 
 	center() {
 
-		return v.addVectors(this.min, this.max).multiplyScalar(0.5);
+		return this.min.clone().add(this.max).multiplyScalar(0.5);
 
 	}
 
@@ -117,7 +105,7 @@ export class Octant {
 
 	size() {
 
-		return v.subVectors(this.max, this.min);
+		return this.max.clone().sub(this.min);
 
 	}
 
@@ -131,7 +119,7 @@ export class Octant {
 
 	distanceToSquared(p) {
 
-		const clampedPoint = v.copy(p).clamp(this.min, this.max);
+		const clampedPoint = p.clone().clamp(this.min, this.max);
 
 		return clampedPoint.sub(p).lengthSq();
 
@@ -148,7 +136,7 @@ export class Octant {
 
 	distanceToCenterSquared(p) {
 
-		const center = this.center(); // @todo: cache this.
+		const center = this.center();
 
 		const dx = p.x - center.x;
 		const dy = p.y - center.x;
@@ -256,7 +244,7 @@ export class Octant {
 			for(i = 0, l = this.totalPoints; !hit && i < l; ++i) {
 
 				point = points[i];
-				hit = (point[0] === p.x && point[1] === p.y && point[2] === p.z);
+				hit = point.equals(p);
 
 			}
 
@@ -285,7 +273,7 @@ export class Octant {
 				} else {
 
 					// Count distinct points in leaf nodes.
-					this.totalPoints = this.points.push(p.toArray());
+					this.totalPoints = this.points.push(p);
 					this.dataSets.push(new Set());
 
 					if(data !== undefined) {
@@ -353,16 +341,14 @@ export class Octant {
 
 	split() {
 
-		const p = new Vector3();
-
 		const min = this.min;
-		const mid = this.center().clone();
+		const mid = this.center();
 		const max = this.max;
 
 		const nextLevel = this.level + 1;
 
 		let i, l;
-		let index, data;
+		let point, data;
 
 		/* The order is important for raycasting.
 		 *
@@ -390,20 +376,20 @@ export class Octant {
 
 		while(i >= 0) {
 
-			p.fromArray(this.points[i]);
+			point = this.points[i];
 
 			if(this.dataSets[i].size > 0) {
 
 				// Unfold data aggregations. Each entry is one point.
 				for(data of this.dataSets[i].values()) {
 
-					this.addToChild(p, data);
+					this.addToChild(point, data);
 
 				}
 
 			} else {
 
-				this.addToChild(p);
+				this.addToChild(point);
 
 			}
 
@@ -455,7 +441,7 @@ export class Octant {
 
 				point = points[i];
 
-				if(point[0] === p.x && point[1] === p.y && point[2] === p.z) {
+				if(point.equals(p)) {
 
 					// Found it.
 					dataSet = dataSets[i];
@@ -635,6 +621,7 @@ export class Octant {
 		let hit = false;
 
 		let i, l;
+		let point;
 
 		if(this.containsPoint(p, Octant.bias)) {
 
@@ -650,7 +637,8 @@ export class Octant {
 
 				for(i = 0, l = this.totalPoints; !hit && i < l; ++i) {
 
-					hit = (p.distanceToSquared(v.fromArray(this.points[i])) <= Octant.biasSquared);
+					point = this.points[i];
+					hit = (p.distanceToSquared(point) <= Octant.biasSquared);
 
 					if(hit) {
 
@@ -687,7 +675,7 @@ export class Octant {
 		let bestDist = maxDistance;
 
 		let i, l;
-		let distSq;
+		let point, distSq;
 
 		let sortedChildren;
 		let child, childResult;
@@ -697,14 +685,15 @@ export class Octant {
 
 			for(i = 0, l = this.totalPoints; i < l; ++i) {
 
-				distSq = p.distanceToSquared(v.fromArray(points[i]));
+				point = points[i];
+				distSq = p.distanceToSquared(point);
 
 				if((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
 
 					bestDist = distSq;
 
 					result = {
-						point: v.clone(),
+						point: point.clone(),
 						data: this.dataSets[i]
 					};
 
@@ -780,7 +769,8 @@ export class Octant {
 		const rSq = r * r;
 
 		let i, l;
-		let distSq;
+
+		let point, distSq;
 		let child;
 
 		// Only consider leaf nodes.
@@ -788,12 +778,13 @@ export class Octant {
 
 			for(i = 0, l = this.totalPoints; i < l; ++i) {
 
-				distSq = p.distanceToSquared(v.fromArray(points[i]));
+				point = points[i];
+				distSq = p.distanceToSquared(point);
 
 				if((!skipSelf || distSq > 0.0) && distSq <= rSq) {
 
 					result.push({
-						point: v.clone(),
+						point: point.clone(),
 						data: this.dataSets[i]
 					});
 
