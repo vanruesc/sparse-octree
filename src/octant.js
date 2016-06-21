@@ -126,8 +126,8 @@ export class Octant {
 	}
 
 	/**
-	 * Computes the distance squared from the center of this octant to 
-	 * the given point.
+	 * Computes the distance squared from the center of this octant to the given 
+	 * point.
 	 *
 	 * @method distanceToCenterSquared
 	 * @param {Vector3} p - A point.
@@ -149,8 +149,8 @@ export class Octant {
 	/**
 	 * Checks if the given point lies inside this octant's boundaries.
 	 *
-	 * This method can also be used to check if this octant intersects 
-	 * a sphere by providing a radius as bias.
+	 * This method can also be used to check if this octant intersects a sphere by 
+	 * providing a radius as bias.
 	 *
 	 * @method containsPoint
 	 * @param {Vector3} p - A point.
@@ -207,8 +207,8 @@ export class Octant {
 	}
 
 	/**
-	 * Adds a given point to this node. If this octant isn't a leaf node, 
-	 * the point will be added to a child octant.
+	 * Adds a given point to this node. If this octant isn't a leaf node, the 
+	 * point will be added to a child octant.
 	 *
 	 * @method add
 	 * @param {Vector3} p - A point.
@@ -403,9 +403,9 @@ export class Octant {
 	}
 
 	/**
-	 * Removes the given point from this octant. If this octant is not a leaf node, 
-	 * the point will be removed from a child node. If no data is provided, the point 
-	 * and all its respective data entries will be removed completely.
+	 * Removes the given point from this octant. If this octant is not a leaf 
+	 * node, the point will be removed from a child node. If no data is provided, 
+	 * the point and all its respective data entries will be removed completely.
 	 *
 	 * @method remove
 	 * @param {Vector3} p - The point.
@@ -532,8 +532,8 @@ export class Octant {
 	}
 
 	/**
-	 * Gathers all points from the children. The children are 
-	 * expected to be leaf nodes and will be dropped afterwards.
+	 * Gathers all points from the children. The children are expected to be leaf 
+	 * nodes and will be dropped afterwards.
 	 *
 	 * @method merge
 	 * @private
@@ -566,8 +566,8 @@ export class Octant {
 	}
 
 	/**
-	 * Refreshes this octant and its children to make sure that all 
-	 * constraints are satisfied.
+	 * Refreshes this octant and its children to make sure that all constraints 
+	 * are satisfied.
 	 *
 	 * @method update
 	 */
@@ -657,7 +657,7 @@ export class Octant {
 	}
 
 	/**
-	 * Finds the closest point to the given one, excluding itself.
+	 * Finds the closest point to the given one.
 	 *
 	 * @method findNearestPoint
 	 * @param {Vector3} p - The point.

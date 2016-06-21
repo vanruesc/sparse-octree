@@ -3,15 +3,14 @@ import { flags, testPoints } from "./raycasting";
 import { Vector3 } from "./vector3";
 
 /**
- * An octree that subdivides 3D space into regular cells for 
- * fast spatial searches.
+ * An octree that subdivides space into regular cells for fast spatial searches.
  *
  * @class Octree
  * @constructor
  * @param {Vector3} min - The lower bounds of the tree.
  * @param {Vector3} max - The upper bounds of the tree.
  * @param {Number} [bias=0.0] - A threshold for proximity checks.
- * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
+ * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
  * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
  * @param {Vector3} [minSize] - The minimum octant size.
  */
@@ -74,8 +73,8 @@ export class Octree {
 	 * Setting this value refreshes the entire tree.
 	 *
 	 * It's possible to set this value to Infinity, but be aware that allowing 
-	 * infinitely small octants can have a negative impact on performance. 
-	 * Finding a value that works best for a specific scene is advisable.
+	 * infinitely small octants can have a negative impact on performance. Finding 
+	 * a value that works best for a specific scene is advisable.
 	 *
 	 * @property maxDepth
 	 * @type Number
@@ -96,12 +95,12 @@ export class Octree {
 	}
 
 	/**
-	 * Number of points per octant before a split occurs.
-	 * Setting this value refreshes the entire tree.
+	 * Number of points per octant before a split occurs. Setting this value 
+	 * refreshes the entire tree.
 	 *
-	 * This value works together with the maximum depth as a secondary 
-	 * limiting factor. Smaller values cause splits to occur earlier 
-	 * which results in a faster and deeper tree growth.
+	 * This value works together with the maximum depth as a secondary limiting 
+	 * factor. Smaller values cause splits to occur earlier which results in a 
+	 * faster and deeper tree growth.
 	 *
 	 * @property maxPoints
 	 * @type Number
@@ -167,8 +166,7 @@ export class Octree {
 	}
 
 	/**
-	 * Adds all points that are described by a given array of position 
-	 * values to the tree.
+	 * Adds all points from the given array of position triples to the tree.
 	 *
 	 * @method addPoints
 	 * @param {Float32Array} array - An array containing point position triples.
@@ -208,8 +206,8 @@ export class Octree {
 	}
 
 	/**
-	 * Removes all points that are described by a given array of position 
-	 * values from the tree.
+	 * Removes all points from the tree that are in the given array of position 
+	 * triples.
 	 *
 	 * @method removePoints
 	 * @param {Float32Array} array - An array containing point position triples.
