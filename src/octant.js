@@ -35,7 +35,7 @@ export class Octant {
 		 * @final
 		 */
 
-		this.min = (min !== undefined) ? min: new Vector3();
+		this.min = (min !== undefined) ? min : new Vector3();
 
 		/**
 		 * The upper bounds of the octant.
@@ -45,7 +45,7 @@ export class Octant {
 		 * @final
 		 */
 
-		this.max = (max !== undefined) ? max: new Vector3();
+		this.max = (max !== undefined) ? max : new Vector3();
 
 		/**
 		 * The depth level of this octant.
@@ -55,7 +55,7 @@ export class Octant {
 		 * @final
 		 */
 
-		this.level = (level !== undefined) ? level: 0;
+		this.level = (level !== undefined) ? level : 0;
 
 		/**
 		 * The amount of points in this octant.
