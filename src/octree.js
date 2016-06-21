@@ -1,5 +1,5 @@
 import { Octant } from "./octant";
-import { flags, testPoints } from "./raycasting";
+import { Raycasting } from "./raycasting";
 import { Vector3 } from "./vector3";
 
 /**
@@ -255,84 +255,6 @@ export class Octree {
 	}
 
 	/**
-	 * Finds the octants that intersect with the given ray.
-	 *
-	 * @method raycastOctants
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} octants - An array to be filled with the intersecting octants.
-	 */
-
-	raycastOctants(raycaster, octants) {
-
-		const root = this.root;
-
-		const size = vectors[0].copy(root.size());
-		const halfSize = vectors[1].copy(size).multiplyScalar(0.5);
-
-		// Translate the octree extents to the center of the octree.
-		const min = vectors[2].copy(root.min).sub(root.min);
-		const max = vectors[3].copy(root.max).sub(root.min);
-
-		const direction = vectors[4].copy(raycaster.ray.direction);
-		const origin = vectors[5].copy(raycaster.ray.origin);
-
-		// Translate the ray to the center of the octree.
-		origin.sub(root.center()).add(halfSize);
-
-		let invDirX, invDirY, invDirZ;
-		let tx0, tx1, ty0, ty1, tz0, tz1;
-
-		// Reset the last byte.
-		flags[8] = flags[0];
-
-		// Handle rays with negative directions.
-		if(direction.x < 0.0) {
-
-			origin.x = size.x - origin.x;
-			direction.x = -direction.x;
-			flags[8] |= flags[4];
-
-		}
-
-		if(direction.y < 0.0) {
-
-			origin.y = size.y - origin.y;
-			direction.y = -direction.y;
-			flags[8] |= flags[2];
-
-		}
-
-		if(direction.z < 0.0) {
-
-			origin.z = size.z - origin.z;
-			direction.z = -direction.z;
-			flags[8] |= flags[1];
-
-		}
-
-		// Improve IEEE double stability.
-		invDirX = 1.0 / direction.x;
-		invDirY = 1.0 / direction.y;
-		invDirZ = 1.0 / direction.z;
-
-		// Project the ray to the root's boundaries.
-		tx0 = (min.x - origin.x) * invDirX;
-		tx1 = (max.x - origin.x) * invDirX;
-		ty0 = (min.y - origin.y) * invDirY;
-		ty1 = (max.y - origin.y) * invDirY;
-		tz0 = (min.z - origin.z) * invDirZ;
-		tz1 = (max.z - origin.z) * invDirZ;
-
-		// Check if the ray hits the octree.
-		if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
-
-			root.raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
-
-		}
-
-	}
-
-	/**
 	 * Finds the points that intersect with the given ray.
 	 *
 	 * @method raycast
@@ -344,12 +266,12 @@ export class Octree {
 
 		const octants = [];
 
-		this.raycastOctants(raycaster, octants);
+		Raycasting.raycast(this, raycaster, octants);
 
 		if(octants.length > 0) {
 
 			// Collect intersecting points.
-			testPoints(octants, raycaster, intersects);
+			Raycasting.testPoints(octants, raycaster, intersects);
 
 		}
 
