@@ -223,7 +223,6 @@ export class Octant {
 
 		let i, l;
 		let points, point;
-		let halfSize;
 
 		if(this.children !== null) {
 
@@ -261,10 +260,7 @@ export class Octant {
 
 				unique = true;
 
-				halfSize = this.size().multiplyScalar(0.5);
-
-				if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth &&
-					halfSize.x >= Octant.minSize.x && halfSize.y >= Octant.minSize.y && halfSize.z >= Octant.minSize.z) {
+				if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth) {
 
 					// At maximum capacity and can still split.
 					this.split();
@@ -577,7 +573,6 @@ export class Octant {
 		const children = this.children;
 
 		let i, l;
-		let halfSize;
 
 		if(children !== null) {
 
@@ -588,12 +583,9 @@ export class Octant {
 
 			}
 
-			halfSize = this.size().multiplyScalar(0.5);
+			if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth) {
 
-			if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth ||
-				halfSize.x < Octant.minSize.x || halfSize.y < Octant.minSize.y || halfSize.z < Octant.minSize.z) {
-
-				// All points fit into one octant or the level is too high or the child octants are too small.
+				// All points fit into one octant or the level is too high.
 				this.merge();
 
 			}
@@ -1022,14 +1014,3 @@ Octant.maxDepth = 8;
  */
 
 Octant.maxPoints = 8;
-
-/**
- * The minimum size of an octant.
- *
- * @property minSize
- * @type Vector3
- * @static
- * @default Vector3(1e-12, 1e-12, 1e-12)
- */
-
-Octant.minSize = new Vector3(1e-12, 1e-12, 1e-12);
