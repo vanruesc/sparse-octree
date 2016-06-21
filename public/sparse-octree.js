@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.1.3 build Jun 06 2016
+ * sparse-octree v0.1.4 build Jun 21 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -15,8 +15,8 @@
 	/**
 	 * A vector with three components.
 	 *
-	 * This class is a copy of THREE.Vector3. It can be removed 
-	 * as soon as three.js starts supporting ES6 modules.
+	 * This class is a copy of THREE.Vector3. It can be removed  as soon as three.js 
+	 * starts supporting ES6 modules.
 	 *
 	 * @class Vector3
 	 * @submodule math
@@ -37,7 +37,7 @@
 			 * @type Number
 			 */
 
-			this.x = (x !== undefined) ? x : 0;
+			this.x = x || 0;
 
 			/**
 			 * The y component.
@@ -46,7 +46,7 @@
 			 * @type Number
 			 */
 
-			this.y = (y !== undefined) ? y : 0;
+			this.y = y || 0;
 
 			/**
 			 * The z component.
@@ -55,7 +55,7 @@
 			 * @type Number
 			 */
 
-			this.z = (z !== undefined) ? z : 0;
+			this.z = z || 0;
 
 		}
 
@@ -408,7 +408,7 @@
 		}
 
 		/**
-		 * Normalizes this vector.
+		 * Calculates the length squared of this vector.
 		 *
 		 * @method lengthSq
 		 * @return {Vector3} This vector.
@@ -421,7 +421,7 @@
 		}
 
 		/**
-		 * Normalizes this vector.
+		 * Calculates the length of this vector.
 		 *
 		 * @method length
 		 * @return {Vector3} This vector.
@@ -434,7 +434,7 @@
 		}
 
 		/**
-		 * Normalizes this vector.
+		 * Calculates the distance to a given vector.
 		 *
 		 * @method distanceTo
 		 * @param {Vector3} v - A vector.
@@ -448,7 +448,7 @@
 		}
 
 		/**
-		 * Normalizes this vector.
+		 * Calculates the distance squared to a given vector.
 		 *
 		 * @method distanceToSquared
 		 * @param {Vector3} v - A vector.
@@ -474,25 +474,12 @@
 
 		normalize() {
 
-			const lengthSq = this.lengthSq();
-
-			if(Math.abs(lengthSq) < 1e-12) {
-
-				this.set(0, 0, 0);
-
-			} else {
-
-				this.multiplyScalar(1 / Math.sqrt(lengthSq));
-
-			}
-
-			return this;
+			return this.divideScalar(this.length());
 
 		}
 
 		/**
-		 * Selects the minimum value for each component of 
-		 * this vector and the given one.
+		 * Adopts the min value for each component of this vector and the given one.
 		 *
 		 * @method min
 		 * @param {Vector3} v - A vector.
@@ -510,8 +497,7 @@
 		}
 
 		/**
-		 * Selects the maximum value for each component of 
-		 * this vector and the given one.
+		 * adopts the max value for each component of this vector and the given one.
 		 *
 		 * @method max
 		 * @param {Vector3} v - A vector.
@@ -592,229 +578,6 @@
 	}
 
 	/**
-	 * A collection of utility functions for octree raycasting.
-	 *
-	 * Based on:
-	 *  "An Efficient Parametric Algorithm for Octree Traversal"
-	 *  by J. Revelles et al. (2000).
-	 *
-	 * @class Raycasting
-	 * @static
-	 */
-
-	/**
-	 * Contains bytes used for bitwise operations. The last byte 
-	 * is used to store raycasting flags.
-	 *
-	 * @property flags
-	 * @type Uint8Array
-	 * @static
-	 * @final
-	 */
-
-	const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
-
-	/**
-	 * A lookup-table containing octant ids. Used to determine 
-	 * the exit plane from an octant.
-	 *
-	 * @property octantTable
-	 * @type Array
-	 * @private
-	 * @static
-	 * @final
-	 */
-
-	const octantTable = [
-		new Uint8Array([4, 2, 1]),
-		new Uint8Array([5, 3, 8]),
-		new Uint8Array([6, 8, 3]),
-		new Uint8Array([7, 8, 8]),
-		new Uint8Array([8, 6, 5]),
-		new Uint8Array([8, 7, 8]),
-		new Uint8Array([8, 8, 7]),
-		new Uint8Array([8, 8, 8])
-	];
-
-	/**
-	 * Determines the entry plane of the first octant that a 
-	 * ray travels through.
-	 *
-	 * Determining the first octant requires knowing which of 
-	 * the t0's is the largest. The tm's of the other axes must 
-	 * also be compared against that largest t0.
-	 *
-	 * @method getFirstOctant
-	 * @static
-	 * @param {Number} tx0 - Ray projection parameter.
-	 * @param {Number} ty0 - Ray projection parameter.
-	 * @param {Number} tz0 - Ray projection parameter.
-	 * @param {Number} txm - Ray projection parameter mean.
-	 * @param {Number} tym - Ray projection parameter mean.
-	 * @param {Number} tzm - Ray projection parameter mean.
-	 * @return {Number} The index of the first octant that the ray travels through.
-	 */
-
-	function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
-
-		let entry = 0;
-
-		// Find the entry plane.
-		if(tx0 > ty0 && tx0 > tz0) {
-
-			// YZ-plane.
-			if(tym < tx0) { entry = entry | 2; }
-			if(tzm < tx0) { entry = entry | 1; }
-
-		} else if(ty0 > tz0) {
-
-			// XZ-plane.
-			if(txm < ty0) { entry = entry | 4; }
-			if(tzm < ty0) { entry = entry | 1; }
-
-		} else {
-
-			// XY-plane.
-			if(txm < tz0) { entry = entry | 4; }
-			if(tym < tz0) { entry = entry | 2; }
-
-		}
-
-		return entry;
-
-	}
-
-	/**
-	 * Fetches the next octant for raycasting based on the exit 
-	 * plane of the current one.
-	 *
-	 * @method getNextOctant
-	 * @static
-	 * @param {Number} currentOctant - The index of the current octant.
-	 * @param {Number} tx1 - Ray projection parameter.
-	 * @param {Number} ty1 - Ray projection parameter.
-	 * @param {Number} tz1 - Ray projection parameter.
-	 * @return {Number} The index of the next octant that the ray travels through.
-	 */
-
-	function getNextOctant(currentOctant, tx1, ty1, tz1) {
-
-		let min;
-		let exit = 0;
-
-		// Find the exit plane.
-		if(tx1 < ty1) {
-
-			min = tx1;
-			exit = 0; // YZ-plane.
-
-		} else {
-
-			min = ty1;
-			exit = 1; // XZ-plane.
-
-		}
-
-		if(tz1 < min) {
-
-			exit = 2; // XY-plane.
-
-		}
-
-		return octantTable[currentOctant][exit];
-
-	}
-
-	/**
-	 * Collects points that intersect with the ray.
-	 *
-	 * @method testPoints
-	 * @static
-	 * @param {Array} octants - An array containing octants that intersect with the ray.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
-	 */
-
-	function testPoints(octants, raycaster, intersects) {
-
-		const threshold = raycaster.params.Points.threshold;
-		const thresholdSq = threshold * threshold;
-		const p = new Vector3();
-
-		let intersectPoint;
-		let distance, distanceToRay;
-		let rayPointDistanceSq;
-
-		let i, j, il, jl;
-		let octant, dataSet, data;
-
-		for(i = 0, il = octants.length; i < il; ++i) {
-
-			octant = octants[i];
-
-			for(j = 0, jl = octant.totalPoints; j < jl; ++j) {
-
-				p.fromArray(octant.points[j]);
-				rayPointDistanceSq = raycaster.ray.distanceSqToPoint(p);
-
-				if(rayPointDistanceSq < thresholdSq) {
-
-					intersectPoint = raycaster.ray.closestPointToPoint(p);
-					distance = raycaster.ray.origin.distanceTo(intersectPoint);
-
-					if(distance >= raycaster.near && distance <= raycaster.far) {
-
-						dataSet = octant.dataSets[j];
-						distanceToRay = Math.sqrt(rayPointDistanceSq);
-
-						if(dataSet.size > 0) {
-
-							// Unfold data aggregation.
-							for(data of dataSet) {
-
-								intersects.push({
-									distance: distance,
-									distanceToRay: distanceToRay,
-									point: intersectPoint.clone(),
-									object: data
-								});
-
-							}
-
-						} else {
-
-							intersects.push({
-								distance: distance,
-								distanceToRay: distanceToRay,
-								point: intersectPoint.clone(),
-								object: null
-							});
-
-						}
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
-
-	/**
-	 * A computation helper.
-	 *
-	 * @property v
-	 * @type Vector3
-	 * @private
-	 * @static
-	 * @final
-	 */
-
-	const v = new Vector3();
-
-	/**
 	 * An octant.
 	 *
 	 * @class Octant
@@ -836,7 +599,7 @@
 			 * @final
 			 */
 
-			this.min = (min !== undefined) ? min: new Vector3();
+			this.min = (min !== undefined) ? min : new Vector3();
 
 			/**
 			 * The upper bounds of the octant.
@@ -846,7 +609,7 @@
 			 * @final
 			 */
 
-			this.max = (max !== undefined) ? max: new Vector3();
+			this.max = (max !== undefined) ? max : new Vector3();
 
 			/**
 			 * The depth level of this octant.
@@ -856,7 +619,7 @@
 			 * @final
 			 */
 
-			this.level = (level !== undefined) ? level: 0;
+			this.level = (level !== undefined) ? level : 0;
 
 			/**
 			 * The amount of points in this octant.
@@ -905,7 +668,7 @@
 
 		center() {
 
-			return v.addVectors(this.min, this.max).multiplyScalar(0.5);
+			return this.min.clone().add(this.max).multiplyScalar(0.5);
 
 		}
 
@@ -918,7 +681,7 @@
 
 		size() {
 
-			return v.subVectors(this.max, this.min);
+			return this.max.clone().sub(this.min);
 
 		}
 
@@ -932,15 +695,15 @@
 
 		distanceToSquared(p) {
 
-			const clampedPoint = v.copy(p).clamp(this.min, this.max);
+			const clampedPoint = p.clone().clamp(this.min, this.max);
 
 			return clampedPoint.sub(p).lengthSq();
 
 		}
 
 		/**
-		 * Computes the distance squared from the center of this octant to 
-		 * the given point.
+		 * Computes the distance squared from the center of this octant to the given 
+		 * point.
 		 *
 		 * @method distanceToCenterSquared
 		 * @param {Vector3} p - A point.
@@ -949,7 +712,7 @@
 
 		distanceToCenterSquared(p) {
 
-			const center = this.center(); // @todo: cache this.
+			const center = this.center();
 
 			const dx = p.x - center.x;
 			const dy = p.y - center.x;
@@ -962,8 +725,8 @@
 		/**
 		 * Checks if the given point lies inside this octant's boundaries.
 		 *
-		 * This method can also be used to check if this octant intersects 
-		 * a sphere by providing a radius as bias.
+		 * This method can also be used to check if this octant intersects a sphere by 
+		 * providing a radius as bias.
 		 *
 		 * @method containsPoint
 		 * @param {Vector3} p - A point.
@@ -1020,8 +783,8 @@
 		}
 
 		/**
-		 * Adds a given point to this node. If this octant isn't a leaf node, 
-		 * the point will be added to a child octant.
+		 * Adds a given point to this node. If this octant isn't a leaf node, the 
+		 * point will be added to a child octant.
 		 *
 		 * @method add
 		 * @param {Vector3} p - A point.
@@ -1036,7 +799,6 @@
 
 			let i, l;
 			let points, point;
-			let halfSize;
 
 			if(this.children !== null) {
 
@@ -1057,7 +819,7 @@
 				for(i = 0, l = this.totalPoints; !hit && i < l; ++i) {
 
 					point = points[i];
-					hit = (point[0] === p.x && point[1] === p.y && point[2] === p.z);
+					hit = point.equals(p);
 
 				}
 
@@ -1074,10 +836,7 @@
 
 					unique = true;
 
-					halfSize = this.size().multiplyScalar(0.5);
-
-					if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth &&
-						halfSize.x >= Octant.minSize.x && halfSize.y >= Octant.minSize.y && halfSize.z >= Octant.minSize.z) {
+					if(this.totalPoints === Octant.maxPoints && this.level < Octant.maxDepth) {
 
 						// At maximum capacity and can still split.
 						this.split();
@@ -1086,7 +845,7 @@
 					} else {
 
 						// Count distinct points in leaf nodes.
-						this.totalPoints = this.points.push(p.toArray());
+						this.totalPoints = this.points.push(p);
 						this.dataSets.push(new Set());
 
 						if(data !== undefined) {
@@ -1154,16 +913,14 @@
 
 		split() {
 
-			const p = new Vector3();
-
 			const min = this.min;
-			const mid = this.center().clone();
+			const mid = this.center();
 			const max = this.max;
 
 			const nextLevel = this.level + 1;
 
 			let i, l;
-			let index, data;
+			let point, data;
 
 			/* The order is important for raycasting.
 			 *
@@ -1191,20 +948,20 @@
 
 			while(i >= 0) {
 
-				p.fromArray(this.points[i]);
+				point = this.points[i];
 
 				if(this.dataSets[i].size > 0) {
 
 					// Unfold data aggregations. Each entry is one point.
 					for(data of this.dataSets[i].values()) {
 
-						this.addToChild(p, data);
+						this.addToChild(point, data);
 
 					}
 
 				} else {
 
-					this.addToChild(p);
+					this.addToChild(point);
 
 				}
 
@@ -1218,9 +975,9 @@
 		}
 
 		/**
-		 * Removes the given point from this octant. If this octant is not a leaf node, 
-		 * the point will be removed from a child node. If no data is provided, the point 
-		 * and all its respective data entries will be removed completely.
+		 * Removes the given point from this octant. If this octant is not a leaf 
+		 * node, the point will be removed from a child node. If no data is provided, 
+		 * the point and all its respective data entries will be removed completely.
 		 *
 		 * @method remove
 		 * @param {Vector3} p - The point.
@@ -1256,7 +1013,7 @@
 
 					point = points[i];
 
-					if(point[0] === p.x && point[1] === p.y && point[2] === p.z) {
+					if(point.equals(p)) {
 
 						// Found it.
 						dataSet = dataSets[i];
@@ -1347,8 +1104,8 @@
 		}
 
 		/**
-		 * Gathers all points from the children. The children are 
-		 * expected to be leaf nodes and will be dropped afterwards.
+		 * Gathers all points from the children. The children are expected to be leaf 
+		 * nodes and will be dropped afterwards.
 		 *
 		 * @method merge
 		 * @private
@@ -1381,8 +1138,8 @@
 		}
 
 		/**
-		 * Refreshes this octant and its children to make sure that all 
-		 * constraints are satisfied.
+		 * Refreshes this octant and its children to make sure that all constraints 
+		 * are satisfied.
 		 *
 		 * @method update
 		 */
@@ -1392,7 +1149,6 @@
 			const children = this.children;
 
 			let i, l;
-			let halfSize;
 
 			if(children !== null) {
 
@@ -1403,12 +1159,9 @@
 
 				}
 
-				halfSize = this.size().multiplyScalar(0.5);
+				if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth) {
 
-				if(this.totalPoints <= Octant.maxPoints || this.level >= Octant.maxDepth ||
-					halfSize.x < Octant.minSize.x || halfSize.y < Octant.minSize.y || halfSize.z < Octant.minSize.z) {
-
-					// All points fit into one octant or the level is too high or the child octants are too small.
+					// All points fit into one octant or the level is too high.
 					this.merge();
 
 				}
@@ -1436,6 +1189,7 @@
 			let hit = false;
 
 			let i, l;
+			let point;
 
 			if(this.containsPoint(p, Octant.bias)) {
 
@@ -1451,7 +1205,8 @@
 
 					for(i = 0, l = this.totalPoints; !hit && i < l; ++i) {
 
-						hit = (p.distanceToSquared(v.fromArray(this.points[i])) <= Octant.biasSquared);
+						point = this.points[i];
+						hit = (p.distanceToSquared(point) <= Octant.biasSquared);
 
 						if(hit) {
 
@@ -1470,7 +1225,7 @@
 		}
 
 		/**
-		 * Finds the closest point to the given one, excluding itself.
+		 * Finds the closest point to the given one.
 		 *
 		 * @method findNearestPoint
 		 * @param {Vector3} p - The point.
@@ -1488,7 +1243,7 @@
 			let bestDist = maxDistance;
 
 			let i, l;
-			let distSq;
+			let point, distSq;
 
 			let sortedChildren;
 			let child, childResult;
@@ -1498,14 +1253,15 @@
 
 				for(i = 0, l = this.totalPoints; i < l; ++i) {
 
-					distSq = p.distanceToSquared(v.fromArray(points[i]));
+					point = points[i];
+					distSq = p.distanceToSquared(point);
 
 					if((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
 
 						bestDist = distSq;
 
 						result = {
-							point: v.clone(),
+							point: point.clone(),
 							data: this.dataSets[i]
 						};
 
@@ -1581,7 +1337,8 @@
 			const rSq = r * r;
 
 			let i, l;
-			let distSq;
+
+			let point, distSq;
 			let child;
 
 			// Only consider leaf nodes.
@@ -1589,12 +1346,13 @@
 
 				for(i = 0, l = this.totalPoints; i < l; ++i) {
 
-					distSq = p.distanceToSquared(v.fromArray(points[i]));
+					point = points[i];
+					distSq = p.distanceToSquared(point);
 
 					if((!skipSelf || distSq > 0.0) && distSq <= rSq) {
 
 						result.push({
-							point: v.clone(),
+							point: point.clone(),
 							data: this.dataSets[i]
 						});
 
@@ -1686,107 +1444,6 @@
 
 		}
 
-		/**
-		 * Finds all octants that intersect with the given ray.
-		 *
-		 * @method raycast
-		 * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
-		 * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
-		 * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.
-		 * @param {Number} tx1 - Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.
-		 * @param {Number} ty1 - Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.
-		 * @param {Number} tz1 - Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
-		 * @param {Raycaster} raycaster - The raycaster.
-		 * @param {Array} intersects - An array to be filled with the intersecting octants.
-		 */
-
-		raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {
-
-			const children = this.children;
-
-			let currentOctant;
-			let txm, tym, tzm;
-
-			if(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {
-
-				if(children === null) {
-
-					// Leaf.
-					if(this.totalPoints > 0) {
-
-						intersects.push(this);
-
-					}
-
-				} else {
-
-					// Compute means.
-					txm = 0.5 * (tx0 + tx1);
-					tym = 0.5 * (ty0 + ty1);
-					tzm = 0.5 * (tz0 + tz1);
-
-					currentOctant = getFirstOctant(tx0, ty0, tz0, txm, tym, tzm);
-
-					do {
-
-						/* The possibilities for the next node are passed in the same respective order as the t-values.
-						 * Hence, if the first parameter is found as the greatest, the fourth one will be returned.
-						 * If the 2nd parameter is the greatest, the 5th will be returned, etc.
-						 */
-
-						switch(currentOctant) {
-
-							case 0:
-								children[flags[8]].raycast(tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, txm, tym, tzm);
-								break;
-
-							case 1:
-								children[flags[8] ^ flags[1]].raycast(tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, txm, tym, tz1);
-								break;
-
-							case 2:
-								children[flags[8] ^ flags[2]].raycast(tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, txm, ty1, tzm);
-								break;
-
-							case 3:
-								children[flags[8] ^ flags[3]].raycast(tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, txm, ty1, tz1);
-								break;
-
-							case 4:
-								children[flags[8] ^ flags[4]].raycast(txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, tx1, tym, tzm);
-								break;
-
-							case 5:
-								children[flags[8] ^ flags[5]].raycast(txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, tx1, tym, tz1);
-								break;
-
-							case 6:
-								children[flags[8] ^ flags[6]].raycast(txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
-								currentOctant = getNextOctant(currentOctant, tx1, ty1, tzm);
-								break;
-
-							case 7:
-								children[flags[8] ^ flags[7]].raycast(txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);
-								// Far top right octant. No other octants can be reached from here.
-								currentOctant = 8;
-								break;
-
-						}
-
-					} while(currentOctant < 8);
-
-				}
-
-			}
-
-		}
-
 	}
 
 	/**
@@ -1834,52 +1491,419 @@
 	Octant.maxPoints = 8;
 
 	/**
-	 * The minimum size of an octant.
+	 * Contains bytes used for bitwise operations. The last byte is used to store 
+	 * raycasting flags.
 	 *
-	 * @property minSize
-	 * @type Vector3
+	 * @property flags
+	 * @type Uint8Array
+	 * @private
 	 * @static
-	 * @default Vector3(1e-12, 1e-12, 1e-12)
+	 * @final
 	 */
 
-	Octant.minSize = new Vector3(1e-12, 1e-12, 1e-12);
+	const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
 
 	/**
-	 * A collection of vectors. Used for computations.
+	 * A lookup-table containing octant ids. Used to determine the exit plane from 
+	 * an octant.
 	 *
-	 * @property vectors
+	 * @property octantTable
 	 * @type Array
 	 * @private
 	 * @static
 	 * @final
 	 */
 
-	const vectors = [
-		new Vector3(),
-		new Vector3(),
-		new Vector3(),
-		new Vector3(),
-		new Vector3(),
-		new Vector3()
+	const octantTable = [
+
+		new Uint8Array([4, 2, 1]),
+		new Uint8Array([5, 3, 8]),
+		new Uint8Array([6, 8, 3]),
+		new Uint8Array([7, 8, 8]),
+		new Uint8Array([8, 6, 5]),
+		new Uint8Array([8, 7, 8]),
+		new Uint8Array([8, 8, 7]),
+		new Uint8Array([8, 8, 8])
+
 	];
 
 	/**
-	 * An octree that subdivides 3D space into regular cells for 
-	 * fast spatial searches.
+	 * Determines the entry plane of the first octant that a ray travels through.
+	 *
+	 * Determining the first octant requires knowing which of the t0's is the 
+	 * largest. The tm's of the other axes must also be compared against that 
+	 * largest t0.
+	 *
+	 * @method getFirstOctant
+	 * @private
+	 * @static
+	 * @param {Number} tx0 - Ray projection parameter.
+	 * @param {Number} ty0 - Ray projection parameter.
+	 * @param {Number} tz0 - Ray projection parameter.
+	 * @param {Number} txm - Ray projection parameter mean.
+	 * @param {Number} tym - Ray projection parameter mean.
+	 * @param {Number} tzm - Ray projection parameter mean.
+	 * @return {Number} The index of the first octant that the ray travels through.
+	 */
+
+	function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
+
+		let entry = 0;
+
+		// Find the entry plane.
+		if(tx0 > ty0 && tx0 > tz0) {
+
+			// YZ-plane.
+			if(tym < tx0) { entry = entry | 2; }
+			if(tzm < tx0) { entry = entry | 1; }
+
+		} else if(ty0 > tz0) {
+
+			// XZ-plane.
+			if(txm < ty0) { entry = entry | 4; }
+			if(tzm < ty0) { entry = entry | 1; }
+
+		} else {
+
+			// XY-plane.
+			if(txm < tz0) { entry = entry | 4; }
+			if(tym < tz0) { entry = entry | 2; }
+
+		}
+
+		return entry;
+
+	}
+
+	/**
+	 * Fetches the next octant for raycasting based on the exit plane of the current 
+	 * one.
+	 *
+	 * @method getNextOctant
+	 * @private
+	 * @static
+	 * @param {Number} currentOctant - The index of the current octant.
+	 * @param {Number} tx1 - Ray projection parameter.
+	 * @param {Number} ty1 - Ray projection parameter.
+	 * @param {Number} tz1 - Ray projection parameter.
+	 * @return {Number} The index of the next octant that the ray travels through.
+	 */
+
+	function getNextOctant(currentOctant, tx1, ty1, tz1) {
+
+		let min;
+		let exit = 0;
+
+		// Find the exit plane.
+		if(tx1 < ty1) {
+
+			min = tx1;
+			exit = 0; // YZ-plane.
+
+		} else {
+
+			min = ty1;
+			exit = 1; // XZ-plane.
+
+		}
+
+		if(tz1 < min) {
+
+			exit = 2; // XY-plane.
+
+		}
+
+		return octantTable[currentOctant][exit];
+
+	}
+
+	/**
+	 * Finds all octants that intersect with the given ray.
+	 *
+	 * @method raycastOctant
+	 * @private
+	 * @static
+	 * @param {Octant} octant - the current octant.
+	 * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
+	 * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
+	 * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.
+	 * @param {Number} tx1 - Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.
+	 * @param {Number} ty1 - Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.
+	 * @param {Number} tz1 - Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.
+	 * @param {Raycaster} raycaster - The raycaster.
+	 * @param {Array} intersects - An array to be filled with the intersecting octants.
+	 */
+
+	function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {
+
+		const children = octant.children;
+
+		let currentOctant;
+		let txm, tym, tzm;
+
+		if(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {
+
+			if(children === null) {
+
+				// Leaf.
+				intersects.push(octant);
+
+			} else {
+
+				// Compute means.
+				txm = 0.5 * (tx0 + tx1);
+				tym = 0.5 * (ty0 + ty1);
+				tzm = 0.5 * (tz0 + tz1);
+
+				currentOctant = getFirstOctant(tx0, ty0, tz0, txm, tym, tzm);
+
+				do {
+
+					/* The possibilities for the next node are passed in the same 
+					 * respective order as the t-values. Hence, if the first parameter is 
+					 * found as the greatest, the fourth one will be returned. If the 2nd 
+					 * parameter is the greatest, the 5th will be returned, etc.
+					 */
+
+					switch(currentOctant) {
+
+						case 0:
+							raycastOctant(children[flags[8]], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, txm, tym, tzm);
+							break;
+
+						case 1:
+							raycastOctant(children[flags[8] ^ flags[1]], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, txm, tym, tz1);
+							break;
+
+						case 2:
+							raycastOctant(children[flags[8] ^ flags[2]], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, txm, ty1, tzm);
+							break;
+
+						case 3:
+							raycastOctant(children[flags[8] ^ flags[3]], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, txm, ty1, tz1);
+							break;
+
+						case 4:
+							raycastOctant(children[flags[8] ^ flags[4]], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, tx1, tym, tzm);
+							break;
+
+						case 5:
+							raycastOctant(children[flags[8] ^ flags[5]], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, tx1, tym, tz1);
+							break;
+
+						case 6:
+							raycastOctant(children[flags[8] ^ flags[6]], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
+							currentOctant = getNextOctant(currentOctant, tx1, ty1, tzm);
+							break;
+
+						case 7:
+							raycastOctant(children[flags[8] ^ flags[7]], txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);
+							// Far top right octant. No other octants can be reached from here.
+							currentOctant = 8;
+							break;
+
+					}
+
+				} while(currentOctant < 8);
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * A collection of utility functions for octree raycasting.
+	 *
+	 * Based on:
+	 *  "An Efficient Parametric Algorithm for Octree Traversal"
+	 *  by J. Revelles et al. (2000).
+	 *
+	 * @class Raycasting
+	 * @static
+	 */
+
+	class Raycasting {
+
+		/**
+		 * Finds the octants that intersect with the given ray.
+		 *
+		 * @method raycast
+		 * @static
+		 * @param {Octree} octree - An octree.
+		 * @param {Raycaster} raycaster - The raycaster.
+		 * @param {Array} octants - An array to be filled with the intersecting octants.
+		 */
+
+		static raycast(octree, raycaster, octants) {
+
+			const root = octree.root;
+
+			const size = root.size().clone();
+			const halfSize = size.clone().multiplyScalar(0.5);
+
+			// Translate the octree extents to the center of the octree.
+			const min = root.min.clone().sub(root.min);
+			const max = root.max.clone().sub(root.min);
+
+			const direction = raycaster.ray.direction.clone();
+			const origin = raycaster.ray.origin.clone();
+
+			// Translate the ray to the center of the octree.
+			origin.sub(root.center()).add(halfSize);
+
+			let invDirX, invDirY, invDirZ;
+			let tx0, tx1, ty0, ty1, tz0, tz1;
+
+			// Reset the last byte.
+			flags[8] = flags[0];
+
+			// Handle rays with negative directions.
+			if(direction.x < 0.0) {
+
+				origin.x = size.x - origin.x;
+				direction.x = -direction.x;
+				flags[8] |= flags[4];
+
+			}
+
+			if(direction.y < 0.0) {
+
+				origin.y = size.y - origin.y;
+				direction.y = -direction.y;
+				flags[8] |= flags[2];
+
+			}
+
+			if(direction.z < 0.0) {
+
+				origin.z = size.z - origin.z;
+				direction.z = -direction.z;
+				flags[8] |= flags[1];
+
+			}
+
+			// Improve IEEE double stability.
+			invDirX = 1.0 / direction.x;
+			invDirY = 1.0 / direction.y;
+			invDirZ = 1.0 / direction.z;
+
+			// Project the ray to the root's boundaries.
+			tx0 = (min.x - origin.x) * invDirX;
+			tx1 = (max.x - origin.x) * invDirX;
+			ty0 = (min.y - origin.y) * invDirY;
+			ty1 = (max.y - origin.y) * invDirY;
+			tz0 = (min.z - origin.z) * invDirZ;
+			tz1 = (max.z - origin.z) * invDirZ;
+
+			// Check if the ray hits the octree.
+			if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
+
+				raycastOctant(root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
+
+			}
+
+		}
+
+		/**
+		 * Collects points that intersect with the ray.
+		 *
+		 * @method testPoints
+		 * @static
+		 * @param {Array} octants - An array containing octants that intersect with the ray.
+		 * @param {Raycaster} raycaster - The raycaster.
+		 * @param {Array} intersects - An array to be filled with the intersecting points.
+		 */
+
+		static testPoints(octants, raycaster, intersects) {
+
+			const threshold = raycaster.params.Points.threshold;
+			const thresholdSq = threshold * threshold;
+
+			let intersectPoint;
+			let distance, distanceToRay;
+			let rayPointDistanceSq;
+
+			let i, j, il, jl;
+			let octant, point, dataSet, data;
+
+			for(i = 0, il = octants.length; i < il; ++i) {
+
+				octant = octants[i];
+
+				for(j = 0, jl = octant.totalPoints; j < jl; ++j) {
+
+					point = octant.points[j];
+					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
+
+					if(rayPointDistanceSq < thresholdSq) {
+
+						intersectPoint = raycaster.ray.closestPointToPoint(point);
+						distance = raycaster.ray.origin.distanceTo(intersectPoint);
+
+						if(distance >= raycaster.near && distance <= raycaster.far) {
+
+							dataSet = octant.dataSets[j];
+							distanceToRay = Math.sqrt(rayPointDistanceSq);
+
+							if(dataSet.size > 0) {
+
+								// Unfold data aggregation.
+								for(data of dataSet) {
+
+									intersects.push({
+										distance: distance,
+										distanceToRay: distanceToRay,
+										point: intersectPoint.clone(),
+										object: data
+									});
+
+								}
+
+							} else {
+
+								intersects.push({
+									distance: distance,
+									distanceToRay: distanceToRay,
+									point: intersectPoint.clone(),
+									object: null
+								});
+
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * An octree that subdivides space into regular cells for fast spatial searches.
 	 *
 	 * @class Octree
 	 * @constructor
 	 * @param {Vector3} min - The lower bounds of the tree.
 	 * @param {Vector3} max - The upper bounds of the tree.
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
-	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it's split up.
+	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
-	 * @param {Vector3} [minSize] - The minimum octant size.
 	 */
 
 	class Octree {
 
-		constructor(min, max, bias, maxPoints, maxDepth, minSize) {
+		constructor(min, max, bias, maxPoints, maxDepth) {
 
 			/**
 			 * The root node.
@@ -1896,7 +1920,6 @@
 			this.bias = bias;
 			this.maxDepth = maxDepth;
 			this.maxPoints = maxPoints;
-			this.minSize = minSize;
 
 		}
 
@@ -1935,8 +1958,8 @@
 		 * Setting this value refreshes the entire tree.
 		 *
 		 * It's possible to set this value to Infinity, but be aware that allowing 
-		 * infinitely small octants can have a negative impact on performance. 
-		 * Finding a value that works best for a specific scene is advisable.
+		 * infinitely small octants can have a negative impact on performance. Finding 
+		 * a value that works best for a specific scene is advisable.
 		 *
 		 * @property maxDepth
 		 * @type Number
@@ -1957,12 +1980,12 @@
 		}
 
 		/**
-		 * Number of points per octant before a split occurs.
-		 * Setting this value refreshes the entire tree.
+		 * Number of points per octant before a split occurs. Setting this value 
+		 * refreshes the entire tree.
 		 *
-		 * This value works together with the maximum depth as a secondary 
-		 * limiting factor. Smaller values cause splits to occur earlier 
-		 * which results in a faster and deeper tree growth.
+		 * This value works together with the maximum depth as a secondary limiting 
+		 * factor. Smaller values cause splits to occur earlier which results in a 
+		 * faster and deeper tree growth.
 		 *
 		 * @property maxPoints
 		 * @type Number
@@ -1983,33 +2006,6 @@
 		}
 
 		/**
-		 * The minimum size of an octant.
-		 *
-		 * Octants won't split if their children would have a side 
-		 * that's smaller than the respective x, y or z minimum value.
-		 *
-		 * This value acts just like the maximum depth as a primary 
-		 * limiting factor.
-		 *
-		 * @property minSize
-		 * @type Vector3
-		 * @default Vector3(1e-12, 1e-12, 1e-12)
-		 */
-
-		get minSize() { return Octant.minSize; }
-
-		set minSize(x) {
-
-			if(x instanceof Vector3) {
-
-				Octant.minSize.copy(x).max(vectors[0].set(1e-12, 1e-12, 1e-12));
-				this.root.update();
-
-			}
-
-		}
-
-		/**
 		 * Adds a point to the tree.
 		 *
 		 * @method add
@@ -2021,15 +2017,14 @@
 
 			if(this.root.containsPoint(p, this.bias)) {
 
-				this.root.add(p, data);
+				this.root.add(p.clone(), data);
 
 			}
 
 		}
 
 		/**
-		 * Adds all points that are described by a given array of position 
-		 * values to the tree.
+		 * Adds all points from the given array of position triples to the tree.
 		 *
 		 * @method addPoints
 		 * @param {Float32Array} array - An array containing point position triples.
@@ -2038,13 +2033,13 @@
 
 		addPoints(array, data) {
 
-			const v = vectors[0];
+			const v = new Vector3();
 
 			let i, l;
 
 			for(i = 0, l = array.length; i < l; i += 3) {
 
-				this.add(v.fromArray(array, i), data);
+				this.add(v.fromArray(array, i).clone(), data);
 
 			}
 
@@ -2069,8 +2064,8 @@
 		}
 
 		/**
-		 * Removes all points that are described by a given array of position 
-		 * values from the tree.
+		 * Removes all points from the tree that are in the given array of position 
+		 * triples.
 		 *
 		 * @method removePoints
 		 * @param {Float32Array} array - An array containing point position triples.
@@ -2079,7 +2074,7 @@
 
 		removePoints(array, data) {
 
-			const v = vectors[0];
+			const v = new Vector3();
 
 			let i, l;
 
@@ -2147,84 +2142,6 @@
 		}
 
 		/**
-		 * Finds the octants that intersect with the given ray.
-		 *
-		 * @method raycastOctants
-		 * @param {Raycaster} raycaster - The raycaster.
-		 * @param {Array} octants - An array to be filled with the intersecting octants.
-		 */
-
-		raycastOctants(raycaster, octants) {
-
-			const root = this.root;
-
-			const size = vectors[0].copy(root.size());
-			const halfSize = vectors[1].copy(size).multiplyScalar(0.5);
-
-			// Translate the octree extents to the center of the octree.
-			const min = vectors[2].copy(root.min).sub(root.min);
-			const max = vectors[3].copy(root.max).sub(root.min);
-
-			const direction = vectors[4].copy(raycaster.ray.direction);
-			const origin = vectors[5].copy(raycaster.ray.origin);
-
-			// Translate the ray to the center of the octree.
-			origin.sub(root.center()).add(halfSize);
-
-			let invDirX, invDirY, invDirZ;
-			let tx0, tx1, ty0, ty1, tz0, tz1;
-
-			// Reset the last byte.
-			flags[8] = flags[0];
-
-			// Handle rays with negative directions.
-			if(direction.x < 0.0) {
-
-				origin.x = size.x - origin.x;
-				direction.x = -direction.x;
-				flags[8] |= flags[4];
-
-			}
-
-			if(direction.y < 0.0) {
-
-				origin.y = size.y - origin.y;
-				direction.y = -direction.y;
-				flags[8] |= flags[2];
-
-			}
-
-			if(direction.z < 0.0) {
-
-				origin.z = size.z - origin.z;
-				direction.z = -direction.z;
-				flags[8] |= flags[1];
-
-			}
-
-			// Improve IEEE double stability.
-			invDirX = 1.0 / direction.x;
-			invDirY = 1.0 / direction.y;
-			invDirZ = 1.0 / direction.z;
-
-			// Project the ray to the root's boundaries.
-			tx0 = (min.x - origin.x) * invDirX;
-			tx1 = (max.x - origin.x) * invDirX;
-			ty0 = (min.y - origin.y) * invDirY;
-			ty1 = (max.y - origin.y) * invDirY;
-			tz0 = (min.z - origin.z) * invDirZ;
-			tz1 = (max.z - origin.z) * invDirZ;
-
-			// Check if the ray hits the octree.
-			if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
-
-				root.raycast(tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
-
-			}
-
-		}
-
-		/**
 		 * Finds the points that intersect with the given ray.
 		 *
 		 * @method raycast
@@ -2236,12 +2153,12 @@
 
 			const octants = [];
 
-			this.raycastOctants(raycaster, octants);
+			Raycasting.raycast(this, raycaster, octants);
 
 			if(octants.length > 0) {
 
 				// Collect intersecting points.
-				testPoints(octants, raycaster, intersects);
+				Raycasting.testPoints(octants, raycaster, intersects);
 
 			}
 
@@ -2519,5 +2436,6 @@
 	exports.Octree = Octree;
 	exports.Octant = Octant;
 	exports.OctreeHelper = OctreeHelper;
+	exports.Raycasting = Raycasting;
 
 }));
