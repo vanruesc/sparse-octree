@@ -234,7 +234,7 @@
 		// Frustum culling.
 
 		const frustum = new THREE.Frustum();
-		const cullCamera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.5, 5);
+		const cullCamera = new THREE.PerspectiveCamera(20, 1.77, 0.5, 5);
 		cullCamera.matrixAutoUpdate = false;
 
 		const s = new THREE.Spherical(5, Math.PI / 3, Math.PI * 1.75);
