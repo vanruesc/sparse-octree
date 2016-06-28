@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.4</em>
+            <em>API Docs for: 0.1.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -442,14 +442,14 @@ export class Octant {
 		 */
 
 		this.children = [
-			new Octant(min, mid, nextLevel),
-			new Octant(new Vector3(min.x, min.y, mid.z), new Vector3(mid.x, mid.y, max.z), nextLevel),
-			new Octant(new Vector3(min.x, mid.y, min.z), new Vector3(mid.x, max.y, mid.z), nextLevel),
-			new Octant(new Vector3(min.x, mid.y, mid.z), new Vector3(mid.x, max.y, max.z), nextLevel),
-			new Octant(new Vector3(mid.x, min.y, min.z), new Vector3(max.x, mid.y, mid.z), nextLevel),
-			new Octant(new Vector3(mid.x, min.y, mid.z), new Vector3(max.x, mid.y, max.z), nextLevel),
-			new Octant(new Vector3(mid.x, mid.y, min.z), new Vector3(max.x, max.y, mid.z), nextLevel),
-			new Octant(mid, max, nextLevel)
+			new this.constructor(min, mid, nextLevel),
+			new this.constructor(new Vector3(min.x, min.y, mid.z), new Vector3(mid.x, mid.y, max.z), nextLevel),
+			new this.constructor(new Vector3(min.x, mid.y, min.z), new Vector3(mid.x, max.y, mid.z), nextLevel),
+			new this.constructor(new Vector3(min.x, mid.y, mid.z), new Vector3(mid.x, max.y, max.z), nextLevel),
+			new this.constructor(new Vector3(mid.x, min.y, min.z), new Vector3(max.x, mid.y, mid.z), nextLevel),
+			new this.constructor(new Vector3(mid.x, min.y, mid.z), new Vector3(max.x, mid.y, max.z), nextLevel),
+			new this.constructor(new Vector3(mid.x, mid.y, min.z), new Vector3(max.x, max.y, mid.z), nextLevel),
+			new this.constructor(mid, max, nextLevel)
 		];
 
 		// Distribute existing points to the new children.
