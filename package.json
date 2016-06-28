@@ -44,18 +44,18 @@
 	},
 
 	"dependencies": {
-		"three": "x.x.x"
+		"three": "0.78.x"
 	},
 
 	"devDependencies": {
 		"grunt": ">= 0.4.0",
-		"grunt-contrib-nodeunit": "x.x.x",
-		"grunt-contrib-jshint": "x.x.x",
-		"grunt-contrib-uglify": "x.x.x",
-		"grunt-contrib-yuidoc": "x.x.x",
-		"grunt-contrib-copy": "x.x.x",
-		"grunt-rollup": "x.x.x",
-		"rollup-plugin-node-resolve": "x.x.x"
+		"grunt-contrib-nodeunit": "1.0.x",
+		"grunt-contrib-jshint": "1.0.x",
+		"grunt-contrib-uglify": "1.0.x",
+		"grunt-contrib-yuidoc": "1.0.x",
+		"grunt-contrib-copy": "1.0.x",
+		"grunt-rollup": "0.7.x",
+		"rollup-plugin-node-resolve": "1.7.x",
 	},
 
 	"peerDependencies": {
