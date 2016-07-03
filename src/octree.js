@@ -287,18 +287,18 @@ export class Octree {
 	}
 
 	/**
-	 * Collects octants that lie inside the specified frustum.
+	 * Collects octants that lie inside the specified frustum or bounding box.
 	 *
 	 * @method cull
-	 * @param {Frustum} frustum - A frustum.
+	 * @param {Frustum|Box3} shape - A frustum or a bounding box.
 	 * @return {Array} The octants.
 	 */
 
-	cull(frustum) {
+	cull(shape) {
 
 		const result = [];
 
-		this.root.cull(frustum, result);
+		this.root.cull(shape, result);
 
 		return result;
 

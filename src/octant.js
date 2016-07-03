@@ -199,24 +199,24 @@ export class Octant {
 	}
 
 	/**
-	 * Collects leaf octants that lie inside the given frustum.
+	 * Collects octants that lie inside the specified frustum or bounding box.
 	 *
 	 * @method cull
-	 * @param {Frustum} frustum - A frustum.
+	 * @param {Frustum|Box3} shape - A frustum or a bounding box.
 	 * @param {Array} intersects - An array to be filled with the intersecting octants.
 	 */
 
-	cull(frustum, intersects) {
+	cull(shape, intersects) {
 
 		let i, l;
 
-		if(frustum.intersectsBox(this)) {
+		if(shape.intersectsBox(this)) {
 
 			if(this.children !== null) {
 
 				for(i = 0, l = this.children.length; i < l; ++i) {
 
-					this.children[i].cull(frustum, intersects);
+					this.children[i].cull(shape, intersects);
 
 				}
 
