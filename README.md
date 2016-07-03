@@ -31,7 +31,7 @@ $ npm install sparse-octree
 ## Usage
 
 ```javascript
-// Attention: Three is not yet an ES6 module!
+// Attention: Three is not yet an ES2015 module!
 import {
   WebGLRenderer, Scene, PerspectiveCamera,
   Points, PointsMaterial, BoxBufferGeometry, Box3
@@ -39,13 +39,13 @@ import {
 
 import { Octree, OctreeHelper } from "sparse-octree";
 
-let renderer = new WebGLRenderer();
-let scene = new Scene();
+const renderer = new WebGLRenderer();
+const scene = new Scene();
 
-let camera = new PerspectiveCamera();
+const camera = new PerspectiveCamera();
 scene.add(camera);
 
-let points = new Points(
+const points = new Points(
   new TorusKnotBufferGeometry(1, 1, 64, 64),
   new PointsMaterial({
     color: 0xffffff, size: 1, sizeAttenuation: false
@@ -54,10 +54,10 @@ let points = new Points(
 
 scene.add(points);
 
-let bbox = new THREE.Box3();
+const bbox = new THREE.Box3();
 bbox.setFromObject(scene);
 
-let octree = new Octree(bbox.min, bbox.max, 0.0, 8, 8);
+const octree = new Octree(bbox.min, bbox.max, 0.0, 8, 8);
 octree.addPoints(points.geometry.getAttribute("position").array, points);
 
 scene.add(new OctreeHelper(octree));
