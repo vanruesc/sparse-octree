@@ -1,5 +1,5 @@
 /**
- * sparse-octree v0.1.5 build Jun 28 2016
+ * sparse-octree v0.2.0 build Jul 03 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -745,16 +745,47 @@
   		}
 
   		/**
-     * Computes the center of this octant.
+     * Calculates the current tree depth recursively.
      *
-     * @method center
-     * @return {Vector3} The center of this octant.
+     * @method depth
+     * @return {Number} The depth.
      */
 
   		createClass(Octant, [{
+  				key: "depth",
+  				value: function depth() {
+
+  						var result = 0;
+  						var depth = void 0;
+  						var i = void 0,
+  						    l = void 0;
+
+  						if (this.children !== null) {
+
+  								for (i = 0, l = this.children.length; i < l; ++i) {
+
+  										depth = 1 + this.children[i].depth();
+
+  										if (depth > result) {
+
+  												result = depth;
+  										}
+  								}
+  						}
+
+  						return result;
+  				}
+
+  				/**
+       * Computes the center of this octant.
+       *
+       * @method center
+       * @return {Vector3} The center of this octant.
+       */
+
+  		}, {
   				key: "center",
   				value: function center() {
-
   						return this.min.clone().add(this.max).multiplyScalar(0.5);
   				}
 
@@ -768,7 +799,6 @@
   		}, {
   				key: "size",
   				value: function size() {
-
   						return this.max.clone().sub(this.min);
   				}
 
@@ -834,27 +864,27 @@
   				}
 
   				/**
-       * Collects leaf octants that lie inside the given frustum.
+       * Collects octants that lie inside the specified frustum or bounding box.
        *
        * @method cull
-       * @param {Frustum} frustum - A frustum.
+       * @param {Frustum|Box3} shape - A frustum or a bounding box.
        * @param {Array} intersects - An array to be filled with the intersecting octants.
        */
 
   		}, {
   				key: "cull",
-  				value: function cull(frustum, intersects) {
+  				value: function cull(shape, intersects) {
 
   						var i = void 0,
   						    l = void 0;
 
-  						if (frustum.intersectsBox(this)) {
+  						if (shape.intersectsBox(this)) {
 
   								if (this.children !== null) {
 
   										for (i = 0, l = this.children.length; i < l; ++i) {
 
-  												this.children[i].cull(frustum, intersects);
+  												this.children[i].cull(shape, intersects);
   										}
   								} else if (this.totalPoints > 0) {
 
@@ -1448,14 +1478,14 @@
   				/**
        * Fetches all octants with the specified level.
        *
-       * @method getOctantsByLevel
+       * @method findOctantsByLevel
        * @param {Number} level - The depth level.
        * @param {Array} result - An array to be filled with octants. Empty octants will be excluded.
        */
 
   		}, {
-  				key: "getOctantsByLevel",
-  				value: function getOctantsByLevel(level, result) {
+  				key: "findOctantsByLevel",
+  				value: function findOctantsByLevel(level, result) {
 
   						var i = void 0,
   						    l = void 0;
@@ -1470,41 +1500,9 @@
 
   								for (i = 0, l = this.children.length; i < l; ++i) {
 
-  										this.children[i].getOctantsByLevel(level, result);
+  										this.children[i].findOctantsByLevel(level, result);
   								}
   						}
-  				}
-
-  				/**
-       * Finds the current tree depth recursively.
-       *
-       * @method getDepth
-       * @return {Number} The depth.
-       */
-
-  		}, {
-  				key: "getDepth",
-  				value: function getDepth() {
-
-  						var result = 0;
-  						var depth = void 0;
-  						var i = void 0,
-  						    l = void 0;
-
-  						if (this.children !== null) {
-
-  								for (i = 0, l = this.children.length; i < l; ++i) {
-
-  										depth = 1 + this.children[i].getDepth();
-
-  										if (depth > result) {
-
-  												result = depth;
-  										}
-  								}
-  						}
-
-  						return result;
   				}
   		}]);
   		return Octant;
@@ -2189,20 +2187,20 @@
   		}
 
   		/**
-     * Collects octants that lie inside the specified frustum.
+     * Collects octants that lie inside the specified frustum or bounding box.
      *
      * @method cull
-     * @param {Frustum} frustum - A frustum.
+     * @param {Frustum|Box3} shape - A frustum or a bounding box.
      * @return {Array} The octants.
      */
 
   	}, {
   		key: "cull",
-  		value: function cull(frustum) {
+  		value: function cull(shape) {
 
   			var result = [];
 
-  			this.root.cull(frustum, result);
+  			this.root.cull(shape, result);
 
   			return result;
   		}
@@ -2210,48 +2208,33 @@
   		/**
      * Fetches all nodes with the specified level.
      *
-     * @method getOctantsByLevel
+     * @method findOctantsByLevel
      * @param {Number} level - The depth level.
      * @return {Array} The nodes.
      */
 
   	}, {
-  		key: "getOctantsByLevel",
-  		value: function getOctantsByLevel(level) {
+  		key: "findOctantsByLevel",
+  		value: function findOctantsByLevel(level) {
 
   			var result = [];
 
-  			this.root.getOctantsByLevel(level, result);
+  			this.root.findOctantsByLevel(level, result);
 
   			return result;
   		}
 
   		/**
-     * Returns the amount of points that are currently in the tree.
+     * Calculates the current tree depth recursively.
      *
-     * @method getTotalPoints
-     * @return {Number} The total amount of points in the tree.
-     */
-
-  	}, {
-  		key: "getTotalPoints",
-  		value: function getTotalPoints() {
-
-  			return this.root.totalPoints;
-  		}
-
-  		/**
-     * Calculates the current tree depth.
-     *
-     * @method getDepth
+     * @method depth
      * @return {Number} The depth.
      */
 
   	}, {
-  		key: "getDepth",
-  		value: function getDepth() {
-
-  			return this.root.getDepth();
+  		key: "depth",
+  		value: function depth() {
+  			return this.root.depth();
   		}
   	}, {
   		key: "children",
@@ -2334,6 +2317,19 @@
   				this.root.update();
   			}
   		}
+
+  		/**
+     * The amount of points that are currently in the tree.
+     *
+     * @property totalPoints
+     * @type Number
+     */
+
+  	}, {
+  		key: "totalPoints",
+  		get: function get() {
+  			return this.root.totalPoints;
+  		}
   	}]);
   	return Octree;
   }();
@@ -2382,7 +2378,7 @@
   				value: function update() {
 
   						var vertexMap = new Map();
-  						var depth = this.tree !== null ? this.tree.getDepth() : -1;
+  						var depth = this.tree !== null ? this.tree.depth() : -1;
 
   						var connections = [
   						/* 0 */[1, 4],
@@ -2432,7 +2428,7 @@
 
   						while (level <= depth) {
 
-  								octants = this.tree.getOctantsByLevel(level);
+  								octants = this.tree.findOctantsByLevel(level);
 
   								indexCount = 0;
   								vertexMap.clear();
