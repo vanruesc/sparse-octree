@@ -54,7 +54,7 @@ const points = new Points(
 
 scene.add(points);
 
-const bbox = new THREE.Box3();
+const bbox = new Box3();
 bbox.setFromObject(scene);
 
 const octree = new Octree(bbox.min, bbox.max, 0.0, 8, 8);
@@ -70,6 +70,7 @@ scene.add(new OctreeHelper(octree));
 }());
 ```
 
+The full setup can be found [here](https://jsfiddle.net/py89hgn3/).
 
 ## Demo
 [Octree Raycasting](http://vanruesc.github.io/sparse-octree/public/index.html)
