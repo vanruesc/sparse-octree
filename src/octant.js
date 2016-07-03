@@ -83,17 +83,46 @@ export class Octant {
 	}
 
 	/**
+	 * Calculates the current tree depth recursively.
+	 *
+	 * @method depth
+	 * @return {Number} The depth.
+	 */
+
+	depth() {
+
+		let result = 0;
+		let depth;
+		let i, l;
+
+		if(this.children !== null) {
+
+			for(i = 0, l = this.children.length; i < l; ++i) {
+
+				depth = 1 + this.children[i].depth();
+
+				if(depth > result) {
+
+					result = depth;
+
+				}
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
 	 * Computes the center of this octant.
 	 *
 	 * @method center
 	 * @return {Vector3} The center of this octant.
 	 */
 
-	center() {
-
-		return this.min.clone().add(this.max).multiplyScalar(0.5);
-
-	}
+	center() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
 
 	/**
 	 * Computes the size of this octant.
@@ -102,11 +131,7 @@ export class Octant {
 	 * @return {Vector3} The size of this octant.
 	 */
 
-	size() {
-
-		return this.max.clone().sub(this.min);
-
-	}
+	size() { return this.max.clone().sub(this.min); }
 
 	/**
 	 * Computes the distance squared from this octant to the given point.
@@ -805,12 +830,12 @@ export class Octant {
 	/**
 	 * Fetches all octants with the specified level.
 	 *
-	 * @method getOctantsByLevel
+	 * @method findOctantsByLevel
 	 * @param {Number} level - The depth level.
 	 * @param {Array} result - An array to be filled with octants. Empty octants will be excluded.
 	 */
 
-	getOctantsByLevel(level, result) {
+	findOctantsByLevel(level, result) {
 
 		let i, l;
 
@@ -826,44 +851,11 @@ export class Octant {
 
 			for(i = 0, l = this.children.length; i < l; ++i) {
 
-				this.children[i].getOctantsByLevel(level, result);
+				this.children[i].findOctantsByLevel(level, result);
 
 			}
 
 		}
-
-	}
-
-	/**
-	 * Finds the current tree depth recursively.
-	 *
-	 * @method getDepth
-	 * @return {Number} The depth.
-	 */
-
-	getDepth() {
-
-		let result = 0;
-		let depth;
-		let i, l;
-
-		if(this.children !== null) {
-
-			for(i = 0, l = this.children.length; i < l; ++i) {
-
-				depth = 1 + this.children[i].getDepth();
-
-				if(depth > result) {
-
-					result = depth;
-
-				}
-
-			}
-
-		}
-
-		return result;
 
 	}
 

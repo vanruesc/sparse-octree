@@ -111,7 +111,7 @@ module.exports = {
 			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
 
 			octree.addPoints([-1, -1, -1, 0, 0, 0, 1, 1, 1], data);
-			test.ok(octree.getTotalPoints(), 3, "should be able to store multiple points");
+			test.ok(octree.totalPoints, 3, "should be able to store multiple points");
 			test.ok(octree.fetch(new THREE.Vector3(-1, -1, -1)), "should find all added points");
 			test.ok(octree.fetch(new THREE.Vector3(0, 0, 0)), "should find all added points");
 			test.ok(octree.fetch(new THREE.Vector3(1, 1, 1)), "should find all added points");
@@ -126,7 +126,7 @@ module.exports = {
 
 			octree.addPoints([-1, -1, -1, 0, 0, 0, 1, 1, 1], data);
 			octree.addPoints([-1, -1, -1, 1, 1, 1], data);
-			test.ok(octree.getTotalPoints(), 1, "should be able to remove multiple points");
+			test.ok(octree.totalPoints, 1, "should be able to remove multiple points");
 
 			test.done();
 
@@ -137,7 +137,7 @@ module.exports = {
 			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(2, 0, 0));
-			test.equal(octree.getTotalPoints(), 0, "should not add if position is out of range");
+			test.equal(octree.totalPoints, 0, "should not add if position is out of range");
 
 			test.done();
 
@@ -149,7 +149,7 @@ module.exports = {
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(0, 0, 0.005));
-			test.equal(octree.getTotalPoints(), 2, "should not lose any points during a split");
+			test.equal(octree.totalPoints, 2, "should not lose any points during a split");
 
 			test.done();
 
@@ -162,7 +162,7 @@ module.exports = {
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
 			octree.add(new THREE.Vector3(0.9, 0, 0));
-			test.equal(octree.getDepth(), octree.maxDepth, "should split octants when necessary");
+			test.equal(octree.depth(), octree.maxDepth, "should split octants when necessary");
 
 			test.done();
 
@@ -175,7 +175,7 @@ module.exports = {
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
 			octree.remove(new THREE.Vector3(1, 0, 0));
-			test.equal(octree.getDepth(), octree.maxDepth - 1, "should merge octants when possible");
+			test.equal(octree.depth(), octree.maxDepth - 1, "should merge octants when possible");
 
 			test.done();
 
@@ -188,7 +188,7 @@ module.exports = {
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
 			octree.maxDepth = 0;
-			test.equal(octree.getDepth(), octree.maxDepth, "should reduce the tree depth");
+			test.equal(octree.depth(), octree.maxDepth, "should reduce the tree depth");
 
 			test.done();
 
@@ -201,7 +201,7 @@ module.exports = {
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
 			octree.maxPoints = 1;
-			test.equal(octree.getDepth(), octree.maxDepth, "should split if the octant capacity changes");
+			test.equal(octree.depth(), octree.maxDepth, "should split if the octant capacity changes");
 
 			test.done();
 

@@ -39,7 +39,7 @@ export class OctreeHelper extends THREE.Object3D {
 	update() {
 
 		const vertexMap = new Map();
-		const depth = (this.tree !== null) ? this.tree.getDepth() : -1;
+		const depth = (this.tree !== null) ? this.tree.depth() : -1;
 
 		const connections = [
 			/* 0 */ [1, 4],
@@ -82,7 +82,7 @@ export class OctreeHelper extends THREE.Object3D {
 
 		while(level <= depth) {
 
-			octants = this.tree.getOctantsByLevel(level);
+			octants = this.tree.findOctantsByLevel(level);
 
 			indexCount = 0;
 			vertexMap.clear();
