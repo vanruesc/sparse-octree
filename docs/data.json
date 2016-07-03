@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure for three.js.",
-        "version": "0.1.5",
+        "version": "0.2.0",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -334,6 +334,19 @@
         {
             "file": "src\\octant.js",
             "line": 85,
+            "description": "Calculates the current tree depth recursively.",
+            "itemtype": "method",
+            "name": "depth",
+            "return": {
+                "description": "The depth.",
+                "type": "Number"
+            },
+            "class": "Octant",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octant.js",
+            "line": 118,
             "description": "Computes the center of this octant.",
             "itemtype": "method",
             "name": "center",
@@ -346,7 +359,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 98,
+            "line": 127,
             "description": "Computes the size of this octant.",
             "itemtype": "method",
             "name": "size",
@@ -359,7 +372,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 111,
+            "line": 136,
             "description": "Computes the distance squared from this octant to the given point.",
             "itemtype": "method",
             "name": "distanceToSquared",
@@ -379,7 +392,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 127,
+            "line": 152,
             "description": "Computes the distance squared from the center of this octant to the given \npoint.",
             "itemtype": "method",
             "name": "distanceToCenterSquared",
@@ -399,7 +412,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 148,
+            "line": 173,
             "description": "Checks if the given point lies inside this octant's boundaries.\n\nThis method can also be used to check if this octant intersects a sphere by \nproviding a radius as bias.",
             "itemtype": "method",
             "name": "containsPoint",
@@ -424,15 +437,15 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 176,
-            "description": "Collects leaf octants that lie inside the given frustum.",
+            "line": 201,
+            "description": "Collects octants that lie inside the specified frustum or bounding box.",
             "itemtype": "method",
             "name": "cull",
             "params": [
                 {
-                    "name": "frustum",
-                    "description": "- A frustum.",
-                    "type": "Frustum"
+                    "name": "shape",
+                    "description": "- A frustum or a bounding box.",
+                    "type": "Frustum|Box3"
                 },
                 {
                     "name": "intersects",
@@ -445,7 +458,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 208,
+            "line": 233,
             "description": "Adds a given point to this node. If this octant isn't a leaf node, the \npoint will be added to a child octant.",
             "itemtype": "method",
             "name": "add",
@@ -471,7 +484,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 290,
+            "line": 315,
             "description": "Adds the given point to a child node that covers the point's position.",
             "itemtype": "method",
             "name": "addToChild",
@@ -499,7 +512,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 330,
+            "line": 355,
             "description": "Splits this octant up into eight smaller ones.",
             "itemtype": "method",
             "name": "split",
@@ -510,7 +523,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 400,
+            "line": 425,
             "description": "Removes the given point from this octant. If this octant is not a leaf \nnode, the point will be removed from a child node. If no data is provided, \nthe point and all its respective data entries will be removed completely.",
             "itemtype": "method",
             "name": "remove",
@@ -536,7 +549,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 489,
+            "line": 514,
             "description": "Removes the given point from a child node.",
             "itemtype": "method",
             "name": "removeFromChild",
@@ -564,7 +577,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 529,
+            "line": 554,
             "description": "Gathers all points from the children. The children are expected to be leaf \nnodes and will be dropped afterwards.",
             "itemtype": "method",
             "name": "merge",
@@ -575,7 +588,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 563,
+            "line": 588,
             "description": "Refreshes this octant and its children to make sure that all constraints \nare satisfied.",
             "itemtype": "method",
             "name": "update",
@@ -584,7 +597,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 601,
+            "line": 626,
             "description": "Retrieves the data of the point at the specified position.",
             "itemtype": "method",
             "name": "fetch",
@@ -604,7 +617,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 650,
+            "line": 675,
             "description": "Finds the closest point to the given one.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -634,7 +647,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 746,
+            "line": 771,
             "description": "Finds points that are inside the specified radius around a given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -665,10 +678,10 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 805,
+            "line": 830,
             "description": "Fetches all octants with the specified level.",
             "itemtype": "method",
-            "name": "getOctantsByLevel",
+            "name": "findOctantsByLevel",
             "params": [
                 {
                     "name": "level",
@@ -686,20 +699,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 837,
-            "description": "Finds the current tree depth recursively.",
-            "itemtype": "method",
-            "name": "getDepth",
-            "return": {
-                "description": "The depth.",
-                "type": "Number"
-            },
-            "class": "Octant",
-            "module": "octree"
-        },
-        {
-            "file": "src\\octant.js",
-            "line": 872,
+            "line": 864,
             "description": "A threshold for proximity checks.",
             "itemtype": "property",
             "name": "bias",
@@ -711,7 +711,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 883,
+            "line": 875,
             "description": "The proximity threshold squared.",
             "itemtype": "property",
             "name": "biasSquared",
@@ -723,7 +723,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 894,
+            "line": 886,
             "description": "The maximum tree depth level.",
             "itemtype": "property",
             "name": "maxDepth",
@@ -735,7 +735,7 @@
         },
         {
             "file": "src\\octant.js",
-            "line": 905,
+            "line": 897,
             "description": "Number of points per octant before a split occurs.",
             "itemtype": "property",
             "name": "maxPoints",
@@ -804,6 +804,16 @@
         {
             "file": "src\\octree.js",
             "line": 121,
+            "description": "The amount of points that are currently in the tree.",
+            "itemtype": "property",
+            "name": "totalPoints",
+            "type": "Number",
+            "class": "Octree",
+            "module": "octree"
+        },
+        {
+            "file": "src\\octree.js",
+            "line": 130,
             "description": "Adds a point to the tree.",
             "itemtype": "method",
             "name": "add",
@@ -825,7 +835,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 139,
+            "line": 148,
             "description": "Adds all points from the given array of position triples to the tree.",
             "itemtype": "method",
             "name": "addPoints",
@@ -847,7 +857,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 161,
+            "line": 170,
             "description": "Removes a point from the tree.",
             "itemtype": "method",
             "name": "remove",
@@ -869,7 +879,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 179,
+            "line": 188,
             "description": "Removes all points from the tree that are in the given array of position \ntriples.",
             "itemtype": "method",
             "name": "removePoints",
@@ -891,7 +901,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 202,
+            "line": 211,
             "description": "Retrieves the data of the point at the specified position.",
             "itemtype": "method",
             "name": "fetch",
@@ -911,7 +921,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 216,
+            "line": 225,
             "description": "Finds the closest point to the given one.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -945,7 +955,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 235,
+            "line": 244,
             "description": "Finds points that are in the specified radius around the given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -977,7 +987,7 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 257,
+            "line": 266,
             "description": "Finds the points that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycast",
@@ -998,15 +1008,15 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 280,
-            "description": "Collects octants that lie inside the specified frustum.",
+            "line": 289,
+            "description": "Collects octants that lie inside the specified frustum or bounding box.",
             "itemtype": "method",
             "name": "cull",
             "params": [
                 {
-                    "name": "frustum",
-                    "description": "- A frustum.",
-                    "type": "Frustum"
+                    "name": "shape",
+                    "description": "- A frustum or a bounding box.",
+                    "type": "Frustum|Box3"
                 }
             ],
             "return": {
@@ -1018,10 +1028,10 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 298,
+            "line": 307,
             "description": "Fetches all nodes with the specified level.",
             "itemtype": "method",
-            "name": "getOctantsByLevel",
+            "name": "findOctantsByLevel",
             "params": [
                 {
                     "name": "level",
@@ -1038,23 +1048,10 @@
         },
         {
             "file": "src\\octree.js",
-            "line": 316,
-            "description": "Returns the amount of points that are currently in the tree.",
+            "line": 325,
+            "description": "Calculates the current tree depth recursively.",
             "itemtype": "method",
-            "name": "getTotalPoints",
-            "return": {
-                "description": "The total amount of points in the tree.",
-                "type": "Number"
-            },
-            "class": "Octree",
-            "module": "octree"
-        },
-        {
-            "file": "src\\octree.js",
-            "line": 329,
-            "description": "Calculates the current tree depth.",
-            "itemtype": "method",
-            "name": "getDepth",
+            "name": "depth",
             "return": {
                 "description": "The depth.",
                 "type": "Number"

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.5</em>
+            <em>API Docs for: 0.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -254,6 +254,10 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_depth">depth</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_fetch">fetch</a>
 
                             </li>
@@ -262,19 +266,11 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_findOctantsByLevel">findOctantsByLevel</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_findPoints">findPoints</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getDepth">getDepth</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getOctantsByLevel">getOctantsByLevel</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getTotalPoints">getTotalPoints</a>
 
                             </li>
                             <li class="index-item method">
@@ -316,6 +312,10 @@
                                 <a href="#property_root">root</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_totalPoints">totalPoints</a>
+
+                            </li>
                     </ul>
                 </div>
 
@@ -349,7 +349,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l121"><code>src\octree.js:121</code></a>
+        <a href="../files/src_octree.js.html#l130"><code>src\octree.js:130</code></a>
         </p>
 
 
@@ -422,7 +422,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l139"><code>src\octree.js:139</code></a>
+        <a href="../files/src_octree.js.html#l148"><code>src\octree.js:148</code></a>
         </p>
 
 
@@ -477,7 +477,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>frustum</code>
+                        <code>shape</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -495,7 +495,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l280"><code>src\octree.js:280</code></a>
+        <a href="../files/src_octree.js.html#l289"><code>src\octree.js:289</code></a>
         </p>
 
 
@@ -503,7 +503,7 @@
     </div>
 
     <div class="description">
-        <p>Collects octants that lie inside the specified frustum.</p>
+        <p>Collects octants that lie inside the specified frustum or bounding box.</p>
 
     </div>
 
@@ -512,13 +512,13 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">frustum</code>
-                        <span class="type">Frustum</span>
+                        <code class="param-name">shape</code>
+                        <span class="type">Frustum | Box3</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>A frustum.</li>
+<li>A frustum or a bounding box.</li>
 </ul>
 
                     </div>
@@ -533,6 +533,49 @@
             <div class="returns-description">
                         <span class="type">Array</span>:
                     <p>The octants.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_depth" class="method item">
+    <h3 class="name"><code>depth</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octree.js.html#l325"><code>src\octree.js:325</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calculates the current tree depth recursively.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>The depth.</p>
 
             </div>
         </div>
@@ -563,7 +606,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l202"><code>src\octree.js:202</code></a>
+        <a href="../files/src_octree.js.html#l211"><code>src\octree.js:211</code></a>
         </p>
 
 
@@ -637,7 +680,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l216"><code>src\octree.js:216</code></a>
+        <a href="../files/src_octree.js.html#l225"><code>src\octree.js:225</code></a>
         </p>
 
 
@@ -709,6 +752,74 @@
 
 
 </div>
+<div id="method_findOctantsByLevel" class="method item">
+    <h3 class="name"><code>findOctantsByLevel</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>level</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Array</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octree.js.html#l307"><code>src\octree.js:307</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Fetches all nodes with the specified level.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">level</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>The depth level.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array</span>:
+                    <p>The nodes.</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_findPoints" class="method item">
     <h3 class="name"><code>findPoints</code></h3>
 
@@ -739,7 +850,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l235"><code>src\octree.js:235</code></a>
+        <a href="../files/src_octree.js.html#l244"><code>src\octree.js:244</code></a>
         </p>
 
 
@@ -810,160 +921,6 @@
 
 
 </div>
-<div id="method_getDepth" class="method item">
-    <h3 class="name"><code>getDepth</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l329"><code>src\octree.js:329</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the current tree depth.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The depth.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getOctantsByLevel" class="method item">
-    <h3 class="name"><code>getOctantsByLevel</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>level</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Array</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l298"><code>src\octree.js:298</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Fetches all nodes with the specified level.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">level</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The depth level.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Array</span>:
-                    <p>The nodes.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getTotalPoints" class="method item">
-    <h3 class="name"><code>getTotalPoints</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octree.js.html#l316"><code>src\octree.js:316</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Returns the amount of points that are currently in the tree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The total amount of points in the tree.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_raycast" class="method item">
     <h3 class="name"><code>raycast</code></h3>
 
@@ -988,7 +945,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l257"><code>src\octree.js:257</code></a>
+        <a href="../files/src_octree.js.html#l266"><code>src\octree.js:266</code></a>
         </p>
 
 
@@ -1060,7 +1017,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l161"><code>src\octree.js:161</code></a>
+        <a href="../files/src_octree.js.html#l170"><code>src\octree.js:170</code></a>
         </p>
 
 
@@ -1133,7 +1090,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octree.js.html#l179"><code>src\octree.js:179</code></a>
+        <a href="../files/src_octree.js.html#l188"><code>src\octree.js:188</code></a>
         </p>
 
 
@@ -1320,6 +1277,31 @@ faster and deeper tree growth.</p>
 
     <div class="description">
         <p>The root node.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_totalPoints" class="property item">
+    <h3 class="name"><code>totalPoints</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octree.js.html#l121"><code>src\octree.js:121</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The amount of points that are currently in the tree.</p>
 
     </div>
 
