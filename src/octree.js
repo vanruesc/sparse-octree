@@ -70,8 +70,8 @@ export class Octree {
 	 * The maximum tree depth level.
 	 * Setting this value refreshes the entire tree.
 	 *
-	 * It's possible to set this value to Infinity, but be aware that allowing 
-	 * infinitely small octants can have a negative impact on performance. Finding 
+	 * It's possible to set this value to Infinity, but be aware that allowing
+	 * infinitely small octants can have a negative impact on performance. Finding
 	 * a value that works best for a specific scene is advisable.
 	 *
 	 * @property maxDepth
@@ -93,11 +93,11 @@ export class Octree {
 	}
 
 	/**
-	 * Number of points per octant before a split occurs. Setting this value 
+	 * Number of points per octant before a split occurs. Setting this value
 	 * refreshes the entire tree.
 	 *
-	 * This value works together with the maximum depth as a secondary limiting 
-	 * factor. Smaller values cause splits to occur earlier which results in a 
+	 * This value works together with the maximum depth as a secondary limiting
+	 * factor. Smaller values cause splits to occur earlier which results in a
 	 * faster and deeper tree growth.
 	 *
 	 * @property maxPoints
@@ -186,7 +186,7 @@ export class Octree {
 	}
 
 	/**
-	 * Removes all points from the tree that are in the given array of position 
+	 * Removes all points from the tree that are in the given array of position
 	 * triples.
 	 *
 	 * @method removePoints

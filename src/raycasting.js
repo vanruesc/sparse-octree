@@ -1,5 +1,5 @@
 /**
- * Contains bytes used for bitwise operations. The last byte is used to store 
+ * Contains bytes used for bitwise operations. The last byte is used to store
  * raycasting flags.
  *
  * @property flags
@@ -12,7 +12,7 @@
 const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
 
 /**
- * A lookup-table containing octant ids. Used to determine the exit plane from 
+ * A lookup-table containing octant ids. Used to determine the exit plane from
  * an octant.
  *
  * @property octantTable
@@ -38,8 +38,8 @@ const octantTable = [
 /**
  * Determines the entry plane of the first octant that a ray travels through.
  *
- * Determining the first octant requires knowing which of the t0's is the 
- * largest. The tm's of the other axes must also be compared against that 
+ * Determining the first octant requires knowing which of the t0's is the
+ * largest. The tm's of the other axes must also be compared against that
  * largest t0.
  *
  * @method getFirstOctant
@@ -84,7 +84,7 @@ function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
 }
 
 /**
- * Fetches the next octant for raycasting based on the exit plane of the current 
+ * Fetches the next octant for raycasting based on the exit plane of the current
  * one.
  *
  * @method getNextOctant
@@ -167,9 +167,9 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 
 			do {
 
-				/* The possibilities for the next node are passed in the same 
-				 * respective order as the t-values. Hence, if the first parameter is 
-				 * found as the greatest, the fourth one will be returned. If the 2nd 
+				/* The possibilities for the next node are passed in the same
+				 * respective order as the t-values. Hence, if the first parameter is
+				 * found as the greatest, the fourth one will be returned. If the 2nd
 				 * parameter is the greatest, the 5th will be returned, etc.
 				 */
 

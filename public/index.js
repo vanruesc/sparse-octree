@@ -165,7 +165,19 @@
 		time = performance.now();
 
 		const helper = new OCTREE.OctreeHelper(octree);
+
+		try {
+
+			helper.update();
+
+		} catch(error) {
+
+			console.warn(error.message);
+
+		}
+
 		helper.visible = false;
+
 		console.log("OctreeHelper:", helper, "created in", (((performance.now() - time) * 100.0) / 100.0).toFixed(2) + " ms");
 
 		scene.add(helper);

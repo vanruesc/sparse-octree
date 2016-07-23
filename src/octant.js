@@ -150,7 +150,7 @@ export class Octant {
 	}
 
 	/**
-	 * Computes the distance squared from the center of this octant to the given 
+	 * Computes the distance squared from the center of this octant to the given
 	 * point.
 	 *
 	 * @method distanceToCenterSquared
@@ -173,7 +173,7 @@ export class Octant {
 	/**
 	 * Checks if the given point lies inside this octant's boundaries.
 	 *
-	 * This method can also be used to check if this octant intersects a sphere by 
+	 * This method can also be used to check if this octant intersects a sphere by
 	 * providing a radius as bias.
 	 *
 	 * @method containsPoint
@@ -231,7 +231,7 @@ export class Octant {
 	}
 
 	/**
-	 * Adds a given point to this node. If this octant isn't a leaf node, the 
+	 * Adds a given point to this node. If this octant isn't a leaf node, the
 	 * point will be added to a child octant.
 	 *
 	 * @method add
@@ -367,7 +367,7 @@ export class Octant {
 
 		const nextLevel = this.level + 1;
 
-		let i, l;
+		let i;
 		let point, data;
 
 		/* The order is important for raycasting.
@@ -423,8 +423,8 @@ export class Octant {
 	}
 
 	/**
-	 * Removes the given point from this octant. If this octant is not a leaf 
-	 * node, the point will be removed from a child node. If no data is provided, 
+	 * Removes the given point from this octant. If this octant is not a leaf
+	 * node, the point will be removed from a child node. If no data is provided,
 	 * the point and all its respective data entries will be removed completely.
 	 *
 	 * @method remove
@@ -552,7 +552,7 @@ export class Octant {
 	}
 
 	/**
-	 * Gathers all points from the children. The children are expected to be leaf 
+	 * Gathers all points from the children. The children are expected to be leaf
 	 * nodes and will be dropped afterwards.
 	 *
 	 * @method merge
@@ -562,7 +562,7 @@ export class Octant {
 	merge() {
 
 		let i, j, il, jl;
-		let child, id1, id2;
+		let child;
 
 		this.totalPoints = 0;
 		this.points = [];
@@ -586,7 +586,7 @@ export class Octant {
 	}
 
 	/**
-	 * Refreshes this octant and its children to make sure that all constraints 
+	 * Refreshes this octant and its children to make sure that all constraints
 	 * are satisfied.
 	 *
 	 * @method update

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 		banner: "/**\n" +
 			" * <%= pkg.name %> v<%= pkg.version %> build <%= date %>\n" +
 			" * <%= pkg.homepage %>\n" +
-			" * Copyright <%= date.slice(-4) %> <%= pkg.author.name %>, <%= pkg.license %>\n" + 
+			" * Copyright <%= date.slice(-4) %> <%= pkg.author.name %>, <%= pkg.license %>\n" +
 			" */\n",
 
 		eslint: {
@@ -17,16 +17,14 @@ module.exports = function(grunt) {
 
 		rollup: {
 			options: {
-				globals: {three: "THREE"},
+				globals: { three: "THREE" },
 				external: ["three"],
 				plugins: [
 					require("rollup-plugin-node-resolve")({
 						jsnext: true
 					}),
 					require("rollup-plugin-babel")({
-						exclude: [
-							"node_modules/**"
-						]
+						exclude: "node_modules/**"
 					})
 				]
 			},
