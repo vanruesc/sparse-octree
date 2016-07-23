@@ -11,11 +11,8 @@ module.exports = function(grunt) {
 			" * Copyright <%= date.slice(-4) %> <%= pkg.author.name %>, <%= pkg.license %>\n" + 
 			" */\n",
 
-		jshint: {
-			options: {
-				jshintrc: true
-			},
-			files: ["Gruntfile.js", "src/**/*.js", "test/**/*.js"]
+		eslint: {
+			target: ["Gruntfile.js", "src/**/*.js", "test/**/*.js"]
 		},
 
 		rollup: {
@@ -87,14 +84,15 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks("grunt-contrib-nodeunit");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-yuidoc");
 	grunt.loadNpmTasks("grunt-contrib-copy");
+	grunt.loadNpmTasks("grunt-eslint");
 	grunt.loadNpmTasks("grunt-rollup");
 
-	grunt.registerTask("default", ["build", "nodeunit"]);
-	grunt.registerTask("build", ["jshint", "rollup", "copy"]);
-	grunt.registerTask("test", ["jshint", "nodeunit"]);
+	grunt.registerTask("default", ["build", "nodeunit", "minify"]);
+	grunt.registerTask("build", ["eslint", "rollup", "copy:bundle"]);
+	grunt.registerTask("test", ["eslint", "nodeunit"]);
+	grunt.registerTask("minify", ["uglify", "copy:min"]);
 
 };
