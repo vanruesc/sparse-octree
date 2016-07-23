@@ -262,6 +262,16 @@ module.exports = {
 
 			let helper = new LIBRARY.OctreeHelper(octree);
 
+			try {
+
+				helper.update();
+
+			} catch(error) {
+
+				test.ok(false);
+
+			}
+
 			test.equal(helper.children.length, 3, "should have a child for each level");
 			test.done();
 

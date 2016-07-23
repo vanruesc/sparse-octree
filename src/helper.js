@@ -28,8 +28,6 @@ export class OctreeHelper extends THREE.Object3D {
 
 		this.tree = (tree !== undefined) ? tree : null;
 
-		this.update();
-
 	}
 
 	/**
