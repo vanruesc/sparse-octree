@@ -65,6 +65,12 @@ module.exports = function(grunt) {
 				src: ["build/<%= pkg.name %>.js"],
 				dest: "public/<%= pkg.name %>.js",
 				filter: "isFile"
+			},
+			min: {
+				expand: false,
+				src: ["build/<%= pkg.name %>.min.js"],
+				dest: "public/<%= pkg.name %>.min.js",
+				filter: "isFile"
 			}
 		},
 
