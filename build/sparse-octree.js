@@ -752,10 +752,10 @@
   		}
 
   		/**
-     * Computes a new vector that represents the center of this octant.
+     * Computes the center of this octant.
      *
      * @method center
-     * @return {Vector3} The center of this octant.
+     * @return {Vector3} A new vector that describes the center of this octant.
      */
 
   		createClass(Octant, [{
@@ -765,10 +765,10 @@
   				}
 
   				/**
-       * Computes a new vector that represents the size of this octant.
+       * Computes the size of this octant.
        *
        * @method dimensions
-       * @return {Vector3} The size of this octant.
+       * @return {Vector3} A new vector that describes the size of this octant.
        */
 
   		}, {
@@ -1197,10 +1197,10 @@
 
 
   		/**
-     * Calculates the size of the octree.
+     * Calculates the size of this octree.
      *
      * @method dimensions
-     * @return {Vector3} A new vector that describes the size.
+     * @return {Vector3} A new vector that describes the size of this octree.
      */
 
   		value: function dimensions() {
@@ -1208,10 +1208,10 @@
   		}
 
   		/**
-     * Calculates the center of the octree.
+     * Calculates the center of this octree.
      *
      * @method center
-     * @return {Vector3} A new vector that describes the center.
+     * @return {Vector3} A new vector that describes the center of this octree.
      */
 
   	}, {
@@ -1221,7 +1221,7 @@
   		}
 
   		/**
-     * Calculates the current depth of the octree.
+     * Calculates the current depth of this octree.
      *
      * @method depth
      * @return {Number} The depth.
@@ -1631,7 +1631,7 @@
   var maxPoints = 8;
 
   /**
-   * An octant.
+   * An octant that maintains points.
    *
    * @class PointOctant
    * @submodule point
