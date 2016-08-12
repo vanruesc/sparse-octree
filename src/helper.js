@@ -153,8 +153,6 @@ export class OctreeHelper extends THREE.Object3D {
 
 			}
 
-			// console.log("level:", level, "vertices:", vertexMap.size, "ids:", indexCount * 2);
-
 			// Create the geometry for this level.
 			if(vertexMap.size < 65536) {
 
@@ -187,7 +185,10 @@ export class OctreeHelper extends THREE.Object3D {
 				geometry.setIndex(new THREE.BufferAttribute(indices, 1));
 				geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-				material = new THREE.LineBasicMaterial({ color: new THREE.Color(0xffffff * Math.random()) });
+				material = new THREE.LineBasicMaterial({
+					color: new THREE.Color(0xffffff * Math.random())
+				});
+
 				lineSegments = new THREE.LineSegments(geometry, material);
 
 				this.add(lineSegments);
@@ -195,10 +196,8 @@ export class OctreeHelper extends THREE.Object3D {
 			} else {
 
 				throw new Error(
-
 					"Could not create geometry for octree depth level " + level +
 					" (vertex count of " + vertexMap.size + " exceeds limit of 65536)"
-
 				);
 
 			}
