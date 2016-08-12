@@ -36,13 +36,13 @@ const octantTable = [
 ];
 
 /**
- * Determines the entry plane of the first octant that a ray travels through.
+ * Finds the entry plane of the first octant that a ray travels through.
  *
  * Determining the first octant requires knowing which of the t0's is the
  * largest. The tm's of the other axes must also be compared against that
  * largest t0.
  *
- * @method getFirstOctant
+ * @method findEntryOctant
  * @private
  * @static
  * @param {Number} tx0 - Ray projection parameter.
@@ -54,7 +54,7 @@ const octantTable = [
  * @return {Number} The index of the first octant that the ray travels through.
  */
 
-function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
+function findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {
 
 	let entry = 0;
 
@@ -84,10 +84,10 @@ function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
 }
 
 /**
- * Fetches the next octant for raycasting based on the exit plane of the current
- * one.
+ * Finds the next octant that intersects with the ray based on the exit plane of
+ * the current one.
  *
- * @method getNextOctant
+ * @method findNextOctant
  * @private
  * @static
  * @param {Number} currentOctant - The index of the current octant.
@@ -97,7 +97,7 @@ function getFirstOctant(tx0, ty0, tz0, txm, tym, tzm) {
  * @return {Number} The index of the next octant that the ray travels through.
  */
 
-function getNextOctant(currentOctant, tx1, ty1, tz1) {
+function findNextOctant(currentOctant, tx1, ty1, tz1) {
 
 	let min;
 	let exit = 0;
@@ -131,7 +131,7 @@ function getNextOctant(currentOctant, tx1, ty1, tz1) {
  * @method raycastOctant
  * @private
  * @static
- * @param {Octant} octant - the current octant.
+ * @param {Octant} octant - The current octant.
  * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
  * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
  * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.
@@ -163,51 +163,51 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 			tym = 0.5 * (ty0 + ty1);
 			tzm = 0.5 * (tz0 + tz1);
 
-			currentOctant = getFirstOctant(tx0, ty0, tz0, txm, tym, tzm);
+			currentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);
 
 			do {
 
-				/* The possibilities for the next node are passed in the same
-				 * respective order as the t-values. Hence, if the first parameter is
-				 * found as the greatest, the fourth one will be returned. If the 2nd
-				 * parameter is the greatest, the 5th will be returned, etc.
+				/* The possibilities for the next node are passed in the same respective
+				 * order as the t-values. Hence, if the first value is found to be the
+				 * greatest, the fourth one will be returned. If the second value is the
+				 * greatest, the fifth one will be returned, etc.
 				 */
 
 				switch(currentOctant) {
 
 					case 0:
 						raycastOctant(children[flags[8]], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, txm, tym, tzm);
+						currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
 						break;
 
 					case 1:
 						raycastOctant(children[flags[8] ^ flags[1]], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, txm, tym, tz1);
+						currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
 						break;
 
 					case 2:
 						raycastOctant(children[flags[8] ^ flags[2]], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, txm, ty1, tzm);
+						currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
 						break;
 
 					case 3:
 						raycastOctant(children[flags[8] ^ flags[3]], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, txm, ty1, tz1);
+						currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
 						break;
 
 					case 4:
 						raycastOctant(children[flags[8] ^ flags[4]], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, tx1, tym, tzm);
+						currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
 						break;
 
 					case 5:
 						raycastOctant(children[flags[8] ^ flags[5]], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, tx1, tym, tz1);
+						currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
 						break;
 
 					case 6:
 						raycastOctant(children[flags[8] ^ flags[6]], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
-						currentOctant = getNextOctant(currentOctant, tx1, ty1, tzm);
+						currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
 						break;
 
 					case 7:
@@ -251,20 +251,18 @@ export class Raycasting {
 
 	static raycast(octree, raycaster, octants) {
 
-		const root = octree.root;
-
-		const size = root.size().clone();
-		const halfSize = size.clone().multiplyScalar(0.5);
+		const dimensions = octree.dimensions();
+		const halfDimensions = dimensions.clone().multiplyScalar(0.5);
 
 		// Translate the octree extents to the center of the octree.
-		const min = root.min.clone().sub(root.min);
-		const max = root.max.clone().sub(root.min);
+		const min = octree.min.clone().sub(octree.min);
+		const max = octree.max.clone().sub(octree.min);
 
 		const direction = raycaster.ray.direction.clone();
 		const origin = raycaster.ray.origin.clone();
 
 		// Translate the ray to the center of the octree.
-		origin.sub(root.center()).add(halfSize);
+		origin.sub(octree.center()).add(halfDimensions);
 
 		let invDirX, invDirY, invDirZ;
 		let tx0, tx1, ty0, ty1, tz0, tz1;
@@ -275,7 +273,7 @@ export class Raycasting {
 		// Handle rays with negative directions.
 		if(direction.x < 0.0) {
 
-			origin.x = size.x - origin.x;
+			origin.x = dimensions.x - origin.x;
 			direction.x = -direction.x;
 			flags[8] |= flags[4];
 
@@ -283,7 +281,7 @@ export class Raycasting {
 
 		if(direction.y < 0.0) {
 
-			origin.y = size.y - origin.y;
+			origin.y = dimensions.y - origin.y;
 			direction.y = -direction.y;
 			flags[8] |= flags[2];
 
@@ -291,7 +289,7 @@ export class Raycasting {
 
 		if(direction.z < 0.0) {
 
-			origin.z = size.z - origin.z;
+			origin.z = dimensions.z - origin.z;
 			direction.z = -direction.z;
 			flags[8] |= flags[1];
 
@@ -313,83 +311,7 @@ export class Raycasting {
 		// Check if the ray hits the octree.
 		if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
 
-			raycastOctant(root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
-
-		}
-
-	}
-
-	/**
-	 * Collects points that intersect with the ray.
-	 *
-	 * @method testPoints
-	 * @static
-	 * @param {Array} octants - An array containing octants that intersect with the ray.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
-	 */
-
-	static testPoints(octants, raycaster, intersects) {
-
-		const threshold = raycaster.params.Points.threshold;
-		const thresholdSq = threshold * threshold;
-
-		let intersectPoint;
-		let distance, distanceToRay;
-		let rayPointDistanceSq;
-
-		let i, j, il, jl;
-		let octant, point, dataSet, data;
-
-		for(i = 0, il = octants.length; i < il; ++i) {
-
-			octant = octants[i];
-
-			for(j = 0, jl = octant.totalPoints; j < jl; ++j) {
-
-				point = octant.points[j];
-				rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
-
-				if(rayPointDistanceSq < thresholdSq) {
-
-					intersectPoint = raycaster.ray.closestPointToPoint(point);
-					distance = raycaster.ray.origin.distanceTo(intersectPoint);
-
-					if(distance >= raycaster.near && distance <= raycaster.far) {
-
-						dataSet = octant.dataSets[j];
-						distanceToRay = Math.sqrt(rayPointDistanceSq);
-
-						if(dataSet.size > 0) {
-
-							// Unfold data aggregation.
-							for(data of dataSet) {
-
-								intersects.push({
-									distance: distance,
-									distanceToRay: distanceToRay,
-									point: intersectPoint.clone(),
-									object: data
-								});
-
-							}
-
-						} else {
-
-							intersects.push({
-								distance: distance,
-								distanceToRay: distanceToRay,
-								point: intersectPoint.clone(),
-								object: null
-							});
-
-						}
-
-					}
-
-				}
-
-			}
+			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
 
 		}
 

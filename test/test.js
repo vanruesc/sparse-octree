@@ -19,9 +19,34 @@ module.exports = {
 
 		},
 
-		"can add a point": function(test) {
+		"can be split": function(test) {
 
 			let octant = new LIBRARY.Octant(box.min, box.max);
+
+			test.equal(octant.children, null, "should have no children");
+			octant.split();
+			test.notEqual(octant.children, null, "should create children");
+
+			test.done();
+
+		}
+
+	},
+
+	"PointOctant": {
+
+		"can be instantiated": function(test) {
+
+			let octant = new LIBRARY.PointOctant();
+
+			test.ok(octant, "point octant");
+			test.done();
+
+		},
+
+		"can add a point": function(test) {
+
+			let octant = new LIBRARY.PointOctant(box.min, box.max);
 
 			octant.add(new THREE.Vector3(0, 0, 0), data);
 			test.equal(octant.totalPoints, 1, "should be able to add a point");
@@ -31,7 +56,7 @@ module.exports = {
 
 		"recognises duplicates": function(test) {
 
-			let octant = new LIBRARY.Octant(box.min, box.max);
+			let octant = new LIBRARY.PointOctant(box.min, box.max);
 
 			octant.add(new THREE.Vector3(0, 0, 0), data);
 			octant.add(new THREE.Vector3(1, 0, 0), data);
@@ -45,7 +70,7 @@ module.exports = {
 
 		"can remove a point": function(test) {
 
-			let octant = new LIBRARY.Octant(box.min, box.max);
+			let octant = new LIBRARY.PointOctant(box.min, box.max);
 
 			octant.add(new THREE.Vector3(0, 0, 0), data);
 			octant.add(new THREE.Vector3(0, 0, 0), {});
@@ -58,7 +83,7 @@ module.exports = {
 
 		"can unfold and remove accumulated data": function(test) {
 
-			let octant = new LIBRARY.Octant(box.min, box.max);
+			let octant = new LIBRARY.PointOctant(box.min, box.max);
 
 			octant.add(new THREE.Vector3(0, 0, 0), data);
 			octant.add(new THREE.Vector3(0, 0, 0), {});
@@ -83,9 +108,22 @@ module.exports = {
 
 		},
 
+	},
+
+	"PointOctree": {
+
+		"can be instantiated": function(test) {
+
+			let octree = new LIBRARY.PointOctree();
+
+			test.ok(octree, "point octree");
+			test.done();
+
+		},
+
 		"can look a point up": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			test.ok(octree.fetch(new THREE.Vector3(0, 0, 0)).has(data), "should find points and return their data set");
@@ -96,7 +134,7 @@ module.exports = {
 
 		"uses data to distinguish multiple identical points": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(0, 0, 0), {});
@@ -108,7 +146,7 @@ module.exports = {
 
 		"can add multiple points": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.addPoints([-1, -1, -1, 0, 0, 0, 1, 1, 1], data);
 			test.ok(octree.totalPoints, 3, "should be able to store multiple points");
@@ -122,7 +160,7 @@ module.exports = {
 
 		"can remove multiple points": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.addPoints([-1, -1, -1, 0, 0, 0, 1, 1, 1], data);
 			octree.addPoints([-1, -1, -1, 1, 1, 1], data);
@@ -134,7 +172,7 @@ module.exports = {
 
 		"adds points to intersecting octants": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(2, 0, 0));
 			test.equal(octree.totalPoints, 0, "should not add if position is out of range");
@@ -145,7 +183,7 @@ module.exports = {
 
 		"retains all points after a split": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(0, 0, 0.005));
@@ -157,7 +195,7 @@ module.exports = {
 
 		"splits octants that are at maximum capacity": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
@@ -170,7 +208,7 @@ module.exports = {
 
 		"merges octants if possible": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
@@ -183,7 +221,7 @@ module.exports = {
 
 		"forces a merge when necessary": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 1);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
@@ -196,7 +234,7 @@ module.exports = {
 
 		"forces a split when necessary": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 2, 1);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 2, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
@@ -209,7 +247,7 @@ module.exports = {
 
 		"can find the nearest point": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
@@ -224,7 +262,7 @@ module.exports = {
 
 		"can find points inside a radius": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(0, 0.1, 0.005));
@@ -254,7 +292,7 @@ module.exports = {
 
 		"creates geometry for each tree level": function(test) {
 
-			let octree = new LIBRARY.Octree(box.min, box.max, 0.0, 1, 2);
+			let octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0));
 			octree.add(new THREE.Vector3(1, 0, 0));
