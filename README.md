@@ -15,7 +15,7 @@ $ npm install sparse-octree
 
 
 ## Usage
-A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/).
+A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/1/).
 
 
 ## Demo
