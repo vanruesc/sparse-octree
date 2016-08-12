@@ -2751,4 +2751,6 @@
   exports.PointOctant = PointOctant;
   exports.PointOctree = PointOctree;
 
+  Object.defineProperty(exports, '__esModule', { value: true });
+
 }));
