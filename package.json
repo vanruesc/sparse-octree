@@ -1,7 +1,7 @@
 {
 	"name": "sparse-octree",
-	"version": "0.2.0",
-	"description": "A sparse octree data structure for three.js.",
+	"version": "1.0.0",
+	"description": "A sparse octree data structure.",
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "build/sparse-octree.js",
 	"jsnext:main": "src/index.js",
@@ -15,8 +15,7 @@
 		"3d", "spatial",
 		"voxel", "points",
 		"sparse", "octree",
-		"frustum", "culling",
-		"three", "three.js"
+		"frustum", "culling"
 	],
 
 	"author": {
@@ -42,7 +41,7 @@
 	},
 
 	"dependencies": {
-		"three": "0.78.x"
+		"three": "0.79.x"
 	},
 
 	"devDependencies": {
