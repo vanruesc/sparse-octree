@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0</em>
+            <em>API Docs for: 1.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,6 +41,8 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/PointOctant.html">PointOctant</a></li>
+                                <li><a href="../classes/PointOctree.html">PointOctree</a></li>
                                 <li><a href="../classes/Raycasting.html">Raycasting</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
@@ -48,6 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
+                                <li><a href="../modules/point.html">point</a></li>
                             </ul>
                         </div>
                     </div>
@@ -113,7 +116,7 @@
                         <code>max</code>
                 </li>
                 <li class="arg">
-                        <code>level</code>
+                        <code class="optional">[level]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -170,8 +173,9 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name">level</code>
+                        <code class="param-name optional">[level]</code>
                         <span class="type">Number</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
@@ -207,23 +211,7 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_add">add</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_addToChild">addToChild</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_center">center</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_containsPoint">containsPoint</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_cull">cull</a>
 
                             </li>
                             <li class="index-item method">
@@ -231,51 +219,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_distanceToCenterSquared">distanceToCenterSquared</a>
+                                <a href="#method_dimensions">dimensions</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_distanceToSquared">distanceToSquared</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_fetch">fetch</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_findNearestPoint">findNearestPoint</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_findOctantsByLevel">findOctantsByLevel</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_findPoints">findPoints</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_merge">merge</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_remove">remove</a>
-
-                            </li>
-                            <li class="index-item method private">
-                                <a href="#method_removeFromChild">removeFromChild</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_size">size</a>
-
-                            </li>
-                            <li class="index-item method private">
                                 <a href="#method_split">split</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_update">update</a>
 
                             </li>
                     </ul>
@@ -286,21 +234,7 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_bias">bias</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_biasSquared">biasSquared</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_children">children</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_dataSets">dataSets</a>
 
                             </li>
                             <li class="index-item property">
@@ -312,25 +246,7 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_maxDepth">maxDepth</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_maxPoints">maxPoints</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_min">min</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_points">points</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_totalPoints">totalPoints</a>
 
                             </li>
                     </ul>
@@ -342,178 +258,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_add" class="method item">
-    <h3 class="name"><code>add</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l233"><code>src\octant.js:233</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Adds a given point to this node. If this octant isn't a leaf node, the
-point will be added to a child octant.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that will be associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the point was a unique addition.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_addToChild" class="method item private">
-    <h3 class="name"><code>addToChild</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l315"><code>src\octant.js:315</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Adds the given point to a child node that covers the point's position.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that will be associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the point was a unique addition.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_center" class="method item">
     <h3 class="name"><code>center</code></h3>
 
@@ -532,7 +276,7 @@ point will be added to a child octant.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l118"><code>src\octant.js:118</code></a>
+        <a href="../files/src_octant.js.html#l57"><code>src\octant.js:57</code></a>
         </p>
 
 
@@ -550,168 +294,10 @@ point will be added to a child octant.</p>
 
             <div class="returns-description">
                         <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>The center of this octant.</p>
+                    <p>A new vector that describes the center of this octant.</p>
 
             </div>
         </div>
-
-
-</div>
-<div id="method_containsPoint" class="method item">
-    <h3 class="name"><code>containsPoint</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>bias</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l173"><code>src\octant.js:173</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Checks if the given point lies inside this octant's boundaries.</p>
-<p>This method can also be used to check if this octant intersects a sphere by
-providing a radius as bias.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">bias</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A padding that extends the boundaries temporarily.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the given point lies inside this octant.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_cull" class="method item">
-    <h3 class="name"><code>cull</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>shape</code>
-                </li>
-                <li class="arg">
-                        <code>intersects</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l201"><code>src\octant.js:201</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Collects octants that lie inside the specified frustum or bounding box.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">shape</code>
-                        <span class="type">Frustum | Box3</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A frustum or a bounding box.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">intersects</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with the intersecting octants.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -733,7 +319,7 @@ providing a radius as bias.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l85"><code>src\octant.js:85</code></a>
+        <a href="../files/src_octant.js.html#l75"><code>src\octant.js:75</code></a>
         </p>
 
 
@@ -758,695 +344,8 @@ providing a radius as bias.</p>
 
 
 </div>
-<div id="method_distanceToCenterSquared" class="method item">
-    <h3 class="name"><code>distanceToCenterSquared</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l152"><code>src\octant.js:152</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Computes the distance squared from the center of this octant to the given
-point.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The distance squared.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_distanceToSquared" class="method item">
-    <h3 class="name"><code>distanceToSquared</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l136"><code>src\octant.js:136</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Computes the distance squared from this octant to the given point.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The distance squared.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_fetch" class="method item">
-    <h3 class="name"><code>fetch</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Set</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l626"><code>src\octant.js:626</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Retrieves the data of the point at the specified position.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A position.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Set</span>:
-                    <p>A set of data entries that are associated with the given point or null if it doesn't exist.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_findNearestPoint" class="method item">
-    <h3 class="name"><code>findNearestPoint</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>maxDistance</code>
-                </li>
-                <li class="arg">
-                        <code>skipSelf</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l675"><code>src\octant.js:675</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Finds the closest point to the given one.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">maxDistance</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The maximum distance.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">skipSelf</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Whether a point that is exactly at the given position should be skipped.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Object</span>:
-                    <p>An object representing the nearest point or null if there is none. The object has a point and a data property.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_findOctantsByLevel" class="method item">
-    <h3 class="name"><code>findOctantsByLevel</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>level</code>
-                </li>
-                <li class="arg">
-                        <code>result</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l830"><code>src\octant.js:830</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Fetches all octants with the specified level.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">level</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The depth level.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">result</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with octants. Empty octants will be excluded.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_findPoints" class="method item">
-    <h3 class="name"><code>findPoints</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>skipSelf</code>
-                </li>
-                <li class="arg">
-                        <code>result</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l771"><code>src\octant.js:771</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Finds points that are inside the specified radius around a given position.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A position.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A radius.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">skipSelf</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Whether a point that is exactly at the given position should be skipped.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">result</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with objects, each containing a point and a data property.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_merge" class="method item private">
-    <h3 class="name"><code>merge</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l554"><code>src\octant.js:554</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Gathers all points from the children. The children are expected to be leaf
-nodes and will be dropped afterwards.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_remove" class="method item">
-    <h3 class="name"><code>remove</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l425"><code>src\octant.js:425</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Removes the given point from this octant. If this octant is not a leaf
-node, the point will be removed from a child node. If no data is provided,
-the point and all its respective data entries will be removed completely.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that is associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the removed point was unique.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_removeFromChild" class="method item private">
-    <h3 class="name"><code>removeFromChild</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l514"><code>src\octant.js:514</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Removes the given point from a child node.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that is associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-                    <p>Whether the removed point was unique.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_size" class="method item">
-    <h3 class="name"><code>size</code></h3>
+<div id="method_dimensions" class="method item">
+    <h3 class="name"><code>dimensions</code></h3>
 
         <span class="paren">()</span>
 
@@ -1463,7 +362,7 @@ the point and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l127"><code>src\octant.js:127</code></a>
+        <a href="../files/src_octant.js.html#l66"><code>src\octant.js:66</code></a>
         </p>
 
 
@@ -1481,21 +380,20 @@ the point and all its respective data entries will be removed completely.</p>
 
             <div class="returns-description">
                         <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>The size of this octant.</p>
+                    <p>A new vector that describes the size of this octant.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_split" class="method item private">
+<div id="method_split" class="method item">
     <h3 class="name"><code>split</code></h3>
 
         <span class="paren">()</span>
 
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -1504,7 +402,7 @@ the point and all its respective data entries will be removed completely.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l355"><code>src\octant.js:355</code></a>
+        <a href="../files/src_octant.js.html#l108"><code>src\octant.js:108</code></a>
         </p>
 
 
@@ -1512,39 +410,7 @@ the point and all its respective data entries will be removed completely.</p>
     </div>
 
     <div class="description">
-        <p>Splits this octant up into eight smaller ones.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_update" class="method item">
-    <h3 class="name"><code>update</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l588"><code>src\octant.js:588</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Refreshes this octant and its children to make sure that all constraints
-are satisfied.</p>
+        <p>Splits this octant into eight smaller ones.</p>
 
     </div>
 
@@ -1557,60 +423,6 @@ are satisfied.</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_bias" class="property item">
-    <h3 class="name"><code>bias</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l864"><code>src\octant.js:864</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>A threshold for proximity checks.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> 0.0</p>
-
-
-</div>
-<div id="property_biasSquared" class="property item">
-    <h3 class="name"><code>biasSquared</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l875"><code>src\octant.js:875</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The proximity threshold squared.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> 0.0</p>
-
-
-</div>
 <div id="property_children" class="property item">
     <h3 class="name"><code>children</code></h3>
     <span class="type">Array</span>
@@ -1622,7 +434,7 @@ are satisfied.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l74"><code>src\octant.js:74</code></a>
+        <a href="../files/src_octant.js.html#l45"><code>src\octant.js:45</code></a>
         </p>
 
 
@@ -1633,31 +445,7 @@ are satisfied.</p>
 
     </div>
 
-
-
-</div>
-<div id="property_dataSets" class="property item">
-    <h3 class="name"><code>dataSets</code></h3>
-    <span class="type">Array</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l65"><code>src\octant.js:65</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>Additional data that is kept in sets for individual points.</p>
-
-    </div>
-
+        <p><strong>Default:</strong> null</p>
 
 
 </div>
@@ -1667,13 +455,12 @@ are satisfied.</p>
 
 
 
-        <span class="flag final">final</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l37"><code>src\octant.js:37</code></a>
+        <a href="../files/src_octant.js.html#l35"><code>src\octant.js:35</code></a>
         </p>
 
 
@@ -1684,6 +471,7 @@ are satisfied.</p>
 
     </div>
 
+        <p><strong>Default:</strong> 0</p>
 
 
 </div>
@@ -1693,13 +481,12 @@ are satisfied.</p>
 
 
 
-        <span class="flag final">final</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l27"><code>src\octant.js:27</code></a>
+        <a href="../files/src_octant.js.html#l26"><code>src\octant.js:26</code></a>
         </p>
 
 
@@ -1713,67 +500,12 @@ are satisfied.</p>
 
 
 </div>
-<div id="property_maxDepth" class="property item">
-    <h3 class="name"><code>maxDepth</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l886"><code>src\octant.js:886</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The maximum tree depth level.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> 8</p>
-
-
-</div>
-<div id="property_maxPoints" class="property item">
-    <h3 class="name"><code>maxPoints</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l897"><code>src\octant.js:897</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>Number of points per octant before a split occurs.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> 8</p>
-
-
-</div>
 <div id="property_min" class="property item">
     <h3 class="name"><code>min</code></h3>
     <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
 
-        <span class="flag final">final</span>
 
 
     <div class="meta">
@@ -1787,56 +519,6 @@ are satisfied.</p>
 
     <div class="description">
         <p>The lower bounds of this octant.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_points" class="property item">
-    <h3 class="name"><code>points</code></h3>
-    <span class="type">Array</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l56"><code>src\octant.js:56</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The points that are inside this node.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_totalPoints" class="property item">
-    <h3 class="name"><code>totalPoints</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l47"><code>src\octant.js:47</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The amount of points in this octant.</p>
 
     </div>
 

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\point\octant.js - sparse-octree</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Octant.html">Octant</a></li>
+                                <li><a href="../classes/Octree.html">Octree</a></li>
+                                <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/PointOctant.html">PointOctant</a></li>
+                                <li><a href="../classes/PointOctree.html">PointOctree</a></li>
+                                <li><a href="../classes/Raycasting.html">Raycasting</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/octree.html">octree</a></li>
+                                <li><a href="../modules/point.html">point</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src\point\octant.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import { Octant } from &quot;../octant&quot;;
+
+/**
+ * A threshold for proximity checks.
+ *
+ * @property bias
+ * @type Number
+ * @private
+ * @static
+ * @default 0.0
+ */
+
+let bias = 0.0;
+
+/**
+ * The proximity threshold squared.
+ *
+ * @property biasSquared
+ * @type Number
+ * @private
+ * @static
+ * @default 0.0
+ */
+
+let biasSquared = 0.0;
+
+/**
+ * The maximum tree depth level.
+ *
+ * @property maxDepth
+ * @type Number
+ * @private
+ * @static
+ * @default 8
+ */
+
+let maxDepth = 8;
+
+/**
+ * Number of points per octant before a split occurs.
+ *
+ * @property maxPoints
+ * @type Number
+ * @private
+ * @static
+ * @default 8
+ */
+
+let maxPoints = 8;
+
+/**
+ * An octant that maintains points.
+ *
+ * @class PointOctant
+ * @submodule point
+ * @extends Octant
+ * @constructor
+ * @param {Vector3} min - The lower bounds.
+ * @param {Vector3} max - The upper bounds.
+ * @param {Number} level - The depth level.
+ */
+
+export class PointOctant extends Octant {
+
+	constructor(min, max, level) {
+
+		super(min, max, level);
+
+		/**
+		 * The amount of points in this octant.
+		 *
+		 * @property totalPoints
+		 * @type Number
+		 */
+
+		this.totalPoints = 0;
+
+		/**
+		 * The points that are inside this node.
+		 *
+		 * @property points
+		 * @type Array
+		 */
+
+		this.points = null;
+
+		/**
+		 * Additional data that is kept in sets for individual points.
+		 *
+		 * @property dataSets
+		 * @type Array
+		 */
+
+		this.dataSets = null;
+
+	}
+
+	/**
+	 * A threshold for proximity checks.
+	 *
+	 * @property bias
+	 * @type Number
+	 * @static
+	 * @default 0.0
+	 */
+
+	static get bias() { return bias; }
+
+	static set bias(x) {
+
+		bias = Math.max(0.0, x);
+		biasSquared = bias * bias;
+
+	}
+
+	/**
+	 * The maximum tree depth level.
+	 *
+	 * @property maxDepth
+	 * @type Number
+	 * @static
+	 * @default 8
+	 */
+
+	static get maxDepth() { return maxDepth; }
+
+	static set maxDepth(x) { maxDepth = Math.max(0, Math.round(x)); }
+
+	/**
+	 * Number of points per octant before a split occurs.
+	 *
+	 * @property maxPoints
+	 * @type Number
+	 * @static
+	 * @default 8
+	 */
+
+	static get maxPoints() { return maxPoints; }
+
+	static set maxPoints(x) { maxPoints = Math.max(1, Math.round(x)); }
+
+	/**
+	 * Computes the distance squared from this octant to the given point.
+	 *
+	 * @method distanceToSquared
+	 * @param {Vector3} p - A point.
+	 * @return {Number} The distance squared.
+	 */
+
+	distanceToSquared(p) {
+
+		const clampedPoint = p.clone().clamp(this.min, this.max);
+
+		return clampedPoint.sub(p).lengthSq();
+
+	}
+
+	/**
+	 * Computes the distance squared from the center of this octant to the given
+	 * point.
+	 *
+	 * @method distanceToCenterSquared
+	 * @param {Vector3} p - A point.
+	 * @return {Number} The distance squared.
+	 */
+
+	distanceToCenterSquared(p) {
+
+		const center = this.center();
+
+		const dx = p.x - center.x;
+		const dy = p.y - center.x;
+		const dz = p.z - center.z;
+
+		return dx * dx + dy * dy + dz * dz;
+
+	}
+
+	/**
+	 * Checks if the given point lies inside this octant&#x27;s boundaries.
+	 *
+	 * This method can also be used to check if this octant intersects a sphere by
+	 * providing a radius as bias.
+	 *
+	 * @method containsPoint
+	 * @param {Vector3} p - A point.
+	 * @param {Number} bias - A padding that extends the boundaries temporarily.
+	 * @return {Boolean} Whether the given point lies inside this octant.
+	 */
+
+	containsPoint(p, bias) {
+
+		const min = this.min;
+		const max = this.max;
+
+		return (
+			p.x &gt;= min.x - bias &amp;&amp;
+			p.y &gt;= min.y - bias &amp;&amp;
+			p.z &gt;= min.z - bias &amp;&amp;
+			p.x &lt;= max.x + bias &amp;&amp;
+			p.y &lt;= max.y + bias &amp;&amp;
+			p.z &lt;= max.z + bias
+		);
+
+	}
+
+	/**
+	 * Adds a point to this node. If this octant isn&#x27;t a leaf node, the point will
+	 * be added to a child octant.
+	 *
+	 * @method add
+	 * @param {Vector3} p - A point.
+	 * @param {Object} [data] - An object that will be associated with the point.
+	 * @return {Boolean} Whether the point was a unique addition.
+	 */
+
+	add(p, data) {
+
+		let unique = false;
+		let hit = false;
+
+		let i, l;
+		let points, point;
+
+		if(this.children !== null) {
+
+			unique = this.addToChild(p, data);
+
+		} else {
+
+			if(this.totalPoints === 0) {
+
+				this.points = [];
+				this.dataSets = [];
+
+			}
+
+			points = this.points;
+
+			// @todo: improve time complexity of duplicate check.
+			for(i = 0, l = this.totalPoints; !hit &amp;&amp; i &lt; l; ++i) {
+
+				point = points[i];
+				hit = point.equals(p);
+
+			}
+
+			if(hit) {
+
+				// Aggregate data of duplicates.
+				if(data !== undefined) {
+
+					this.dataSets[i - 1].add(data);
+
+				}
+
+			} else {
+
+				unique = true;
+
+				if(this.totalPoints === maxPoints &amp;&amp; this.level &lt; maxDepth) {
+
+					// At maximum capacity and can still split.
+					this.split();
+					this.addToChild(p, data);
+
+				} else {
+
+					// Count distinct points in leaf nodes.
+					this.totalPoints = this.points.push(p);
+					this.dataSets.push(new Set());
+
+					if(data !== undefined) {
+
+						this.dataSets[this.totalPoints - 1].add(data);
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return unique;
+
+	}
+
+	/**
+	 * Adds the given point to a child node that covers the point&#x27;s position.
+	 *
+	 * @method addToChild
+	 * @private
+	 * @param {Vector3} p - A point.
+	 * @param {Object} [data] - An object that will be associated with the point.
+	 * @return {Boolean} Whether the point was a unique addition.
+	 */
+
+	addToChild(p, data) {
+
+		let unique = false;
+
+		let i, l;
+
+		for(i = 0, l = this.children.length; i &lt; l; ++i) {
+
+			if(this.children[i].containsPoint(p, bias)) {
+
+				unique = this.children[i].add(p, data);
+
+				if(unique) {
+
+					// Register addition in parent node.
+					++this.totalPoints;
+
+				}
+
+				break;
+
+			}
+
+		}
+
+		return unique;
+
+	}
+
+	/**
+	 * Splits this octant up into eight smaller ones.
+	 *
+	 * @method split
+	 * @private
+	 */
+
+	split() {
+
+		super.split();
+
+		let i;
+		let point, data;
+
+		// Distribute existing points to the new children.
+		i = this.totalPoints - 1;
+		this.totalPoints = 0;
+
+		while(i &gt;= 0) {
+
+			point = this.points[i];
+
+			if(this.dataSets[i].size &gt; 0) {
+
+				// Unfold data aggregations. Each entry is one point.
+				for(data of this.dataSets[i].values()) {
+
+					this.addToChild(point, data);
+
+				}
+
+			} else {
+
+				this.addToChild(point);
+
+			}
+
+			--i;
+
+		}
+
+		this.points = null;
+		this.dataSets = null;
+
+	}
+
+	/**
+	 * Removes the given point from this octant. If this octant is not a leaf
+	 * node, the point will be removed from a child node. If no data is provided,
+	 * the point and all its respective data entries will be removed completely.
+	 *
+	 * @method remove
+	 * @param {Vector3} p - The point.
+	 * @param {Object} [data] - An object that is associated with the point.
+	 * @return {Boolean} Whether the removed point was unique.
+	 */
+
+	remove(p, data) {
+
+		const points = this.points;
+		const dataSets = this.dataSets;
+
+		let unique = false;
+
+		let i, l;
+		let point, last;
+
+		let dataSet = null;
+
+		if(this.children !== null) {
+
+			unique = this.removeFromChild(p, data);
+
+			if(this.totalPoints &lt;= maxPoints) {
+
+				this.merge();
+
+			}
+
+		} else if(this.totalPoints &gt; 0) {
+
+			for(i = 0, l = this.totalPoints; i &lt; l; ++i) {
+
+				point = points[i];
+
+				if(point.equals(p)) {
+
+					// Found it.
+					dataSet = dataSets[i];
+
+					if(data !== undefined) {
+
+						dataSet.delete(data);
+
+					} else {
+
+						dataSet.clear();
+
+					}
+
+					if(dataSet.size === 0) {
+
+						unique = true;
+						last = l - 1;
+
+						// If the point is NOT the last one in the array:
+						if(i &lt; last) {
+
+							// Overwrite with the last point...
+							points[i] = points[last];
+
+							// ...and data set.
+							dataSets[i] = dataSets[last];
+
+						}
+
+						// Drop the last entry.
+						points.pop();
+						dataSets.pop();
+
+						// Register deletion in leaf node.
+						--this.totalPoints;
+
+					}
+
+					break;
+
+				}
+
+			}
+
+		}
+
+		return unique;
+
+	}
+
+	/**
+	 * Removes the given point from a child node.
+	 *
+	 * @method removeFromChild
+	 * @private
+	 * @param {Vector3} p - The point.
+	 * @param {Object} [data] - An object that is associated with the point.
+	 * @return {Boolean} Whether the removed point was unique.
+	 */
+
+	removeFromChild(p, data) {
+
+		let unique = false;
+
+		let i, l;
+
+		for(i = 0, l = this.children.length; i &lt; l; ++i) {
+
+			if(this.children[i].containsPoint(p, bias)) {
+
+				unique = this.children[i].remove(p, data);
+
+				if(unique) {
+
+					// Register deletion in parent node.
+					--this.totalPoints;
+
+				}
+
+				break;
+
+			}
+
+		}
+
+		return unique;
+
+	}
+
+	/**
+	 * Gathers all points from the children. The children are expected to be leaf
+	 * nodes and will be dropped afterwards.
+	 *
+	 * @method merge
+	 * @private
+	 */
+
+	merge() {
+
+		let i, j, il, jl;
+		let child;
+
+		this.totalPoints = 0;
+		this.points = [];
+		this.dataSets = [];
+
+		for(i = 0, il = this.children.length; i &lt; il; ++i) {
+
+			child = this.children[i];
+
+			for(j = 0, jl = child.totalPoints; j &lt; jl; ++j) {
+
+				this.totalPoints = this.points.push(child.points[j]);
+				this.dataSets.push(child.dataSets[j]);
+
+			}
+
+		}
+
+		this.children = null;
+
+	}
+
+	/**
+	 * Refreshes this octant and its children to make sure that all constraints
+	 * are satisfied.
+	 *
+	 * @method update
+	 */
+
+	update() {
+
+		const children = this.children;
+
+		let i, l;
+
+		if(children !== null) {
+
+			// Start from the bottom.
+			for(i = 0, l = children.length; i &lt; l; ++i) {
+
+				children[i].update();
+
+			}
+
+			if(this.totalPoints &lt;= maxPoints || this.level &gt;= maxDepth) {
+
+				// All points fit into one octant or the level is too high.
+				this.merge();
+
+			}
+
+		} else if(this.totalPoints &gt; maxPoints &amp;&amp; this.level &lt; maxDepth) {
+
+			// Exceeding maximum capacity.
+			this.split();
+
+		}
+
+	}
+
+	/**
+	 * Retrieves the data of the point at the specified position.
+	 *
+	 * @method fetch
+	 * @param {Vector3} p - A position.
+	 * @return {Set} A set of data entries that are associated with the given point or null if it doesn&#x27;t exist.
+	 */
+
+	fetch(p) {
+
+		let result = null;
+
+		let i, l;
+		let point;
+
+		if(this.containsPoint(p, bias)) {
+
+			if(this.children !== null) {
+
+				for(i = 0, l = this.children.length; result === null &amp;&amp; i &lt; l; ++i) {
+
+					result = this.children[i].fetch(p);
+
+				}
+
+			} else {
+
+				for(i = 0, l = this.totalPoints; i &lt; l; ++i) {
+
+					point = this.points[i];
+
+					if(p.distanceToSquared(point) &lt;= biasSquared) {
+
+						result = this.dataSets[i];
+
+						break;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Finds the closest point to the given one.
+	 *
+	 * @method findNearestPoint
+	 * @param {Vector3} p - The point.
+	 * @param {Number} maxDistance - The maximum distance.
+	 * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+	 * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
+	 */
+
+	findNearestPoint(p, maxDistance, skipSelf) {
+
+		const points = this.points;
+		const children = this.children;
+
+		let result = null;
+		let bestDist = maxDistance;
+
+		let i, l;
+		let point, distSq;
+
+		let sortedChildren;
+		let child, childResult;
+
+		// Only consider leaf nodes.
+		if(children === null) {
+
+			for(i = 0, l = this.totalPoints; i &lt; l; ++i) {
+
+				point = points[i];
+				distSq = p.distanceToSquared(point);
+
+				if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt;= bestDist) {
+
+					bestDist = distSq;
+
+					result = {
+						point: point.clone(),
+						data: this.dataSets[i]
+					};
+
+				}
+
+			}
+
+		} else {
+
+			// Sort the children.
+			sortedChildren = children.map(function(child) {
+
+				// Precompute distances.
+				return {
+					octant: child,
+					distance: child.distanceToCenterSquared(p)
+				};
+
+			}).sort(function(a, b) {
+
+				// Smallest distance to p first, ASC.
+				return a.distance - b.distance;
+
+			});
+
+			// Traverse from closest to furthest.
+			for(i = 0, l = sortedChildren.length; i &lt; l; ++i) {
+
+				// Unpack octant.
+				child = sortedChildren[i].octant;
+
+				if(child.totalPoints &gt; 0 &amp;&amp; child.containsPoint(p, bestDist)) {
+
+					childResult = child.findNearestPoint(p, bestDist, skipSelf);
+
+					if(childResult !== null) {
+
+						distSq = childResult.point.distanceToSquared(p);
+
+						if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt;= bestDist) {
+
+							bestDist = distSq;
+							result = childResult;
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Finds points that are inside the specified radius around a given position.
+	 *
+	 * @method findPoints
+	 * @param {Vector3} p - A position.
+	 * @param {Number} r - A radius.
+	 * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+	 * @param {Array} result - An array to be filled with objects, each containing a point and a data property.
+	 */
+
+	findPoints(p, r, skipSelf, result) {
+
+		const points = this.points;
+		const children = this.children;
+		const rSq = r * r;
+
+		let i, l;
+
+		let point, distSq;
+		let child;
+
+		// Only consider leaf nodes.
+		if(children === null) {
+
+			for(i = 0, l = this.totalPoints; i &lt; l; ++i) {
+
+				point = points[i];
+				distSq = p.distanceToSquared(point);
+
+				if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt;= rSq) {
+
+					result.push({
+						point: point.clone(),
+						data: this.dataSets[i]
+					});
+
+				}
+
+			}
+
+		} else {
+
+			// The order of the children is irrelevant.
+			for(i = 0, l = children.length; i &lt; l; ++i) {
+
+				child = children[i];
+
+				if(child.totalPoints &gt; 0 &amp;&amp; child.containsPoint(p, r)) {
+
+					child.findPoints(p, r, skipSelf, result);
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

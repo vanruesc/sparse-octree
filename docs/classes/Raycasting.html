@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0</em>
+            <em>API Docs for: 1.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -41,6 +41,8 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/PointOctant.html">PointOctant</a></li>
+                                <li><a href="../classes/PointOctree.html">PointOctree</a></li>
                                 <li><a href="../classes/Raycasting.html">Raycasting</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
@@ -48,6 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
+                                <li><a href="../modules/point.html">point</a></li>
                             </ul>
                         </div>
                     </div>
@@ -120,12 +123,12 @@ by J. Revelles et al. (2000).</p>
 
                     <ul class="index-list methods">
                             <li class="index-item method private">
-                                <a href="#method_getFirstOctant">getFirstOctant</a>
+                                <a href="#method_findEntryOctant">findEntryOctant</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method private">
-                                <a href="#method_getNextOctant">getNextOctant</a>
+                                <a href="#method_findNextOctant">findNextOctant</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -136,11 +139,6 @@ by J. Revelles et al. (2000).</p>
                             </li>
                             <li class="index-item method private">
                                 <a href="#method_raycastOctant">raycastOctant</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_testPoints">testPoints</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -170,8 +168,8 @@ by J. Revelles et al. (2000).</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_getFirstOctant" class="method item private">
-    <h3 class="name"><code>getFirstOctant</code></h3>
+<div id="method_findEntryOctant" class="method item private">
+    <h3 class="name"><code>findEntryOctant</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -219,7 +217,7 @@ by J. Revelles et al. (2000).</p>
     </div>
 
     <div class="description">
-        <p>Determines the entry plane of the first octant that a ray travels through.</p>
+        <p>Finds the entry plane of the first octant that a ray travels through.</p>
 <p>Determining the first octant requires knowing which of the t0's is the
 largest. The tm's of the other axes must also be compared against that
 largest t0.</p>
@@ -323,8 +321,8 @@ largest t0.</p>
 
 
 </div>
-<div id="method_getNextOctant" class="method item private">
-    <h3 class="name"><code>getNextOctant</code></h3>
+<div id="method_findNextOctant" class="method item private">
+    <h3 class="name"><code>findNextOctant</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -366,8 +364,8 @@ largest t0.</p>
     </div>
 
     <div class="description">
-        <p>Fetches the next octant for raycasting based on the exit plane of the current
-one.</p>
+        <p>Finds the next octant that intersects with the ray based on the exit plane of
+the current one.</p>
 
     </div>
 
@@ -601,7 +599,7 @@ one.</p>
 
                     <div class="param-description">
                         <ul>
-<li>the current octant.</li>
+<li>The current octant.</li>
 </ul>
 
                     </div>
@@ -706,95 +704,6 @@ one.</p>
                     <div class="param-description">
                         <ul>
 <li>An array to be filled with the intersecting octants.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_testPoints" class="method item">
-    <h3 class="name"><code>testPoints</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>octants</code>
-                </li>
-                <li class="arg">
-                        <code>raycaster</code>
-                </li>
-                <li class="arg">
-                        <code>intersects</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_raycasting.js.html#l322"><code>src\raycasting.js:322</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Collects points that intersect with the ray.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">octants</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array containing octants that intersect with the ray.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">raycaster</code>
-                        <span class="type">Raycaster</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The raycaster.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">intersects</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with the intersecting points.</li>
 </ul>
 
                     </div>
