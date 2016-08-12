@@ -55,19 +55,19 @@ export class Octant {
 	}
 
 	/**
-	 * Computes a new vector that represents the center of this octant.
+	 * Computes the center of this octant.
 	 *
 	 * @method center
-	 * @return {Vector3} The center of this octant.
+	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
 	center() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
 
 	/**
-	 * Computes a new vector that represents the size of this octant.
+	 * Computes the size of this octant.
 	 *
 	 * @method dimensions
-	 * @return {Vector3} The size of this octant.
+	 * @return {Vector3} A new vector that describes the size of this octant.
 	 */
 
 	dimensions() { return this.max.clone().sub(this.min); }

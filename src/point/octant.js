@@ -49,7 +49,7 @@ let maxDepth = 8;
 let maxPoints = 8;
 
 /**
- * An octant.
+ * An octant that maintains points.
  *
  * @class PointOctant
  * @submodule point

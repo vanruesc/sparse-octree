@@ -53,25 +53,25 @@ export class Octree {
 	get children() { return this.root.children; }
 
 	/**
-	 * Calculates the size of the octree.
+	 * Calculates the size of this octree.
 	 *
 	 * @method dimensions
-	 * @return {Vector3} A new vector that describes the size.
+	 * @return {Vector3} A new vector that describes the size of this octree.
 	 */
 
 	dimensions() { return this.root.dimensions(); }
 
 	/**
-	 * Calculates the center of the octree.
+	 * Calculates the center of this octree.
 	 *
 	 * @method center
-	 * @return {Vector3} A new vector that describes the center.
+	 * @return {Vector3} A new vector that describes the center of this octree.
 	 */
 
 	center() { return this.root.center(); }
 
 	/**
-	 * Calculates the current depth of the octree.
+	 * Calculates the current depth of this octree.
 	 *
 	 * @method depth
 	 * @return {Number} The depth.
