@@ -120,7 +120,7 @@ export class Octree {
 	}
 
 	/**
-	 * Fetches all octants with the specified level.
+	 * Fetches all octants with the specified depth level.
 	 *
 	 * @method findOctantsByLevel
 	 * @param {Number} level - The depth level.
@@ -130,22 +130,34 @@ export class Octree {
 	findOctantsByLevel(level) {
 
 		const result = [];
-		const heap = [this.root];
+
+		let h0 = [this.root];
+		let h1 = [];
 
 		let octant, children;
+		let currentLevel = 0;
 
-		while(heap.length > 0) {
+		while(h0.length > 0) {
 
-			octant = heap.pop();
+			octant = h0.pop();
 			children = octant.children;
 
-			if(octant.level === level) {
+			if(currentLevel === level) {
 
 				result.push(octant);
 
 			} else if(children !== null) {
 
-				heap.push(...children);
+				h1.push(...children);
+
+			}
+
+			if(h0.length === 0) {
+
+				h0 = h1;
+				h1 = [];
+
+				if(++currentLevel > level) { break; }
 
 			}
 
