@@ -9,7 +9,6 @@ import { Octant } from "../octant";
  * @constructor
  * @param {Vector3} min - The lower bounds.
  * @param {Vector3} max - The upper bounds.
- * @param {Number} level - The depth level.
  */
 
 export class PointOctant extends Octant {
@@ -19,7 +18,7 @@ export class PointOctant extends Octant {
 		super(min, max);
 
 		/**
-		 * The points that are inside this node.
+		 * The points that are inside this octant.
 		 *
 		 * @property points
 		 * @type Array
