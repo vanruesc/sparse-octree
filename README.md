@@ -15,11 +15,25 @@ $ npm install sparse-octree
 
 
 ## Usage
-A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/1/).
+
+```javascript
+// Attention: Three is not yet an ES6 module!
+import { Vector3 } from "three";
+import { PointOctree } from "sparse-octree";
+
+const min = new Vector3(-1, -1, -1);
+const max = new Vector3(1, 1, 1);
+
+const octree = new PointOctree(min, max);
+octree.add(new Vector3(0, 0, 0), {});
+octree.fetch(new Vector3(0, 0, 0)); // {}
+```
+
+A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/2/).
 
 
-## Demo
-[Octree Raycasting](http://vanruesc.github.io/sparse-octree/public/index.html)
+## Extensive Demo
+[Octree Features](http://vanruesc.github.io/sparse-octree/public/index.html)
 
 
 ## Documentation
