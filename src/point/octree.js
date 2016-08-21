@@ -1,5 +1,4 @@
 import { Octree } from "../octree";
-import { Vector3 } from "../vector3";
 import { PointOctant } from "./octant";
 
 /**
@@ -393,48 +392,34 @@ export class PointOctree extends Octree {
 		let rayPointDistanceSq;
 
 		let i, j, il, jl;
-		let octant, point, dataSet, data;
+		let octant, points, point;
 
 		for(i = 0, il = octants.length; i < il; ++i) {
 
 			octant = octants[i];
+			points = octant.points;
 
-			for(j = 0, jl = octant.totalPoints; j < jl; ++j) {
+			if(points !== null) {
 
-				point = octant.points[j];
-				rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
+				for(j = 0, jl = points.length; j < jl; ++j) {
 
-				if(rayPointDistanceSq < thresholdSq) {
+					point = points[j];
+					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
 
-					intersectPoint = raycaster.ray.closestPointToPoint(point);
-					distance = raycaster.ray.origin.distanceTo(intersectPoint);
+					if(rayPointDistanceSq < thresholdSq) {
 
-					if(distance >= raycaster.near && distance <= raycaster.far) {
+						intersectPoint = raycaster.ray.closestPointToPoint(point);
+						distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
-						dataSet = octant.dataSets[j];
-						distanceToRay = Math.sqrt(rayPointDistanceSq);
+						if(distance >= raycaster.near && distance <= raycaster.far) {
 
-						if(dataSet.size > 0) {
-
-							// Unfold data aggregation.
-							for(data of dataSet) {
-
-								intersects.push({
-									distance: distance,
-									distanceToRay: distanceToRay,
-									point: intersectPoint.clone(),
-									object: data
-								});
-
-							}
-
-						} else {
+							distanceToRay = Math.sqrt(rayPointDistanceSq);
 
 							intersects.push({
 								distance: distance,
 								distanceToRay: distanceToRay,
 								point: intersectPoint.clone(),
-								object: null
+								object: octant.data[j]
 							});
 
 						}
