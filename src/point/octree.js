@@ -180,37 +180,74 @@ export class PointOctree extends Octree {
 	 *
 	 * @method remove
 	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An object that is associated with the point.
 	 */
 
-	remove(p, data) {
+	remove(p) {
 
-		if(this.root.containsPoint(p, this.bias)) {
+		let heap = [this.root];
+		let parent = this.root;
 
-			this.root.remove(p, data);
-
-		}
-
-	}
-
-	/**
-	 * Removes all points from the tree that are in the given array of position
-	 * triples.
-	 *
-	 * @method removePoints
-	 * @param {Float32Array} array - An array containing point position triples.
-	 * @param {Object} [data] - An object that is associated with the points.
-	 */
-
-	removePoints(array, data) {
-
-		const v = new Vector3();
+		let octant, children;
 
 		let i, l;
+		let points, data;
+		let point, last;
 
-		for(i = 0, l = array.length; i < l; i += 3) {
+		while(heap.length > 0) {
 
-			this.remove(v.fromArray(array, i), data);
+			octant = heap.pop();
+			children = octant.children;
+
+			if(octant.contains(p, this.bias)) {
+
+				heap = [];
+
+				if(children !== null) {
+
+					heap.push(...children);
+					parent = octant;
+
+				} else if(octant.points !== null) {
+
+					points = octant.points;
+					data = octant.data;
+
+					for(i = 0, l = points.length; i < l; ++i) {
+
+						point = points[i];
+
+						if(point.equals(p)) {
+
+							last = l - 1;
+
+							// If the point is NOT the last one in the array:
+							if(i < last) {
+
+								// Overwrite with the last point and data entry.
+								points[i] = points[last];
+								data[i] = data[last];
+
+							}
+
+							// Drop the last entry.
+							points.pop();
+							data.pop();
+
+							if(parent.countPoints() <= this.maxPoints) {
+
+								parent.merge();
+
+							}
+
+							break;
+
+						}
+
+					}
+
+				}
+
+			}
 
 		}
 
