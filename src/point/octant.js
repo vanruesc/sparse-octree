@@ -192,7 +192,7 @@ export class PointOctant extends Octant {
 
 	/**
 	 * Gathers all points from the children. The children are expected to be leaf
-	 * nodes and will be dropped afterwards.
+	 * octants and will be dropped afterwards.
 	 *
 	 * @method merge
 	 * @private
@@ -203,19 +203,29 @@ export class PointOctant extends Octant {
 		const children = this.children;
 
 		let i, l;
+		let child;
 
 		if(children !== null) {
 
+			this.points = [];
+			this.data = [];
 
+			for(i = 0, l = children.length; i < l; ++i) {
 
+				child = children[i];
 
+				if(child.points !== null) {
 
+					this.points.push(...child.points);
+					this.data.push(...child.data);
 
 				}
 
 			}
 
+			this.children = null;
 
+		}
 
 	}
 
