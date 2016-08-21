@@ -92,56 +92,84 @@ export class PointOctree extends Octree {
 	}
 
 	/**
-	 *
-	 */
-
-
-
-
-
-
-
-
-
-
-					heap = [];
-
-
-	/**
 	 * Adds a point to the tree.
 	 *
 	 * @method add
 	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An arbitrary object that will be associated with the point.
+	 * @param {Object} data - An object that the point represents.
 	 */
 
 	add(p, data) {
 
-		if(this.root.containsPoint(p, this.bias)) {
+		p = p.clone();
 
-			this.root.add(p.clone(), data);
+		let heap = [this.root];
+		let currentLevel = 0;
 
-		}
-
-	}
-
-	/**
-	 * Adds all points from the given array of position triples to the tree.
-	 *
-	 * @method addPoints
-	 * @param {Float32Array} array - An array containing point position triples.
-	 * @param {Object} [data] - An arbitrary object that will be associated with the points.
-	 */
-
-	addPoints(array, data) {
-
-		const v = new Vector3();
-
+		let octant, children;
 		let i, l;
 
-		for(i = 0, l = array.length; i < l; i += 3) {
+		let exists = false;
 
-			this.add(v.fromArray(array, i).clone(), data);
+		if(data !== undefined && data !== null) {
+
+			while(heap.length > 0) {
+
+				octant = heap.pop();
+				children = octant.children;
+
+				if(octant.contains(p, this.bias)) {
+
+					heap = [];
+
+					if(children !== null) {
+
+						heap.push(...children);
+
+						++currentLevel;
+
+					} else {
+
+						if(octant.points === null) {
+
+							octant.points = [];
+							octant.data = [];
+
+						} else {
+
+							for(i = 0, l = octant.points.length; !exists && i < l; ++i) {
+
+								exists = octant.points[i].equals(p);
+
+							}
+
+						}
+
+						if(exists) {
+
+							octant.data[i - 1] = data;
+
+						} else if(octant.points.length < this.maxPoints || currentLevel === this.maxDepth) {
+
+							octant.points.push(p);
+							octant.data.push(data);
+
+						} else {
+
+							octant.split();
+							octant.redistribute(this.bias);
+
+							heap.push(...octant.children);
+
+							++currentLevel;
+
+						}
+
+					}
+
+				}
+
+			}
 
 		}
 
