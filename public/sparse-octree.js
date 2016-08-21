@@ -1,5 +1,5 @@
 /**
- * sparse-octree v1.0.0 build Aug 12 2016
+ * sparse-octree v2.0.0 build Aug 22 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -704,11 +704,10 @@
    * @constructor
    * @param {Vector3} min - The lower bounds.
    * @param {Vector3} max - The upper bounds.
-   * @param {Number} [level] - The depth level.
    */
 
   var Octant = function () {
-  		function Octant(min, max, level) {
+  		function Octant(min, max) {
   				classCallCheck(this, Octant);
 
 
@@ -719,7 +718,7 @@
        * @type Vector3
        */
 
-  				this.min = min;
+  				this.min = min !== undefined ? min : new Vector3();
 
   				/**
        * The upper bounds of the octant.
@@ -728,17 +727,7 @@
        * @type Vector3
        */
 
-  				this.max = max;
-
-  				/**
-       * The depth level of this octant.
-       *
-       * @property level
-       * @type Number
-       * @default 0
-       */
-
-  				this.level = level !== undefined ? level : 0;
+  				this.max = max !== undefined ? max : new Vector3();
 
   				/**
        * The children of this node.
@@ -788,16 +777,19 @@
   				key: "depth",
   				value: function depth() {
 
+  						var children = this.children;
+
   						var result = 0;
-  						var depth = void 0;
+
   						var i = void 0,
   						    l = void 0;
+  						var depth = void 0;
 
-  						if (this.children !== null) {
+  						if (children !== null) {
 
-  								for (i = 0, l = this.children.length; i < l; ++i) {
+  								for (i = 0, l = children.length; i < l; ++i) {
 
-  										depth = 1 + this.children[i].depth();
+  										depth = 1 + children[i].depth();
 
   										if (depth > result) {
 
@@ -820,25 +812,107 @@
   				value: function split() {
 
   						var min = this.min;
-  						var mid = this.center();
   						var max = this.max;
+  						var mid = this.center();
 
-  						var nextLevel = this.level + 1;
+  						var i = void 0,
+  						    combination = void 0;
 
-  						/* The order is important for positional assumptions.
-         *
-         *    3____7
-         *  2/___6/|
-         *  | 1__|_5
-         *  0/___4/
-         *
-         */
+  						this.children = [];
 
-  						this.children = [new this.constructor(min, mid, nextLevel), new this.constructor(new Vector3(min.x, min.y, mid.z), new Vector3(mid.x, mid.y, max.z), nextLevel), new this.constructor(new Vector3(min.x, mid.y, min.z), new Vector3(mid.x, max.y, mid.z), nextLevel), new this.constructor(new Vector3(min.x, mid.y, mid.z), new Vector3(mid.x, max.y, max.z), nextLevel), new this.constructor(new Vector3(mid.x, min.y, min.z), new Vector3(max.x, mid.y, mid.z), nextLevel), new this.constructor(new Vector3(mid.x, min.y, mid.z), new Vector3(max.x, mid.y, max.z), nextLevel), new this.constructor(new Vector3(mid.x, mid.y, min.z), new Vector3(max.x, max.y, mid.z), nextLevel), new this.constructor(mid, max, nextLevel)];
+  						for (i = 0; i < 8; ++i) {
+
+  								combination = Octant.PATTERN[i];
+
+  								this.children.push(new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
+  						}
+  				}
+
+  				/**
+       * Creates missing child octants and restores the layout.
+       *
+       * @method repair
+       */
+
+  		}, {
+  				key: "repair",
+  				value: function repair() {
+
+  						var min = this.min;
+  						var max = this.max;
+  						var mid = this.center();
+
+  						var halfDimensions = this.dimensions().multiplyScalar(0.5);
+
+  						var children = this.children;
+  						var corrected = [];
+
+  						var v0 = new Vector3();
+  						var v1 = new Vector3();
+  						var v2 = new Vector3();
+
+  						var i = void 0,
+  						    j = void 0,
+  						    l = void 0;
+  						var combination = void 0;
+  						var child = void 0,
+  						    octant = void 0;
+
+  						if (children !== null) {
+
+  								for (i = 0, l = children.length; i < 8; ++i) {
+
+  										combination = Octant.PATTERN[i];
+
+  										octant = null;
+
+  										if (l > 0) {
+
+  												v1.addVectors(min, v0.fromArray(combination).multiply(halfDimensions));
+  												v2.addVectors(mid, v0.fromArray(combination).multiply(halfDimensions));
+  										}
+
+  										// Find an existing octant that matches the current combination.
+  										for (j = 0; j < l; ++j) {
+
+  												child = children[j];
+
+  												if (child !== null && v1.equals(child.min) && v2.equals(child.max)) {
+
+  														octant = child;
+  														children[j] = null;
+
+  														break;
+  												}
+  										}
+
+  										corrected.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
+  								}
+
+  								this.children = corrected;
+  						}
   				}
   		}]);
   		return Octant;
   }();
+
+  /**
+   * A binary pattern that describes the standard octant layout:
+   *
+   *    3____7
+   *  2/___6/|
+   *  | 1__|_5
+   *  0/___4/
+   *
+   * This common layout is crucial for positional assumptions.
+   *
+   * @property PATTERN
+   * @type Array
+   * @static
+   * @final
+   */
+
+  Octant.PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
 
   /**
    * Contains bytes used for bitwise operations. The last byte is used to store
@@ -1180,6 +1254,7 @@
      *
      * @property root
      * @type Octant
+     * @default null
      */
 
   		this.root = min !== undefined && max !== undefined ? new Octant(min, max) : null;
@@ -1272,7 +1347,7 @@
   		}
 
   		/**
-     * Fetches all octants with the specified level.
+     * Fetches all octants with the specified depth level.
      *
      * @method findOctantsByLevel
      * @param {Number} level - The depth level.
@@ -1284,22 +1359,36 @@
   		value: function findOctantsByLevel(level) {
 
   			var result = [];
-  			var heap = [this.root];
+
+  			var h0 = [this.root];
+  			var h1 = [];
 
   			var octant = void 0,
   			    children = void 0;
+  			var currentLevel = 0;
 
-  			while (heap.length > 0) {
+  			while (h0.length > 0) {
 
-  				octant = heap.pop();
+  				octant = h0.pop();
   				children = octant.children;
 
-  				if (octant.level === level) {
+  				if (currentLevel === level) {
 
   					result.push(octant);
   				} else if (children !== null) {
+  					var _h;
 
-  					heap.push.apply(heap, toConsumableArray(children));
+  					(_h = h1).push.apply(_h, toConsumableArray(children));
+  				}
+
+  				if (h0.length === 0) {
+
+  					h0 = h1;
+  					h1 = [];
+
+  					if (++currentLevel > level) {
+  						break;
+  					}
   				}
   			}
 
@@ -1583,115 +1672,78 @@
   }(THREE.Object3D);
 
   /**
-   * A threshold for proximity checks.
-   *
-   * @property bias
-   * @type Number
-   * @private
-   * @static
-   * @default 0.0
-   */
-
-  var bias = 0.0;
-
-  /**
-   * The proximity threshold squared.
-   *
-   * @property biasSquared
-   * @type Number
-   * @private
-   * @static
-   * @default 0.0
-   */
-
-  var biasSquared = 0.0;
-
-  /**
-   * The maximum tree depth level.
-   *
-   * @property maxDepth
-   * @type Number
-   * @private
-   * @static
-   * @default 8
-   */
-
-  var maxDepth = 8;
-
-  /**
-   * Number of points per octant before a split occurs.
-   *
-   * @property maxPoints
-   * @type Number
-   * @private
-   * @static
-   * @default 8
-   */
-
-  var maxPoints = 8;
-
-  /**
    * An octant that maintains points.
    *
    * @class PointOctant
-   * @submodule point
+   * @submodule points
    * @extends Octant
    * @constructor
    * @param {Vector3} min - The lower bounds.
    * @param {Vector3} max - The upper bounds.
-   * @param {Number} level - The depth level.
    */
 
   var PointOctant = function (_Octant) {
   		inherits(PointOctant, _Octant);
 
-  		function PointOctant(min, max, level) {
+  		function PointOctant(min, max) {
   				classCallCheck(this, PointOctant);
 
   				/**
-       * The amount of points in this octant.
-       *
-       * @property totalPoints
-       * @type Number
-       */
-
-  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctant).call(this, min, max, level));
-
-  				_this.totalPoints = 0;
-
-  				/**
-       * The points that are inside this node.
+       * The points that are inside this octant.
        *
        * @property points
        * @type Array
        */
 
+  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctant).call(this, min, max));
+
   				_this.points = null;
 
   				/**
-       * Additional data that is kept in sets for individual points.
+       * Point data.
        *
-       * @property dataSets
+       * @property data
        * @type Array
        */
 
-  				_this.dataSets = null;
+  				_this.data = null;
 
   				return _this;
   		}
 
   		/**
-     * A threshold for proximity checks.
+     * Counts how many points are in this octant.
      *
-     * @property bias
-     * @type Number
-     * @static
-     * @default 0.0
+     * @method countPoints
+     * @return {Number} The amount of points.
      */
 
   		createClass(PointOctant, [{
-  				key: "distanceToSquared",
+  				key: "countPoints",
+  				value: function countPoints() {
 
+  						var heap = [this];
+
+  						var result = 0;
+  						var octant = void 0,
+  						    children = void 0;
+
+  						while (heap.length > 0) {
+
+  								octant = heap.pop();
+  								children = octant.children;
+
+  								if (children !== null) {
+
+  										heap.push.apply(heap, toConsumableArray(children));
+  								} else if (octant.points !== null) {
+
+  										result += octant.points.length;
+  								}
+  						}
+
+  						return result;
+  				}
 
   				/**
        * Computes the distance squared from this octant to the given point.
@@ -1701,6 +1753,8 @@
        * @return {Number} The distance squared.
        */
 
+  		}, {
+  				key: "distanceToSquared",
   				value: function distanceToSquared(p) {
 
   						var clampedPoint = p.clone().clamp(this.min, this.max);
@@ -1736,15 +1790,15 @@
        * This method can also be used to check if this octant intersects a sphere by
        * providing a radius as bias.
        *
-       * @method containsPoint
+       * @method contains
        * @param {Vector3} p - A point.
        * @param {Number} bias - A padding that extends the boundaries temporarily.
        * @return {Boolean} Whether the given point lies inside this octant.
        */
 
   		}, {
-  				key: "containsPoint",
-  				value: function containsPoint(p, bias) {
+  				key: "contains",
+  				value: function contains(p, bias) {
 
   						var min = this.min;
   						var max = this.max;
@@ -1753,309 +1807,60 @@
   				}
 
   				/**
-       * Adds a point to this node. If this octant isn't a leaf node, the point will
-       * be added to a child octant.
+       * Redistributes existing points to child octants.
        *
-       * @method add
-       * @param {Vector3} p - A point.
-       * @param {Object} [data] - An object that will be associated with the point.
-       * @return {Boolean} Whether the point was a unique addition.
+       * @method redistribute
+       * @param {Number} bias - A proximity threshold.
        */
 
   		}, {
-  				key: "add",
-  				value: function add(p, data) {
+  				key: "redistribute",
+  				value: function redistribute(bias) {
 
-  						var unique = false;
-  						var hit = false;
+  						var children = this.children;
+  						var points = this.points;
 
   						var i = void 0,
   						    l = void 0;
-  						var points = void 0,
-  						    point = void 0;
-
-  						if (this.children !== null) {
-
-  								unique = this.addToChild(p, data);
-  						} else {
-
-  								if (this.totalPoints === 0) {
-
-  										this.points = [];
-  										this.dataSets = [];
-  								}
-
-  								points = this.points;
-
-  								// @todo: improve time complexity of duplicate check.
-  								for (i = 0, l = this.totalPoints; !hit && i < l; ++i) {
-
-  										point = points[i];
-  										hit = point.equals(p);
-  								}
-
-  								if (hit) {
-
-  										// Aggregate data of duplicates.
-  										if (data !== undefined) {
-
-  												this.dataSets[i - 1].add(data);
-  										}
-  								} else {
-
-  										unique = true;
-
-  										if (this.totalPoints === maxPoints && this.level < maxDepth) {
-
-  												// At maximum capacity and can still split.
-  												this.split();
-  												this.addToChild(p, data);
-  										} else {
-
-  												// Count distinct points in leaf nodes.
-  												this.totalPoints = this.points.push(p);
-  												this.dataSets.push(new Set());
-
-  												if (data !== undefined) {
-
-  														this.dataSets[this.totalPoints - 1].add(data);
-  												}
-  										}
-  								}
-  						}
-
-  						return unique;
-  				}
-
-  				/**
-       * Adds the given point to a child node that covers the point's position.
-       *
-       * @method addToChild
-       * @private
-       * @param {Vector3} p - A point.
-       * @param {Object} [data] - An object that will be associated with the point.
-       * @return {Boolean} Whether the point was a unique addition.
-       */
-
-  		}, {
-  				key: "addToChild",
-  				value: function addToChild(p, data) {
-
-  						var unique = false;
-
-  						var i = void 0,
-  						    l = void 0;
-
-  						for (i = 0, l = this.children.length; i < l; ++i) {
-
-  								if (this.children[i].containsPoint(p, bias)) {
-
-  										unique = this.children[i].add(p, data);
-
-  										if (unique) {
-
-  												// Register addition in parent node.
-  												++this.totalPoints;
-  										}
-
-  										break;
-  								}
-  						}
-
-  						return unique;
-  				}
-
-  				/**
-       * Splits this octant up into eight smaller ones.
-       *
-       * @method split
-       * @private
-       */
-
-  		}, {
-  				key: "split",
-  				value: function split() {
-
-  						get(Object.getPrototypeOf(PointOctant.prototype), "split", this).call(this);
-
-  						var i = void 0;
-  						var point = void 0,
+  						var child = void 0,
+  						    point = void 0,
   						    data = void 0;
 
-  						// Distribute existing points to the new children.
-  						i = this.totalPoints - 1;
-  						this.totalPoints = 0;
+  						if (children !== null) {
 
-  						while (i >= 0) {
+  								while (points.length > 0) {
 
-  								point = this.points[i];
+  										point = points.pop();
+  										data = this.data.pop();
 
-  								if (this.dataSets[i].size > 0) {
+  										for (i = 0, l = children.length; i < l; ++i) {
 
-  										// Unfold data aggregations. Each entry is one point.
-  										var _iteratorNormalCompletion = true;
-  										var _didIteratorError = false;
-  										var _iteratorError = undefined;
+  												child = children[i];
 
-  										try {
-  												for (var _iterator = this.dataSets[i].values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-  														data = _step.value;
+  												if (child.contains(point, bias)) {
 
+  														if (child.points === null) {
 
-  														this.addToChild(point, data);
-  												}
-  										} catch (err) {
-  												_didIteratorError = true;
-  												_iteratorError = err;
-  										} finally {
-  												try {
-  														if (!_iteratorNormalCompletion && _iterator.return) {
-  																_iterator.return();
+  																child.points = [];
+  																child.data = [];
   														}
-  												} finally {
-  														if (_didIteratorError) {
-  																throw _iteratorError;
-  														}
+
+  														child.points.push(point);
+  														child.data.push(data);
+
+  														break;
   												}
   										}
-  								} else {
-
-  										this.addToChild(point);
   								}
-
-  								--i;
   						}
 
   						this.points = null;
-  						this.dataSets = null;
-  				}
-
-  				/**
-       * Removes the given point from this octant. If this octant is not a leaf
-       * node, the point will be removed from a child node. If no data is provided,
-       * the point and all its respective data entries will be removed completely.
-       *
-       * @method remove
-       * @param {Vector3} p - The point.
-       * @param {Object} [data] - An object that is associated with the point.
-       * @return {Boolean} Whether the removed point was unique.
-       */
-
-  		}, {
-  				key: "remove",
-  				value: function remove(p, data) {
-
-  						var points = this.points;
-  						var dataSets = this.dataSets;
-
-  						var unique = false;
-
-  						var i = void 0,
-  						    l = void 0;
-  						var point = void 0,
-  						    last = void 0;
-
-  						var dataSet = null;
-
-  						if (this.children !== null) {
-
-  								unique = this.removeFromChild(p, data);
-
-  								if (this.totalPoints <= maxPoints) {
-
-  										this.merge();
-  								}
-  						} else if (this.totalPoints > 0) {
-
-  								for (i = 0, l = this.totalPoints; i < l; ++i) {
-
-  										point = points[i];
-
-  										if (point.equals(p)) {
-
-  												// Found it.
-  												dataSet = dataSets[i];
-
-  												if (data !== undefined) {
-
-  														dataSet.delete(data);
-  												} else {
-
-  														dataSet.clear();
-  												}
-
-  												if (dataSet.size === 0) {
-
-  														unique = true;
-  														last = l - 1;
-
-  														// If the point is NOT the last one in the array:
-  														if (i < last) {
-
-  																// Overwrite with the last point...
-  																points[i] = points[last];
-
-  																// ...and data set.
-  																dataSets[i] = dataSets[last];
-  														}
-
-  														// Drop the last entry.
-  														points.pop();
-  														dataSets.pop();
-
-  														// Register deletion in leaf node.
-  														--this.totalPoints;
-  												}
-
-  												break;
-  										}
-  								}
-  						}
-
-  						return unique;
-  				}
-
-  				/**
-       * Removes the given point from a child node.
-       *
-       * @method removeFromChild
-       * @private
-       * @param {Vector3} p - The point.
-       * @param {Object} [data] - An object that is associated with the point.
-       * @return {Boolean} Whether the removed point was unique.
-       */
-
-  		}, {
-  				key: "removeFromChild",
-  				value: function removeFromChild(p, data) {
-
-  						var unique = false;
-
-  						var i = void 0,
-  						    l = void 0;
-
-  						for (i = 0, l = this.children.length; i < l; ++i) {
-
-  								if (this.children[i].containsPoint(p, bias)) {
-
-  										unique = this.children[i].remove(p, data);
-
-  										if (unique) {
-
-  												// Register deletion in parent node.
-  												--this.totalPoints;
-  										}
-
-  										break;
-  								}
-  						}
-
-  						return unique;
+  						this.data = null;
   				}
 
   				/**
        * Gathers all points from the children. The children are expected to be leaf
-       * nodes and will be dropped afterwards.
+       * octants and will be dropped afterwards.
        *
        * @method merge
        * @private
@@ -2065,109 +1870,31 @@
   				key: "merge",
   				value: function merge() {
 
-  						var i = void 0,
-  						    j = void 0,
-  						    il = void 0,
-  						    jl = void 0;
-  						var child = void 0;
-
-  						this.totalPoints = 0;
-  						this.points = [];
-  						this.dataSets = [];
-
-  						for (i = 0, il = this.children.length; i < il; ++i) {
-
-  								child = this.children[i];
-
-  								for (j = 0, jl = child.totalPoints; j < jl; ++j) {
-
-  										this.totalPoints = this.points.push(child.points[j]);
-  										this.dataSets.push(child.dataSets[j]);
-  								}
-  						}
-
-  						this.children = null;
-  				}
-
-  				/**
-       * Refreshes this octant and its children to make sure that all constraints
-       * are satisfied.
-       *
-       * @method update
-       */
-
-  		}, {
-  				key: "update",
-  				value: function update() {
-
   						var children = this.children;
 
   						var i = void 0,
   						    l = void 0;
+  						var child = void 0;
 
   						if (children !== null) {
 
-  								// Start from the bottom.
+  								this.points = [];
+  								this.data = [];
+
   								for (i = 0, l = children.length; i < l; ++i) {
 
-  										children[i].update();
-  								}
+  										child = children[i];
 
-  								if (this.totalPoints <= maxPoints || this.level >= maxDepth) {
+  										if (child.points !== null) {
+  												var _points, _data;
 
-  										// All points fit into one octant or the level is too high.
-  										this.merge();
-  								}
-  						} else if (this.totalPoints > maxPoints && this.level < maxDepth) {
-
-  								// Exceeding maximum capacity.
-  								this.split();
-  						}
-  				}
-
-  				/**
-       * Retrieves the data of the point at the specified position.
-       *
-       * @method fetch
-       * @param {Vector3} p - A position.
-       * @return {Set} A set of data entries that are associated with the given point or null if it doesn't exist.
-       */
-
-  		}, {
-  				key: "fetch",
-  				value: function fetch(p) {
-
-  						var result = null;
-
-  						var i = void 0,
-  						    l = void 0;
-  						var point = void 0;
-
-  						if (this.containsPoint(p, bias)) {
-
-  								if (this.children !== null) {
-
-  										for (i = 0, l = this.children.length; result === null && i < l; ++i) {
-
-  												result = this.children[i].fetch(p);
-  										}
-  								} else {
-
-  										for (i = 0, l = this.totalPoints; i < l; ++i) {
-
-  												point = this.points[i];
-
-  												if (p.distanceToSquared(point) <= biasSquared) {
-
-  														result = this.dataSets[i];
-
-  														break;
-  												}
+  												(_points = this.points).push.apply(_points, toConsumableArray(child.points));
+  												(_data = this.data).push.apply(_data, toConsumableArray(child.data));
   										}
   								}
-  						}
 
-  						return result;
+  								this.children = null;
+  						}
   				}
 
   				/**
@@ -2199,25 +1926,7 @@
   						var child = void 0,
   						    childResult = void 0;
 
-  						// Only consider leaf nodes.
-  						if (children === null) {
-
-  								for (i = 0, l = this.totalPoints; i < l; ++i) {
-
-  										point = points[i];
-  										distSq = p.distanceToSquared(point);
-
-  										if ((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
-
-  												bestDist = distSq;
-
-  												result = {
-  														point: point.clone(),
-  														data: this.dataSets[i]
-  												};
-  										}
-  								}
-  						} else {
+  						if (children !== null) {
 
   								// Sort the children.
   								sortedChildren = children.map(function (child) {
@@ -2239,7 +1948,7 @@
   										// Unpack octant.
   										child = sortedChildren[i].octant;
 
-  										if (child.totalPoints > 0 && child.containsPoint(p, bestDist)) {
+  										if (child.contains(p, bestDist)) {
 
   												childResult = child.findNearestPoint(p, bestDist, skipSelf);
 
@@ -2247,12 +1956,29 @@
 
   														distSq = childResult.point.distanceToSquared(p);
 
-  														if ((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
+  														if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
   																bestDist = distSq;
   																result = childResult;
   														}
   												}
+  										}
+  								}
+  						} else if (points !== null) {
+
+  								for (i = 0, l = points.length; i < l; ++i) {
+
+  										point = points[i];
+  										distSq = p.distanceToSquared(point);
+
+  										if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
+
+  												bestDist = distSq;
+
+  												result = {
+  														point: point.clone(),
+  														data: this.data[i]
+  												};
   										}
   								}
   						}
@@ -2285,10 +2011,20 @@
   						    distSq = void 0;
   						var child = void 0;
 
-  						// Only consider leaf nodes.
-  						if (children === null) {
+  						if (children !== null) {
 
-  								for (i = 0, l = this.totalPoints; i < l; ++i) {
+  								for (i = 0, l = children.length; i < l; ++i) {
+
+  										child = children[i];
+
+  										if (child.contains(p, r)) {
+
+  												child.findPoints(p, r, skipSelf, result);
+  										}
+  								}
+  						} else if (points !== null) {
+
+  								for (i = 0, l = points.length; i < l; ++i) {
 
   										point = points[i];
   										distSq = p.distanceToSquared(point);
@@ -2297,69 +2033,11 @@
 
   												result.push({
   														point: point.clone(),
-  														data: this.dataSets[i]
+  														data: this.data[i]
   												});
   										}
   								}
-  						} else {
-
-  								// The order of the children is irrelevant.
-  								for (i = 0, l = children.length; i < l; ++i) {
-
-  										child = children[i];
-
-  										if (child.totalPoints > 0 && child.containsPoint(p, r)) {
-
-  												child.findPoints(p, r, skipSelf, result);
-  										}
-  								}
   						}
-  				}
-  		}], [{
-  				key: "bias",
-  				get: function get() {
-  						return bias;
-  				},
-  				set: function set(x) {
-
-  						bias = Math.max(0.0, x);
-  						biasSquared = bias * bias;
-  				}
-
-  				/**
-       * The maximum tree depth level.
-       *
-       * @property maxDepth
-       * @type Number
-       * @static
-       * @default 8
-       */
-
-  		}, {
-  				key: "maxDepth",
-  				get: function get() {
-  						return maxDepth;
-  				},
-  				set: function set(x) {
-  						maxDepth = Math.max(0, Math.round(x));
-  				}
-
-  				/**
-       * Number of points per octant before a split occurs.
-       *
-       * @property maxPoints
-       * @type Number
-       * @static
-       * @default 8
-       */
-
-  		}, {
-  				key: "maxPoints",
-  				get: function get() {
-  						return maxPoints;
-  				},
-  				set: function set(x) {
-  						maxPoints = Math.max(1, Math.round(x));
   				}
   		}]);
   		return PointOctant;
@@ -2369,7 +2047,7 @@
    * An octree that manages points.
    *
    * @class PointOctree
-   * @submodule point
+   * @submodule points
    * @extends Octree
    * @constructor
    * @param {Vector3} min - The lower bounds of the tree.
@@ -2380,369 +2058,429 @@
    */
 
   var PointOctree = function (_Octree) {
-  	inherits(PointOctree, _Octree);
+  		inherits(PointOctree, _Octree);
 
-  	function PointOctree(min, max, bias, maxPoints, maxDepth) {
-  		classCallCheck(this, PointOctree);
+  		function PointOctree(min, max, bias, maxPoints, maxDepth) {
+  				classCallCheck(this, PointOctree);
 
-  		var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctree).call(this));
+  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctree).call(this));
 
-  		_this.root = new PointOctant(min, max);
+  				_this.root = new PointOctant(min, max);
 
-  		_this.bias = bias;
-  		_this.maxDepth = maxDepth;
-  		_this.maxPoints = maxPoints;
+  				/**
+       * A threshold for proximity checks.
+       *
+       * @property bias
+       * @type Number
+       * @private
+       * @default 0.0
+       */
 
-  		return _this;
-  	}
+  				_this.bias = bias !== undefined ? Math.max(0.0, bias) : 0.0;
 
-  	/**
-    * A threshold for proximity checks.
-    *
-    * @property bias
-    * @type Number
-    * @default 0.0
-    */
+  				/**
+       * The proximity threshold squared.
+       *
+       * @property biasSquared
+       * @type Number
+       * @private
+       * @default 0.0
+       */
 
-  	createClass(PointOctree, [{
-  		key: "add",
+  				_this.biasSquared = _this.bias * _this.bias;
 
+  				/**
+       * The maximum tree depth level.
+       *
+       * It's possible to use Infinity, but be aware that allowing infinitely
+       * small octants can have a negative impact on performance.
+       * Finding a value that works best for a specific scene is advisable.
+       *
+       * @property maxDepth
+       * @type Number
+       * @private
+       * @default 8
+       */
 
-  		/**
-     * Adds a point to the tree.
-     *
-     * @method add
-     * @param {Vector3} p - A point.
-     * @param {Object} [data] - An arbitrary object that will be associated with the point.
-     */
+  				_this.maxDepth = maxDepth !== undefined ? Math.max(0, Math.round(maxDepth)) : 8;
 
-  		value: function add(p, data) {
+  				/**
+       * Number of points per octant before a split occurs.
+       *
+       * This value works together with the maximum depth as a secondary limiting
+       * factor. Smaller values cause splits to occur earlier which results in a
+       * faster and deeper tree growth.
+       *
+       * @property maxPoints
+       * @type Number
+       * @private
+       * @default 8
+       */
 
-  			if (this.root.containsPoint(p, this.bias)) {
+  				_this.maxPoints = maxPoints !== undefined ? Math.max(1, Math.round(maxPoints)) : 8;
 
-  				this.root.add(p.clone(), data);
-  			}
+  				return _this;
   		}
 
   		/**
-     * Adds all points from the given array of position triples to the tree.
+     * Counts how many points are in this octree.
      *
-     * @method addPoints
-     * @param {Float32Array} array - An array containing point position triples.
-     * @param {Object} [data] - An arbitrary object that will be associated with the points.
+     * @method countPoints
+     * @return {Number} The amount of points.
      */
 
-  	}, {
-  		key: "addPoints",
-  		value: function addPoints(array, data) {
+  		createClass(PointOctree, [{
+  				key: "countPoints",
+  				value: function countPoints() {
 
-  			var v = new Vector3();
-
-  			var i = void 0,
-  			    l = void 0;
-
-  			for (i = 0, l = array.length; i < l; i += 3) {
-
-  				this.add(v.fromArray(array, i).clone(), data);
-  			}
-  		}
-
-  		/**
-     * Removes a point from the tree.
-     *
-     * @method remove
-     * @param {Vector3} p - A point.
-     * @param {Object} [data] - An object that is associated with the point.
-     */
-
-  	}, {
-  		key: "remove",
-  		value: function remove(p, data) {
-
-  			if (this.root.containsPoint(p, this.bias)) {
-
-  				this.root.remove(p, data);
-  			}
-  		}
-
-  		/**
-     * Removes all points from the tree that are in the given array of position
-     * triples.
-     *
-     * @method removePoints
-     * @param {Float32Array} array - An array containing point position triples.
-     * @param {Object} [data] - An object that is associated with the points.
-     */
-
-  	}, {
-  		key: "removePoints",
-  		value: function removePoints(array, data) {
-
-  			var v = new Vector3();
-
-  			var i = void 0,
-  			    l = void 0;
-
-  			for (i = 0, l = array.length; i < l; i += 3) {
-
-  				this.remove(v.fromArray(array, i), data);
-  			}
-  		}
-
-  		/**
-     * Retrieves the data of the point at the specified position.
-     *
-     * @method fetch
-     * @param {Vector3} p - A position.
-     * @return {Set} A set of data entries that are associated with the given point or null if it doesn't exist.
-     */
-
-  	}, {
-  		key: "fetch",
-  		value: function fetch(p) {
-
-  			return this.root.fetch(p);
-  		}
-
-  		/**
-     * Finds the closest point to the given one.
-     *
-     * @method findNearestPoint
-     * @param {Vector3} p - A point.
-     * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
-     * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
-     * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
-     */
-
-  	}, {
-  		key: "findNearestPoint",
-  		value: function findNearestPoint(p, maxDistance, skipSelf) {
-
-  			if (maxDistance === undefined) {
-  				maxDistance = Infinity;
-  			}
-  			if (skipSelf === undefined) {
-  				skipSelf = false;
-  			}
-
-  			return this.root.findNearestPoint(p, maxDistance, skipSelf);
-  		}
-
-  		/**
-     * Finds points that are in the specified radius around the given position.
-     *
-     * @method findPoints
-     * @param {Vector3} p - A position.
-     * @param {Number} r - A radius.
-     * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
-     * @return {Array} An array of objects, each containing a point and a data property.
-     */
-
-  	}, {
-  		key: "findPoints",
-  		value: function findPoints(p, r, skipSelf) {
-
-  			if (skipSelf === undefined) {
-  				skipSelf = false;
-  			}
-
-  			var result = [];
-
-  			this.root.findPoints(p, r, skipSelf, result);
-
-  			return result;
-  		}
-
-  		/**
-     * Finds the points that intersect with the given ray.
-     *
-     * @method raycast
-     * @param {Raycaster} raycaster - The raycaster.
-     * @param {Array} intersects - An array to be filled with the intersecting points.
-     */
-
-  	}, {
-  		key: "raycast",
-  		value: function raycast(raycaster, intersects) {
-
-  			var octants = [];
-
-  			get(Object.getPrototypeOf(PointOctree.prototype), "raycast", this).call(this, raycaster, octants);
-
-  			if (octants.length > 0) {
-
-  				// Collect intersecting points.
-  				this.testPoints(octants, raycaster, intersects);
-  			}
-  		}
-
-  		/**
-     * Collects points that intersect with the given ray.
-     *
-     * @method testPoints
-     * @param {Array} octants - An array containing octants that intersect with the ray.
-     * @param {Raycaster} raycaster - The raycaster.
-     * @param {Array} intersects - An array to be filled with the intersecting points.
-     */
-
-  	}, {
-  		key: "testPoints",
-  		value: function testPoints(octants, raycaster, intersects) {
-
-  			var threshold = raycaster.params.Points.threshold;
-  			var thresholdSq = threshold * threshold;
-
-  			var intersectPoint = void 0;
-  			var distance = void 0,
-  			    distanceToRay = void 0;
-  			var rayPointDistanceSq = void 0;
-
-  			var i = void 0,
-  			    j = void 0,
-  			    il = void 0,
-  			    jl = void 0;
-  			var octant = void 0,
-  			    point = void 0,
-  			    dataSet = void 0,
-  			    data = void 0;
-
-  			for (i = 0, il = octants.length; i < il; ++i) {
-
-  				octant = octants[i];
-
-  				for (j = 0, jl = octant.totalPoints; j < jl; ++j) {
-
-  					point = octant.points[j];
-  					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
-
-  					if (rayPointDistanceSq < thresholdSq) {
-
-  						intersectPoint = raycaster.ray.closestPointToPoint(point);
-  						distance = raycaster.ray.origin.distanceTo(intersectPoint);
-
-  						if (distance >= raycaster.near && distance <= raycaster.far) {
-
-  							dataSet = octant.dataSets[j];
-  							distanceToRay = Math.sqrt(rayPointDistanceSq);
-
-  							if (dataSet.size > 0) {
-
-  								// Unfold data aggregation.
-  								var _iteratorNormalCompletion = true;
-  								var _didIteratorError = false;
-  								var _iteratorError = undefined;
-
-  								try {
-  									for (var _iterator = dataSet[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-  										data = _step.value;
-
-
-  										intersects.push({
-  											distance: distance,
-  											distanceToRay: distanceToRay,
-  											point: intersectPoint.clone(),
-  											object: data
-  										});
-  									}
-  								} catch (err) {
-  									_didIteratorError = true;
-  									_iteratorError = err;
-  								} finally {
-  									try {
-  										if (!_iteratorNormalCompletion && _iterator.return) {
-  											_iterator.return();
-  										}
-  									} finally {
-  										if (_didIteratorError) {
-  											throw _iteratorError;
-  										}
-  									}
-  								}
-  							} else {
-
-  								intersects.push({
-  									distance: distance,
-  									distanceToRay: distanceToRay,
-  									point: intersectPoint.clone(),
-  									object: null
-  								});
-  							}
-  						}
-  					}
+  						return this.root.countPoints();
   				}
-  			}
-  		}
-  	}, {
-  		key: "bias",
-  		get: function get() {
-  			return PointOctant.bias;
-  		},
-  		set: function set(x) {
-  			PointOctant.bias = x;
-  		}
 
-  		/**
-     * The maximum tree depth level.
-     * Setting this value refreshes the entire tree.
-     *
-     * It's possible to set this value to Infinity, but be aware that allowing
-     * infinitely small octants can have a negative impact on performance. Finding
-     * a value that works best for a specific scene is advisable.
-     *
-     * @property maxDepth
-     * @type Number
-     * @default 8
-     */
+  				/**
+       * Adds a point to the tree.
+       *
+       * @method add
+       * @param {Vector3} p - A point.
+       * @param {Object} data - An object that the point represents.
+       */
 
-  	}, {
-  		key: "maxDepth",
-  		get: function get() {
-  			return PointOctant.maxDepth;
-  		},
-  		set: function set(x) {
+  		}, {
+  				key: "add",
+  				value: function add(p, data) {
 
-  			PointOctant.maxDepth = x;
-  			this.root.update();
-  		}
+  						p = p.clone();
 
-  		/**
-     * Number of points per octant before a split occurs. Setting this value
-     * refreshes the entire tree.
-     *
-     * This value works together with the maximum depth as a secondary limiting
-     * factor. Smaller values cause splits to occur earlier which results in a
-     * faster and deeper tree growth.
-     *
-     * @property maxPoints
-     * @type Number
-     * @default 8
-     */
+  						var heap = [this.root];
+  						var currentLevel = 0;
 
-  	}, {
-  		key: "maxPoints",
-  		get: function get() {
-  			return PointOctant.maxPoints;
-  		},
-  		set: function set(x) {
+  						var octant = void 0,
+  						    children = void 0;
+  						var i = void 0,
+  						    l = void 0;
 
-  			PointOctant.maxPoints = x;
-  			this.root.update();
-  		}
+  						var exists = false;
 
-  		/**
-     * The amount of points that are currently in the tree.
-     *
-     * @property totalPoints
-     * @type Number
-     */
+  						if (data !== undefined && data !== null) {
 
-  	}, {
-  		key: "totalPoints",
-  		get: function get() {
-  			return this.root.totalPoints;
-  		}
-  	}]);
-  	return PointOctree;
+  								while (heap.length > 0) {
+
+  										octant = heap.pop();
+  										children = octant.children;
+
+  										if (octant.contains(p, this.bias)) {
+
+  												heap = [];
+
+  												if (children !== null) {
+  														var _heap;
+
+  														(_heap = heap).push.apply(_heap, toConsumableArray(children));
+
+  														++currentLevel;
+  												} else {
+
+  														if (octant.points === null) {
+
+  																octant.points = [];
+  																octant.data = [];
+  														} else {
+
+  																for (i = 0, l = octant.points.length; !exists && i < l; ++i) {
+
+  																		exists = octant.points[i].equals(p);
+  																}
+  														}
+
+  														if (exists) {
+
+  																octant.data[i - 1] = data;
+  														} else if (octant.points.length < this.maxPoints || currentLevel === this.maxDepth) {
+
+  																octant.points.push(p);
+  																octant.data.push(data);
+  														} else {
+  																var _heap2;
+
+  																octant.split();
+  																octant.redistribute(this.bias);
+
+  																(_heap2 = heap).push.apply(_heap2, toConsumableArray(octant.children));
+
+  																++currentLevel;
+  														}
+  												}
+  										}
+  								}
+  						}
+  				}
+
+  				/**
+       * Removes a point from the tree.
+       *
+       * @method remove
+       * @param {Vector3} p - A point.
+       */
+
+  		}, {
+  				key: "remove",
+  				value: function remove(p) {
+
+  						var heap = [this.root];
+  						var parent = this.root;
+
+  						var octant = void 0,
+  						    children = void 0;
+
+  						var i = void 0,
+  						    l = void 0;
+  						var points = void 0,
+  						    data = void 0;
+  						var point = void 0,
+  						    last = void 0;
+
+  						while (heap.length > 0) {
+
+  								octant = heap.pop();
+  								children = octant.children;
+
+  								if (octant.contains(p, this.bias)) {
+
+  										heap = [];
+
+  										if (children !== null) {
+  												var _heap3;
+
+  												(_heap3 = heap).push.apply(_heap3, toConsumableArray(children));
+  												parent = octant;
+  										} else if (octant.points !== null) {
+
+  												points = octant.points;
+  												data = octant.data;
+
+  												for (i = 0, l = points.length; i < l; ++i) {
+
+  														point = points[i];
+
+  														if (point.equals(p)) {
+
+  																last = l - 1;
+
+  																// If the point is NOT the last one in the array:
+  																if (i < last) {
+
+  																		// Overwrite with the last point and data entry.
+  																		points[i] = points[last];
+  																		data[i] = data[last];
+  																}
+
+  																// Drop the last entry.
+  																points.pop();
+  																data.pop();
+
+  																if (parent.countPoints() <= this.maxPoints) {
+
+  																		parent.merge();
+  																}
+
+  																break;
+  														}
+  												}
+  										}
+  								}
+  						}
+  				}
+
+  				/**
+       * Retrieves the data of the point at the specified position.
+       *
+       * @method fetch
+       * @param {Vector3} p - A position.
+       * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
+       */
+
+  		}, {
+  				key: "fetch",
+  				value: function fetch(p) {
+
+  						var heap = [this.root];
+
+  						var result = null;
+
+  						var octant = void 0,
+  						    children = void 0;
+  						var i = void 0,
+  						    l = void 0;
+  						var point = void 0;
+
+  						while (heap.length > 0) {
+
+  								octant = heap.pop();
+  								children = octant.children;
+
+  								if (octant.contains(p, this.bias)) {
+
+  										heap = [];
+
+  										if (children !== null) {
+  												var _heap4;
+
+  												(_heap4 = heap).push.apply(_heap4, toConsumableArray(children));
+  										} else {
+
+  												for (i = 0, l = octant.points.length; i < l; ++i) {
+
+  														point = octant.points[i];
+
+  														if (p.distanceToSquared(point) <= this.biasSquared) {
+
+  																result = octant.data[i];
+
+  																break;
+  														}
+  												}
+  										}
+  								}
+  						}
+
+  						return result;
+  				}
+
+  				/**
+       * Finds the closest point to the given one.
+       *
+       * @method findNearestPoint
+       * @param {Vector3} p - A point.
+       * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
+       * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
+       * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
+       */
+
+  		}, {
+  				key: "findNearestPoint",
+  				value: function findNearestPoint(p, maxDistance, skipSelf) {
+
+  						if (maxDistance === undefined) {
+  								maxDistance = Infinity;
+  						}
+  						if (skipSelf === undefined) {
+  								skipSelf = false;
+  						}
+
+  						return this.root.findNearestPoint(p, maxDistance, skipSelf);
+  				}
+
+  				/**
+       * Finds points that are in the specified radius around the given position.
+       *
+       * @method findPoints
+       * @param {Vector3} p - A position.
+       * @param {Number} r - A radius.
+       * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
+       * @return {Array} An array of objects, each containing a point and a data property.
+       */
+
+  		}, {
+  				key: "findPoints",
+  				value: function findPoints(p, r, skipSelf) {
+
+  						if (skipSelf === undefined) {
+  								skipSelf = false;
+  						}
+
+  						var result = [];
+
+  						this.root.findPoints(p, r, skipSelf, result);
+
+  						return result;
+  				}
+
+  				/**
+       * Finds the points that intersect with the given ray.
+       *
+       * @method raycast
+       * @param {Raycaster} raycaster - The raycaster.
+       * @param {Array} intersects - An array to be filled with the intersecting points.
+       */
+
+  		}, {
+  				key: "raycast",
+  				value: function raycast(raycaster, intersects) {
+
+  						var octants = [];
+
+  						get(Object.getPrototypeOf(PointOctree.prototype), "raycast", this).call(this, raycaster, octants);
+
+  						if (octants.length > 0) {
+
+  								// Collect intersecting points.
+  								this.testPoints(octants, raycaster, intersects);
+  						}
+  				}
+
+  				/**
+       * Collects points that intersect with the given ray.
+       *
+       * @method testPoints
+       * @param {Array} octants - An array containing octants that intersect with the ray.
+       * @param {Raycaster} raycaster - The raycaster.
+       * @param {Array} intersects - An array to be filled with the intersecting points.
+       */
+
+  		}, {
+  				key: "testPoints",
+  				value: function testPoints(octants, raycaster, intersects) {
+
+  						var threshold = raycaster.params.Points.threshold;
+  						var thresholdSq = threshold * threshold;
+
+  						var intersectPoint = void 0;
+  						var distance = void 0,
+  						    distanceToRay = void 0;
+  						var rayPointDistanceSq = void 0;
+
+  						var i = void 0,
+  						    j = void 0,
+  						    il = void 0,
+  						    jl = void 0;
+  						var octant = void 0,
+  						    points = void 0,
+  						    point = void 0;
+
+  						for (i = 0, il = octants.length; i < il; ++i) {
+
+  								octant = octants[i];
+  								points = octant.points;
+
+  								if (points !== null) {
+
+  										for (j = 0, jl = points.length; j < jl; ++j) {
+
+  												point = points[j];
+  												rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
+
+  												if (rayPointDistanceSq < thresholdSq) {
+
+  														intersectPoint = raycaster.ray.closestPointToPoint(point);
+  														distance = raycaster.ray.origin.distanceTo(intersectPoint);
+
+  														if (distance >= raycaster.near && distance <= raycaster.far) {
+
+  																distanceToRay = Math.sqrt(rayPointDistanceSq);
+
+  																intersects.push({
+  																		distance: distance,
+  																		distanceToRay: distanceToRay,
+  																		point: intersectPoint.clone(),
+  																		object: octant.data[j]
+  																});
+  														}
+  												}
+  										}
+  								}
+  						}
+  				}
+  		}]);
+  		return PointOctree;
   }(Octree);
 
   exports.Octant = Octant;
