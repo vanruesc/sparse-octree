@@ -79,10 +79,17 @@ export class PointOctree extends Octree {
 	}
 
 	/**
+	 * Counts how many points are in this octree.
 	 *
+	 * @method countPoints
+	 * @return {Number} The amount of points.
 	 */
 
+	countPoints() {
 
+		return this.root.countPoints();
+
+	}
 
 	/**
 	 *
@@ -97,14 +104,8 @@ export class PointOctree extends Octree {
 
 
 
-	/**
-	 * The amount of points that are currently in the tree.
-	 *
-	 * @property totalPoints
-	 * @type Number
-	 */
+					heap = [];
 
-	get totalPoints() { return this.root.totalPoints; }
 
 	/**
 	 * Adds a point to the tree.

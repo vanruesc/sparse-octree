@@ -19,15 +19,6 @@ export class PointOctant extends Octant {
 		super(min, max);
 
 		/**
-		 * The amount of points in this octant.
-		 *
-		 * @property totalPoints
-		 * @type Number
-		 */
-
-		this.totalPoints = 0;
-
-		/**
 		 * The points that are inside this node.
 		 *
 		 * @property points
