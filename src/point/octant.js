@@ -38,20 +38,39 @@ export class PointOctant extends Octant {
 	}
 
 	/**
+	 * Counts how many points are in this octant.
 	 *
+	 * @method countPoints
+	 * @return {Number} The amount of points.
 	 */
 
+	countPoints() {
 
+		const heap = [this];
 
-		bias = Math.max(0.0, x);
-		biasSquared = bias * bias;
+		let result = 0;
+		let octant, children;
 
+		while(heap.length > 0) {
 
+			octant = heap.pop();
+			children = octant.children;
 
+			if(children !== null) {
 
+				heap.push(...children);
 
+			} else if(octant.points !== null) {
 
+				result += octant.points.length;
 
+			}
+
+		}
+
+		return result;
+
+	}
 
 	/**
 	 * Computes the distance squared from this octant to the given point.
