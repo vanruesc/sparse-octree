@@ -11,7 +11,7 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "octree",
-        "point"
+        "points"
     ],
     "allModules": [
         {
@@ -20,8 +20,8 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Exposure of the library components."
         },
         {
-            "displayName": "point",
-            "name": "point",
+            "displayName": "points",
+            "name": "points",
             "description": "Point-oriented octree components."
         }
     ],

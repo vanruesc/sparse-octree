@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,7 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
-                                <li><a href="../modules/point.html">point</a></li>
+                                <li><a href="../modules/points.html">points</a></li>
                             </ul>
                         </div>
                     </div>
@@ -115,9 +115,6 @@
                 <li class="arg">
                         <code>max</code>
                 </li>
-                <li class="arg">
-                        <code class="optional">[level]</code>
-                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -172,20 +169,6 @@
                     </div>
 
                 </li>
-                <li class="param">
-                        <code class="param-name optional">[level]</code>
-                        <span class="type">Number</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The depth level.</li>
-</ul>
-
-                    </div>
-
-                </li>
             </ul>
         </div>
 
@@ -223,6 +206,10 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_repair">repair</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_split">split</a>
 
                             </li>
@@ -238,16 +225,17 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_level">level</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_max">max</a>
 
                             </li>
                             <li class="index-item property">
                                 <a href="#property_min">min</a>
 
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_PATTERN">PATTERN</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -276,7 +264,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l57"><code>src\octant.js:57</code></a>
+        <a href="../files/src_octant.js.html#l46"><code>src\octant.js:46</code></a>
         </p>
 
 
@@ -319,7 +307,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l75"><code>src\octant.js:75</code></a>
+        <a href="../files/src_octant.js.html#l64"><code>src\octant.js:64</code></a>
         </p>
 
 
@@ -362,7 +350,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l66"><code>src\octant.js:66</code></a>
+        <a href="../files/src_octant.js.html#l55"><code>src\octant.js:55</code></a>
         </p>
 
 
@@ -387,6 +375,37 @@
 
 
 </div>
+<div id="method_repair" class="method item">
+    <h3 class="name"><code>repair</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l140"><code>src\octant.js:140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates missing child octants and restores the layout.</p>
+
+    </div>
+
+
+
+
+</div>
 <div id="method_split" class="method item">
     <h3 class="name"><code>split</code></h3>
 
@@ -402,7 +421,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l108"><code>src\octant.js:108</code></a>
+        <a href="../files/src_octant.js.html#l100"><code>src\octant.js:100</code></a>
         </p>
 
 
@@ -434,7 +453,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l45"><code>src\octant.js:45</code></a>
+        <a href="../files/src_octant.js.html#l34"><code>src\octant.js:34</code></a>
         </p>
 
 
@@ -449,32 +468,6 @@
 
 
 </div>
-<div id="property_level" class="property item">
-    <h3 class="name"><code>level</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_octant.js.html#l35"><code>src\octant.js:35</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The depth level of this octant.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> 0</p>
-
-
-</div>
 <div id="property_max" class="property item">
     <h3 class="name"><code>max</code></h3>
     <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
@@ -486,7 +479,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l26"><code>src\octant.js:26</code></a>
+        <a href="../files/src_octant.js.html#l25"><code>src\octant.js:25</code></a>
         </p>
 
 
@@ -511,7 +504,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_octant.js.html#l17"><code>src\octant.js:17</code></a>
+        <a href="../files/src_octant.js.html#l16"><code>src\octant.js:16</code></a>
         </p>
 
 
@@ -519,6 +512,38 @@
 
     <div class="description">
         <p>The lower bounds of this octant.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_PATTERN" class="property item">
+    <h3 class="name"><code>PATTERN</code></h3>
+    <span class="type">Array</span>
+
+
+
+        <span class="flag final">final</span>
+
+        <span class="flag static">static</span>
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_octant.js.html#l226"><code>src\octant.js:226</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>A binary pattern that describes the standard octant layout:</p>
+<p>3____7
+2/_<strong>6/|
+| 1</strong>|_5
+0/___4/</p>
+<p>This common layout is crucial for positional assumptions.</p>
 
     </div>
 

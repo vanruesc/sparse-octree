@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,7 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
-                                <li><a href="../modules/point.html">point</a></li>
+                                <li><a href="../modules/points.html">points</a></li>
                             </ul>
                         </div>
                     </div>
@@ -92,10 +92,10 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_point_octree.js.html#l5"><code>src\point\octree.js:5</code></a>
+            Defined in: <a href="../files/src_points_octree.js.html#l4"><code>src\points\octree.js:4</code></a>
         </div>
 
-            Module: <a href="../modules/point.html">point</a><br>
+            Module: <a href="../modules/points.html">points</a><br>
             Parent Module: <a href="../modules/octree.html">octree</a>
 
 </div>
@@ -141,7 +141,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l5"><code>src\point\octree.js:5</code></a>
+        <a href="../files/src_points_octree.js.html#l4"><code>src\points\octree.js:4</code></a>
         </p>
 
 
@@ -252,12 +252,12 @@
                                 <a href="#method_add">add</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_addPoints">addPoints</a>
-
-                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_center">center</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_countPoints">countPoints</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -297,10 +297,6 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_removePoints">removePoints</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_testPoints">testPoints</a>
 
                             </li>
@@ -311,8 +307,12 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property">
+                            <li class="index-item property private">
                                 <a href="#property_bias">bias</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_biasSquared">biasSquared</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -323,11 +323,11 @@
                                 <a href="#property_max">max</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property private">
                                 <a href="#property_maxDepth">maxDepth</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property private">
                                 <a href="#property_maxPoints">maxPoints</a>
 
                             </li>
@@ -337,10 +337,6 @@
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_root">root</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_totalPoints">totalPoints</a>
 
                             </li>
                     </ul>
@@ -361,7 +357,7 @@
                         <code>p</code>
                 </li>
                 <li class="arg">
-                        <code class="optional">[data]</code>
+                        <code>data</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -376,7 +372,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l98"><code>src\point\octree.js:98</code></a>
+        <a href="../files/src_points_octree.js.html#l93"><code>src\points\octree.js:93</code></a>
         </p>
 
 
@@ -406,87 +402,13 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name optional">[data]</code>
+                        <code class="param-name">data</code>
                         <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>An arbitrary object that will be associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_addPoints" class="method item">
-    <h3 class="name"><code>addPoints</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>array</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_point_octree.js.html#l116"><code>src\point\octree.js:116</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Adds all points from the given array of position triples to the tree.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">array</code>
-                        <span class="type">Float32Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array containing point position triples.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An arbitrary object that will be associated with the points.</li>
+<li>An object that the point represents.</li>
 </ul>
 
                     </div>
@@ -516,7 +438,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#method_center">Octree</a>:
-        <a href="../files/src_octree.js.html#l64"><code>src\octree.js:64</code></a>
+        <a href="../files/src_octree.js.html#l65"><code>src\octree.js:65</code></a>
         </p>
 
 
@@ -534,6 +456,49 @@
             <div class="returns-description">
                         <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
                     A new vector that describes the center of this octree.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_countPoints" class="method item">
+    <h3 class="name"><code>countPoints</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_points_octree.js.html#l80"><code>src\points\octree.js:80</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Counts how many points are in this octree.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>The amount of points.</p>
+
             </div>
         </div>
 
@@ -563,7 +528,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#method_cull">Octree</a>:
-        <a href="../files/src_octree.js.html#l82"><code>src\octree.js:82</code></a>
+        <a href="../files/src_octree.js.html#l83"><code>src\octree.js:83</code></a>
         </p>
 
 
@@ -620,7 +585,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#method_depth">Octree</a>:
-        <a href="../files/src_octree.js.html#l73"><code>src\octree.js:73</code></a>
+        <a href="../files/src_octree.js.html#l74"><code>src\octree.js:74</code></a>
         </p>
 
 
@@ -661,7 +626,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#method_dimensions">Octree</a>:
-        <a href="../files/src_octree.js.html#l55"><code>src\octree.js:55</code></a>
+        <a href="../files/src_octree.js.html#l56"><code>src\octree.js:56</code></a>
         </p>
 
 
@@ -696,7 +661,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type">Set</span>
+            <span class="type">Object</span>
         </span>
 
 
@@ -708,7 +673,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l179"><code>src\point\octree.js:179</code></a>
+        <a href="../files/src_points_octree.js.html#l255"><code>src\points\octree.js:255</code></a>
         </p>
 
 
@@ -744,8 +709,8 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Set</span>:
-                    <p>A set of data entries that are associated with the given point or null if it doesn't exist.</p>
+                        <span class="type">Object</span>:
+                    <p>The data entry that is associated with the given point or null if it doesn't exist.</p>
 
             </div>
         </div>
@@ -782,7 +747,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l193"><code>src\point\octree.js:193</code></a>
+        <a href="../files/src_points_octree.js.html#l312"><code>src\points\octree.js:312</code></a>
         </p>
 
 
@@ -878,7 +843,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#method_findOctantsByLevel">Octree</a>:
-        <a href="../files/src_octree.js.html#l122"><code>src\octree.js:122</code></a>
+        <a href="../files/src_octree.js.html#l123"><code>src\octree.js:123</code></a>
         </p>
 
 
@@ -886,7 +851,7 @@
     </div>
 
     <div class="description">
-        Fetches all octants with the specified level.
+        Fetches all octants with the specified depth level.
     </div>
 
         <div class="params">
@@ -947,7 +912,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l212"><code>src\point\octree.js:212</code></a>
+        <a href="../files/src_points_octree.js.html#l331"><code>src\points\octree.js:331</code></a>
         </p>
 
 
@@ -1045,7 +1010,7 @@
                 Octree
             </a>
             but overwritten in
-        <a href="../files/src_point_octree.js.html#l234"><code>src\point\octree.js:234</code></a>
+        <a href="../files/src_points_octree.js.html#l353"><code>src\points\octree.js:353</code></a>
         </p>
 
 
@@ -1101,9 +1066,6 @@
                 <li class="arg">
                         <code>p</code>
                 </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -1117,7 +1079,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l138"><code>src\point\octree.js:138</code></a>
+        <a href="../files/src_points_octree.js.html#l177"><code>src\points\octree.js:177</code></a>
         </p>
 
 
@@ -1141,94 +1103,6 @@
                     <div class="param-description">
                         <ul>
 <li>A point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that is associated with the point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_removePoints" class="method item">
-    <h3 class="name"><code>removePoints</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>array</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[data]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_point_octree.js.html#l156"><code>src\point\octree.js:156</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Removes all points from the tree that are in the given array of position
-triples.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">array</code>
-                        <span class="type">Float32Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array containing point position triples.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[data]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An object that is associated with the points.</li>
 </ul>
 
                     </div>
@@ -1267,7 +1141,7 @@ triples.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l257"><code>src\point\octree.js:257</code></a>
+        <a href="../files/src_points_octree.js.html#l376"><code>src\points\octree.js:376</code></a>
         </p>
 
 
@@ -1333,18 +1207,19 @@ triples.</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_bias" class="property item">
+<div id="property_bias" class="property item private">
     <h3 class="name"><code>bias</code></h3>
     <span class="type">Number</span>
 
 
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l33"><code>src\point\octree.js:33</code></a>
+        <a href="../files/src_points_octree.js.html#l26"><code>src\points\octree.js:26</code></a>
         </p>
 
 
@@ -1352,6 +1227,33 @@ triples.</p>
 
     <div class="description">
         <p>A threshold for proximity checks.</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 0.0</p>
+
+
+</div>
+<div id="property_biasSquared" class="property item private">
+    <h3 class="name"><code>biasSquared</code></h3>
+    <span class="type">Number</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_points_octree.js.html#l37"><code>src\points\octree.js:37</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The proximity threshold squared.</p>
 
     </div>
 
@@ -1370,7 +1272,7 @@ triples.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#property_children">Octree</a>:
-        <a href="../files/src_octree.js.html#l46"><code>src\octree.js:46</code></a>
+        <a href="../files/src_octree.js.html#l47"><code>src\octree.js:47</code></a>
         </p>
 
 
@@ -1394,7 +1296,7 @@ triples.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#property_max">Octree</a>:
-        <a href="../files/src_octree.js.html#l37"><code>src\octree.js:37</code></a>
+        <a href="../files/src_octree.js.html#l38"><code>src\octree.js:38</code></a>
         </p>
 
 
@@ -1407,29 +1309,29 @@ triples.</p>
 
 
 </div>
-<div id="property_maxDepth" class="property item">
+<div id="property_maxDepth" class="property item private">
     <h3 class="name"><code>maxDepth</code></h3>
     <span class="type">Number</span>
 
 
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l45"><code>src\point\octree.js:45</code></a>
+        <a href="../files/src_points_octree.js.html#l48"><code>src\points\octree.js:48</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>The maximum tree depth level.
-Setting this value refreshes the entire tree.</p>
-<p>It's possible to set this value to Infinity, but be aware that allowing
-infinitely small octants can have a negative impact on performance. Finding
-a value that works best for a specific scene is advisable.</p>
+        <p>The maximum tree depth level.</p>
+<p>It's possible to use Infinity, but be aware that allowing infinitely
+small octants can have a negative impact on performance.
+Finding a value that works best for a specific scene is advisable.</p>
 
     </div>
 
@@ -1437,26 +1339,26 @@ a value that works best for a specific scene is advisable.</p>
 
 
 </div>
-<div id="property_maxPoints" class="property item">
+<div id="property_maxPoints" class="property item private">
     <h3 class="name"><code>maxPoints</code></h3>
     <span class="type">Number</span>
 
 
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_point_octree.js.html#l67"><code>src\point\octree.js:67</code></a>
+        <a href="../files/src_points_octree.js.html#l63"><code>src\points\octree.js:63</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Number of points per octant before a split occurs. Setting this value
-refreshes the entire tree.</p>
+        <p>Number of points per octant before a split occurs.</p>
 <p>This value works together with the maximum depth as a secondary limiting
 factor. Smaller values cause splits to occur earlier which results in a
 faster and deeper tree growth.</p>
@@ -1478,7 +1380,7 @@ faster and deeper tree growth.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Octree.html#property_min">Octree</a>:
-        <a href="../files/src_octree.js.html#l28"><code>src\octree.js:28</code></a>
+        <a href="../files/src_octree.js.html#l29"><code>src\octree.js:29</code></a>
         </p>
 
 
@@ -1512,31 +1414,7 @@ faster and deeper tree growth.</p>
         The root octant.
     </div>
 
-
-
-</div>
-<div id="property_totalPoints" class="property item">
-    <h3 class="name"><code>totalPoints</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_point_octree.js.html#l89"><code>src\point\octree.js:89</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The amount of points that are currently in the tree.</p>
-
-    </div>
-
+        <p><strong>Default:</strong> null</p>
 
 
 </div>

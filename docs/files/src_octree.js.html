@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,7 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
-                                <li><a href="../modules/point.html">point</a></li>
+                                <li><a href="../modules/points.html">points</a></li>
                             </ul>
                         </div>
                     </div>
@@ -109,6 +109,7 @@ export class Octree {
 		 *
 		 * @property root
 		 * @type Octant
+		 * @default null
 		 */
 
 		this.root = (min !== undefined &amp;&amp; max !== undefined) ? new Octant(min, max) : null;
@@ -210,7 +211,7 @@ export class Octree {
 	}
 
 	/**
-	 * Fetches all octants with the specified level.
+	 * Fetches all octants with the specified depth level.
 	 *
 	 * @method findOctantsByLevel
 	 * @param {Number} level - The depth level.
@@ -220,22 +221,34 @@ export class Octree {
 	findOctantsByLevel(level) {
 
 		const result = [];
-		const heap = [this.root];
+
+		let h0 = [this.root];
+		let h1 = [];
 
 		let octant, children;
+		let currentLevel = 0;
 
-		while(heap.length &gt; 0) {
+		while(h0.length &gt; 0) {
 
-			octant = heap.pop();
+			octant = h0.pop();
 			children = octant.children;
 
-			if(octant.level === level) {
+			if(currentLevel === level) {
 
 				result.push(octant);
 
 			} else if(children !== null) {
 
-				heap.push(...children);
+				h1.push(...children);
+
+			}
+
+			if(h0.length === 0) {
+
+				h0 = h1;
+				h1 = [];
+
+				if(++currentLevel &gt; level) { break; }
 
 			}
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\point\octree.js - sparse-octree</title>
+    <title>src\points\octree.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 1.0.0</em>
+            <em>API Docs for: 2.0.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,7 +50,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/octree.html">octree</a></li>
-                                <li><a href="../modules/point.html">point</a></li>
+                                <li><a href="../modules/points.html">points</a></li>
                             </ul>
                         </div>
                     </div>
@@ -84,19 +84,18 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src\point\octree.js</h1>
+<h1 class="file-heading">File: src\points\octree.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 import { Octree } from &quot;../octree&quot;;
-import { Vector3 } from &quot;../vector3&quot;;
 import { PointOctant } from &quot;./octant&quot;;
 
 /**
  * An octree that manages points.
  *
  * @class PointOctree
- * @submodule point
+ * @submodule points
  * @extends Octree
  * @constructor
  * @param {Vector3} min - The lower bounds of the tree.
@@ -114,112 +113,152 @@ export class PointOctree extends Octree {
 
 		this.root = new PointOctant(min, max);
 
-		this.bias = bias;
-		this.maxDepth = maxDepth;
-		this.maxPoints = maxPoints;
+		/**
+		 * A threshold for proximity checks.
+		 *
+		 * @property bias
+		 * @type Number
+		 * @private
+		 * @default 0.0
+		 */
+
+		this.bias = (bias !== undefined) ? Math.max(0.0, bias) : 0.0;
+
+		/**
+		 * The proximity threshold squared.
+		 *
+		 * @property biasSquared
+		 * @type Number
+		 * @private
+		 * @default 0.0
+		 */
+
+		this.biasSquared = this.bias * this.bias;
+
+		/**
+		 * The maximum tree depth level.
+		 *
+		 * It&#x27;s possible to use Infinity, but be aware that allowing infinitely
+		 * small octants can have a negative impact on performance.
+		 * Finding a value that works best for a specific scene is advisable.
+		 *
+		 * @property maxDepth
+		 * @type Number
+		 * @private
+		 * @default 8
+		 */
+
+		this.maxDepth = (maxDepth !== undefined) ? Math.max(0, Math.round(maxDepth)) : 8;
+
+		/**
+		 * Number of points per octant before a split occurs.
+		 *
+		 * This value works together with the maximum depth as a secondary limiting
+		 * factor. Smaller values cause splits to occur earlier which results in a
+		 * faster and deeper tree growth.
+		 *
+		 * @property maxPoints
+		 * @type Number
+		 * @private
+		 * @default 8
+		 */
+
+		this.maxPoints = (maxPoints !== undefined) ? Math.max(1, Math.round(maxPoints)) : 8;
 
 	}
 
 	/**
-	 * A threshold for proximity checks.
+	 * Counts how many points are in this octree.
 	 *
-	 * @property bias
-	 * @type Number
-	 * @default 0.0
+	 * @method countPoints
+	 * @return {Number} The amount of points.
 	 */
 
-	get bias() { return PointOctant.bias; }
+	countPoints() {
 
-	set bias(x) { PointOctant.bias = x; }
-
-	/**
-	 * The maximum tree depth level.
-	 * Setting this value refreshes the entire tree.
-	 *
-	 * It&#x27;s possible to set this value to Infinity, but be aware that allowing
-	 * infinitely small octants can have a negative impact on performance. Finding
-	 * a value that works best for a specific scene is advisable.
-	 *
-	 * @property maxDepth
-	 * @type Number
-	 * @default 8
-	 */
-
-	get maxDepth() { return PointOctant.maxDepth; }
-
-	set maxDepth(x) {
-
-		PointOctant.maxDepth = x;
-		this.root.update();
+		return this.root.countPoints();
 
 	}
-
-	/**
-	 * Number of points per octant before a split occurs. Setting this value
-	 * refreshes the entire tree.
-	 *
-	 * This value works together with the maximum depth as a secondary limiting
-	 * factor. Smaller values cause splits to occur earlier which results in a
-	 * faster and deeper tree growth.
-	 *
-	 * @property maxPoints
-	 * @type Number
-	 * @default 8
-	 */
-
-	get maxPoints() { return PointOctant.maxPoints; }
-
-	set maxPoints(x) {
-
-		PointOctant.maxPoints = x;
-		this.root.update();
-
-	}
-
-	/**
-	 * The amount of points that are currently in the tree.
-	 *
-	 * @property totalPoints
-	 * @type Number
-	 */
-
-	get totalPoints() { return this.root.totalPoints; }
 
 	/**
 	 * Adds a point to the tree.
 	 *
 	 * @method add
 	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An arbitrary object that will be associated with the point.
+	 * @param {Object} data - An object that the point represents.
 	 */
 
 	add(p, data) {
 
-		if(this.root.containsPoint(p, this.bias)) {
+		p = p.clone();
 
-			this.root.add(p.clone(), data);
+		let heap = [this.root];
+		let currentLevel = 0;
 
-		}
-
-	}
-
-	/**
-	 * Adds all points from the given array of position triples to the tree.
-	 *
-	 * @method addPoints
-	 * @param {Float32Array} array - An array containing point position triples.
-	 * @param {Object} [data] - An arbitrary object that will be associated with the points.
-	 */
-
-	addPoints(array, data) {
-
-		const v = new Vector3();
-
+		let octant, children;
 		let i, l;
 
-		for(i = 0, l = array.length; i &lt; l; i += 3) {
+		let exists = false;
 
-			this.add(v.fromArray(array, i).clone(), data);
+		if(data !== undefined &amp;&amp; data !== null) {
+
+			while(heap.length &gt; 0) {
+
+				octant = heap.pop();
+				children = octant.children;
+
+				if(octant.contains(p, this.bias)) {
+
+					heap = [];
+
+					if(children !== null) {
+
+						heap.push(...children);
+
+						++currentLevel;
+
+					} else {
+
+						if(octant.points === null) {
+
+							octant.points = [];
+							octant.data = [];
+
+						} else {
+
+							for(i = 0, l = octant.points.length; !exists &amp;&amp; i &lt; l; ++i) {
+
+								exists = octant.points[i].equals(p);
+
+							}
+
+						}
+
+						if(exists) {
+
+							octant.data[i - 1] = data;
+
+						} else if(octant.points.length &lt; this.maxPoints || currentLevel === this.maxDepth) {
+
+							octant.points.push(p);
+							octant.data.push(data);
+
+						} else {
+
+							octant.split();
+							octant.redistribute(this.bias);
+
+							heap.push(...octant.children);
+
+							++currentLevel;
+
+						}
+
+					}
+
+				}
+
+			}
 
 		}
 
@@ -230,37 +269,74 @@ export class PointOctree extends Octree {
 	 *
 	 * @method remove
 	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An object that is associated with the point.
 	 */
 
-	remove(p, data) {
+	remove(p) {
 
-		if(this.root.containsPoint(p, this.bias)) {
+		let heap = [this.root];
+		let parent = this.root;
 
-			this.root.remove(p, data);
-
-		}
-
-	}
-
-	/**
-	 * Removes all points from the tree that are in the given array of position
-	 * triples.
-	 *
-	 * @method removePoints
-	 * @param {Float32Array} array - An array containing point position triples.
-	 * @param {Object} [data] - An object that is associated with the points.
-	 */
-
-	removePoints(array, data) {
-
-		const v = new Vector3();
+		let octant, children;
 
 		let i, l;
+		let points, data;
+		let point, last;
 
-		for(i = 0, l = array.length; i &lt; l; i += 3) {
+		while(heap.length &gt; 0) {
 
-			this.remove(v.fromArray(array, i), data);
+			octant = heap.pop();
+			children = octant.children;
+
+			if(octant.contains(p, this.bias)) {
+
+				heap = [];
+
+				if(children !== null) {
+
+					heap.push(...children);
+					parent = octant;
+
+				} else if(octant.points !== null) {
+
+					points = octant.points;
+					data = octant.data;
+
+					for(i = 0, l = points.length; i &lt; l; ++i) {
+
+						point = points[i];
+
+						if(point.equals(p)) {
+
+							last = l - 1;
+
+							// If the point is NOT the last one in the array:
+							if(i &lt; last) {
+
+								// Overwrite with the last point and data entry.
+								points[i] = points[last];
+								data[i] = data[last];
+
+							}
+
+							// Drop the last entry.
+							points.pop();
+							data.pop();
+
+							if(parent.countPoints() &lt;= this.maxPoints) {
+
+								parent.merge();
+
+							}
+
+							break;
+
+						}
+
+					}
+
+				}
+
+			}
 
 		}
 
@@ -271,12 +347,55 @@ export class PointOctree extends Octree {
 	 *
 	 * @method fetch
 	 * @param {Vector3} p - A position.
-	 * @return {Set} A set of data entries that are associated with the given point or null if it doesn&#x27;t exist.
+	 * @return {Object} The data entry that is associated with the given point or null if it doesn&#x27;t exist.
 	 */
 
 	fetch(p) {
 
-		return this.root.fetch(p);
+		let heap = [this.root];
+
+		let result = null;
+
+		let octant, children;
+		let i, l;
+		let point;
+
+		while(heap.length &gt; 0) {
+
+			octant = heap.pop();
+			children = octant.children;
+
+			if(octant.contains(p, this.bias)) {
+
+				heap = [];
+
+				if(children !== null) {
+
+					heap.push(...children);
+
+				} else {
+
+					for(i = 0, l = octant.points.length; i &lt; l; ++i) {
+
+						point = octant.points[i];
+
+						if(p.distanceToSquared(point) &lt;= this.biasSquared) {
+
+							result = octant.data[i];
+
+							break;
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return result;
 
 	}
 
@@ -363,48 +482,34 @@ export class PointOctree extends Octree {
 		let rayPointDistanceSq;
 
 		let i, j, il, jl;
-		let octant, point, dataSet, data;
+		let octant, points, point;
 
 		for(i = 0, il = octants.length; i &lt; il; ++i) {
 
 			octant = octants[i];
+			points = octant.points;
 
-			for(j = 0, jl = octant.totalPoints; j &lt; jl; ++j) {
+			if(points !== null) {
 
-				point = octant.points[j];
-				rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
+				for(j = 0, jl = points.length; j &lt; jl; ++j) {
 
-				if(rayPointDistanceSq &lt; thresholdSq) {
+					point = points[j];
+					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
 
-					intersectPoint = raycaster.ray.closestPointToPoint(point);
-					distance = raycaster.ray.origin.distanceTo(intersectPoint);
+					if(rayPointDistanceSq &lt; thresholdSq) {
 
-					if(distance &gt;= raycaster.near &amp;&amp; distance &lt;= raycaster.far) {
+						intersectPoint = raycaster.ray.closestPointToPoint(point);
+						distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
-						dataSet = octant.dataSets[j];
-						distanceToRay = Math.sqrt(rayPointDistanceSq);
+						if(distance &gt;= raycaster.near &amp;&amp; distance &lt;= raycaster.far) {
 
-						if(dataSet.size &gt; 0) {
-
-							// Unfold data aggregation.
-							for(data of dataSet) {
-
-								intersects.push({
-									distance: distance,
-									distanceToRay: distanceToRay,
-									point: intersectPoint.clone(),
-									object: data
-								});
-
-							}
-
-						} else {
+							distanceToRay = Math.sqrt(rayPointDistanceSq);
 
 							intersects.push({
 								distance: distance,
 								distanceToRay: distanceToRay,
 								point: intersectPoint.clone(),
-								object: null
+								object: octant.data[j]
 							});
 
 						}
