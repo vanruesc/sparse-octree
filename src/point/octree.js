@@ -258,12 +258,55 @@ export class PointOctree extends Octree {
 	 *
 	 * @method fetch
 	 * @param {Vector3} p - A position.
-	 * @return {Set} A set of data entries that are associated with the given point or null if it doesn't exist.
+	 * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
 	 */
 
 	fetch(p) {
 
-		return this.root.fetch(p);
+		let heap = [this.root];
+
+		let result = null;
+
+		let octant, children;
+		let i, l;
+		let point;
+
+		while(heap.length > 0) {
+
+			octant = heap.pop();
+			children = octant.children;
+
+			if(octant.contains(p, this.bias)) {
+
+				heap = [];
+
+				if(children !== null) {
+
+					heap.push(...children);
+
+				} else {
+
+					for(i = 0, l = octant.points.length; i < l; ++i) {
+
+						point = octant.points[i];
+
+						if(p.distanceToSquared(point) <= this.biasSquared) {
+
+							result = octant.data[i];
+
+							break;
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		return result;
 
 	}
 
