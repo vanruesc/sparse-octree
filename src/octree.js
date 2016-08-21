@@ -19,6 +19,7 @@ export class Octree {
 		 *
 		 * @property root
 		 * @type Octant
+		 * @default null
 		 */
 
 		this.root = (min !== undefined && max !== undefined) ? new Octant(min, max) : null;
