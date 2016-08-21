@@ -138,299 +138,35 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * Adds a point to this node. If this octant isn't a leaf node, the point will
-	 * be added to a child octant.
 	 *
-	 * @method add
-	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An object that will be associated with the point.
-	 * @return {Boolean} Whether the point was a unique addition.
 	 */
 
-	add(p, data) {
-
-		let unique = false;
-		let hit = false;
-
-		let i, l;
-		let points, point;
-
-		if(this.children !== null) {
-
-			unique = this.addToChild(p, data);
-
-		} else {
-
-			if(this.totalPoints === 0) {
-
-				this.points = [];
-				this.dataSets = [];
-
-			}
-
-			points = this.points;
-
-			// @todo: improve time complexity of duplicate check.
-			for(i = 0, l = this.totalPoints; !hit && i < l; ++i) {
-
-				point = points[i];
-				hit = point.equals(p);
-
-			}
-
-			if(hit) {
-
-				// Aggregate data of duplicates.
-				if(data !== undefined) {
-
-					this.dataSets[i - 1].add(data);
-
-				}
-
-			} else {
-
-				unique = true;
-
-				if(this.totalPoints === maxPoints && this.level < maxDepth) {
-
-					// At maximum capacity and can still split.
-					this.split();
-					this.addToChild(p, data);
-
-				} else {
-
-					// Count distinct points in leaf nodes.
-					this.totalPoints = this.points.push(p);
-					this.dataSets.push(new Set());
-
-					if(data !== undefined) {
-
-						this.dataSets[this.totalPoints - 1].add(data);
-
-					}
-
-				}
-
-			}
-
-		}
-
-		return unique;
-
-	}
-
-	/**
-	 * Adds the given point to a child node that covers the point's position.
-	 *
-	 * @method addToChild
-	 * @private
-	 * @param {Vector3} p - A point.
-	 * @param {Object} [data] - An object that will be associated with the point.
-	 * @return {Boolean} Whether the point was a unique addition.
-	 */
-
-	addToChild(p, data) {
-
-		let unique = false;
-
-		let i, l;
-
-		for(i = 0, l = this.children.length; i < l; ++i) {
-
-			if(this.children[i].containsPoint(p, bias)) {
-
-				unique = this.children[i].add(p, data);
-
-				if(unique) {
-
-					// Register addition in parent node.
-					++this.totalPoints;
-
-				}
-
-				break;
-
-			}
-
-		}
-
-		return unique;
-
-	}
-
-	/**
-	 * Splits this octant up into eight smaller ones.
-	 *
-	 * @method split
-	 * @private
-	 */
-
-	split() {
-
-		super.split();
-
-		let i;
-		let point, data;
-
-		// Distribute existing points to the new children.
-		i = this.totalPoints - 1;
-		this.totalPoints = 0;
-
-		while(i >= 0) {
-
-			point = this.points[i];
-
-			if(this.dataSets[i].size > 0) {
-
-				// Unfold data aggregations. Each entry is one point.
-				for(data of this.dataSets[i].values()) {
-
-					this.addToChild(point, data);
-
-				}
-
-			} else {
-
-				this.addToChild(point);
-
-			}
-
-			--i;
-
-		}
-
-		this.points = null;
-		this.dataSets = null;
-
-	}
-
-	/**
-	 * Removes the given point from this octant. If this octant is not a leaf
-	 * node, the point will be removed from a child node. If no data is provided,
-	 * the point and all its respective data entries will be removed completely.
-	 *
-	 * @method remove
-	 * @param {Vector3} p - The point.
-	 * @param {Object} [data] - An object that is associated with the point.
-	 * @return {Boolean} Whether the removed point was unique.
-	 */
-
-	remove(p, data) {
 
 		const points = this.points;
-		const dataSets = this.dataSets;
-
-		let unique = false;
 
 		let i, l;
-		let point, last;
 
-		let dataSet = null;
 
-		if(this.children !== null) {
 
-			unique = this.removeFromChild(p, data);
-
-			if(this.totalPoints <= maxPoints) {
-
-				this.merge();
-
-			}
-
-		} else if(this.totalPoints > 0) {
-
-			for(i = 0, l = this.totalPoints; i < l; ++i) {
-
-				point = points[i];
-
-				if(point.equals(p)) {
-
-					// Found it.
-					dataSet = dataSets[i];
-
-					if(data !== undefined) {
-
-						dataSet.delete(data);
-
-					} else {
-
-						dataSet.clear();
-
-					}
 
 					if(dataSet.size === 0) {
 
-						unique = true;
-						last = l - 1;
 
-						// If the point is NOT the last one in the array:
-						if(i < last) {
 
-							// Overwrite with the last point...
-							points[i] = points[last];
 
-							// ...and data set.
-							dataSets[i] = dataSets[last];
 
 						}
 
-						// Drop the last entry.
-						points.pop();
-						dataSets.pop();
 
-						// Register deletion in leaf node.
-						--this.totalPoints;
 
 					}
 
-					break;
-
 				}
 
 			}
 
 		}
 
-		return unique;
-
-	}
-
-	/**
-	 * Removes the given point from a child node.
-	 *
-	 * @method removeFromChild
-	 * @private
-	 * @param {Vector3} p - The point.
-	 * @param {Object} [data] - An object that is associated with the point.
-	 * @return {Boolean} Whether the removed point was unique.
-	 */
-
-	removeFromChild(p, data) {
-
-		let unique = false;
-
-		let i, l;
-
-		for(i = 0, l = this.children.length; i < l; ++i) {
-
-			if(this.children[i].containsPoint(p, bias)) {
-
-				unique = this.children[i].remove(p, data);
-
-				if(unique) {
-
-					// Register deletion in parent node.
-					--this.totalPoints;
-
-				}
-
-				break;
-
-			}
-
-		}
-
-		return unique;
 
 	}
 
@@ -444,114 +180,22 @@ export class PointOctant extends Octant {
 
 	merge() {
 
-		let i, j, il, jl;
-		let child;
-
-		this.totalPoints = 0;
-		this.points = [];
-		this.dataSets = [];
-
-		for(i = 0, il = this.children.length; i < il; ++i) {
-
-			child = this.children[i];
-
-			for(j = 0, jl = child.totalPoints; j < jl; ++j) {
-
-				this.totalPoints = this.points.push(child.points[j]);
-				this.dataSets.push(child.dataSets[j]);
-
-			}
-
-		}
-
-		this.children = null;
-
-	}
-
-	/**
-	 * Refreshes this octant and its children to make sure that all constraints
-	 * are satisfied.
-	 *
-	 * @method update
-	 */
-
-	update() {
-
 		const children = this.children;
 
 		let i, l;
 
 		if(children !== null) {
 
-			// Start from the bottom.
-			for(i = 0, l = children.length; i < l; ++i) {
 
-				children[i].update();
 
-			}
 
-			if(this.totalPoints <= maxPoints || this.level >= maxDepth) {
 
-				// All points fit into one octant or the level is too high.
-				this.merge();
-
-			}
-
-		} else if(this.totalPoints > maxPoints && this.level < maxDepth) {
-
-			// Exceeding maximum capacity.
-			this.split();
-
-		}
-
-	}
-
-	/**
-	 * Retrieves the data of the point at the specified position.
-	 *
-	 * @method fetch
-	 * @param {Vector3} p - A position.
-	 * @return {Set} A set of data entries that are associated with the given point or null if it doesn't exist.
-	 */
-
-	fetch(p) {
-
-		let result = null;
-
-		let i, l;
-		let point;
-
-		if(this.containsPoint(p, bias)) {
-
-			if(this.children !== null) {
-
-				for(i = 0, l = this.children.length; result === null && i < l; ++i) {
-
-					result = this.children[i].fetch(p);
-
-				}
-
-			} else {
-
-				for(i = 0, l = this.totalPoints; i < l; ++i) {
-
-					point = this.points[i];
-
-					if(p.distanceToSquared(point) <= biasSquared) {
-
-						result = this.dataSets[i];
-
-						break;
-
-					}
 
 				}
 
 			}
 
-		}
 
-		return result;
 
 	}
 
