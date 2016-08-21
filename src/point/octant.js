@@ -138,26 +138,44 @@ export class PointOctant extends Octant {
 	}
 
 	/**
+	 * Redistributes existing points to child octants.
 	 *
+	 * @method redistribute
+	 * @param {Number} bias - A proximity threshold.
 	 */
 
+	redistribute(bias) {
 
+		const children = this.children;
 		const points = this.points;
 
 		let i, l;
+		let child, point, data;
 
+		if(children !== null) {
 
+			while(points.length > 0) {
 
+				point = points.pop();
+				data = this.data.pop();
 
-					if(dataSet.size === 0) {
+				for(i = 0, l = children.length; i < l; ++i) {
 
+					child = children[i];
 
+					if(child.contains(point, bias)) {
 
+						if(child.points === null) {
 
+							child.points = [];
+							child.data = [];
 
 						}
 
+						child.points.push(point);
+						child.data.push(data);
 
+						break;
 
 					}
 
@@ -167,6 +185,8 @@ export class PointOctant extends Octant {
 
 		}
 
+		this.points = null;
+		this.data = null;
 
 	}
 
