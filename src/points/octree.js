@@ -5,7 +5,7 @@ import { PointOctant } from "./octant";
  * An octree that manages points.
  *
  * @class PointOctree
- * @submodule point
+ * @submodule points
  * @extends Octree
  * @constructor
  * @param {Vector3} min - The lower bounds of the tree.

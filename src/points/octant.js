@@ -4,7 +4,7 @@ import { Octant } from "../octant";
  * An octant that maintains points.
  *
  * @class PointOctant
- * @submodule point
+ * @submodule points
  * @extends Octant
  * @constructor
  * @param {Vector3} min - The lower bounds.

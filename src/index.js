@@ -9,5 +9,5 @@ export { Octant } from "./octant";
 export { Octree } from "./octree";
 export { OctreeHelper } from "./helper";
 
-export { PointOctant } from "./point";
-export { PointOctree } from "./point";
+export { PointOctant } from "./points";
+export { PointOctree } from "./points";

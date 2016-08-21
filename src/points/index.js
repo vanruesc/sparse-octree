@@ -2,7 +2,7 @@
  * Point-oriented octree components.
  *
  * @module octree
- * @submodule point
+ * @submodule points
  */
 
 export { PointOctant } from "./octant";
