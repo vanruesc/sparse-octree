@@ -27,13 +27,13 @@ export class PointOctant extends Octant {
 		this.points = null;
 
 		/**
-		 * Additional data that is kept in sets for individual points.
+		 * Point data.
 		 *
-		 * @property dataSets
+		 * @property data
 		 * @type Array
 		 */
 
-		this.dataSets = null;
+		this.data = null;
 
 	}
 
