@@ -24,67 +24,78 @@ export class PointOctree extends Octree {
 
 		this.root = new PointOctant(min, max);
 
-		this.bias = bias;
-		this.maxDepth = maxDepth;
-		this.maxPoints = maxPoints;
+		/**
+		 * A threshold for proximity checks.
+		 *
+		 * @property bias
+		 * @type Number
+		 * @private
+		 * @default 0.0
+		 */
+
+		this.bias = (bias !== undefined) ? Math.max(0.0, bias) : 0.0;
+
+		/**
+		 * The proximity threshold squared.
+		 *
+		 * @property biasSquared
+		 * @type Number
+		 * @private
+		 * @default 0.0
+		 */
+
+		this.biasSquared = this.bias * this.bias;
+
+		/**
+		 * The maximum tree depth level.
+		 *
+		 * It's possible to use Infinity, but be aware that allowing infinitely
+		 * small octants can have a negative impact on performance.
+		 * Finding a value that works best for a specific scene is advisable.
+		 *
+		 * @property maxDepth
+		 * @type Number
+		 * @private
+		 * @default 8
+		 */
+
+		this.maxDepth = (maxDepth !== undefined) ? Math.max(0, Math.round(maxDepth)) : 8;
+
+		/**
+		 * Number of points per octant before a split occurs.
+		 *
+		 * This value works together with the maximum depth as a secondary limiting
+		 * factor. Smaller values cause splits to occur earlier which results in a
+		 * faster and deeper tree growth.
+		 *
+		 * @property maxPoints
+		 * @type Number
+		 * @private
+		 * @default 8
+		 */
+
+		this.maxPoints = (maxPoints !== undefined) ? Math.max(1, Math.round(maxPoints)) : 8;
 
 	}
 
 	/**
-	 * A threshold for proximity checks.
 	 *
-	 * @property bias
-	 * @type Number
-	 * @default 0.0
 	 */
 
-	get bias() { return PointOctant.bias; }
 
-	set bias(x) { PointOctant.bias = x; }
 
 	/**
-	 * The maximum tree depth level.
-	 * Setting this value refreshes the entire tree.
 	 *
-	 * It's possible to set this value to Infinity, but be aware that allowing
-	 * infinitely small octants can have a negative impact on performance. Finding
-	 * a value that works best for a specific scene is advisable.
-	 *
-	 * @property maxDepth
-	 * @type Number
-	 * @default 8
 	 */
 
-	get maxDepth() { return PointOctant.maxDepth; }
 
-	set maxDepth(x) {
 
-		PointOctant.maxDepth = x;
-		this.root.update();
 
-	}
 
-	/**
-	 * Number of points per octant before a split occurs. Setting this value
-	 * refreshes the entire tree.
-	 *
-	 * This value works together with the maximum depth as a secondary limiting
-	 * factor. Smaller values cause splits to occur earlier which results in a
-	 * faster and deeper tree growth.
-	 *
-	 * @property maxPoints
-	 * @type Number
-	 * @default 8
-	 */
 
-	get maxPoints() { return PointOctant.maxPoints; }
 
-	set maxPoints(x) {
 
-		PointOctant.maxPoints = x;
-		this.root.update();
 
-	}
 
 	/**
 	 * The amount of points that are currently in the tree.

@@ -1,54 +1,6 @@
 import { Octant } from "../octant";
 
 /**
- * A threshold for proximity checks.
- *
- * @property bias
- * @type Number
- * @private
- * @static
- * @default 0.0
- */
-
-let bias = 0.0;
-
-/**
- * The proximity threshold squared.
- *
- * @property biasSquared
- * @type Number
- * @private
- * @static
- * @default 0.0
- */
-
-let biasSquared = 0.0;
-
-/**
- * The maximum tree depth level.
- *
- * @property maxDepth
- * @type Number
- * @private
- * @static
- * @default 8
- */
-
-let maxDepth = 8;
-
-/**
- * Number of points per octant before a split occurs.
- *
- * @property maxPoints
- * @type Number
- * @private
- * @static
- * @default 8
- */
-
-let maxPoints = 8;
-
-/**
  * An octant that maintains points.
  *
  * @class PointOctant
@@ -96,48 +48,20 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * A threshold for proximity checks.
 	 *
-	 * @property bias
-	 * @type Number
-	 * @static
-	 * @default 0.0
 	 */
 
-	static get bias() { return bias; }
 
-	static set bias(x) {
 
 		bias = Math.max(0.0, x);
 		biasSquared = bias * bias;
 
-	}
 
-	/**
-	 * The maximum tree depth level.
-	 *
-	 * @property maxDepth
-	 * @type Number
-	 * @static
-	 * @default 8
-	 */
 
-	static get maxDepth() { return maxDepth; }
 
-	static set maxDepth(x) { maxDepth = Math.max(0, Math.round(x)); }
 
-	/**
-	 * Number of points per octant before a split occurs.
-	 *
-	 * @property maxPoints
-	 * @type Number
-	 * @static
-	 * @default 8
-	 */
 
-	static get maxPoints() { return maxPoints; }
 
-	static set maxPoints(x) { maxPoints = Math.max(1, Math.round(x)); }
 
 	/**
 	 * Computes the distance squared from this octant to the given point.
