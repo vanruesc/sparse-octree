@@ -14,9 +14,9 @@ import { Octant } from "../octant";
 
 export class PointOctant extends Octant {
 
-	constructor(min, max, level) {
+	constructor(min, max) {
 
-		super(min, max, level);
+		super(min, max);
 
 		/**
 		 * The amount of points in this octant.
