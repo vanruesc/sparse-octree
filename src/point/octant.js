@@ -253,28 +253,7 @@ export class PointOctant extends Octant {
 		let sortedChildren;
 		let child, childResult;
 
-		// Only consider leaf nodes.
-		if(children === null) {
-
-			for(i = 0, l = this.totalPoints; i < l; ++i) {
-
-				point = points[i];
-				distSq = p.distanceToSquared(point);
-
-				if((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
-
-					bestDist = distSq;
-
-					result = {
-						point: point.clone(),
-						data: this.dataSets[i]
-					};
-
-				}
-
-			}
-
-		} else {
+		if(children !== null) {
 
 			// Sort the children.
 			sortedChildren = children.map(function(child) {
@@ -298,7 +277,7 @@ export class PointOctant extends Octant {
 				// Unpack octant.
 				child = sortedChildren[i].octant;
 
-				if(child.totalPoints > 0 && child.containsPoint(p, bestDist)) {
+				if(child.contains(p, bestDist)) {
 
 					childResult = child.findNearestPoint(p, bestDist, skipSelf);
 
@@ -306,7 +285,7 @@ export class PointOctant extends Octant {
 
 						distSq = childResult.point.distanceToSquared(p);
 
-						if((!skipSelf || distSq > 0.0) && distSq <= bestDist) {
+						if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
 							bestDist = distSq;
 							result = childResult;
@@ -314,6 +293,26 @@ export class PointOctant extends Octant {
 						}
 
 					}
+
+				}
+
+			}
+
+		} else if(points !== null) {
+
+			for(i = 0, l = points.length; i < l; ++i) {
+
+				point = points[i];
+				distSq = p.distanceToSquared(point);
+
+				if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
+
+					bestDist = distSq;
+
+					result = {
+						point: point.clone(),
+						data: this.data[i]
+					};
 
 				}
 
@@ -346,10 +345,23 @@ export class PointOctant extends Octant {
 		let point, distSq;
 		let child;
 
-		// Only consider leaf nodes.
-		if(children === null) {
+		if(children !== null) {
 
-			for(i = 0, l = this.totalPoints; i < l; ++i) {
+			for(i = 0, l = children.length; i < l; ++i) {
+
+				child = children[i];
+
+				if(child.contains(p, r)) {
+
+					child.findPoints(p, r, skipSelf, result);
+
+				}
+
+			}
+
+		} else if(points !== null) {
+
+			for(i = 0, l = points.length; i < l; ++i) {
 
 				point = points[i];
 				distSq = p.distanceToSquared(point);
@@ -358,23 +370,8 @@ export class PointOctant extends Octant {
 
 					result.push({
 						point: point.clone(),
-						data: this.dataSets[i]
+						data: this.data[i]
 					});
-
-				}
-
-			}
-
-		} else {
-
-			// The order of the children is irrelevant.
-			for(i = 0, l = children.length; i < l; ++i) {
-
-				child = children[i];
-
-				if(child.totalPoints > 0 && child.containsPoint(p, r)) {
-
-					child.findPoints(p, r, skipSelf, result);
 
 				}
 
