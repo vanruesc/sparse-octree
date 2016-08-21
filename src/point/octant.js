@@ -115,13 +115,13 @@ export class PointOctant extends Octant {
 	 * This method can also be used to check if this octant intersects a sphere by
 	 * providing a radius as bias.
 	 *
-	 * @method containsPoint
+	 * @method contains
 	 * @param {Vector3} p - A point.
 	 * @param {Number} bias - A padding that extends the boundaries temporarily.
 	 * @return {Boolean} Whether the given point lies inside this octant.
 	 */
 
-	containsPoint(p, bias) {
+	contains(p, bias) {
 
 		const min = this.min;
 		const max = this.max;
