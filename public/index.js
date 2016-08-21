@@ -86,272 +86,319 @@
 
 		// Points.
 
-		function createPlaneGeometry(particles, n, z) {
+		const points = (function generatePoints() {
 
-			const geometry = new THREE.BufferGeometry();
-			const positions = new Float32Array(particles * 3);
-			const n2 = n / 2;
+			function createPlaneGeometry(particles, n, z) {
 
-			let x, y;
-			let i;
+				const geometry = new THREE.BufferGeometry();
+				const positions = new Float32Array(particles * 3);
+				const n2 = n / 2;
 
-			for(i = 0; i < positions.length; i += 3) {
+				let x, y;
+				let i;
 
-				x = Math.random() * n - n2;
-				y = Math.random() * n - n2;
+				for(i = 0; i < positions.length; i += 3) {
 
-				positions[i] = x;
-				positions[i + 1] = y;
-				positions[i + 2] = z;
+					x = Math.random() * n - n2;
+					y = Math.random() * n - n2;
+
+					positions[i] = x;
+					positions[i + 1] = y;
+					positions[i + 2] = z;
+
+				}
+
+				geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+				geometry.computeBoundingSphere();
+
+				return geometry;
 
 			}
 
-			geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
-			geometry.computeBoundingSphere();
+			const points = new THREE.Object3D();
 
-			return geometry;
+			const w = 128;
+			const h = 128;
 
-		}
+			let d = 8;
 
-		const points = new THREE.Object3D();
+			const size = 6;
+			const zStep = size / (d - 1);
 
-		const w = 128;
-		const h = 128;
+			let z = size * -0.5;
+			let p;
 
-		let d = 8;
+			let material = new THREE.PointsMaterial({
+				color: 0xc00000, size: 1, sizeAttenuation: false
+			});
 
-		const size = 6;
-		const zStep = size / (d - 1);
+			while(0 < d--) {
 
-		let z = size * -0.5;
-		let p;
+				p = new THREE.Points(createPlaneGeometry(w * h, size, z), material);
+				material = material.clone();
+				z += zStep;
 
-		let material = new THREE.PointsMaterial({
-			color: 0xc00000, size: 1, sizeAttenuation: false
-		});
+				points.add(p);
 
-		while(0 < d--) {
+			}
 
-			p = new THREE.Points(createPlaneGeometry(w * h, size, z), material);
-			material = material.clone();
-			z += zStep;
+			return points;
 
-			points.add(p);
-
-		}
+		}());
 
 		scene.add(points);
 
 		// Octree.
 
-		const bbox = new THREE.Box3();
-		bbox.setFromObject(scene);
+		const octree = (function createOctree() {
 
-		let time = performance.now();
+			const bbox = new THREE.Box3();
+			bbox.setFromObject(scene);
 
-		const octree = new OCTREE.PointOctree(bbox.min, bbox.max, 0.0, 8, 5);
+			let time = performance.now();
 
-		for(d = points.children.length - 1; d >= 0; --d) {
+			const octree = new OCTREE.PointOctree(bbox.min, bbox.max, 0.0, 8, 5);
 
-			p = points.children[d];
-			octree.addPoints(p.geometry.getAttribute("position").array, p);
+			const v = new THREE.Vector3();
 
-		}
+			let i, l;
+			let d, p;
+			let array;
 
-		console.log("Octree:", octree, "created in", (((performance.now() - time) * 100.0) / 100.0).toFixed(2) + " ms");
+			for(d = points.children.length - 1; d >= 0; --d) {
+
+				p = points.children[d];
+				array = p.geometry.getAttribute("position").array;
+
+				for(i = 0, l = array.length; i < l; i += 3) {
+
+					octree.add(v.fromArray(array, i), p);
+
+				}
+
+			}
+
+			console.log("Octree:", octree, "created in", (((performance.now() - time) * 100.0) / 100.0).toFixed(2) + " ms");
+
+			return octree;
+
+		}());
 
 		// Octree Helper.
 
-		time = performance.now();
+		const octreeHelper = (function createOctreeHelper() {
 
-		const helper = new OCTREE.OctreeHelper(octree);
+			let time = performance.now();
 
-		try {
+			const octreeHelper = new OCTREE.OctreeHelper(octree);
 
-			helper.update();
+			try {
 
-		} catch(error) {
+				octreeHelper.update();
 
-			console.warn(error.message);
+			} catch(error) {
 
-		}
+				console.warn(error.message);
 
-		helper.visible = false;
+			}
 
-		console.log("OctreeHelper:", helper, "created in", (((performance.now() - time) * 100.0) / 100.0).toFixed(2) + " ms");
+			octreeHelper.visible = false;
 
-		scene.add(helper);
+			console.log("OctreeHelper:", octreeHelper, "created in", (((performance.now() - time) * 100.0) / 100.0).toFixed(2) + " ms");
+
+			return octreeHelper;
+
+		}());
+
+		scene.add(octreeHelper);
 
 		// Raycasting.
 
-		const mouse = new THREE.Vector2();
-		const raycaster = new THREE.Raycaster();
+		(function setupRaycasting() {
 
-		let raycasting = true;
-		let selection = null;
+			const mouse = new THREE.Vector2();
+			const raycaster = new THREE.Raycaster();
 
-		raycaster.params.Points.threshold = 0.1;
+			let raycasting = true;
+			let selection = null;
 
-		viewport.addEventListener("mousemove", function raycast(event) {
+			raycaster.params.Points.threshold = 0.1;
 
-			let intersects;
-			let t0, t;
+			viewport.addEventListener("mousemove", function raycast(event) {
 
-			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				let intersects;
+				let t0, t;
 
-			raycaster.setFromCamera(mouse, camera);
+				mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+				mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-			if(params["use octree"]) {
+				raycaster.setFromCamera(mouse, camera);
 
-				t0 = performance.now();
-				intersects = raycaster.intersectObject(octree);
-				t = performance.now();
+				if(params["use octree"]) {
 
-			} else {
-
-				// Brute force.
-				t0 = performance.now();
-				intersects = raycaster.intersectObjects(points.children);
-				t = performance.now();
-
-			}
-
-			params["search time"] = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
-
-			if(selection !== null) {
-
-				selection.material.color.setHex(0xc00000);
-				selection = null;
-
-			}
-
-			if(intersects.length > 0) {
-
-				if(intersects[0].object !== undefined) {
-
-					selection = intersects[0].object;
-					selection.material.color.setHex(0xccff00);
+					t0 = performance.now();
+					intersects = raycaster.intersectObject(octree);
+					t = performance.now();
 
 				} else {
 
-					console.log(intersects);
+					// Brute force.
+					t0 = performance.now();
+					intersects = raycaster.intersectObjects(points.children);
+					t = performance.now();
 
 				}
 
-			}
+				params["search time"] = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
 
-		});
+				if(selection !== null) {
 
-		// Frustum culling.
+					selection.material.color.setHex(0xc00000);
+					selection = null;
 
-		const frustum = new THREE.Frustum();
-		const cullCamera = new THREE.PerspectiveCamera(20, 1.77, 0.5, 5);
-		cullCamera.matrixAutoUpdate = false;
+				}
 
-		const s = new THREE.Spherical(5, Math.PI / 3, Math.PI * 1.75);
-		const m = new THREE.Matrix4();
+				if(intersects.length > 0) {
 
-		function updateCamera() {
+					if(intersects[0].object !== undefined) {
 
-			cullCamera.position.setFromSpherical(s);
-			cullCamera.lookAt(scene.position);
+						selection = intersects[0].object;
+						selection.material.color.setHex(0xccff00);
 
-			cullCamera.updateMatrix();
-			cullCamera.updateMatrixWorld();
-			cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
+					} else {
 
-			m.identity().multiplyMatrices(cullCamera.projectionMatrix, cullCamera.matrixWorldInverse);
-			frustum.setFromMatrix(m)
-
-		}
-
-		material = material.clone();
-		material.color.setHex(0xccff00);
-
-		const culledOctants = new THREE.Points(new THREE.BufferGeometry(), material);
-		culledOctants.visible = false;
-
-		function cull() {
-
-			let t0, t;
-			let i, j, l;
-			let octant, octants;
-			let positions;
-
-			if(params["show culling"]) {
-
-				updateCamera();
-
-				t0 = performance.now();
-				octants = octree.cull(frustum);
-				t = performance.now();
-
-				if(octants.length > 0) {
-
-					positions = new Float32Array(octants.length * 3 * 2);
-
-					for(i = 0, j = 0, l = octants.length; i < l; ++i) {
-
-						octant = octants[i];
-						positions[j++] = octant.min.x;
-						positions[j++] = octant.min.y;
-						positions[j++] = octant.min.z;
-						positions[j++] = octant.max.x;
-						positions[j++] = octant.max.y;
-						positions[j++] = octant.max.z;
+						console.log(intersects);
 
 					}
 
-					culledOctants.geometry.removeAttribute("position");
-					culledOctants.geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-					scene.add(culledOctants);
-
-				} else {
-
-					scene.remove(culledOctants);
-
 				}
 
-				params["cull time"] = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
+			});
+
+		}());
+
+		// Frustum culling.
+
+		const frustumCulling = (function() {
+
+			const frustum = new THREE.Frustum();
+			const cullCamera = new THREE.PerspectiveCamera(20, 1.77, 0.5, 5);
+			cullCamera.matrixAutoUpdate = false;
+
+			const s = new THREE.Spherical(5, Math.PI / 3, Math.PI * 1.75);
+			const m = new THREE.Matrix4();
+
+			function updateCamera() {
+
+				cullCamera.position.setFromSpherical(s);
+				cullCamera.lookAt(scene.position);
+
+				cullCamera.updateMatrix();
+				cullCamera.updateMatrixWorld();
+				cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
+
+				m.identity().multiplyMatrices(cullCamera.projectionMatrix, cullCamera.matrixWorldInverse);
+				frustum.setFromMatrix(m)
 
 			}
 
-		}
+			let material = new THREE.PointsMaterial({
+				color: 0xccff00, size: 1, sizeAttenuation: false
+			});
 
-		const cameraHelper = new THREE.CameraHelper(cullCamera);
-		cameraHelper.visible = false;
+			const culledOctants = new THREE.Points(new THREE.BufferGeometry(), material);
+			culledOctants.visible = false;
 
-		scene.add(cullCamera);
-		scene.add(cameraHelper);
+			function cull() {
+
+				let t0, t;
+				let i, j, l;
+				let octant, octants;
+				let positions;
+
+				if(params["show culling"]) {
+
+					updateCamera();
+
+					t0 = performance.now();
+					octants = octree.cull(frustum);
+					t = performance.now();
+
+					if(octants.length > 0) {
+
+						positions = new Float32Array(octants.length * 3 * 2);
+
+						for(i = 0, j = 0, l = octants.length; i < l; ++i) {
+
+							octant = octants[i];
+							positions[j++] = octant.min.x;
+							positions[j++] = octant.min.y;
+							positions[j++] = octant.min.z;
+							positions[j++] = octant.max.x;
+							positions[j++] = octant.max.y;
+							positions[j++] = octant.max.z;
+
+						}
+
+						culledOctants.geometry.removeAttribute("position");
+						culledOctants.geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+						scene.add(culledOctants);
+
+					} else {
+
+						scene.remove(culledOctants);
+
+					}
+
+					params["cull time"] = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
+
+				}
+
+			}
+
+			const cameraHelper = new THREE.CameraHelper(cullCamera);
+			cameraHelper.visible = false;
+
+			return {
+				cameraHelper: cameraHelper,
+				cullCamera: cullCamera,
+				culledOctants: culledOctants,
+				cull: cull,
+				s: s
+			};
+
+		}());
+
+		scene.add(frustumCulling.cullCamera);
+		scene.add(frustumCulling.cameraHelper);
 
 		// Configuration.
 
 		const params = {
 			"show points": points.visible,
-			"show octree": helper.visible,
-			"level mask": helper.children.length,
+			"show octree": octreeHelper.visible,
+			"level mask": octreeHelper.children.length,
 			"use octree": true,
 			"search time": "",
 			"show culling": false,
-			"radius": s.radius,
-			"phi": s.phi,
-			"theta": s.theta,
+			"radius": frustumCulling.s.radius,
+			"phi": frustumCulling.s.phi,
+			"theta": frustumCulling.s.theta,
 			"cull time": "",
 		};
 
 		gui.add(params, "show points").onChange(function() { points.visible = params["show points"]; });
 
 		let f = gui.addFolder("Octree Helper");
-		f.add(params, "show octree").onChange(function() { helper.visible = params["show octree"]; });
-		f.add(params, "level mask").min(0).max(helper.children.length).step(1).onChange(function() {
+		f.add(params, "show octree").onChange(function() { octreeHelper.visible = params["show octree"]; });
+		f.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function() {
 
 			let i, l;
 
-			for(i = 0, l = helper.children.length; i < l; ++i) {
+			for(i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
-				helper.children[i].visible = (params["level mask"] === helper.children.length || i === params["level mask"]);
+				octreeHelper.children[i].visible = (params["level mask"] === octreeHelper.children.length || i === params["level mask"]);
 
 			}
 
@@ -364,14 +411,19 @@
 		f.open();
 
 		f = gui.addFolder("Frustum Culling");
-		f.add(params, "show culling").onChange(function() { cameraHelper.visible = culledOctants.visible = params["show culling"]; cull(); });
+		f.add(params, "show culling").onChange(function() {
+
+			frustumCulling.cameraHelper.visible = frustumCulling.culledOctants.visible = params["show culling"];
+			frustumCulling.cull();
+
+		});
 		f.add(params, "cull time").listen();
 		f.open();
 
 		let ff = f.addFolder("Camera Adjustment");
-		ff.add(params, "radius").min(0.1).max(10.0).step(0.1).onChange(function() { s.radius = params["radius"]; cull(); });
-		ff.add(params, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(function() { s.phi = params["phi"]; cull(); });
-		ff.add(params, "theta").min(0.0).max(Math.PI * 2.0).onChange(function() { s.theta = params["theta"]; cull(); });
+		ff.add(params, "radius").min(0.1).max(10.0).step(0.1).onChange(function() { frustumCulling.s.radius = params["radius"]; frustumCulling.cull(); });
+		ff.add(params, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(function() { frustumCulling.s.phi = params["phi"]; frustumCulling.cull(); });
+		ff.add(params, "theta").min(0.0).max(Math.PI * 2.0).onChange(function() { frustumCulling.s.theta = params["theta"]; frustumCulling.cull(); });
 
 		/**
 		 * Handles resizing.
@@ -403,7 +455,7 @@
 
 			stats.begin();
 
-			cameraHelper.update();
+			frustumCulling.cameraHelper.update();
 
 			renderer.render(scene, camera);
 
