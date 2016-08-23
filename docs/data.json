@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.0.1",
+        "version": "2.1.0",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -887,21 +887,20 @@
             "description": "Splits this octant into eight smaller ones.",
             "itemtype": "method",
             "name": "split",
+            "params": [
+                {
+                    "name": "octants",
+                    "description": "- A list of octants to recycle.",
+                    "type": "Array",
+                    "optional": true
+                }
+            ],
             "class": "Octant",
             "module": "octree"
         },
         {
             "file": "src\\octant.js",
-            "line": 140,
-            "description": "Creates missing child octants and restores the layout.",
-            "itemtype": "method",
-            "name": "repair",
-            "class": "Octant",
-            "module": "octree"
-        },
-        {
-            "file": "src\\octant.js",
-            "line": 226,
+            "line": 180,
             "description": "A binary pattern that describes the standard octant layout:\n\n   3____7\n 2/___6/|\n | 1__|_5\n 0/___4/\n\nThis common layout is crucial for positional assumptions.",
             "itemtype": "property",
             "name": "PATTERN",
