@@ -101,23 +101,61 @@ export class Octant {
 	 * Splits this octant into eight smaller ones.
 	 *
 	 * @method split
+	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 
-	split() {
+	split(octants) {
 
 		const min = this.min;
 		const max = this.max;
 		const mid = this.center();
 
-		let i, combination;
+		let i, j;
+		let l = 0;
+		let combination;
+
+		let halfDimensions;
+		let v, child, octant;
+
+		if(Array.isArray(octants)) {
+
+			halfDimensions = this.dimensions().multiplyScalar(0.5);
+			v = [new Vector3(), new Vector3(), new Vector3()];
+			l = octants.length;
+
+		}
 
 		this.children = [];
 
 		for(i = 0; i < 8; ++i) {
 
 			combination = Octant.PATTERN[i];
+			octant = null;
 
-			this.children.push(new this.constructor(
+			if(l > 0) {
+
+				v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
+				v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
+
+				// Find an octant that matches the current combination.
+				for(j = 0; j < l; ++j) {
+
+					child = octants[j];
+
+					if(child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
+
+						octant = child;
+						octants[j] = null;
+
+						break;
+
+					}
+
+				}
+
+			}
+
+			this.children.push((octant !== null) ? octant : new this.constructor(
 
 				new Vector3(
 					((combination[0] === 0) ? min.x : mid.x),
@@ -132,90 +170,6 @@ export class Octant {
 				)
 
 			));
-
-		}
-
-	}
-
-	/**
-	 * Creates missing child octants and restores the layout.
-	 *
-	 * @method repair
-	 */
-
-	repair() {
-
-		const min = this.min;
-		const max = this.max;
-		const mid = this.center();
-
-		const halfDimensions = this.dimensions().multiplyScalar(0.5);
-
-		const children = this.children;
-		const corrected = [];
-
-		const v0 = new Vector3();
-		const v1 = new Vector3();
-		const v2 = new Vector3();
-
-		let i, j, l;
-		let combination;
-		let child, octant;
-
-		if(children !== null) {
-
-			for(i = 0, l = children.length; i < 8; ++i) {
-
-				combination = Octant.PATTERN[i];
-
-				octant = null;
-
-				if(l > 0) {
-
-					v1.addVectors(min, v0.fromArray(combination).multiply(halfDimensions));
-					v2.addVectors(mid, v0.fromArray(combination).multiply(halfDimensions));
-
-				}
-
-				// Find an existing octant that matches the current combination.
-				for(j = 0; j < l; ++j) {
-
-					child = children[j];
-
-					if(child !== null && v1.equals(child.min) && v2.equals(child.max)) {
-
-						octant = child;
-						children[j] = null;
-
-						break;
-
-					}
-
-				}
-
-				corrected.push(
-
-					(octant !== null) ? octant : new this.constructor(
-
-						new Vector3(
-							((combination[0] === 0) ? min.x : mid.x),
-							((combination[1] === 0) ? min.y : mid.y),
-							((combination[2] === 0) ? min.z : mid.z)
-						),
-
-						new Vector3(
-							((combination[0] === 0) ? mid.x : max.x),
-							((combination[1] === 0) ? mid.y : max.y),
-							((combination[2] === 0) ? mid.z : max.z)
-						)
-
-					)
-
-				);
-
-			}
-
-			this.children = corrected;
 
 		}
 

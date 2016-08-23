@@ -29,7 +29,7 @@ module.exports = {
 
 		},
 
-		"can be repaired": function(test) {
+		"can recycle child octants": function(test) {
 
 			const octant = new LIBRARY.Octant(box.min, box.max);
 
@@ -40,11 +40,10 @@ module.exports = {
 				new THREE.Vector3(mid.x, box.max.y, box.max.z)
 			);
 
-			octant.children = [octant011];
-			octant.repair();
+			octant.split([octant011]);
 
 			test.equal(octant.children.length, 8, "should create missing octants");
-			test.equal(octant.children[3], octant011, "should recycle existing octants");
+			test.equal(octant.children[3], octant011, "should recycle suitable octants");
 			test.done();
 
 		}
