@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.0.1 build Aug 23 2016
+ * sparse-octree v2.1.0 build Aug 23 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -805,91 +805,62 @@
        * Splits this octant into eight smaller ones.
        *
        * @method split
+       * @param {Array} [octants] - A list of octants to recycle.
        */
 
   		}, {
   				key: "split",
-  				value: function split() {
+  				value: function split(octants) {
 
   						var min = this.min;
   						var max = this.max;
   						var mid = this.center();
 
   						var i = void 0,
-  						    combination = void 0;
+  						    j = void 0;
+  						var l = 0;
+  						var combination = void 0;
+
+  						var halfDimensions = void 0;
+  						var v = void 0,
+  						    child = void 0,
+  						    octant = void 0;
+
+  						if (Array.isArray(octants)) {
+
+  								halfDimensions = this.dimensions().multiplyScalar(0.5);
+  								v = [new Vector3(), new Vector3(), new Vector3()];
+  								l = octants.length;
+  						}
 
   						this.children = [];
 
   						for (i = 0; i < 8; ++i) {
 
   								combination = Octant.PATTERN[i];
+  								octant = null;
 
-  								this.children.push(new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
-  						}
-  				}
+  								if (l > 0) {
 
-  				/**
-       * Creates missing child octants and restores the layout.
-       *
-       * @method repair
-       */
+  										v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
+  										v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
 
-  		}, {
-  				key: "repair",
-  				value: function repair() {
-
-  						var min = this.min;
-  						var max = this.max;
-  						var mid = this.center();
-
-  						var halfDimensions = this.dimensions().multiplyScalar(0.5);
-
-  						var children = this.children;
-  						var corrected = [];
-
-  						var v0 = new Vector3();
-  						var v1 = new Vector3();
-  						var v2 = new Vector3();
-
-  						var i = void 0,
-  						    j = void 0,
-  						    l = void 0;
-  						var combination = void 0;
-  						var child = void 0,
-  						    octant = void 0;
-
-  						if (children !== null) {
-
-  								for (i = 0, l = children.length; i < 8; ++i) {
-
-  										combination = Octant.PATTERN[i];
-
-  										octant = null;
-
-  										if (l > 0) {
-
-  												v1.addVectors(min, v0.fromArray(combination).multiply(halfDimensions));
-  												v2.addVectors(mid, v0.fromArray(combination).multiply(halfDimensions));
-  										}
-
-  										// Find an existing octant that matches the current combination.
+  										// Find an octant that matches the current combination.
   										for (j = 0; j < l; ++j) {
 
-  												child = children[j];
+  												child = octants[j];
 
-  												if (child !== null && v1.equals(child.min) && v2.equals(child.max)) {
+  												if (child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
 
   														octant = child;
-  														children[j] = null;
+  														octants[j] = null;
 
   														break;
   												}
   										}
-
-  										corrected.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
   								}
 
-  								this.children = corrected;
+  								this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
   						}
   				}
   		}]);
