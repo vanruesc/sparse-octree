@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.1.0 build Aug 23 2016
+ * sparse-octree v2.2.0 build Aug 31 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -8,7 +8,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
   typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
   (factory((global.OCTREE = global.OCTREE || {}),global.THREE));
-}(this, function (exports,THREE) { 'use strict';
+}(this, (function (exports,THREE) { 'use strict';
 
   THREE = 'default' in THREE ? THREE['default'] : THREE;
 
@@ -701,170 +701,136 @@
    * An octant.
    *
    * @class Octant
+   * @submodule core
    * @constructor
    * @param {Vector3} min - The lower bounds.
    * @param {Vector3} max - The upper bounds.
    */
 
   var Octant = function () {
-  		function Octant(min, max) {
-  				classCallCheck(this, Octant);
+  	function Octant(min, max) {
+  		classCallCheck(this, Octant);
 
 
-  				/**
-       * The lower bounds of this octant.
-       *
-       * @property min
-       * @type Vector3
-       */
+  		/**
+     * The lower bounds of this octant.
+     *
+     * @property min
+     * @type Vector3
+     */
 
-  				this.min = min !== undefined ? min : new Vector3();
+  		this.min = min !== undefined ? min : new Vector3();
 
-  				/**
-       * The upper bounds of the octant.
-       *
-       * @property max
-       * @type Vector3
-       */
+  		/**
+     * The upper bounds of the octant.
+     *
+     * @property max
+     * @type Vector3
+     */
 
-  				this.max = max !== undefined ? max : new Vector3();
+  		this.max = max !== undefined ? max : new Vector3();
 
-  				/**
-       * The children of this node.
-       *
-       * @property children
-       * @type Array
-       * @default null
-       */
+  		/**
+     * The children of this octant.
+     *
+     * @property children
+     * @type Array
+     * @default null
+     */
 
-  				this.children = null;
+  		this.children = null;
+  	}
+
+  	/**
+    * Computes the center of this octant.
+    *
+    * @method center
+    * @return {Vector3} A new vector that describes the center of this octant.
+    */
+
+  	createClass(Octant, [{
+  		key: "center",
+  		value: function center() {
+  			return this.min.clone().add(this.max).multiplyScalar(0.5);
   		}
 
   		/**
-     * Computes the center of this octant.
+     * Computes the size of this octant.
      *
-     * @method center
-     * @return {Vector3} A new vector that describes the center of this octant.
+     * @method dimensions
+     * @return {Vector3} A new vector that describes the size of this octant.
      */
 
-  		createClass(Octant, [{
-  				key: "center",
-  				value: function center() {
-  						return this.min.clone().add(this.max).multiplyScalar(0.5);
-  				}
+  	}, {
+  		key: "dimensions",
+  		value: function dimensions() {
+  			return this.max.clone().sub(this.min);
+  		}
 
-  				/**
-       * Computes the size of this octant.
-       *
-       * @method dimensions
-       * @return {Vector3} A new vector that describes the size of this octant.
-       */
+  		/**
+     * Splits this octant into eight smaller ones.
+     *
+     * @method split
+     * @param {Array} [octants] - A list of octants to recycle.
+     */
 
-  		}, {
-  				key: "dimensions",
-  				value: function dimensions() {
-  						return this.max.clone().sub(this.min);
-  				}
+  	}, {
+  		key: "split",
+  		value: function split(octants) {
 
-  				/**
-       * Calculates the current tree depth recursively.
-       *
-       * @method depth
-       * @return {Number} The depth.
-       */
+  			var min = this.min;
+  			var max = this.max;
+  			var mid = this.center();
 
-  		}, {
-  				key: "depth",
-  				value: function depth() {
+  			var i = void 0,
+  			    j = void 0;
+  			var l = 0;
+  			var combination = void 0;
 
-  						var children = this.children;
+  			var halfDimensions = void 0;
+  			var v = void 0,
+  			    child = void 0,
+  			    octant = void 0;
 
-  						var result = 0;
+  			if (Array.isArray(octants)) {
 
-  						var i = void 0,
-  						    l = void 0;
-  						var depth = void 0;
+  				halfDimensions = this.dimensions().multiplyScalar(0.5);
+  				v = [new Vector3(), new Vector3(), new Vector3()];
+  				l = octants.length;
+  			}
 
-  						if (children !== null) {
+  			this.children = [];
 
-  								for (i = 0, l = children.length; i < l; ++i) {
+  			for (i = 0; i < 8; ++i) {
 
-  										depth = 1 + children[i].depth();
+  				combination = PATTERN[i];
+  				octant = null;
 
-  										if (depth > result) {
+  				if (l > 0) {
 
-  												result = depth;
-  										}
-  								}
+  					v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
+  					v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
+
+  					// Find an octant that matches the current combination.
+  					for (j = 0; j < l; ++j) {
+
+  						child = octants[j];
+
+  						if (child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
+
+  							octant = child;
+  							octants[j] = null;
+
+  							break;
   						}
-
-  						return result;
+  					}
   				}
 
-  				/**
-       * Splits this octant into eight smaller ones.
-       *
-       * @method split
-       * @param {Array} [octants] - A list of octants to recycle.
-       */
-
-  		}, {
-  				key: "split",
-  				value: function split(octants) {
-
-  						var min = this.min;
-  						var max = this.max;
-  						var mid = this.center();
-
-  						var i = void 0,
-  						    j = void 0;
-  						var l = 0;
-  						var combination = void 0;
-
-  						var halfDimensions = void 0;
-  						var v = void 0,
-  						    child = void 0,
-  						    octant = void 0;
-
-  						if (Array.isArray(octants)) {
-
-  								halfDimensions = this.dimensions().multiplyScalar(0.5);
-  								v = [new Vector3(), new Vector3(), new Vector3()];
-  								l = octants.length;
-  						}
-
-  						this.children = [];
-
-  						for (i = 0; i < 8; ++i) {
-
-  								combination = Octant.PATTERN[i];
-  								octant = null;
-
-  								if (l > 0) {
-
-  										v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
-  										v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
-
-  										// Find an octant that matches the current combination.
-  										for (j = 0; j < l; ++j) {
-
-  												child = octants[j];
-
-  												if (child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
-
-  														octant = child;
-  														octants[j] = null;
-
-  														break;
-  												}
-  										}
-  								}
-
-  								this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
-  						}
-  				}
-  		}]);
-  		return Octant;
+  				this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
+  			}
+  		}
+  	}]);
+  	return Octant;
   }();
 
   /**
@@ -883,7 +849,154 @@
    * @final
    */
 
-  Octant.PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+  var PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+
+  /**
+   * A cubic octant.
+   *
+   * @class CubicOctant
+   * @submodule core
+   * @constructor
+   * @param {Vector3} min - The lower bounds.
+   * @param {Number} size - The size of the octant.
+   */
+
+  var CubicOctant = function () {
+  		function CubicOctant(min, size) {
+  				classCallCheck(this, CubicOctant);
+
+
+  				/**
+       * The lower bounds of this octant.
+       *
+       * @property min
+       * @type Vector3
+       */
+
+  				this.min = min !== undefined ? min : new Vector3();
+
+  				/**
+       * The size of this octant.
+       *
+       * @property size
+       * @type Number
+       */
+
+  				this.size = size !== undefined ? size : 0;
+
+  				/**
+       * The children of this octant.
+       *
+       * @property children
+       * @type Array
+       * @default null
+       */
+
+  				this.children = null;
+  		}
+
+  		/**
+     * The upper bounds of this octant.
+     *
+     * @property max
+     * @type Vector3
+     */
+
+  		createClass(CubicOctant, [{
+  				key: "center",
+
+
+  				/**
+       * Computes the center of this octant.
+       *
+       * @method center
+       * @return {Vector3} A new vector that describes the center of this octant.
+       */
+
+  				value: function center() {
+  						return this.min.clone().addScalar(this.size * 0.5);
+  				}
+
+  				/**
+       * Returns the size of this octant as a vector.
+       *
+       * @method dimensions
+       * @return {Vector3} A new vector that describes the size of this octant.
+       */
+
+  		}, {
+  				key: "dimensions",
+  				value: function dimensions() {
+  						return new Vector3(this.size, this.size, this.size);
+  				}
+
+  				/**
+       * Splits this octant into eight smaller ones.
+       *
+       * @method split
+       * @param {Array} [octants] - A list of octants to recycle.
+       */
+
+  		}, {
+  				key: "split",
+  				value: function split(octants) {
+
+  						var min = this.min;
+  						var mid = this.center();
+  						var halfSize = this.size * 0.5;
+
+  						var i = void 0,
+  						    j = void 0;
+  						var l = 0;
+  						var combination = void 0;
+
+  						var v = void 0,
+  						    child = void 0,
+  						    octant = void 0;
+
+  						if (Array.isArray(octants)) {
+
+  								v = new Vector3();
+  								l = octants.length;
+  						}
+
+  						this.children = [];
+
+  						for (i = 0; i < 8; ++i) {
+
+  								combination = PATTERN[i];
+  								octant = null;
+
+  								if (l > 0) {
+
+  										v.fromArray(combination).multiplyScalar(halfSize).add(min);
+
+  										// Find an octant that matches the current combination.
+  										for (j = 0; j < l; ++j) {
+
+  												child = octants[j];
+
+  												if (child !== null && child.size === halfSize && v.equals(child.min)) {
+
+  														octant = child;
+  														octants[j] = null;
+
+  														break;
+  												}
+  										}
+  								}
+
+  								this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize));
+  						}
+  				}
+  		}, {
+  				key: "max",
+  				get: function get() {
+  						return this.min.clone().addScalar(this.size);
+  				}
+  		}]);
+  		return CubicOctant;
+  }();
 
   /**
    * Contains bytes used for bitwise operations. The last byte is used to store
@@ -1111,6 +1224,7 @@
    *  by J. Revelles et al. (2000).
    *
    * @class Raycasting
+   * @submodule core
    * @static
    */
 
@@ -1210,6 +1324,7 @@
    * An octree that subdivides space for fast spatial searches.
    *
    * @class Octree
+   * @submodule core
    * @constructor
    * @param {Vector3} [min] - The lower bounds of the tree.
    * @param {Vector3} [max] - The upper bounds of the tree.
@@ -1276,7 +1391,37 @@
   	}, {
   		key: "depth",
   		value: function depth() {
-  			return this.root.depth();
+
+  			var h0 = [this.root];
+  			var h1 = [];
+
+  			var depth = 0;
+  			var octant = void 0,
+  			    children = void 0;
+
+  			while (h0.length > 0) {
+
+  				octant = h0.pop();
+  				children = octant.children;
+
+  				if (children !== null) {
+  					var _h;
+
+  					(_h = h1).push.apply(_h, toConsumableArray(children));
+  				}
+
+  				if (h0.length === 0) {
+
+  					h0 = h1;
+  					h1 = [];
+
+  					if (h0.length > 0) {
+  						++depth;
+  					}
+  				}
+  			}
+
+  			return depth;
   		}
 
   		/**
@@ -1347,9 +1492,9 @@
 
   					result.push(octant);
   				} else if (children !== null) {
-  					var _h;
+  					var _h2;
 
-  					(_h = h1).push.apply(_h, toConsumableArray(children));
+  					(_h2 = h1).push.apply(_h2, toConsumableArray(children));
   				}
 
   				if (h0.length === 0) {
@@ -1421,6 +1566,7 @@
    * The update method must be called manually to generate the octree geometry.
    *
    * @class OctreeHelper
+   * @submodule core
    * @constructor
    * @extends Object3D
    * @param {Octree} tree - The octree to visualise.
@@ -2454,12 +2600,15 @@
   		return PointOctree;
   }(Octree);
 
+  exports.CubicOctant = CubicOctant;
   exports.Octant = Octant;
   exports.Octree = Octree;
   exports.OctreeHelper = OctreeHelper;
+  exports.PATTERN = PATTERN;
+  exports.Raycasting = Raycasting;
   exports.PointOctant = PointOctant;
   exports.PointOctree = PointOctree;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
