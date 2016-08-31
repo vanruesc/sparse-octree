@@ -5,9 +5,16 @@
  * @main octree
  */
 
-export { Octant } from "./octant";
-export { Octree } from "./octree";
-export { OctreeHelper } from "./helper";
+export {
+	CubicOctant,
+	Octant,
+	Octree,
+	OctreeHelper,
+	PATTERN,
+	Raycasting
+} from "./core";
 
-export { PointOctant } from "./points";
-export { PointOctree } from "./points";
+export {
+	PointOctant,
+	PointOctree
+} from "./points";

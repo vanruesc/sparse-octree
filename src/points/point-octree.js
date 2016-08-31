@@ -1,5 +1,5 @@
-import { Octree } from "../octree";
-import { PointOctant } from "./octant";
+import { Octree } from "../core";
+import { PointOctant } from "./point-octant.js";
 
 /**
  * An octree that manages points.

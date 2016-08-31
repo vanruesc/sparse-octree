@@ -6,6 +6,7 @@ import THREE from "three";
  * The update method must be called manually to generate the octree geometry.
  *
  * @class OctreeHelper
+ * @submodule core
  * @constructor
  * @extends Object3D
  * @param {Octree} tree - The octree to visualise.

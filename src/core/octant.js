@@ -1,9 +1,10 @@
-import { Vector3 } from "./vector3";
+import { Vector3 } from "../vector3.js";
 
 /**
  * An octant.
  *
  * @class Octant
+ * @submodule core
  * @constructor
  * @param {Vector3} min - The lower bounds.
  * @param {Vector3} max - The upper bounds.
@@ -32,7 +33,7 @@ export class Octant {
 		this.max = (max !== undefined) ? max : new Vector3();
 
 		/**
-		 * The children of this node.
+		 * The children of this octant.
 		 *
 		 * @property children
 		 * @type Array
@@ -60,42 +61,6 @@ export class Octant {
 	 */
 
 	dimensions() { return this.max.clone().sub(this.min); }
-
-	/**
-	 * Calculates the current tree depth recursively.
-	 *
-	 * @method depth
-	 * @return {Number} The depth.
-	 */
-
-	depth() {
-
-		const children = this.children;
-
-		let result = 0;
-
-		let i, l;
-		let depth;
-
-		if(children !== null) {
-
-			for(i = 0, l = children.length; i < l; ++i) {
-
-				depth = 1 + children[i].depth();
-
-				if(depth > result) {
-
-					result = depth;
-
-				}
-
-			}
-
-		}
-
-		return result;
-
-	}
 
 	/**
 	 * Splits this octant into eight smaller ones.
@@ -129,7 +94,7 @@ export class Octant {
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = Octant.PATTERN[i];
+			combination = PATTERN[i];
 			octant = null;
 
 			if(l > 0) {
@@ -193,7 +158,7 @@ export class Octant {
  * @final
  */
 
-Octant.PATTERN = [
+export const PATTERN = [
 
 	new Uint8Array([0, 0, 0]),
 	new Uint8Array([0, 0, 1]),
@@ -206,3 +171,4 @@ Octant.PATTERN = [
 	new Uint8Array([1, 1, 1])
 
 ];
+

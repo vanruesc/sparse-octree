@@ -234,6 +234,7 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
  *  by J. Revelles et al. (2000).
  *
  * @class Raycasting
+ * @submodule core
  * @static
  */
 

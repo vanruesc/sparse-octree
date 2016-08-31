@@ -1,4 +1,4 @@
-import { Octant } from "../octant";
+import { Octant } from "../core";
 
 /**
  * An octant that maintains points.

@@ -5,5 +5,5 @@
  * @submodule points
  */
 
-export { PointOctant } from "./octant";
-export { PointOctree } from "./octree";
+export { PointOctant } from "./point-octant.js";
+export { PointOctree } from "./point-octree.js";

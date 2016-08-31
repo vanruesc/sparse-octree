@@ -1,10 +1,11 @@
-import { Octant } from "./octant";
-import { Raycasting } from "./raycasting";
+import { Octant } from "./octant.js";
+import { Raycasting } from "./raycasting.js";
 
 /**
  * An octree that subdivides space for fast spatial searches.
  *
  * @class Octree
+ * @submodule core
  * @constructor
  * @param {Vector3} [min] - The lower bounds of the tree.
  * @param {Vector3} [max] - The upper bounds of the tree.
@@ -78,7 +79,39 @@ export class Octree {
 	 * @return {Number} The depth.
 	 */
 
-	depth() { return this.root.depth(); }
+	depth() {
+
+		let h0 = [this.root];
+		let h1 = [];
+
+		let depth = 0;
+		let octant, children;
+
+		while(h0.length > 0) {
+
+			octant = h0.pop();
+			children = octant.children;
+
+			if(children !== null) {
+
+				h1.push(...children);
+
+			}
+
+			if(h0.length === 0) {
+
+				h0 = h1;
+				h1 = [];
+
+				if(h0.length > 0) { ++depth; }
+
+			}
+
+		}
+
+		return depth;
+
+	}
 
 	/**
 	 * Collects octants that lie inside the specified region.
