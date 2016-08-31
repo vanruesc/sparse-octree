@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>octree - sparse-octree</title>
+    <title>src\core\cubic-octant.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,96 +86,158 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>octree Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: src\core\cubic-octant.js</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import { PATTERN } from &quot;./octant.js&quot;;
+import { Vector3 } from &quot;../vector3.js&quot;;
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_vector3.js.html#l1"><code>src\vector3.js:1</code></a>
-        </div>
+/**
+ * A cubic octant.
+ *
+ * @class CubicOctant
+ * @submodule core
+ * @constructor
+ * @param {Vector3} min - The lower bounds.
+ * @param {Number} size - The size of the octant.
+ */
 
-</div>
+export class CubicOctant {
 
+	constructor(min, size) {
 
-<div class="box intro">
-    <p>Exposure of the library components.</p>
+		/**
+		 * The lower bounds of this octant.
+		 *
+		 * @property min
+		 * @type Vector3
+		 */
 
-</div>
+		this.min = (min !== undefined) ? min : new Vector3();
 
+		/**
+		 * The size of this octant.
+		 *
+		 * @property size
+		 * @type Number
+		 */
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+		this.size = (size !== undefined) ? size : 0;
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/CubicOctant.html">
-                        CubicOctant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octant.html">
-                        Octant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octree.html">
-                        Octree
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/OctreeHelper.html">
-                        OctreeHelper
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/PointOctant.html">
-                        PointOctant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/PointOctree.html">
-                        PointOctree
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Raycasting.html">
-                        Raycasting
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Vector3.html">
-                        Vector3
-                    </a>
-                </li>
-            </ul>
-    </div>
+		/**
+		 * The children of this octant.
+		 *
+		 * @property children
+		 * @type Array
+		 * @default null
+		 */
 
+		this.children = null;
 
-    <div class="yui3-u-1-2">
-            <p>This module is a rollup of the following modules:</p>
+	}
 
-            <ul class="module-submodules">
-                <li class="module-submodule">
-                    <a href="../modules/core.html">
-                        core
-                    </a>
+	/**
+	 * The upper bounds of this octant.
+	 *
+	 * @property max
+	 * @type Vector3
+	 */
 
-                    <div class="module-submodule-description">
-                        Core components.
-                    </div>
-                </li>
-                <li class="module-submodule">
-                    <a href="../modules/points.html">
-                        points
-                    </a>
+	get max() { return this.min.clone().addScalar(this.size); }
 
-                    <div class="module-submodule-description">
-                        Point-oriented octree components.
-                    </div>
-                </li>
-            </ul>
-    </div>
+	/**
+	 * Computes the center of this octant.
+	 *
+	 * @method center
+	 * @return {Vector3} A new vector that describes the center of this octant.
+	 */
+
+	center() { return this.min.clone().addScalar(this.size * 0.5); }
+
+	/**
+	 * Returns the size of this octant as a vector.
+	 *
+	 * @method dimensions
+	 * @return {Vector3} A new vector that describes the size of this octant.
+	 */
+
+	dimensions() { return new Vector3(this.size, this.size, this.size); }
+
+	/**
+	 * Splits this octant into eight smaller ones.
+	 *
+	 * @method split
+	 * @param {Array} [octants] - A list of octants to recycle.
+	 */
+
+	split(octants) {
+
+		const min = this.min;
+		const mid = this.center();
+		const halfSize = this.size * 0.5;
+
+		let i, j;
+		let l = 0;
+		let combination;
+
+		let v, child, octant;
+
+		if(Array.isArray(octants)) {
+
+			v = new Vector3();
+			l = octants.length;
+
+		}
+
+		this.children = [];
+
+		for(i = 0; i &lt; 8; ++i) {
+
+			combination = PATTERN[i];
+			octant = null;
+
+			if(l &gt; 0) {
+
+				v.fromArray(combination).multiplyScalar(halfSize).add(min);
+
+				// Find an octant that matches the current combination.
+				for(j = 0; j &lt; l; ++j) {
+
+					child = octants[j];
+
+					if(child !== null &amp;&amp; child.size === halfSize &amp;&amp; v.equals(child.min)) {
+
+						octant = child;
+						octants[j] = null;
+
+						break;
+
+					}
+
+				}
+
+			}
+
+			this.children.push((octant !== null) ? octant : new this.constructor(
+
+				new Vector3(
+					((combination[0] === 0) ? min.x : mid.x),
+					((combination[1] === 0) ? min.y : mid.y),
+					((combination[2] === 0) ? min.z : mid.z)
+				),
+
+				halfSize
+
+			));
+
+		}
+
+	}
+
+}
+
+    </pre>
 </div>
                     </div>
                 </div>

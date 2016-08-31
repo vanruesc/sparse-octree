@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Octant - sparse-octree</title>
+    <title>CubicOctant - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,12 +86,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Octant Class</h1>
+<h1>CubicOctant Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_core_octant.js.html#l3"><code>src\core\octant.js:3</code></a>
+            Defined in: <a href="../files/src_core_cubic-octant.js.html#l4"><code>src\core\cubic-octant.js:4</code></a>
         </div>
 
             Module: <a href="../modules/core.html">core</a><br>
@@ -101,14 +101,14 @@
 
 
 <div class="box intro">
-    <p>An octant.</p>
+    <p>A cubic octant.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_Octant" class="method item">
-    <h3 class="name"><code>Octant</code></h3>
+<div id="method_CubicOctant" class="method item">
+    <h3 class="name"><code>CubicOctant</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -116,7 +116,7 @@
                         <code>min</code>
                 </li>
                 <li class="arg">
-                        <code>max</code>
+                        <code>size</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -131,7 +131,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l3"><code>src\core\octant.js:3</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l4"><code>src\core\cubic-octant.js:4</code></a>
         </p>
 
 
@@ -160,13 +160,13 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name">max</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <code class="param-name">size</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>The upper bounds.</li>
+<li>The size of the octant.</li>
 </ul>
 
                     </div>
@@ -228,9 +228,8 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_PATTERN">PATTERN</a>
+                                <a href="#property_size">size</a>
 
-                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -259,7 +258,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l47"><code>src\core\octant.js:47</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l57"><code>src\core\cubic-octant.js:57</code></a>
         </p>
 
 
@@ -302,7 +301,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l56"><code>src\core\octant.js:56</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l66"><code>src\core\cubic-octant.js:66</code></a>
         </p>
 
 
@@ -310,7 +309,7 @@
     </div>
 
     <div class="description">
-        <p>Computes the size of this octant.</p>
+        <p>Returns the size of this octant as a vector.</p>
 
     </div>
 
@@ -348,7 +347,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l65"><code>src\core\octant.js:65</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l75"><code>src\core\cubic-octant.js:75</code></a>
         </p>
 
 
@@ -400,7 +399,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l35"><code>src\core\octant.js:35</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l36"><code>src\core\cubic-octant.js:36</code></a>
         </p>
 
 
@@ -426,14 +425,14 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l26"><code>src\core\octant.js:26</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l48"><code>src\core\cubic-octant.js:48</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>The upper bounds of the octant.</p>
+        <p>The upper bounds of this octant.</p>
 
     </div>
 
@@ -451,7 +450,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l17"><code>src\core\octant.js:17</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l18"><code>src\core\cubic-octant.js:18</code></a>
         </p>
 
 
@@ -465,32 +464,25 @@
 
 
 </div>
-<div id="property_PATTERN" class="property item">
-    <h3 class="name"><code>PATTERN</code></h3>
-    <span class="type">Array</span>
+<div id="property_size" class="property item">
+    <h3 class="name"><code>size</code></h3>
+    <span class="type">Number</span>
 
 
 
-        <span class="flag final">final</span>
 
-        <span class="flag static">static</span>
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l145"><code>src\core\octant.js:145</code></a>
+        <a href="../files/src_core_cubic-octant.js.html#l27"><code>src\core\cubic-octant.js:27</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>A binary pattern that describes the standard octant layout:</p>
-<p>3____7
-2/_<strong>6/|
-| 1</strong>|_5
-0/___4/</p>
-<p>This common layout is crucial for positional assumptions.</p>
+        <p>The size of this octant.</p>
 
     </div>
 

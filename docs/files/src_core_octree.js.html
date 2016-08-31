@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>octree - sparse-octree</title>
+    <title>src\core\octree.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,96 +86,230 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>octree Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: src\core\octree.js</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import { Octant } from &quot;./octant.js&quot;;
+import { Raycasting } from &quot;./raycasting.js&quot;;
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_vector3.js.html#l1"><code>src\vector3.js:1</code></a>
-        </div>
+/**
+ * An octree that subdivides space for fast spatial searches.
+ *
+ * @class Octree
+ * @submodule core
+ * @constructor
+ * @param {Vector3} [min] - The lower bounds of the tree.
+ * @param {Vector3} [max] - The upper bounds of the tree.
+ */
 
-</div>
+export class Octree {
 
+	constructor(min, max) {
 
-<div class="box intro">
-    <p>Exposure of the library components.</p>
+		/**
+		 * The root octant.
+		 *
+		 * @property root
+		 * @type Octant
+		 * @default null
+		 */
 
-</div>
+		this.root = (min !== undefined &amp;&amp; max !== undefined) ? new Octant(min, max) : null;
 
+	}
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+	/**
+	 * The lower bounds of the root octant.
+	 *
+	 * @property min
+	 * @type Vector3
+	 */
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/CubicOctant.html">
-                        CubicOctant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octant.html">
-                        Octant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octree.html">
-                        Octree
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/OctreeHelper.html">
-                        OctreeHelper
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/PointOctant.html">
-                        PointOctant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/PointOctree.html">
-                        PointOctree
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Raycasting.html">
-                        Raycasting
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Vector3.html">
-                        Vector3
-                    </a>
-                </li>
-            </ul>
-    </div>
+	get min() { return this.root.min; }
 
+	/**
+	 * The upper bounds of the root octant.
+	 *
+	 * @property max
+	 * @type Vector3
+	 */
 
-    <div class="yui3-u-1-2">
-            <p>This module is a rollup of the following modules:</p>
+	get max() { return this.root.max; }
 
-            <ul class="module-submodules">
-                <li class="module-submodule">
-                    <a href="../modules/core.html">
-                        core
-                    </a>
+	/**
+	 * The children of the root octant.
+	 *
+	 * @property children
+	 * @type Array
+	 */
 
-                    <div class="module-submodule-description">
-                        Core components.
-                    </div>
-                </li>
-                <li class="module-submodule">
-                    <a href="../modules/points.html">
-                        points
-                    </a>
+	get children() { return this.root.children; }
 
-                    <div class="module-submodule-description">
-                        Point-oriented octree components.
-                    </div>
-                </li>
-            </ul>
-    </div>
+	/**
+	 * Calculates the size of this octree.
+	 *
+	 * @method dimensions
+	 * @return {Vector3} A new vector that describes the size of this octree.
+	 */
+
+	dimensions() { return this.root.dimensions(); }
+
+	/**
+	 * Calculates the center of this octree.
+	 *
+	 * @method center
+	 * @return {Vector3} A new vector that describes the center of this octree.
+	 */
+
+	center() { return this.root.center(); }
+
+	/**
+	 * Calculates the current depth of this octree.
+	 *
+	 * @method depth
+	 * @return {Number} The depth.
+	 */
+
+	depth() {
+
+		let h0 = [this.root];
+		let h1 = [];
+
+		let depth = 0;
+		let octant, children;
+
+		while(h0.length &gt; 0) {
+
+			octant = h0.pop();
+			children = octant.children;
+
+			if(children !== null) {
+
+				h1.push(...children);
+
+			}
+
+			if(h0.length === 0) {
+
+				h0 = h1;
+				h1 = [];
+
+				if(h0.length &gt; 0) { ++depth; }
+
+			}
+
+		}
+
+		return depth;
+
+	}
+
+	/**
+	 * Collects octants that lie inside the specified region.
+	 *
+	 * @method cull
+	 * @param {Frustum|Box3} region - A frustum or a bounding box.
+	 * @return {Array} The octants.
+	 */
+
+	cull(region) {
+
+		const result = [];
+		const heap = [this.root];
+
+		let octant, children;
+
+		while(heap.length &gt; 0) {
+
+			octant = heap.pop();
+			children = octant.children;
+
+			if(region.intersectsBox(octant)) {
+
+				if(children !== null) {
+
+					heap.push(...children);
+
+				} else {
+
+					result.push(octant);
+
+				}
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Fetches all octants with the specified depth level.
+	 *
+	 * @method findOctantsByLevel
+	 * @param {Number} level - The depth level.
+	 * @return {Array} The octants.
+	 */
+
+	findOctantsByLevel(level) {
+
+		const result = [];
+
+		let h0 = [this.root];
+		let h1 = [];
+
+		let octant, children;
+		let currentLevel = 0;
+
+		while(h0.length &gt; 0) {
+
+			octant = h0.pop();
+			children = octant.children;
+
+			if(currentLevel === level) {
+
+				result.push(octant);
+
+			} else if(children !== null) {
+
+				h1.push(...children);
+
+			}
+
+			if(h0.length === 0) {
+
+				h0 = h1;
+				h1 = [];
+
+				if(++currentLevel &gt; level) { break; }
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Finds the octants that intersect with the given ray.
+	 *
+	 * @method raycast
+	 * @param {Raycaster} raycaster - The raycaster.
+	 * @param {Array} intersects - An array to be filled with the intersecting octants.
+	 */
+
+	raycast(raycaster, intersects) {
+
+		Raycasting.raycast(this, raycaster, intersects);
+
+	}
+
+}
+
+    </pre>
 </div>
                     </div>
                 </div>

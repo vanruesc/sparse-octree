@@ -1,6 +1,7 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "CubicOctant",
         "Octant",
         "Octree",
         "OctreeHelper",
@@ -10,10 +11,16 @@ YUI.add("yuidoc-meta", function(Y) {
         "Vector3"
     ],
     "modules": [
+        "core",
         "octree",
         "points"
     ],
     "allModules": [
+        {
+            "displayName": "core",
+            "name": "core",
+            "description": "Core components."
+        },
         {
             "displayName": "octree",
             "name": "octree",

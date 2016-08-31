@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\helper.js - sparse-octree</title>
+    <title>src\core\octant.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/CubicOctant.html">CubicOctant</a></li>
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
@@ -49,6 +50,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/core.html">core</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                                 <li><a href="../modules/points.html">points</a></li>
                             </ul>
@@ -84,158 +86,125 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src\helper.js</h1>
+<h1 class="file-heading">File: src\core\octant.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import THREE from &quot;three&quot;;
+import { Vector3 } from &quot;../vector3.js&quot;;
 
 /**
- * An octree helper.
+ * An octant.
  *
- * The update method must be called manually to generate the octree geometry.
- *
- * @class OctreeHelper
+ * @class Octant
+ * @submodule core
  * @constructor
- * @extends Object3D
- * @param {Octree} tree - The octree to visualise.
+ * @param {Vector3} min - The lower bounds.
+ * @param {Vector3} max - The upper bounds.
  */
 
-export class OctreeHelper extends THREE.Object3D {
+export class Octant {
 
-	constructor(tree) {
-
-		super();
-
-		this.name = &quot;OctreeHelper&quot;;
+	constructor(min, max) {
 
 		/**
-		 * The octree.
+		 * The lower bounds of this octant.
 		 *
-		 * @property tree
-		 * @type Octree
+		 * @property min
+		 * @type Vector3
 		 */
 
-		this.tree = (tree !== undefined) ? tree : null;
+		this.min = (min !== undefined) ? min : new Vector3();
+
+		/**
+		 * The upper bounds of the octant.
+		 *
+		 * @property max
+		 * @type Vector3
+		 */
+
+		this.max = (max !== undefined) ? max : new Vector3();
+
+		/**
+		 * The children of this octant.
+		 *
+		 * @property children
+		 * @type Array
+		 * @default null
+		 */
+
+		this.children = null;
 
 	}
 
 	/**
-	 * Creates the octree geometry.
+	 * Computes the center of this octant.
 	 *
-	 * @method update
-	 * @throws {Error} An error is thrown if too many vertices are created.
+	 * @method center
+	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
-	update() {
+	center() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
 
-		const vertexMap = new Map();
-		const depth = (this.tree !== null) ? this.tree.depth() : -1;
+	/**
+	 * Computes the size of this octant.
+	 *
+	 * @method dimensions
+	 * @return {Vector3} A new vector that describes the size of this octant.
+	 */
 
-		const connections = [
-			/* 0 */ [1, 4],
-			/* 1 */ [2, 5],
-			/* 2 */ [3, 6],
-			/* 3 */ [0, 7],
-			/* 4 */ [5],
-			/* 5 */ [6],
-			/* 6 */ [7],
-			/* 7 */ [4]
-		];
+	dimensions() { return this.max.clone().sub(this.min); }
 
-		let i, j, k, il, kl;
-		let octants, octant;
+	/**
+	 * Splits this octant into eight smaller ones.
+	 *
+	 * @method split
+	 * @param {Array} [octants] - A list of octants to recycle.
+	 */
 
-		let vertices, v, c;
-		let entry, key;
+	split(octants) {
 
-		let geometry, lineSegments, material;
+		const min = this.min;
+		const max = this.max;
+		const mid = this.center();
 
-		let indexCount;
-		let indices = null;
-		let positions = null;
+		let i, j;
+		let l = 0;
+		let combination;
 
-		let level = 0;
+		let halfDimensions;
+		let v, child, octant;
 
-		// Remove existing geometry.
-		for(i = 0, il = this.children.length; i &lt; il; ++i) {
+		if(Array.isArray(octants)) {
 
-			this.children[i].geometry.dispose();
-			this.children[i].material.dispose();
-
-		}
-
-		while(this.children.length &gt; 0) {
-
-			this.remove(this.children[0]);
+			halfDimensions = this.dimensions().multiplyScalar(0.5);
+			v = [new Vector3(), new Vector3(), new Vector3()];
+			l = octants.length;
 
 		}
 
-		while(level &lt;= depth) {
+		this.children = [];
 
-			octants = this.tree.findOctantsByLevel(level);
+		for(i = 0; i &lt; 8; ++i) {
 
-			indexCount = 0;
-			vertexMap.clear();
+			combination = PATTERN[i];
+			octant = null;
 
-			for(i = 0, j = 0, il = octants.length; i &lt; il; ++i) {
+			if(l &gt; 0) {
 
-				octant = octants[i];
+				v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
+				v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
 
-				vertices = [
-					/* 0 */ [octant.max.x, octant.max.y, octant.max.z],
-					/* 1 */ [octant.min.x, octant.max.y, octant.max.z],
-					/* 2 */ [octant.min.x, octant.min.y, octant.max.z],
-					/* 3 */ [octant.max.x, octant.min.y, octant.max.z],
-					/* 4 */ [octant.max.x, octant.max.y, octant.min.z],
-					/* 5 */ [octant.min.x, octant.max.y, octant.min.z],
-					/* 6 */ [octant.min.x, octant.min.y, octant.min.z],
-					/* 7 */ [octant.max.x, octant.min.y, octant.min.z]
-				];
+				// Find an octant that matches the current combination.
+				for(j = 0; j &lt; l; ++j) {
 
-				// Update the vertex map.
-				for(j = 0; j &lt; 8; ++j) {
+					child = octants[j];
 
-					v = vertices[j];
-					c = connections[j];
+					if(child !== null &amp;&amp; v[1].equals(child.min) &amp;&amp; v[2].equals(child.max)) {
 
-					key = v.toString();
-					entry = vertexMap.get(key);
+						octant = child;
+						octants[j] = null;
 
-					// Prevent duplicates.
-					if(entry !== undefined) {
-
-						// Adopt unique connections.
-						for(k = 0, kl = c.length; k &lt; kl; ++k) {
-
-							key = vertices[c[k]].toString();
-
-							if(entry.connectionKeys.indexOf(key) &lt; 0) {
-
-								entry.connectionKeys.push(key);
-								++indexCount;
-
-							}
-
-						}
-
-					} else {
-
-						// No duplicate, create new entry.
-						entry = {
-							position: v,
-							connectionKeys: [],
-							index: vertexMap.size
-						};
-
-						for(k = 0, kl = c.length; k &lt; kl; ++k) {
-
-							entry.connectionKeys.push(vertices[c[k]].toString());
-							++indexCount;
-
-						}
-
-						vertexMap.set(key, entry);
+						break;
 
 					}
 
@@ -243,62 +212,58 @@ export class OctreeHelper extends THREE.Object3D {
 
 			}
 
-			// Create the geometry for this level.
-			if(vertexMap.size &lt; 65536) {
+			this.children.push((octant !== null) ? octant : new this.constructor(
 
-				indices = new Uint16Array(indexCount * 2);
-				positions = new Float32Array(vertexMap.size * 3);
+				new Vector3(
+					((combination[0] === 0) ? min.x : mid.x),
+					((combination[1] === 0) ? min.y : mid.y),
+					((combination[2] === 0) ? min.z : mid.z)
+				),
 
-				i = 0; j = 0;
+				new Vector3(
+					((combination[0] === 0) ? mid.x : max.x),
+					((combination[1] === 0) ? mid.y : max.y),
+					((combination[2] === 0) ? mid.z : max.z)
+				)
 
-				for(entry of vertexMap.values()) {
-
-					v = entry.position;
-
-					positions[i++] = v[0];
-					positions[i++] = v[1];
-					positions[i++] = v[2];
-
-					c = entry.connectionKeys;
-
-					// Add the index pairs that describe the lines.
-					for(k = 0, kl = c.length; k &lt; kl; ++k) {
-
-						indices[j++] = entry.index;
-						indices[j++] = vertexMap.get(c[k]).index;
-
-					}
-
-				}
-
-				geometry = new THREE.BufferGeometry();
-				geometry.setIndex(new THREE.BufferAttribute(indices, 1));
-				geometry.addAttribute(&quot;position&quot;, new THREE.BufferAttribute(positions, 3));
-
-				material = new THREE.LineBasicMaterial({
-					color: new THREE.Color(0xffffff * Math.random())
-				});
-
-				lineSegments = new THREE.LineSegments(geometry, material);
-
-				this.add(lineSegments);
-
-			} else {
-
-				throw new Error(
-					&quot;Could not create geometry for octree depth level &quot; + level +
-					&quot; (vertex count of &quot; + vertexMap.size + &quot; exceeds limit of 65536)&quot;
-				);
-
-			}
-
-			++level;
+			));
 
 		}
 
 	}
 
 }
+
+/**
+ * A binary pattern that describes the standard octant layout:
+ *
+ *    3____7
+ *  2/___6/|
+ *  | 1__|_5
+ *  0/___4/
+ *
+ * This common layout is crucial for positional assumptions.
+ *
+ * @property PATTERN
+ * @type Array
+ * @static
+ * @final
+ */
+
+export const PATTERN = [
+
+	new Uint8Array([0, 0, 0]),
+	new Uint8Array([0, 0, 1]),
+	new Uint8Array([0, 1, 0]),
+	new Uint8Array([0, 1, 1]),
+
+	new Uint8Array([1, 0, 0]),
+	new Uint8Array([1, 0, 1]),
+	new Uint8Array([1, 1, 0]),
+	new Uint8Array([1, 1, 1])
+
+];
+
 
     </pre>
 </div>

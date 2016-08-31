@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\octree.js - sparse-octree</title>
+    <title>src\core\helper.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.1.0</em>
+            <em>API Docs for: 2.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/CubicOctant.html">CubicOctant</a></li>
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
@@ -49,6 +50,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/core.html">core</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                                 <li><a href="../modules/points.html">points</a></li>
                             </ul>
@@ -84,191 +86,218 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src\octree.js</h1>
+<h1 class="file-heading">File: src\core\helper.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import { Octant } from &quot;./octant&quot;;
-import { Raycasting } from &quot;./raycasting&quot;;
+import THREE from &quot;three&quot;;
 
 /**
- * An octree that subdivides space for fast spatial searches.
+ * An octree helper.
  *
- * @class Octree
+ * The update method must be called manually to generate the octree geometry.
+ *
+ * @class OctreeHelper
+ * @submodule core
  * @constructor
- * @param {Vector3} [min] - The lower bounds of the tree.
- * @param {Vector3} [max] - The upper bounds of the tree.
+ * @extends Object3D
+ * @param {Octree} tree - The octree to visualise.
  */
 
-export class Octree {
+export class OctreeHelper extends THREE.Object3D {
 
-	constructor(min, max) {
+	constructor(tree) {
+
+		super();
+
+		this.name = &quot;OctreeHelper&quot;;
 
 		/**
-		 * The root octant.
+		 * The octree.
 		 *
-		 * @property root
-		 * @type Octant
-		 * @default null
+		 * @property tree
+		 * @type Octree
 		 */
 
-		this.root = (min !== undefined &amp;&amp; max !== undefined) ? new Octant(min, max) : null;
+		this.tree = (tree !== undefined) ? tree : null;
 
 	}
 
 	/**
-	 * The lower bounds of the root octant.
+	 * Creates the octree geometry.
 	 *
-	 * @property min
-	 * @type Vector3
+	 * @method update
+	 * @throws {Error} An error is thrown if too many vertices are created.
 	 */
 
-	get min() { return this.root.min; }
+	update() {
 
-	/**
-	 * The upper bounds of the root octant.
-	 *
-	 * @property max
-	 * @type Vector3
-	 */
+		const vertexMap = new Map();
+		const depth = (this.tree !== null) ? this.tree.depth() : -1;
 
-	get max() { return this.root.max; }
+		const connections = [
+			/* 0 */ [1, 4],
+			/* 1 */ [2, 5],
+			/* 2 */ [3, 6],
+			/* 3 */ [0, 7],
+			/* 4 */ [5],
+			/* 5 */ [6],
+			/* 6 */ [7],
+			/* 7 */ [4]
+		];
 
-	/**
-	 * The children of the root octant.
-	 *
-	 * @property children
-	 * @type Array
-	 */
+		let i, j, k, il, kl;
+		let octants, octant;
 
-	get children() { return this.root.children; }
+		let vertices, v, c;
+		let entry, key;
 
-	/**
-	 * Calculates the size of this octree.
-	 *
-	 * @method dimensions
-	 * @return {Vector3} A new vector that describes the size of this octree.
-	 */
+		let geometry, lineSegments, material;
 
-	dimensions() { return this.root.dimensions(); }
+		let indexCount;
+		let indices = null;
+		let positions = null;
 
-	/**
-	 * Calculates the center of this octree.
-	 *
-	 * @method center
-	 * @return {Vector3} A new vector that describes the center of this octree.
-	 */
+		let level = 0;
 
-	center() { return this.root.center(); }
+		// Remove existing geometry.
+		for(i = 0, il = this.children.length; i &lt; il; ++i) {
 
-	/**
-	 * Calculates the current depth of this octree.
-	 *
-	 * @method depth
-	 * @return {Number} The depth.
-	 */
+			this.children[i].geometry.dispose();
+			this.children[i].material.dispose();
 
-	depth() { return this.root.depth(); }
+		}
 
-	/**
-	 * Collects octants that lie inside the specified region.
-	 *
-	 * @method cull
-	 * @param {Frustum|Box3} region - A frustum or a bounding box.
-	 * @return {Array} The octants.
-	 */
+		while(this.children.length &gt; 0) {
 
-	cull(region) {
+			this.remove(this.children[0]);
 
-		const result = [];
-		const heap = [this.root];
+		}
 
-		let octant, children;
+		while(level &lt;= depth) {
 
-		while(heap.length &gt; 0) {
+			octants = this.tree.findOctantsByLevel(level);
 
-			octant = heap.pop();
-			children = octant.children;
+			indexCount = 0;
+			vertexMap.clear();
 
-			if(region.intersectsBox(octant)) {
+			for(i = 0, j = 0, il = octants.length; i &lt; il; ++i) {
 
-				if(children !== null) {
+				octant = octants[i];
 
-					heap.push(...children);
+				vertices = [
+					/* 0 */ [octant.max.x, octant.max.y, octant.max.z],
+					/* 1 */ [octant.min.x, octant.max.y, octant.max.z],
+					/* 2 */ [octant.min.x, octant.min.y, octant.max.z],
+					/* 3 */ [octant.max.x, octant.min.y, octant.max.z],
+					/* 4 */ [octant.max.x, octant.max.y, octant.min.z],
+					/* 5 */ [octant.min.x, octant.max.y, octant.min.z],
+					/* 6 */ [octant.min.x, octant.min.y, octant.min.z],
+					/* 7 */ [octant.max.x, octant.min.y, octant.min.z]
+				];
 
-				} else {
+				// Update the vertex map.
+				for(j = 0; j &lt; 8; ++j) {
 
-					result.push(octant);
+					v = vertices[j];
+					c = connections[j];
+
+					key = v.toString();
+					entry = vertexMap.get(key);
+
+					// Prevent duplicates.
+					if(entry !== undefined) {
+
+						// Adopt unique connections.
+						for(k = 0, kl = c.length; k &lt; kl; ++k) {
+
+							key = vertices[c[k]].toString();
+
+							if(entry.connectionKeys.indexOf(key) &lt; 0) {
+
+								entry.connectionKeys.push(key);
+								++indexCount;
+
+							}
+
+						}
+
+					} else {
+
+						// No duplicate, create new entry.
+						entry = {
+							position: v,
+							connectionKeys: [],
+							index: vertexMap.size
+						};
+
+						for(k = 0, kl = c.length; k &lt; kl; ++k) {
+
+							entry.connectionKeys.push(vertices[c[k]].toString());
+							++indexCount;
+
+						}
+
+						vertexMap.set(key, entry);
+
+					}
 
 				}
 
 			}
 
-		}
+			// Create the geometry for this level.
+			if(vertexMap.size &lt; 65536) {
 
-		return result;
+				indices = new Uint16Array(indexCount * 2);
+				positions = new Float32Array(vertexMap.size * 3);
 
-	}
+				i = 0; j = 0;
 
-	/**
-	 * Fetches all octants with the specified depth level.
-	 *
-	 * @method findOctantsByLevel
-	 * @param {Number} level - The depth level.
-	 * @return {Array} The octants.
-	 */
+				for(entry of vertexMap.values()) {
 
-	findOctantsByLevel(level) {
+					v = entry.position;
 
-		const result = [];
+					positions[i++] = v[0];
+					positions[i++] = v[1];
+					positions[i++] = v[2];
 
-		let h0 = [this.root];
-		let h1 = [];
+					c = entry.connectionKeys;
 
-		let octant, children;
-		let currentLevel = 0;
+					// Add the index pairs that describe the lines.
+					for(k = 0, kl = c.length; k &lt; kl; ++k) {
 
-		while(h0.length &gt; 0) {
+						indices[j++] = entry.index;
+						indices[j++] = vertexMap.get(c[k]).index;
 
-			octant = h0.pop();
-			children = octant.children;
+					}
 
-			if(currentLevel === level) {
+				}
 
-				result.push(octant);
+				geometry = new THREE.BufferGeometry();
+				geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+				geometry.addAttribute(&quot;position&quot;, new THREE.BufferAttribute(positions, 3));
 
-			} else if(children !== null) {
+				material = new THREE.LineBasicMaterial({
+					color: new THREE.Color(0xffffff * Math.random())
+				});
 
-				h1.push(...children);
+				lineSegments = new THREE.LineSegments(geometry, material);
+
+				this.add(lineSegments);
+
+			} else {
+
+				throw new Error(
+					&quot;Could not create geometry for octree depth level &quot; + level +
+					&quot; (vertex count of &quot; + vertexMap.size + &quot; exceeds limit of 65536)&quot;
+				);
 
 			}
 
-			if(h0.length === 0) {
-
-				h0 = h1;
-				h1 = [];
-
-				if(++currentLevel &gt; level) { break; }
-
-			}
+			++level;
 
 		}
-
-		return result;
-
-	}
-
-	/**
-	 * Finds the octants that intersect with the given ray.
-	 *
-	 * @method raycast
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting octants.
-	 */
-
-	raycast(raycaster, intersects) {
-
-		Raycasting.raycast(this, raycaster, intersects);
 
 	}
 
