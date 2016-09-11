@@ -2,7 +2,6 @@
 [![Build status](https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master)](https://travis-ci.org/vanruesc/sparse-octree) 
 [![npm version](https://badge.fury.io/js/sparse-octree.svg)](http://badge.fury.io/js/sparse-octree) 
 [![Dependencies](https://david-dm.org/vanruesc/sparse-octree.svg?branch=master)](https://david-dm.org/vanruesc/sparse-octree)
-[![License](https://img.shields.io/badge/license-zlib-brightgreen.svg)](https://raw.githubusercontent.com/vanruesc/sparse-octree/master/LICENSE)
 
 A sparse octree data structure for three.js.  
 
