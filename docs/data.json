@@ -604,7 +604,7 @@
         {
             "file": "src\\core\\octant.js",
             "line": 145,
-            "description": "A binary pattern that describes the standard octant layout:\n\n   3____7\n 2/___6/|\n | 1__|_5\n 0/___4/\n\nThis common layout is crucial for positional assumptions.",
+            "description": "A binary pattern that describes the standard octant layout:\n\n<pre>\n   3____7\n 2/___6/|\n | 1__|_5\n 0/___4/\n</pre>\n\nThis common layout is crucial for positional assumptions.",
             "itemtype": "property",
             "name": "PATTERN",
             "type": "Array",

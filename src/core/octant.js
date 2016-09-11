@@ -145,10 +145,12 @@ export class Octant {
 /**
  * A binary pattern that describes the standard octant layout:
  *
+ * <pre>
  *    3____7
  *  2/___6/|
  *  | 1__|_5
  *  0/___4/
+ * </pre>
  *
  * This common layout is crucial for positional assumptions.
  *
