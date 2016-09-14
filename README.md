@@ -42,7 +42,7 @@ A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/2/).
   - Supports raycasting
   - Supports culling
   - Supports cubic octrees
-  - Can be extended to manage any data.
+  - Can be extended to manage any data
 - Provides a point management implementation
 - Provides a helper that can visualise octrees
 
