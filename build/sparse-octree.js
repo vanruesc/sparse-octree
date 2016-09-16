@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.2.0 build Aug 31 2016
+ * sparse-octree v2.2.0 build Sep 16 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -36,7 +36,13 @@
     };
   }();
 
-  var get = function get(object, property, receiver) {
+
+
+
+
+
+
+  var get$1 = function get$1(object, property, receiver) {
     if (object === null) object = Function.prototype;
     var desc = Object.getOwnPropertyDescriptor(object, property);
 
@@ -46,7 +52,7 @@
       if (parent === null) {
         return undefined;
       } else {
-        return get(parent, property, receiver);
+        return get$1(parent, property, receiver);
       }
     } else if ("value" in desc) {
       return desc.value;
@@ -77,6 +83,16 @@
     if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   };
 
+
+
+
+
+
+
+
+
+
+
   var possibleConstructorReturn = function (self, call) {
     if (!self) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -84,6 +100,44 @@
 
     return call && (typeof call === "object" || typeof call === "function") ? call : self;
   };
+
+
+
+  var set$1 = function set$1(object, property, value, receiver) {
+    var desc = Object.getOwnPropertyDescriptor(object, property);
+
+    if (desc === undefined) {
+      var parent = Object.getPrototypeOf(object);
+
+      if (parent !== null) {
+        set$1(parent, property, value, receiver);
+      }
+    } else if ("value" in desc && desc.writable) {
+      desc.value = value;
+    } else {
+      var setter = desc.set;
+
+      if (setter !== undefined) {
+        setter.call(receiver, value);
+      }
+    }
+
+    return value;
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   var toConsumableArray = function (arr) {
     if (Array.isArray(arr)) {
@@ -836,10 +890,12 @@
   /**
    * A binary pattern that describes the standard octant layout:
    *
+   * <pre>
    *    3____7
    *  2/___6/|
    *  | 1__|_5
    *  0/___4/
+   * </pre>
    *
    * This common layout is crucial for positional assumptions.
    *
@@ -1578,7 +1634,7 @@
   		function OctreeHelper(tree) {
   				classCallCheck(this, OctreeHelper);
 
-  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(OctreeHelper).call(this));
+  				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
 
   				_this.name = "OctreeHelper";
 
@@ -1789,6 +1845,13 @@
   }(THREE.Object3D);
 
   /**
+   * Core components.
+   *
+   * @module octree
+   * @submodule core
+   */
+
+  /**
    * An octant that maintains points.
    *
    * @class PointOctant
@@ -1812,7 +1875,7 @@
        * @type Array
        */
 
-  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctant).call(this, min, max));
+  				var _this = possibleConstructorReturn(this, (PointOctant.__proto__ || Object.getPrototypeOf(PointOctant)).call(this, min, max));
 
   				_this.points = null;
 
@@ -2180,7 +2243,7 @@
   		function PointOctree(min, max, bias, maxPoints, maxDepth) {
   				classCallCheck(this, PointOctree);
 
-  				var _this = possibleConstructorReturn(this, Object.getPrototypeOf(PointOctree).call(this));
+  				var _this = possibleConstructorReturn(this, (PointOctree.__proto__ || Object.getPrototypeOf(PointOctree)).call(this));
 
   				_this.root = new PointOctant(min, max);
 
@@ -2525,7 +2588,7 @@
 
   						var octants = [];
 
-  						get(Object.getPrototypeOf(PointOctree.prototype), "raycast", this).call(this, raycaster, octants);
+  						get$1(PointOctree.prototype.__proto__ || Object.getPrototypeOf(PointOctree.prototype), "raycast", this).call(this, raycaster, octants);
 
   						if (octants.length > 0) {
 
@@ -2599,6 +2662,20 @@
   		}]);
   		return PointOctree;
   }(Octree);
+
+  /**
+   * Point-oriented octree components.
+   *
+   * @module octree
+   * @submodule points
+   */
+
+  /**
+   * Exposure of the library components.
+   *
+   * @module octree
+   * @main octree
+   */
 
   exports.CubicOctant = CubicOctant;
   exports.Octant = Octant;
