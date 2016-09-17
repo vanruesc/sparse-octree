@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.3.0 build Sep 17 2016
+ * sparse-octree v2.3.1 build Sep 17 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -1421,7 +1421,7 @@
      */
 
   		value: function getCenter() {
-  			return this.root.center();
+  			return this.root.getCenter();
   		}
 
   		/**
@@ -1434,7 +1434,7 @@
   	}, {
   		key: "getDimensions",
   		value: function getDimensions() {
-  			return this.root.dimensions();
+  			return this.root.getDimensions();
   		}
 
   		/**
