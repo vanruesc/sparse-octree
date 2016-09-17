@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.2.0 build Sep 16 2016
+ * sparse-octree v2.3.0 build Sep 17 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -798,26 +798,26 @@
   	/**
     * Computes the center of this octant.
     *
-    * @method center
+    * @method getCenter
     * @return {Vector3} A new vector that describes the center of this octant.
     */
 
   	createClass(Octant, [{
-  		key: "center",
-  		value: function center() {
+  		key: "getCenter",
+  		value: function getCenter() {
   			return this.min.clone().add(this.max).multiplyScalar(0.5);
   		}
 
   		/**
      * Computes the size of this octant.
      *
-     * @method dimensions
+     * @method getDimensions
      * @return {Vector3} A new vector that describes the size of this octant.
      */
 
   	}, {
-  		key: "dimensions",
-  		value: function dimensions() {
+  		key: "getDimensions",
+  		value: function getDimensions() {
   			return this.max.clone().sub(this.min);
   		}
 
@@ -834,7 +834,7 @@
 
   			var min = this.min;
   			var max = this.max;
-  			var mid = this.center();
+  			var mid = this.getCenter();
 
   			var i = void 0,
   			    j = void 0;
@@ -848,7 +848,7 @@
 
   			if (Array.isArray(octants)) {
 
-  				halfDimensions = this.dimensions().multiplyScalar(0.5);
+  				halfDimensions = this.getDimensions().multiplyScalar(0.5);
   				v = [new Vector3(), new Vector3(), new Vector3()];
   				l = octants.length;
   			}
@@ -959,30 +959,30 @@
      */
 
   		createClass(CubicOctant, [{
-  				key: "center",
+  				key: "getCenter",
 
 
   				/**
        * Computes the center of this octant.
        *
-       * @method center
+       * @method getCenter
        * @return {Vector3} A new vector that describes the center of this octant.
        */
 
-  				value: function center() {
+  				value: function getCenter() {
   						return this.min.clone().addScalar(this.size * 0.5);
   				}
 
   				/**
        * Returns the size of this octant as a vector.
        *
-       * @method dimensions
+       * @method getDimensions
        * @return {Vector3} A new vector that describes the size of this octant.
        */
 
   		}, {
-  				key: "dimensions",
-  				value: function dimensions() {
+  				key: "getDimensions",
+  				value: function getDimensions() {
   						return new Vector3(this.size, this.size, this.size);
   				}
 
@@ -998,7 +998,7 @@
   				value: function split(octants) {
 
   						var min = this.min;
-  						var mid = this.center();
+  						var mid = this.getCenter();
   						var halfSize = this.size * 0.5;
 
   						var i = void 0,
@@ -1305,7 +1305,7 @@
 
   		value: function raycast(octree, raycaster, octants) {
 
-  			var dimensions = octree.dimensions();
+  			var dimensions = octree.getDimensions();
   			var halfDimensions = dimensions.clone().multiplyScalar(0.5);
 
   			// Translate the octree extents to the center of the octree.
@@ -1316,7 +1316,7 @@
   			var origin = raycaster.ray.origin.clone();
 
   			// Translate the ray to the center of the octree.
-  			origin.sub(octree.center()).add(halfDimensions);
+  			origin.sub(octree.getCenter()).add(halfDimensions);
 
   			var invDirX = void 0,
   			    invDirY = void 0,
@@ -1410,31 +1410,31 @@
     */
 
   	createClass(Octree, [{
-  		key: "dimensions",
+  		key: "getCenter",
 
-
-  		/**
-     * Calculates the size of this octree.
-     *
-     * @method dimensions
-     * @return {Vector3} A new vector that describes the size of this octree.
-     */
-
-  		value: function dimensions() {
-  			return this.root.dimensions();
-  		}
 
   		/**
      * Calculates the center of this octree.
      *
-     * @method center
+     * @method getCenter
      * @return {Vector3} A new vector that describes the center of this octree.
      */
 
-  	}, {
-  		key: "center",
-  		value: function center() {
+  		value: function getCenter() {
   			return this.root.center();
+  		}
+
+  		/**
+     * Calculates the size of this octree.
+     *
+     * @method getDimensions
+     * @return {Vector3} A new vector that describes the size of this octree.
+     */
+
+  	}, {
+  		key: "getDimensions",
+  		value: function getDimensions() {
+  			return this.root.dimensions();
   		}
 
   		/**
@@ -1955,7 +1955,7 @@
   				key: "distanceToCenterSquared",
   				value: function distanceToCenterSquared(p) {
 
-  						var center = this.center();
+  						var center = this.getCenter();
 
   						var dx = p.x - center.x;
   						var dy = p.y - center.x;
