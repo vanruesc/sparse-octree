@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.2.0</em>
+            <em>API Docs for: 2.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -199,20 +199,12 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_center">center</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_contains">contains</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_countPoints">countPoints</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_dimensions">dimensions</a>
 
                             </li>
                             <li class="index-item method">
@@ -229,6 +221,14 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_findPoints">findPoints</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getCenter">getCenter</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_getDimensions">getDimensions</a>
 
                             </li>
                             <li class="index-item method private">
@@ -279,49 +279,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_center" class="method item inherited">
-    <h3 class="name"><code>center</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Octant.html#method_center">Octant</a>:
-        <a href="../files/src_core_octant.js.html#l47"><code>src\core\octant.js:47</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Computes the center of this octant.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the center of this octant.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_contains" class="method item">
     <h3 class="name"><code>contains</code></h3>
 
@@ -445,49 +402,6 @@ providing a radius as bias.</p>
             <div class="returns-description">
                         <span class="type">Number</span>:
                     <p>The amount of points.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_dimensions" class="method item inherited">
-    <h3 class="name"><code>dimensions</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Octant.html#method_dimensions">Octant</a>:
-        <a href="../files/src_core_octant.js.html#l56"><code>src\core\octant.js:56</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Computes the size of this octant.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the size of this octant.</p>
 
             </div>
         </div>
@@ -832,6 +746,92 @@ point.</p>
             </ul>
         </div>
 
+
+
+</div>
+<div id="method_getCenter" class="method item inherited">
+    <h3 class="name"><code>getCenter</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Octant.html#method_getCenter">Octant</a>:
+        <a href="../files/src_core_octant.js.html#l47"><code>src\core\octant.js:47</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes the center of this octant.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                    <p>A new vector that describes the center of this octant.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getDimensions" class="method item inherited">
+    <h3 class="name"><code>getDimensions</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Octant.html#method_getDimensions">Octant</a>:
+        <a href="../files/src_core_octant.js.html#l56"><code>src\core\octant.js:56</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes the size of this octant.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                    <p>A new vector that describes the size of this octant.</p>
+
+            </div>
+        </div>
 
 
 </div>

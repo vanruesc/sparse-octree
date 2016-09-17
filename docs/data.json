@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.2.0",
+        "version": "2.3.0",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -460,7 +460,7 @@
             "line": 57,
             "description": "Computes the center of this octant.",
             "itemtype": "method",
-            "name": "center",
+            "name": "getCenter",
             "return": {
                 "description": "A new vector that describes the center of this octant.",
                 "type": "Vector3"
@@ -473,7 +473,7 @@
             "line": 66,
             "description": "Returns the size of this octant as a vector.",
             "itemtype": "method",
-            "name": "dimensions",
+            "name": "getDimensions",
             "return": {
                 "description": "A new vector that describes the size of this octant.",
                 "type": "Vector3"
@@ -560,7 +560,7 @@
             "line": 47,
             "description": "Computes the center of this octant.",
             "itemtype": "method",
-            "name": "center",
+            "name": "getCenter",
             "return": {
                 "description": "A new vector that describes the center of this octant.",
                 "type": "Vector3"
@@ -574,7 +574,7 @@
             "line": 56,
             "description": "Computes the size of this octant.",
             "itemtype": "method",
-            "name": "dimensions",
+            "name": "getDimensions",
             "return": {
                 "description": "A new vector that describes the size of this octant.",
                 "type": "Vector3"
@@ -662,11 +662,11 @@
         {
             "file": "src\\core\\octree.js",
             "line": 57,
-            "description": "Calculates the size of this octree.",
+            "description": "Calculates the center of this octree.",
             "itemtype": "method",
-            "name": "dimensions",
+            "name": "getCenter",
             "return": {
-                "description": "A new vector that describes the size of this octree.",
+                "description": "A new vector that describes the center of this octree.",
                 "type": "Vector3"
             },
             "class": "Octree",
@@ -676,11 +676,11 @@
         {
             "file": "src\\core\\octree.js",
             "line": 66,
-            "description": "Calculates the center of this octree.",
+            "description": "Calculates the size of this octree.",
             "itemtype": "method",
-            "name": "center",
+            "name": "getDimensions",
             "return": {
-                "description": "A new vector that describes the center of this octree.",
+                "description": "A new vector that describes the size of this octree.",
                 "type": "Vector3"
             },
             "class": "Octree",

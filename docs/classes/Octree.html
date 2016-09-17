@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.2.0</em>
+            <em>API Docs for: 2.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -199,10 +199,6 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_center">center</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_cull">cull</a>
 
                             </li>
@@ -211,11 +207,15 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_dimensions">dimensions</a>
+                                <a href="#method_findOctantsByLevel">findOctantsByLevel</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_findOctantsByLevel">findOctantsByLevel</a>
+                                <a href="#method_getCenter">getCenter</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getDimensions">getDimensions</a>
 
                             </li>
                             <li class="index-item method">
@@ -254,49 +254,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_center" class="method item">
-    <h3 class="name"><code>center</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l66"><code>src\core\octree.js:66</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the center of this octree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the center of this octree.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_cull" class="method item">
     <h3 class="name"><code>cull</code></h3>
 
@@ -408,49 +365,6 @@
 
 
 </div>
-<div id="method_dimensions" class="method item">
-    <h3 class="name"><code>dimensions</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l57"><code>src\core\octree.js:57</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the size of this octree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the size of this octree.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_findOctantsByLevel" class="method item">
     <h3 class="name"><code>findOctantsByLevel</code></h3>
 
@@ -513,6 +427,92 @@
             <div class="returns-description">
                         <span class="type">Array</span>:
                     <p>The octants.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getCenter" class="method item">
+    <h3 class="name"><code>getCenter</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree.js.html#l57"><code>src\core\octree.js:57</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calculates the center of this octree.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                    <p>A new vector that describes the center of this octree.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getDimensions" class="method item">
+    <h3 class="name"><code>getDimensions</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree.js.html#l66"><code>src\core\octree.js:66</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calculates the size of this octree.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                    <p>A new vector that describes the size of this octree.</p>
 
             </div>
         </div>

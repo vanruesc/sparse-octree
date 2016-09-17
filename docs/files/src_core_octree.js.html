@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.2.0</em>
+            <em>API Docs for: 2.3.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -147,22 +147,22 @@ export class Octree {
 	get children() { return this.root.children; }
 
 	/**
-	 * Calculates the size of this octree.
-	 *
-	 * @method dimensions
-	 * @return {Vector3} A new vector that describes the size of this octree.
-	 */
-
-	dimensions() { return this.root.dimensions(); }
-
-	/**
 	 * Calculates the center of this octree.
 	 *
-	 * @method center
+	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octree.
 	 */
 
-	center() { return this.root.center(); }
+	getCenter() { return this.root.center(); }
+
+	/**
+	 * Calculates the size of this octree.
+	 *
+	 * @method getDimensions
+	 * @return {Vector3} A new vector that describes the size of this octree.
+	 */
+
+	getDimensions() { return this.root.dimensions(); }
 
 	/**
 	 * Calculates the current depth of this octree.
