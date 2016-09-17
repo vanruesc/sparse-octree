@@ -145,6 +145,24 @@ module.exports = {
 
 		},
 
+		"can compute its center": function(test) {
+
+			const octree = new LIBRARY.Octree(box.min, box.max);
+
+			test.ok(octree.getCenter().equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
+			test.done();
+
+		},
+
+		"can compute its dimensions": function(test) {
+
+			const octree = new LIBRARY.Octree(box.min, box.max);
+
+			test.ok(octree.getDimensions().equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
+			test.done();
+
+		},
+
 		"can compute its depth": function(test) {
 
 			const octree = new LIBRARY.Octree(box.min, box.max);
