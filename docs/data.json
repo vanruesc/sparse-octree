@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.3.0",
+        "version": "2.3.1",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
