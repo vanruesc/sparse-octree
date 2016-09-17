@@ -61,7 +61,7 @@ export class Octree {
 	 * @return {Vector3} A new vector that describes the center of this octree.
 	 */
 
-	getCenter() { return this.root.center(); }
+	getCenter() { return this.root.getCenter(); }
 
 	/**
 	 * Calculates the size of this octree.
@@ -70,7 +70,7 @@ export class Octree {
 	 * @return {Vector3} A new vector that describes the size of this octree.
 	 */
 
-	getDimensions() { return this.root.dimensions(); }
+	getDimensions() { return this.root.getDimensions(); }
 
 	/**
 	 * Calculates the current depth of this octree.
