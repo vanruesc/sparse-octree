@@ -252,7 +252,7 @@ export class Raycasting {
 
 	static raycast(octree, raycaster, octants) {
 
-		const dimensions = octree.dimensions();
+		const dimensions = octree.getDimensions();
 		const halfDimensions = dimensions.clone().multiplyScalar(0.5);
 
 		// Translate the octree extents to the center of the octree.
@@ -263,7 +263,7 @@ export class Raycasting {
 		const origin = raycaster.ray.origin.clone();
 
 		// Translate the ray to the center of the octree.
-		origin.sub(octree.center()).add(halfDimensions);
+		origin.sub(octree.getCenter()).add(halfDimensions);
 
 		let invDirX, invDirY, invDirZ;
 		let tx0, tx1, ty0, ty1, tz0, tz1;

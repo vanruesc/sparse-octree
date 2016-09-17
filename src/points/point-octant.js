@@ -99,7 +99,7 @@ export class PointOctant extends Octant {
 
 	distanceToCenterSquared(p) {
 
-		const center = this.center();
+		const center = this.getCenter();
 
 		const dx = p.x - center.x;
 		const dy = p.y - center.x;

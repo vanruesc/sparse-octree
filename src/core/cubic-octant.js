@@ -57,20 +57,20 @@ export class CubicOctant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @method center
+	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
-	center() { return this.min.clone().addScalar(this.size * 0.5); }
+	getCenter() { return this.min.clone().addScalar(this.size * 0.5); }
 
 	/**
 	 * Returns the size of this octant as a vector.
 	 *
-	 * @method dimensions
+	 * @method getDimensions
 	 * @return {Vector3} A new vector that describes the size of this octant.
 	 */
 
-	dimensions() { return new Vector3(this.size, this.size, this.size); }
+	getDimensions() { return new Vector3(this.size, this.size, this.size); }
 
 	/**
 	 * Splits this octant into eight smaller ones.
@@ -82,7 +82,7 @@ export class CubicOctant {
 	split(octants) {
 
 		const min = this.min;
-		const mid = this.center();
+		const mid = this.getCenter();
 		const halfSize = this.size * 0.5;
 
 		let i, j;

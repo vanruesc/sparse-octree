@@ -55,22 +55,22 @@ export class Octree {
 	get children() { return this.root.children; }
 
 	/**
-	 * Calculates the size of this octree.
-	 *
-	 * @method dimensions
-	 * @return {Vector3} A new vector that describes the size of this octree.
-	 */
-
-	dimensions() { return this.root.dimensions(); }
-
-	/**
 	 * Calculates the center of this octree.
 	 *
-	 * @method center
+	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octree.
 	 */
 
-	center() { return this.root.center(); }
+	getCenter() { return this.root.center(); }
+
+	/**
+	 * Calculates the size of this octree.
+	 *
+	 * @method getDimensions
+	 * @return {Vector3} A new vector that describes the size of this octree.
+	 */
+
+	getDimensions() { return this.root.dimensions(); }
 
 	/**
 	 * Calculates the current depth of this octree.

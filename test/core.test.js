@@ -22,7 +22,7 @@ module.exports = {
 
 			const octant = new LIBRARY.Octant(box.min, box.max);
 
-			const center = octant.center();
+			const center = octant.getCenter();
 
 			test.ok(center.equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
 			test.done();
@@ -33,7 +33,7 @@ module.exports = {
 
 			const octant = new LIBRARY.Octant(box.min, box.max);
 
-			const dimensions = octant.dimensions();
+			const dimensions = octant.getDimensions();
 
 			test.ok(dimensions.equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
 			test.done();
@@ -55,7 +55,7 @@ module.exports = {
 
 			const octant = new LIBRARY.Octant(box.min, box.max);
 
-			const mid = octant.center();
+			const mid = octant.getCenter();
 
 			const octant011 = new LIBRARY.Octant(
 				new THREE.Vector3(octant.min.x, mid.y, mid.z),
@@ -87,7 +87,7 @@ module.exports = {
 
 			const octant = new LIBRARY.CubicOctant(box.min, 2);
 
-			const center = octant.center();
+			const center = octant.getCenter();
 
 			test.ok(center.equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
 			test.done();
@@ -98,7 +98,7 @@ module.exports = {
 
 			const octant = new LIBRARY.CubicOctant(box.min, 2);
 
-			const dimensions = octant.dimensions();
+			const dimensions = octant.getDimensions();
 
 			test.ok(dimensions.equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
 			test.done();
@@ -120,7 +120,7 @@ module.exports = {
 
 			const octant = new LIBRARY.CubicOctant(box.min, 2);
 
-			const mid = octant.center();
+			const mid = octant.getCenter();
 
 			const octant011 = new LIBRARY.CubicOctant(new THREE.Vector3(octant.min.x, mid.y, mid.z), 1);
 

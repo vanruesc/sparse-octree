@@ -47,20 +47,20 @@ export class Octant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @method center
+	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
-	center() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
+	getCenter() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
 
 	/**
 	 * Computes the size of this octant.
 	 *
-	 * @method dimensions
+	 * @method getDimensions
 	 * @return {Vector3} A new vector that describes the size of this octant.
 	 */
 
-	dimensions() { return this.max.clone().sub(this.min); }
+	getDimensions() { return this.max.clone().sub(this.min); }
 
 	/**
 	 * Splits this octant into eight smaller ones.
@@ -73,7 +73,7 @@ export class Octant {
 
 		const min = this.min;
 		const max = this.max;
-		const mid = this.center();
+		const mid = this.getCenter();
 
 		let i, j;
 		let l = 0;
@@ -84,7 +84,7 @@ export class Octant {
 
 		if(Array.isArray(octants)) {
 
-			halfDimensions = this.dimensions().multiplyScalar(0.5);
+			halfDimensions = this.getDimensions().multiplyScalar(0.5);
 			v = [new Vector3(), new Vector3(), new Vector3()];
 			l = octants.length;
 
