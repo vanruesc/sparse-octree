@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.3.1 build Sep 17 2016
+ * sparse-octree v2.3.2 build Sep 20 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -1055,6 +1055,190 @@
   }();
 
   /**
+   * A bounding box.
+   *
+   * This class is a copy of THREE.Box3. It can be removed as soon as three.js
+   * starts supporting ES6 modules.
+   *
+   * @class Box3
+   * @submodule math
+   * @constructor
+   */
+
+  var Box3 = function () {
+  	function Box3(min, max) {
+  		classCallCheck(this, Box3);
+
+
+  		/**
+     * The min bounds.
+     *
+     * @property min
+     * @type Vector3
+     */
+
+  		this.min = min !== undefined ? min : new Vector3(Infinity, Infinity, Infinity);
+
+  		/**
+     * The max bounds.
+     *
+     * @property max
+     * @type Vector3
+     */
+
+  		this.max = max !== undefined ? max : new Vector3(-Infinity, -Infinity, -Infinity);
+  	}
+
+  	/**
+    * Sets the values of this box.
+    *
+    * @method set
+    * @param {Number} min - The min bounds.
+    * @param {Number} max - The max bounds.
+    * @return {Matrix3} This box.
+    */
+
+  	createClass(Box3, [{
+  		key: "set",
+  		value: function set(min, max) {
+
+  			this.min.copy(min);
+  			this.max.copy(max);
+
+  			return this;
+  		}
+
+  		/**
+     * Copies the values of a given box.
+     *
+     * @method copy
+     * @param {Matrix3} b - A box.
+     * @return {Box3} This box.
+     */
+
+  	}, {
+  		key: "copy",
+  		value: function copy(b) {
+
+  			this.min.copy(b.min);
+  			this.max.copy(b.max);
+
+  			return this;
+  		}
+
+  		/**
+     * Clones this matrix.
+     *
+     * @method clone
+     * @return {Matrix3} A clone of this matrix.
+     */
+
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+
+  		/**
+     * Expands this box by the given point.
+     *
+     * @method expandByPoint
+     * @param {Matrix3} p - A point.
+     * @return {Box3} This box.
+     */
+
+  	}, {
+  		key: "expandByPoint",
+  		value: function expandByPoint(p) {
+
+  			this.min.min(p);
+  			this.max.max(p);
+
+  			return this;
+  		}
+
+  		/**
+     * Expands this box by combining it with the given one.
+     *
+     * @method union
+     * @param {Box3} b - A box.
+     * @return {Box3} This box.
+     */
+
+  	}, {
+  		key: "union",
+  		value: function union(b) {
+
+  			this.min.min(b.min);
+  			this.max.max(b.max);
+
+  			return this;
+  		}
+
+  		/**
+     * Defines this box by the given points.
+     *
+     * @method setFromPoints
+     * @param {Array} points - The points.
+     * @return {Box3} This box.
+     */
+
+  	}, {
+  		key: "setFromPoints",
+  		value: function setFromPoints(points) {
+
+  			var i = void 0,
+  			    l = void 0;
+
+  			for (i = 0, l = points.length; i < l; ++i) {
+
+  				this.expandByPoint(points[i]);
+  			}
+
+  			return this;
+  		}
+
+  		/**
+     * Defines this box by the given center and size.
+     *
+     * @method setFromCenterAndSize
+     * @param {Vector3} center - The center.
+     * @param {Number} size - The size.
+     * @return {Box3} This box.
+     */
+
+  	}, {
+  		key: "setFromCenterAndSize",
+  		value: function setFromCenterAndSize(center, size) {
+
+  			var halfSize = size.clone().multiplyScalar(0.5);
+
+  			this.min.copy(center).sub(halfSize);
+  			this.max.copy(center).add(halfSize);
+
+  			return this;
+  		}
+
+  		/**
+     * Checks if this box intersects with the given one.
+     *
+     * @method intersectsBox
+     * @param {Matrix3} box - A box.
+     * @return {Boolean} Whether the boxes intersect.
+     */
+
+  	}, {
+  		key: "intersectsBox",
+  		value: function intersectsBox(box) {
+
+  			return !(box.max.x < this.min.x || box.min.x > this.max.x || box.max.y < this.min.y || box.min.y > this.max.y || box.max.z < this.min.z || box.min.z > this.max.z);
+  		}
+  	}]);
+  	return Box3;
+  }();
+
+  /**
    * Contains bytes used for bitwise operations. The last byte is used to store
    * raycasting flags.
    *
@@ -1494,6 +1678,7 @@
 
   			var result = [];
   			var heap = [this.root];
+  			var box = new Box3();
 
   			var octant = void 0,
   			    children = void 0;
@@ -1503,7 +1688,11 @@
   				octant = heap.pop();
   				children = octant.children;
 
-  				if (region.intersectsBox(octant)) {
+  				// Cache the computed max vector of cubic octants.
+  				box.min = octant.min;
+  				box.max = octant.max;
+
+  				if (region.intersectsBox(box)) {
 
   					if (children !== null) {
 
