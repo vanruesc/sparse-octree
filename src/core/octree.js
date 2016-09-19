@@ -1,3 +1,4 @@
+import { Box3 } from "../box3.js";
 import { Octant } from "./octant.js";
 import { Raycasting } from "./raycasting.js";
 
@@ -125,6 +126,7 @@ export class Octree {
 
 		const result = [];
 		const heap = [this.root];
+		const box = new Box3();
 
 		let octant, children;
 
@@ -133,7 +135,11 @@ export class Octree {
 			octant = heap.pop();
 			children = octant.children;
 
-			if(region.intersectsBox(octant)) {
+			// Cache the computed max vector of cubic octants.
+			box.min = octant.min;
+			box.max = octant.max;
+
+			if(region.intersectsBox(box)) {
 
 				if(children !== null) {
 
