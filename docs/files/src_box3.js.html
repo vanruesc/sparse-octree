@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>core - sparse-octree</title>
+    <title>src\box3.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -88,59 +88,192 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>core Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: src\box3.js</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import { Vector3 } from &quot;./vector3&quot;;
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_core_raycasting.js.html#l229"><code>src\core\raycasting.js:229</code></a>
-        </div>
+/**
+ * A bounding box.
+ *
+ * This class is a copy of THREE.Box3. It can be removed as soon as three.js
+ * starts supporting ES6 modules.
+ *
+ * @class Box3
+ * @submodule math
+ * @constructor
+ */
 
-</div>
+export class Box3 {
 
+	constructor(min, max) {
 
-<div class="box intro">
-    <p>Core components.</p>
+		/**
+		 * The min bounds.
+		 *
+		 * @property min
+		 * @type Vector3
+		 */
 
-</div>
+		this.min = (min !== undefined) ? min : new Vector3(Infinity, Infinity, Infinity);
 
+		/**
+		 * The max bounds.
+		 *
+		 * @property max
+		 * @type Vector3
+		 */
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+		this.max = (max !== undefined) ? max : new Vector3(-Infinity, -Infinity, -Infinity);
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/CubicOctant.html">
-                        CubicOctant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octant.html">
-                        Octant
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Octree.html">
-                        Octree
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/OctreeHelper.html">
-                        OctreeHelper
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/Raycasting.html">
-                        Raycasting
-                    </a>
-                </li>
-            </ul>
-    </div>
+	}
 
+	/**
+	 * Sets the values of this box.
+	 *
+	 * @method set
+	 * @param {Number} min - The min bounds.
+	 * @param {Number} max - The max bounds.
+	 * @return {Matrix3} This box.
+	 */
 
-    <div class="yui3-u-1-2">
-    </div>
+	set(min, max) {
+
+		this.min.copy(min);
+		this.max.copy(max);
+
+		return this;
+
+	}
+
+	/**
+	 * Copies the values of a given box.
+	 *
+	 * @method copy
+	 * @param {Matrix3} b - A box.
+	 * @return {Box3} This box.
+	 */
+
+	copy(b) {
+
+		this.min.copy(b.min);
+		this.max.copy(b.max);
+
+		return this;
+
+	}
+
+	/**
+	 * Clones this matrix.
+	 *
+	 * @method clone
+	 * @return {Matrix3} A clone of this matrix.
+	 */
+
+	clone() {
+
+		return new this.constructor().copy(this);
+
+	}
+
+	/**
+	 * Expands this box by the given point.
+	 *
+	 * @method expandByPoint
+	 * @param {Matrix3} p - A point.
+	 * @return {Box3} This box.
+	 */
+
+	expandByPoint(p) {
+
+		this.min.min(p);
+		this.max.max(p);
+
+		return this;
+
+	}
+
+	/**
+	 * Expands this box by combining it with the given one.
+	 *
+	 * @method union
+	 * @param {Box3} b - A box.
+	 * @return {Box3} This box.
+	 */
+
+	union(b) {
+
+		this.min.min(b.min);
+		this.max.max(b.max);
+
+		return this;
+
+	}
+
+	/**
+	 * Defines this box by the given points.
+	 *
+	 * @method setFromPoints
+	 * @param {Array} points - The points.
+	 * @return {Box3} This box.
+	 */
+
+	setFromPoints(points) {
+
+		let i, l;
+
+		for(i = 0, l = points.length; i &lt; l; ++i) {
+
+			this.expandByPoint(points[i]);
+
+		}
+
+		return this;
+
+	}
+
+	/**
+	 * Defines this box by the given center and size.
+	 *
+	 * @method setFromCenterAndSize
+	 * @param {Vector3} center - The center.
+	 * @param {Number} size - The size.
+	 * @return {Box3} This box.
+	 */
+
+	setFromCenterAndSize(center, size) {
+
+		const halfSize = size.clone().multiplyScalar(0.5);
+
+		this.min.copy(center).sub(halfSize);
+		this.max.copy(center).add(halfSize);
+
+		return this;
+
+	}
+
+	/**
+	 * Checks if this box intersects with the given one.
+	 *
+	 * @method intersectsBox
+	 * @param {Matrix3} box - A box.
+	 * @return {Boolean} Whether the boxes intersect.
+	 */
+
+	intersectsBox(box) {
+
+		return !(
+			box.max.x &lt; this.min.x || box.min.x &gt; this.max.x ||
+			box.max.y &lt; this.min.y || box.min.y &gt; this.max.y ||
+			box.max.z &lt; this.min.z || box.min.z &gt; this.max.z
+		);
+
+	}
+
+}
+
+    </pre>
 </div>
                     </div>
                 </div>

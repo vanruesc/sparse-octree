@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Octree - sparse-octree</title>
+    <title>Box3 - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -88,40 +88,33 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Octree Class</h1>
+<h1>Box3 Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_core_octree.js.html#l5"><code>src\core\octree.js:5</code></a>
+            Defined in: <a href="../files/src_box3.js.html#l3"><code>src\box3.js:3</code></a>
         </div>
 
-            Module: <a href="../modules/core.html">core</a><br>
+            Module: <a href="../modules/math.html">math</a><br>
             Parent Module: <a href="../modules/octree.html">octree</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>An octree that subdivides space for fast spatial searches.</p>
+    <p>A bounding box.</p>
+<p>This class is a copy of THREE.Box3. It can be removed as soon as three.js
+starts supporting ES6 modules.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_Octree" class="method item">
-    <h3 class="name"><code>Octree</code></h3>
+<div id="method_Box3" class="method item">
+    <h3 class="name"><code>Box3</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[min]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[max]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
@@ -133,7 +126,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l5"><code>src\core\octree.js:5</code></a>
+        <a href="../files/src_box3.js.html#l3"><code>src\box3.js:3</code></a>
         </p>
 
 
@@ -144,40 +137,6 @@
         
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[min]</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The lower bounds of the tree.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[max]</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The upper bounds of the tree.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
 
 
 
@@ -201,27 +160,35 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_cull">cull</a>
+                                <a href="#method_clone">clone</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_depth">depth</a>
+                                <a href="#method_copy">copy</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_findOctantsByLevel">findOctantsByLevel</a>
+                                <a href="#method_expandByPoint">expandByPoint</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getCenter">getCenter</a>
+                                <a href="#method_intersectsBox">intersectsBox</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getDimensions">getDimensions</a>
+                                <a href="#method_set">set</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_raycast">raycast</a>
+                                <a href="#method_setFromCenterAndSize">setFromCenterAndSize</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setFromPoints">setFromPoints</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_union">union</a>
 
                             </li>
                     </ul>
@@ -232,19 +199,11 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_children">children</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_max">max</a>
 
                             </li>
                             <li class="index-item property">
                                 <a href="#property_min">min</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_root">root</a>
 
                             </li>
                     </ul>
@@ -256,19 +215,13 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_cull" class="method item">
-    <h3 class="name"><code>cull</code></h3>
+<div id="method_clone" class="method item">
+    <h3 class="name"><code>clone</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>region</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Array</span>
+            <span class="type">Matrix3</span>
         </span>
 
 
@@ -280,7 +233,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l117"><code>src\core\octree.js:117</code></a>
+        <a href="../files/src_box3.js.html#l73"><code>src\box3.js:73</code></a>
         </p>
 
 
@@ -288,7 +241,56 @@
     </div>
 
     <div class="description">
-        <p>Collects octants that lie inside the specified region.</p>
+        <p>Clones this matrix.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Matrix3</span>:
+                    <p>A clone of this matrix.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_copy" class="method item">
+    <h3 class="name"><code>copy</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_box3.js.html#l56"><code>src\box3.js:56</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Copies the values of a given box.</p>
 
     </div>
 
@@ -297,13 +299,13 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">region</code>
-                        <span class="type">Frustum | <a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+                        <code class="param-name">b</code>
+                        <span class="type">Matrix3</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>A frustum or a bounding box.</li>
+<li>A box.</li>
 </ul>
 
                     </div>
@@ -316,70 +318,27 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Array</span>:
-                    <p>The octants.</p>
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>:
+                    <p>This box.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_depth" class="method item">
-    <h3 class="name"><code>depth</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l76"><code>src\core\octree.js:76</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the current depth of this octree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The depth.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_findOctantsByLevel" class="method item">
-    <h3 class="name"><code>findOctantsByLevel</code></h3>
+<div id="method_expandByPoint" class="method item">
+    <h3 class="name"><code>expandByPoint</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>level</code>
+                        <code>p</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type">Array</span>
+            <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
         </span>
 
 
@@ -391,7 +350,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l162"><code>src\core\octree.js:162</code></a>
+        <a href="../files/src_box3.js.html#l86"><code>src\box3.js:86</code></a>
         </p>
 
 
@@ -399,7 +358,7 @@
     </div>
 
     <div class="description">
-        <p>Fetches all octants with the specified depth level.</p>
+        <p>Expands this box by the given point.</p>
 
     </div>
 
@@ -408,13 +367,165 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">level</code>
+                        <code class="param-name">p</code>
+                        <span class="type">Matrix3</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A point.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>:
+                    <p>This box.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_intersectsBox" class="method item">
+    <h3 class="name"><code>intersectsBox</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>box</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_box3.js.html#l162"><code>src\box3.js:162</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Checks if this box intersects with the given one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">box</code>
+                        <span class="type">Matrix3</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A box.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>Whether the boxes intersect.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_set" class="method item">
+    <h3 class="name"><code>set</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>min</code>
+                </li>
+                <li class="arg">
+                        <code>max</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Matrix3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_box3.js.html#l38"><code>src\box3.js:38</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the values of this box.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">min</code>
                         <span class="type">Number</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>The depth level.</li>
+<li>The min bounds.</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">max</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>The max bounds.</li>
 </ul>
 
                     </div>
@@ -427,114 +538,31 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Array</span>:
-                    <p>The octants.</p>
+                        <span class="type">Matrix3</span>:
+                    <p>This box.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_getCenter" class="method item">
-    <h3 class="name"><code>getCenter</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l58"><code>src\core\octree.js:58</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the center of this octree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the center of this octree.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getDimensions" class="method item">
-    <h3 class="name"><code>getDimensions</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l67"><code>src\core\octree.js:67</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Calculates the size of this octree.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the size of this octree.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_raycast" class="method item">
-    <h3 class="name"><code>raycast</code></h3>
+<div id="method_setFromCenterAndSize" class="method item">
+    <h3 class="name"><code>setFromCenterAndSize</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>raycaster</code>
+                        <code>center</code>
                 </li>
                 <li class="arg">
-                        <code>intersects</code>
+                        <code>size</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+        </span>
 
 
 
@@ -545,7 +573,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l210"><code>src\core\octree.js:210</code></a>
+        <a href="../files/src_box3.js.html#l142"><code>src\box3.js:142</code></a>
         </p>
 
 
@@ -553,7 +581,7 @@
     </div>
 
     <div class="description">
-        <p>Finds the octants that intersect with the given ray.</p>
+        <p>Defines this box by the given center and size.</p>
 
     </div>
 
@@ -562,26 +590,26 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">raycaster</code>
-                        <span class="type">Raycaster</span>
+                        <code class="param-name">center</code>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
                     <div class="param-description">
                         <ul>
-<li>The raycaster.</li>
+<li>The center.</li>
 </ul>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">intersects</code>
-                        <span class="type">Array</span>
+                        <code class="param-name">size</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>An array to be filled with the intersecting octants.</li>
+<li>The size.</li>
 </ul>
 
                     </div>
@@ -590,6 +618,151 @@
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>:
+                    <p>This box.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setFromPoints" class="method item">
+    <h3 class="name"><code>setFromPoints</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>points</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_box3.js.html#l120"><code>src\box3.js:120</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Defines this box by the given points.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">points</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>The points.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>:
+                    <p>This box.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_union" class="method item">
+    <h3 class="name"><code>union</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_box3.js.html#l103"><code>src\box3.js:103</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Expands this box by combining it with the given one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A box.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>:
+                    <p>This box.</p>
+
+            </div>
+        </div>
 
 
 </div>
@@ -598,31 +771,6 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_children" class="property item">
-    <h3 class="name"><code>children</code></h3>
-    <span class="type">Array</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l49"><code>src\core\octree.js:49</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The children of the root octant.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property_max" class="property item">
     <h3 class="name"><code>max</code></h3>
     <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
@@ -634,14 +782,14 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l40"><code>src\core\octree.js:40</code></a>
+        <a href="../files/src_box3.js.html#l27"><code>src\box3.js:27</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>The upper bounds of the root octant.</p>
+        <p>The max bounds.</p>
 
     </div>
 
@@ -659,43 +807,17 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octree.js.html#l31"><code>src\core\octree.js:31</code></a>
+        <a href="../files/src_box3.js.html#l18"><code>src\box3.js:18</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>The lower bounds of the root octant.</p>
+        <p>The min bounds.</p>
 
     </div>
 
-
-
-</div>
-<div id="property_root" class="property item">
-    <h3 class="name"><code>root</code></h3>
-    <span class="type"><a href="../classes/Octant.html" class="crosslink">Octant</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octree.js.html#l19"><code>src\core\octree.js:19</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The root octant.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> null</p>
 
 
 </div>

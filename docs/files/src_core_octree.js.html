@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.3.1</em>
+            <em>API Docs for: 2.3.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Box3.html">Box3</a></li>
                                 <li><a href="../classes/CubicOctant.html">CubicOctant</a></li>
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
@@ -51,6 +52,7 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/core.html">core</a></li>
+                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/octree.html">octree</a></li>
                                 <li><a href="../modules/points.html">points</a></li>
                             </ul>
@@ -90,6 +92,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import { Box3 } from &quot;../box3.js&quot;;
 import { Octant } from &quot;./octant.js&quot;;
 import { Raycasting } from &quot;./raycasting.js&quot;;
 
@@ -217,6 +220,7 @@ export class Octree {
 
 		const result = [];
 		const heap = [this.root];
+		const box = new Box3();
 
 		let octant, children;
 
@@ -225,7 +229,11 @@ export class Octree {
 			octant = heap.pop();
 			children = octant.children;
 
-			if(region.intersectsBox(octant)) {
+			// Cache the computed max vector of cubic octants.
+			box.min = octant.min;
+			box.max = octant.max;
+
+			if(region.intersectsBox(box)) {
 
 				if(children !== null) {
 
