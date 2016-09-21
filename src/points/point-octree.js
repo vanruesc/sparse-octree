@@ -17,7 +17,7 @@ import { PointOctant } from "./point-octant.js";
 
 export class PointOctree extends Octree {
 
-	constructor(min, max, bias, maxPoints, maxDepth) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
 		super();
 
@@ -32,7 +32,7 @@ export class PointOctree extends Octree {
 		 * @default 0.0
 		 */
 
-		this.bias = (bias !== undefined) ? Math.max(0.0, bias) : 0.0;
+		this.bias = Math.max(0.0, bias);
 
 		/**
 		 * The proximity threshold squared.
@@ -44,21 +44,6 @@ export class PointOctree extends Octree {
 		 */
 
 		this.biasSquared = this.bias * this.bias;
-
-		/**
-		 * The maximum tree depth level.
-		 *
-		 * It's possible to use Infinity, but be aware that allowing infinitely
-		 * small octants can have a negative impact on performance.
-		 * Finding a value that works best for a specific scene is advisable.
-		 *
-		 * @property maxDepth
-		 * @type Number
-		 * @private
-		 * @default 8
-		 */
-
-		this.maxDepth = (maxDepth !== undefined) ? Math.max(0, Math.round(maxDepth)) : 8;
 
 		/**
 		 * Number of points per octant before a split occurs.
@@ -73,7 +58,22 @@ export class PointOctree extends Octree {
 		 * @default 8
 		 */
 
-		this.maxPoints = (maxPoints !== undefined) ? Math.max(1, Math.round(maxPoints)) : 8;
+		this.maxPoints = Math.max(1, Math.round(maxPoints));
+
+		/**
+		 * The maximum tree depth level.
+		 *
+		 * It's possible to use Infinity, but be aware that allowing infinitely
+		 * small octants can have a negative impact on performance.
+		 * Finding a value that works best for a specific scene is advisable.
+		 *
+		 * @property maxDepth
+		 * @type Number
+		 * @private
+		 * @default 8
+		 */
+
+		this.maxDepth = Math.max(0, Math.round(maxDepth));
 
 	}
 
@@ -319,10 +319,7 @@ export class PointOctree extends Octree {
 	 * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
 	 */
 
-	findNearestPoint(p, maxDistance, skipSelf) {
-
-		if(maxDistance === undefined) { maxDistance = Infinity; }
-		if(skipSelf === undefined) { skipSelf = false; }
+	findNearestPoint(p, maxDistance = Infinity, skipSelf = false) {
 
 		return this.root.findNearestPoint(p, maxDistance, skipSelf);
 
@@ -338,9 +335,7 @@ export class PointOctree extends Octree {
 	 * @return {Array} An array of objects, each containing a point and a data property.
 	 */
 
-	findPoints(p, r, skipSelf) {
-
-		if(skipSelf === undefined) { skipSelf = false; }
+	findPoints(p, r, skipSelf = false) {
 
 		const result = [];
 

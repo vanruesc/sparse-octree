@@ -8,12 +8,12 @@ import { Vector3 } from "../vector3.js";
  * @submodule core
  * @constructor
  * @param {Vector3} min - The lower bounds.
- * @param {Number} size - The size of the octant.
+ * @param {Number} [size=0] - The size of the octant.
  */
 
 export class CubicOctant {
 
-	constructor(min, size) {
+	constructor(min = new Vector3(), size = 0) {
 
 		/**
 		 * The lower bounds of this octant.
@@ -22,7 +22,7 @@ export class CubicOctant {
 		 * @type Vector3
 		 */
 
-		this.min = (min !== undefined) ? min : new Vector3();
+		this.min = min;
 
 		/**
 		 * The size of this octant.
@@ -31,7 +31,7 @@ export class CubicOctant {
 		 * @type Number
 		 */
 
-		this.size = (size !== undefined) ? size : 0;
+		this.size = size;
 
 		/**
 		 * The children of this octant.
