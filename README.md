@@ -5,7 +5,8 @@
 
 A sparse octree data structure for three.js.  
 
-*[Extensive Demo](http://vanruesc.github.io/sparse-octree/public/index.html) :: [API Reference](http://vanruesc.github.io/sparse-octree/docs)*
+*[Extensive Demo](http://vanruesc.github.io/sparse-octree/public/index.html) ::
+[API Reference](http://vanruesc.github.io/sparse-octree/docs)*
 
 
 ## Installation
@@ -17,8 +18,49 @@ $ npm install sparse-octree
 
 ## Usage
 
+##### Basics
+
 ```javascript
-// Attention: Three is not yet an ES6 module!
+import { Octree, CubicOctant } from "sparse-octree";
+
+export class CubicOctree extends Octree {
+
+	constructor(min, size) {
+
+		this.root = new CubicOctant(min, size);
+
+	}
+
+}
+```
+
+##### Helper
+
+```javascript
+import { Scene } from "three";
+import { Octree, OctreeHelper } from "sparse-octree";
+
+const scene = new Scene();
+
+const octree = new Octree(...);
+const octreeHelper = new OctreeHelper(octree);
+
+try {
+
+	octreeHelper.update();
+
+} catch(error) {
+
+	console.warn(error.message);
+
+}
+
+scene.add(helper);
+```
+
+##### [Points](https://jsfiddle.net/py89hgn3/2/)
+
+```javascript
 import { Vector3 } from "three";
 import { PointOctree } from "sparse-octree";
 
@@ -30,8 +72,6 @@ const octree = new PointOctree(min, max);
 octree.add(new Vector3(0, 0, 0), {});
 octree.fetch(new Vector3(0, 0, 0)); // {}
 ```
-
-A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/2/).
 
 
 ## Features
@@ -48,4 +88,5 @@ A full scene setup can be found [here](https://jsfiddle.net/py89hgn3/2/).
 
 
 ## Contributing
+
 Maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.
