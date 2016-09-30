@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.3.2 build Sep 20 2016
+ * sparse-octree v2.4.0 build Oct 01 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -914,11 +914,13 @@
    * @submodule core
    * @constructor
    * @param {Vector3} min - The lower bounds.
-   * @param {Number} size - The size of the octant.
+   * @param {Number} [size=0] - The size of the octant.
    */
 
   var CubicOctant = function () {
-  		function CubicOctant(min, size) {
+  		function CubicOctant() {
+  				var min = arguments.length <= 0 || arguments[0] === undefined ? new Vector3() : arguments[0];
+  				var size = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
   				classCallCheck(this, CubicOctant);
 
 
@@ -929,7 +931,7 @@
        * @type Vector3
        */
 
-  				this.min = min !== undefined ? min : new Vector3();
+  				this.min = min;
 
   				/**
        * The size of this octant.
@@ -938,7 +940,7 @@
        * @type Number
        */
 
-  				this.size = size !== undefined ? size : 0;
+  				this.size = size;
 
   				/**
        * The children of this octant.
@@ -1624,13 +1626,13 @@
   		/**
      * Calculates the current depth of this octree.
      *
-     * @method depth
+     * @method getDepth
      * @return {Number} The depth.
      */
 
   	}, {
-  		key: "depth",
-  		value: function depth() {
+  		key: "getDepth",
+  		value: function getDepth() {
 
   			var h0 = [this.root];
   			var h1 = [];
@@ -1814,13 +1816,14 @@
    * @submodule core
    * @constructor
    * @extends Object3D
-   * @param {Octree} tree - The octree to visualise.
+   * @param {Octree} [tree=null] - The octree to visualise.
    */
 
   var OctreeHelper = function (_THREE$Object3D) {
   		inherits(OctreeHelper, _THREE$Object3D);
 
-  		function OctreeHelper(tree) {
+  		function OctreeHelper() {
+  				var tree = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
   				classCallCheck(this, OctreeHelper);
 
   				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
@@ -1834,7 +1837,7 @@
        * @type Octree
        */
 
-  				_this.tree = tree !== undefined ? tree : null;
+  				_this.tree = tree;
 
   				return _this;
   		}
@@ -1851,7 +1854,7 @@
   				value: function update() {
 
   						var vertexMap = new Map();
-  						var depth = this.tree !== null ? this.tree.depth() : -1;
+  						var depth = this.tree !== null ? this.tree.getDepth() : -1;
 
   						var connections = [
   						/* 0 */[1, 4],
@@ -2429,7 +2432,10 @@
   var PointOctree = function (_Octree) {
   		inherits(PointOctree, _Octree);
 
-  		function PointOctree(min, max, bias, maxPoints, maxDepth) {
+  		function PointOctree(min, max) {
+  				var bias = arguments.length <= 2 || arguments[2] === undefined ? 0.0 : arguments[2];
+  				var maxPoints = arguments.length <= 3 || arguments[3] === undefined ? 8 : arguments[3];
+  				var maxDepth = arguments.length <= 4 || arguments[4] === undefined ? 8 : arguments[4];
   				classCallCheck(this, PointOctree);
 
   				var _this = possibleConstructorReturn(this, (PointOctree.__proto__ || Object.getPrototypeOf(PointOctree)).call(this));
@@ -2445,7 +2451,7 @@
        * @default 0.0
        */
 
-  				_this.bias = bias !== undefined ? Math.max(0.0, bias) : 0.0;
+  				_this.bias = Math.max(0.0, bias);
 
   				/**
        * The proximity threshold squared.
@@ -2457,21 +2463,6 @@
        */
 
   				_this.biasSquared = _this.bias * _this.bias;
-
-  				/**
-       * The maximum tree depth level.
-       *
-       * It's possible to use Infinity, but be aware that allowing infinitely
-       * small octants can have a negative impact on performance.
-       * Finding a value that works best for a specific scene is advisable.
-       *
-       * @property maxDepth
-       * @type Number
-       * @private
-       * @default 8
-       */
-
-  				_this.maxDepth = maxDepth !== undefined ? Math.max(0, Math.round(maxDepth)) : 8;
 
   				/**
        * Number of points per octant before a split occurs.
@@ -2486,7 +2477,22 @@
        * @default 8
        */
 
-  				_this.maxPoints = maxPoints !== undefined ? Math.max(1, Math.round(maxPoints)) : 8;
+  				_this.maxPoints = Math.max(1, Math.round(maxPoints));
+
+  				/**
+       * The maximum tree depth level.
+       *
+       * It's possible to use Infinity, but be aware that allowing infinitely
+       * small octants can have a negative impact on performance.
+       * Finding a value that works best for a specific scene is advisable.
+       *
+       * @property maxDepth
+       * @type Number
+       * @private
+       * @default 8
+       */
+
+  				_this.maxDepth = Math.max(0, Math.round(maxDepth));
 
   				return _this;
   		}
@@ -2726,14 +2732,10 @@
 
   		}, {
   				key: "findNearestPoint",
-  				value: function findNearestPoint(p, maxDistance, skipSelf) {
+  				value: function findNearestPoint(p) {
+  						var maxDistance = arguments.length <= 1 || arguments[1] === undefined ? Infinity : arguments[1];
+  						var skipSelf = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-  						if (maxDistance === undefined) {
-  								maxDistance = Infinity;
-  						}
-  						if (skipSelf === undefined) {
-  								skipSelf = false;
-  						}
 
   						return this.root.findNearestPoint(p, maxDistance, skipSelf);
   				}
@@ -2750,11 +2752,9 @@
 
   		}, {
   				key: "findPoints",
-  				value: function findPoints(p, r, skipSelf) {
+  				value: function findPoints(p, r) {
+  						var skipSelf = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-  						if (skipSelf === undefined) {
-  								skipSelf = false;
-  						}
 
   						var result = [];
 
