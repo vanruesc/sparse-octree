@@ -163,7 +163,7 @@ module.exports = {
 			octree.root.children[0].split();
 			octree.root.children[0].children[0].split();
 
-			test.equal(octree.depth(), 3, "should be able to compute the current tree depth");
+			test.equal(octree.getDepth(), 3, "should be able to compute the current tree depth");
 			test.done();
 
 		},

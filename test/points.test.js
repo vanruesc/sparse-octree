@@ -97,7 +97,7 @@ module.exports = {
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(1, 0, 0), data);
 
-			test.equal(octree.depth(), 1, "should split octants when necessary");
+			test.equal(octree.getDepth(), 1, "should split octants when necessary");
 			test.equal(octree.countPoints(), 2, "should not lose any points during a split");
 			test.done();
 
@@ -113,7 +113,7 @@ module.exports = {
 
 			octree.remove(new THREE.Vector3(1, 0, 0));
 
-			test.equal(octree.depth(), 1, "should merge octants when possible");
+			test.equal(octree.getDepth(), 1, "should merge octants when possible");
 			test.done();
 
 		},

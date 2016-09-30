@@ -76,11 +76,11 @@ export class Octree {
 	/**
 	 * Calculates the current depth of this octree.
 	 *
-	 * @method depth
+	 * @method getDepth
 	 * @return {Number} The depth.
 	 */
 
-	depth() {
+	getDepth() {
 
 		let h0 = [this.root];
 		let h1 = [];
