@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.3.2</em>
+            <em>API Docs for: 2.4.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -102,12 +102,12 @@ import { Vector3 } from &quot;../vector3.js&quot;;
  * @submodule core
  * @constructor
  * @param {Vector3} min - The lower bounds.
- * @param {Number} size - The size of the octant.
+ * @param {Number} [size=0] - The size of the octant.
  */
 
 export class CubicOctant {
 
-	constructor(min, size) {
+	constructor(min = new Vector3(), size = 0) {
 
 		/**
 		 * The lower bounds of this octant.
@@ -116,7 +116,7 @@ export class CubicOctant {
 		 * @type Vector3
 		 */
 
-		this.min = (min !== undefined) ? min : new Vector3();
+		this.min = min;
 
 		/**
 		 * The size of this octant.
@@ -125,7 +125,7 @@ export class CubicOctant {
 		 * @type Number
 		 */
 
-		this.size = (size !== undefined) ? size : 0;
+		this.size = size;
 
 		/**
 		 * The children of this octant.

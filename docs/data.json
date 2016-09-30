@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.3.2",
+        "version": "2.4.0",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -220,7 +220,9 @@
                 {
                     "name": "size",
                     "description": "- The size of the octant.",
-                    "type": "Number"
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
                 }
             ]
         },
@@ -243,7 +245,9 @@
                 {
                     "name": "tree",
                     "description": "- The octree to visualise.",
-                    "type": "Octree"
+                    "type": "Octree",
+                    "optional": true,
+                    "optdefault": "null"
                 }
             ]
         },
@@ -735,7 +739,7 @@
             "line": 76,
             "description": "Calculates the current depth of this octree.",
             "itemtype": "method",
-            "name": "depth",
+            "name": "getDepth",
             "return": {
                 "description": "The depth.",
                 "type": "Number"
@@ -1236,9 +1240,9 @@
         {
             "file": "src\\points\\point-octree.js",
             "line": 48,
-            "description": "The maximum tree depth level.\n\nIt's possible to use Infinity, but be aware that allowing infinitely\nsmall octants can have a negative impact on performance.\nFinding a value that works best for a specific scene is advisable.",
+            "description": "Number of points per octant before a split occurs.\n\nThis value works together with the maximum depth as a secondary limiting\nfactor. Smaller values cause splits to occur earlier which results in a\nfaster and deeper tree growth.",
             "itemtype": "property",
-            "name": "maxDepth",
+            "name": "maxPoints",
             "type": "Number",
             "access": "private",
             "tagname": "",
@@ -1250,9 +1254,9 @@
         {
             "file": "src\\points\\point-octree.js",
             "line": 63,
-            "description": "Number of points per octant before a split occurs.\n\nThis value works together with the maximum depth as a secondary limiting\nfactor. Smaller values cause splits to occur earlier which results in a\nfaster and deeper tree growth.",
+            "description": "The maximum tree depth level.\n\nIt's possible to use Infinity, but be aware that allowing infinitely\nsmall octants can have a negative impact on performance.\nFinding a value that works best for a specific scene is advisable.",
             "itemtype": "property",
-            "name": "maxPoints",
+            "name": "maxDepth",
             "type": "Number",
             "access": "private",
             "tagname": "",
@@ -1372,7 +1376,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 331,
+            "line": 328,
             "description": "Finds points that are in the specified radius around the given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -1405,7 +1409,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 353,
+            "line": 348,
             "description": "Finds the points that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycast",
@@ -1427,7 +1431,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 376,
+            "line": 371,
             "description": "Collects points that intersect with the given ray.",
             "itemtype": "method",
             "name": "testPoints",
