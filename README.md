@@ -55,7 +55,7 @@ try {
 
 }
 
-scene.add(helper);
+scene.add(octreeHelper);
 ```
 
 ##### [Points](https://jsfiddle.net/py89hgn3/2/)
