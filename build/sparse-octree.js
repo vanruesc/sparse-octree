@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.4.0 build Oct 01 2016
+ * sparse-octree v2.4.1 build Oct 25 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -152,7 +152,7 @@
   /**
    * A vector with three components.
    *
-   * This class is a copy of THREE.Vector3. It can be removed  as soon as three.js
+   * This class is a copy of THREE.Vector3. It can be removed as soon as three.js
    * starts supporting ES6 modules.
    *
    * @class Vector3
@@ -1063,7 +1063,6 @@
    * starts supporting ES6 modules.
    *
    * @class Box3
-   * @submodule math
    * @constructor
    */
 
