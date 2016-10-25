@@ -13,7 +13,6 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "core",
-        "math",
         "octree",
         "points"
     ],
@@ -22,11 +21,6 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "core",
             "name": "core",
             "description": "Core components."
-        },
-        {
-            "displayName": "math",
-            "name": "math",
-            "description": "A bounding box.\n\nThis class is a copy of THREE.Box3. It can be removed as soon as three.js\nstarts supporting ES6 modules."
         },
         {
             "displayName": "octree",

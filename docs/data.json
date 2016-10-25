@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.4.0",
+        "version": "2.4.1",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -139,8 +139,7 @@
             "name": "octree",
             "submodules": {
                 "core": 1,
-                "points": 1,
-                "math": 1
+                "points": 1
             },
             "elements": {},
             "classes": {
@@ -178,22 +177,6 @@
             "file": "src\\points\\point-octree.js",
             "line": 4,
             "description": "Point-oriented octree components."
-        },
-        "math": {
-            "name": "math",
-            "submodules": {},
-            "elements": {},
-            "classes": {
-                "Box3": 1
-            },
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "octree",
-            "namespace": "",
-            "description": "A bounding box.\n\nThis class is a copy of THREE.Box3. It can be removed as soon as three.js\nstarts supporting ES6 modules.",
-            "file": "src\\box3.js",
-            "line": 3
         }
     },
     "classes": {
@@ -417,7 +400,6 @@
             "file": "src\\box3.js",
             "line": 3,
             "description": "A bounding box.\n\nThis class is a copy of THREE.Box3. It can be removed as soon as three.js\nstarts supporting ES6 modules.",
-            "submodule": "math",
             "is_constructor": 1
         },
         "Vector3": {
@@ -432,7 +414,7 @@
             "namespace": "",
             "file": "src\\vector3.js",
             "line": 1,
-            "description": "A vector with three components.\n\nThis class is a copy of THREE.Vector3. It can be removed  as soon as three.js\nstarts supporting ES6 modules.",
+            "description": "A vector with three components.\n\nThis class is a copy of THREE.Vector3. It can be removed as soon as three.js\nstarts supporting ES6 modules.",
             "is_constructor": 1,
             "params": [
                 {
@@ -1458,29 +1440,27 @@
         },
         {
             "file": "src\\box3.js",
-            "line": 18,
+            "line": 17,
             "description": "The min bounds.",
             "itemtype": "property",
             "name": "min",
             "type": "Vector3",
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 27,
+            "line": 26,
             "description": "The max bounds.",
             "itemtype": "property",
             "name": "max",
             "type": "Vector3",
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 38,
+            "line": 37,
             "description": "Sets the values of this box.",
             "itemtype": "method",
             "name": "set",
@@ -1501,12 +1481,11 @@
                 "type": "Matrix3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 56,
+            "line": 55,
             "description": "Copies the values of a given box.",
             "itemtype": "method",
             "name": "copy",
@@ -1522,12 +1501,11 @@
                 "type": "Box3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 73,
+            "line": 72,
             "description": "Clones this matrix.",
             "itemtype": "method",
             "name": "clone",
@@ -1536,12 +1514,11 @@
                 "type": "Matrix3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 86,
+            "line": 85,
             "description": "Expands this box by the given point.",
             "itemtype": "method",
             "name": "expandByPoint",
@@ -1557,12 +1534,11 @@
                 "type": "Box3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 103,
+            "line": 102,
             "description": "Expands this box by combining it with the given one.",
             "itemtype": "method",
             "name": "union",
@@ -1578,12 +1554,11 @@
                 "type": "Box3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 120,
+            "line": 119,
             "description": "Defines this box by the given points.",
             "itemtype": "method",
             "name": "setFromPoints",
@@ -1599,12 +1574,11 @@
                 "type": "Box3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 142,
+            "line": 141,
             "description": "Defines this box by the given center and size.",
             "itemtype": "method",
             "name": "setFromCenterAndSize",
@@ -1625,12 +1599,11 @@
                 "type": "Box3"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\box3.js",
-            "line": 162,
+            "line": 161,
             "description": "Checks if this box intersects with the given one.",
             "itemtype": "method",
             "name": "intersectsBox",
@@ -1646,8 +1619,7 @@
                 "type": "Boolean"
             },
             "class": "Box3",
-            "module": "octree",
-            "submodule": "math"
+            "module": "octree"
         },
         {
             "file": "src\\vector3.js",
