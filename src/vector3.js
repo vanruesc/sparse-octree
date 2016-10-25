@@ -1,7 +1,7 @@
 /**
  * A vector with three components.
  *
- * This class is a copy of THREE.Vector3. It can be removed  as soon as three.js
+ * This class is a copy of THREE.Vector3. It can be removed as soon as three.js
  * starts supporting ES6 modules.
  *
  * @class Vector3

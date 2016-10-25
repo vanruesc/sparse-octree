@@ -7,7 +7,6 @@ import { Vector3 } from "./vector3";
  * starts supporting ES6 modules.
  *
  * @class Box3
- * @submodule math
  * @constructor
  */
 
