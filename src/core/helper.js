@@ -1,4 +1,10 @@
-import THREE from "three";
+import {
+	BufferAttribute,
+	BufferGeometry,
+	LineSegments,
+	LineBasicMaterial,
+	Object3D
+} from "three";
 
 /**
  * An octree helper.
@@ -12,7 +18,7 @@ import THREE from "three";
  * @param {Octree} [tree=null] - The octree to visualise.
  */
 
-export class OctreeHelper extends THREE.Object3D {
+export class OctreeHelper extends Object3D {
 
 	constructor(tree = null) {
 
@@ -69,18 +75,7 @@ export class OctreeHelper extends THREE.Object3D {
 		let level = 0;
 
 		// Remove existing geometry.
-		for(i = 0, il = this.children.length; i < il; ++i) {
-
-			this.children[i].geometry.dispose();
-			this.children[i].material.dispose();
-
-		}
-
-		while(this.children.length > 0) {
-
-			this.remove(this.children[0]);
-
-		}
+		this.dispose();
 
 		while(level <= depth) {
 
@@ -182,15 +177,15 @@ export class OctreeHelper extends THREE.Object3D {
 
 				}
 
-				geometry = new THREE.BufferGeometry();
-				geometry.setIndex(new THREE.BufferAttribute(indices, 1));
-				geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+				geometry = new BufferGeometry();
+				geometry.setIndex(new BufferAttribute(indices, 1));
+				geometry.addAttribute("position", new BufferAttribute(positions, 3));
 
-				material = new THREE.LineBasicMaterial({
-					color: new THREE.Color(0xffffff * Math.random())
+				material = new LineBasicMaterial({
+					color: 0xffffff * Math.random()
 				});
 
-				lineSegments = new THREE.LineSegments(geometry, material);
+				lineSegments = new LineSegments(geometry, material);
 
 				this.add(lineSegments);
 
@@ -204,6 +199,33 @@ export class OctreeHelper extends THREE.Object3D {
 			}
 
 			++level;
+
+		}
+
+	}
+
+	/**
+	 * Destroys this helper.
+	 *
+	 * @method dispose
+	 */
+
+	dispose() {
+
+		const children = this.children;
+
+		let i, l;
+
+		for(i = 0, l = children.length; i < l; ++i) {
+
+			children[i].geometry.dispose();
+			children[i].material.dispose();
+
+		}
+
+		while(children.length > 0) {
+
+			children.remove(children[0]);
 
 		}
 
