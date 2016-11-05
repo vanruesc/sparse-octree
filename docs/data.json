@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.4.1",
+        "version": "2.4.2",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -219,7 +219,7 @@
             "extension_for": [],
             "module": "octree",
             "file": "src\\core\\helper.js",
-            "line": 3,
+            "line": 9,
             "description": "An octree helper.\n\nThe update method must be called manually to generate the octree geometry.",
             "submodule": "core",
             "is_constructor": 1,
@@ -529,7 +529,7 @@
         },
         {
             "file": "src\\core\\helper.js",
-            "line": 23,
+            "line": 29,
             "description": "The octree.",
             "itemtype": "property",
             "name": "tree",
@@ -539,7 +539,7 @@
         },
         {
             "file": "src\\core\\helper.js",
-            "line": 34,
+            "line": 40,
             "description": "Creates the octree geometry.",
             "itemtype": "method",
             "name": "update",
@@ -547,6 +547,15 @@
                 "description": "An error is thrown if too many vertices are created.",
                 "type": "Error"
             },
+            "class": "OctreeHelper",
+            "submodule": "core"
+        },
+        {
+            "file": "src\\core\\helper.js",
+            "line": 207,
+            "description": "Destroys this helper.",
+            "itemtype": "method",
+            "name": "dispose",
             "class": "OctreeHelper",
             "submodule": "core"
         },
