@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.4.1 build Oct 25 2016
+ * sparse-octree v2.4.2 build Nov 05 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -8,9 +8,124 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
   typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
   (factory((global.OCTREE = global.OCTREE || {}),global.THREE));
-}(this, (function (exports,THREE) { 'use strict';
+}(this, (function (exports,three) { 'use strict';
 
-  THREE = 'default' in THREE ? THREE['default'] : THREE;
+  var asyncGenerator = function () {
+    function AwaitValue(value) {
+      this.value = value;
+    }
+
+    function AsyncGenerator(gen) {
+      var front, back;
+
+      function send(key, arg) {
+        return new Promise(function (resolve, reject) {
+          var request = {
+            key: key,
+            arg: arg,
+            resolve: resolve,
+            reject: reject,
+            next: null
+          };
+
+          if (back) {
+            back = back.next = request;
+          } else {
+            front = back = request;
+            resume(key, arg);
+          }
+        });
+      }
+
+      function resume(key, arg) {
+        try {
+          var result = gen[key](arg);
+          var value = result.value;
+
+          if (value instanceof AwaitValue) {
+            Promise.resolve(value.value).then(function (arg) {
+              resume("next", arg);
+            }, function (arg) {
+              resume("throw", arg);
+            });
+          } else {
+            settle(result.done ? "return" : "normal", result.value);
+          }
+        } catch (err) {
+          settle("throw", err);
+        }
+      }
+
+      function settle(type, value) {
+        switch (type) {
+          case "return":
+            front.resolve({
+              value: value,
+              done: true
+            });
+            break;
+
+          case "throw":
+            front.reject(value);
+            break;
+
+          default:
+            front.resolve({
+              value: value,
+              done: false
+            });
+            break;
+        }
+
+        front = front.next;
+
+        if (front) {
+          resume(front.key, front.arg);
+        } else {
+          back = null;
+        }
+      }
+
+      this._invoke = send;
+
+      if (typeof gen.return !== "function") {
+        this.return = undefined;
+      }
+    }
+
+    if (typeof Symbol === "function" && Symbol.asyncIterator) {
+      AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+        return this;
+      };
+    }
+
+    AsyncGenerator.prototype.next = function (arg) {
+      return this._invoke("next", arg);
+    };
+
+    AsyncGenerator.prototype.throw = function (arg) {
+      return this._invoke("throw", arg);
+    };
+
+    AsyncGenerator.prototype.return = function (arg) {
+      return this._invoke("return", arg);
+    };
+
+    return {
+      wrap: function (fn) {
+        return function () {
+          return new AsyncGenerator(fn.apply(this, arguments));
+        };
+      },
+      await: function (value) {
+        return new AwaitValue(value);
+      }
+    };
+  }();
+
+
+
+
 
   var classCallCheck = function (instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -919,8 +1034,8 @@
 
   var CubicOctant = function () {
   		function CubicOctant() {
-  				var min = arguments.length <= 0 || arguments[0] === undefined ? new Vector3() : arguments[0];
-  				var size = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+  				var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+  				var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   				classCallCheck(this, CubicOctant);
 
 
@@ -1818,11 +1933,11 @@
    * @param {Octree} [tree=null] - The octree to visualise.
    */
 
-  var OctreeHelper = function (_THREE$Object3D) {
-  		inherits(OctreeHelper, _THREE$Object3D);
+  var OctreeHelper = function (_Object3D) {
+  		inherits(OctreeHelper, _Object3D);
 
   		function OctreeHelper() {
-  				var tree = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+  				var tree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   				classCallCheck(this, OctreeHelper);
 
   				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
@@ -1890,16 +2005,7 @@
   						var level = 0;
 
   						// Remove existing geometry.
-  						for (i = 0, il = this.children.length; i < il; ++i) {
-
-  								this.children[i].geometry.dispose();
-  								this.children[i].material.dispose();
-  						}
-
-  						while (this.children.length > 0) {
-
-  								this.remove(this.children[0]);
-  						}
+  						this.dispose();
 
   						while (level <= depth) {
 
@@ -2012,15 +2118,15 @@
   												}
   										}
 
-  										geometry = new THREE.BufferGeometry();
-  										geometry.setIndex(new THREE.BufferAttribute(indices, 1));
-  										geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+  										geometry = new three.BufferGeometry();
+  										geometry.setIndex(new three.BufferAttribute(indices, 1));
+  										geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
 
-  										material = new THREE.LineBasicMaterial({
-  												color: new THREE.Color(0xffffff * Math.random())
+  										material = new three.LineBasicMaterial({
+  												color: 0xffffff * Math.random()
   										});
 
-  										lineSegments = new THREE.LineSegments(geometry, material);
+  										lineSegments = new three.LineSegments(geometry, material);
 
   										this.add(lineSegments);
   								} else {
@@ -2031,9 +2137,36 @@
   								++level;
   						}
   				}
+
+  				/**
+       * Destroys this helper.
+       *
+       * @method dispose
+       */
+
+  		}, {
+  				key: "dispose",
+  				value: function dispose() {
+
+  						var children = this.children;
+
+  						var i = void 0,
+  						    l = void 0;
+
+  						for (i = 0, l = children.length; i < l; ++i) {
+
+  								children[i].geometry.dispose();
+  								children[i].material.dispose();
+  						}
+
+  						while (children.length > 0) {
+
+  								children.remove(children[0]);
+  						}
+  				}
   		}]);
   		return OctreeHelper;
-  }(THREE.Object3D);
+  }(three.Object3D);
 
   /**
    * Core components.
@@ -2432,9 +2565,9 @@
   		inherits(PointOctree, _Octree);
 
   		function PointOctree(min, max) {
-  				var bias = arguments.length <= 2 || arguments[2] === undefined ? 0.0 : arguments[2];
-  				var maxPoints = arguments.length <= 3 || arguments[3] === undefined ? 8 : arguments[3];
-  				var maxDepth = arguments.length <= 4 || arguments[4] === undefined ? 8 : arguments[4];
+  				var bias = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0;
+  				var maxPoints = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 8;
+  				var maxDepth = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 8;
   				classCallCheck(this, PointOctree);
 
   				var _this = possibleConstructorReturn(this, (PointOctree.__proto__ || Object.getPrototypeOf(PointOctree)).call(this));
@@ -2732,8 +2865,8 @@
   		}, {
   				key: "findNearestPoint",
   				value: function findNearestPoint(p) {
-  						var maxDistance = arguments.length <= 1 || arguments[1] === undefined ? Infinity : arguments[1];
-  						var skipSelf = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+  						var maxDistance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
+  						var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
   						return this.root.findNearestPoint(p, maxDistance, skipSelf);
@@ -2752,7 +2885,7 @@
   		}, {
   				key: "findPoints",
   				value: function findPoints(p, r) {
-  						var skipSelf = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+  						var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
   						var result = [];
