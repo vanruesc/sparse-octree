@@ -18,7 +18,7 @@ $ npm install sparse-octree
 
 ## Usage
 
-##### Basics
+##### Custom Octrees
 
 ```javascript
 import { Octree, CubicOctant } from "sparse-octree";
