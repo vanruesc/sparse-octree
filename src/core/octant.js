@@ -12,7 +12,7 @@ import { Vector3 } from "../math/vector3.js";
 
 export class Octant {
 
-	constructor(min, max) {
+	constructor(min = new Vector3(), max = new Vector3()) {
 
 		/**
 		 * The lower bounds of this octant.
@@ -21,7 +21,7 @@ export class Octant {
 		 * @type Vector3
 		 */
 
-		this.min = (min !== undefined) ? min : new Vector3();
+		this.min = min;
 
 		/**
 		 * The upper bounds of the octant.
@@ -30,7 +30,7 @@ export class Octant {
 		 * @type Vector3
 		 */
 
-		this.max = (max !== undefined) ? max : new Vector3();
+		this.max = max;
 
 		/**
 		 * The children of this octant.
