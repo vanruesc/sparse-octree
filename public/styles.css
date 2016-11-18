@@ -1,116 +1,85 @@
 html {
- margin: 0;
- width: 100%;
- height: 100%;
+	margin: 0;
+	width: 100%;
+	height: 100%;
 }
 
 body {
- background-color: black;
- color: rgb(175, 170, 160);
- font-family: sans-serif;
- font-weight: 100;
- font-size: 100%;
- line-height: 150%;
- margin: 0;
- width: 100%;
- height: 100%;
+	background-color: black;
+	color: rgb(175, 170, 160);
+	font-family: sans-serif;
+	font-weight: 100;
+	font-size: 100%;
+	line-height: 150%;
+	margin: 0;
+	width: 100%;
+	height: 100%;
 }
 
 a {
- color: grey;
- font-size: 80%;
- transition: color 0.2s;
+	color: grey;
+	font-size: 80%;
+	transition: color 0.2s;
 }
 
 a:hover,
 a:active,
 .active {
- color: white;
-}
-
-ul#options {
- margin: 0;
- padding: 0;
-}
-
-ul#options li {
- display: inline-block;
- list-stlye: none;
- padding: 0 10px;
+	color: white;
 }
 
 h1, h2, h3, h4 {
- font-size: 150%;
- font-weight: normal;
- padding: 0;
- margin: 20px 0 10px 0px;
+	font-size: 150%;
+	font-weight: normal;
+	padding: 0;
+	margin: 20px 0 10px 0px;
 }
 
 h2 {
- font-size: 100%;
- margin: 0 0 20px 0px;
+	font-size: 100%;
+	margin: 0 0 20px 0px;
 }
 
 p {
- margin: 0;
+	margin: 0;
 }
 
 div[role="complementary"] {
- background-color: transparent;
- display: -webkit-flex;
- display: flex;
- -webkit-justify-content: space-between;
-         justify-content: space-between;
- -webkit-align-items: center;
-         align-items: center;
- padding: 5px 20px;
- position: fixed;
- bottom: 0;
- left: 0;
- visibility: hidden;
+	background-color: transparent;
+	display: flex;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	-webkit-align-items: center;
+	align-items: center;
+	padding: 5px 20px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	visibility: visible;
 }
 
 div[role="complementary"] h3 {
- font-size: 90%;
- margin: 0;
+	font-size: 90%;
+	margin: 0;
 }
 
 div[role="complementary"] p,
 div[role="complementary"] h4 {
- font-size: 75%;
- margin: 0;
+	font-size: 75%;
+	margin: 0;
 }
 
 div[role="complementary"] p {
- color: rgb(90, 95, 90);
-}
-
-canvas {
- cursor: -webkit-grab;
- cursor: -moz-grab;
- cursor: grab;
-}
-
-canvas:active {
- cursor: -webkit-grabbing;
- cursor: -moz-grabbing;
- cursor: grabbing;
-}
-
-#viewport p {
- left: 0;
- position: fixed;
- right: 0;
- text-align: center;
- top: 50%;
- -webkit-transform: translateY(-50%);
-         transform: translateY(-50%);
+	color: rgb(90, 95, 90);
 }
 
 #stats {
  opacity: 0.9;
  position: fixed;
- cursor: pointer;
  left: 5px;
  top: 5px;
+}
+
+#stats canvas {
+ cursor: pointer;
 }
