@@ -1,10 +1,8 @@
 /**
  * A vector with three components.
  *
- * This class is a copy of THREE.Vector3. It can be removed as soon as three.js
- * starts supporting ES6 modules.
- *
  * @class Vector3
+ * @submodule math
  * @constructor
  * @param {Number} [x=0] - The x value.
  * @param {Number} [y=0] - The y value.
@@ -13,7 +11,7 @@
 
 export class Vector3 {
 
-	constructor(x, y, z) {
+	constructor(x = 0, y = 0, z = 0) {
 
 		/**
 		 * The x component.
@@ -22,7 +20,7 @@ export class Vector3 {
 		 * @type Number
 		 */
 
-		this.x = x || 0;
+		this.x = x;
 
 		/**
 		 * The y component.
@@ -31,7 +29,7 @@ export class Vector3 {
 		 * @type Number
 		 */
 
-		this.y = y || 0;
+		this.y = y;
 
 		/**
 		 * The z component.
@@ -40,7 +38,7 @@ export class Vector3 {
 		 * @type Number
 		 */
 
-		this.z = z || 0;
+		this.z = z;
 
 	}
 

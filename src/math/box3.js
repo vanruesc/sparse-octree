@@ -3,16 +3,19 @@ import { Vector3 } from "./vector3";
 /**
  * A bounding box.
  *
- * This class is a copy of THREE.Box3. It can be removed as soon as three.js
- * starts supporting ES6 modules.
- *
  * @class Box3
+ * @submodule math
  * @constructor
+ * @param {Vector3} [min] - The lower bounds.
+ * @param {Vector3} [max] - The upper bounds.
  */
 
 export class Box3 {
 
-	constructor(min, max) {
+	constructor(
+		min = new Vector3(Infinity, Infinity, Infinity),
+		max = new Vector3(-Infinity, -Infinity, -Infinity)
+	) {
 
 		/**
 		 * The min bounds.
@@ -21,7 +24,7 @@ export class Box3 {
 		 * @type Vector3
 		 */
 
-		this.min = (min !== undefined) ? min : new Vector3(Infinity, Infinity, Infinity);
+		this.min = min;
 
 		/**
 		 * The max bounds.
@@ -30,7 +33,7 @@ export class Box3 {
 		 * @type Vector3
 		 */
 
-		this.max = (max !== undefined) ? max : new Vector3(-Infinity, -Infinity, -Infinity);
+		this.max = max;
 
 	}
 

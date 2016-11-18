@@ -1,5 +1,5 @@
+import { Vector3 } from "../math/vector3.js";
 import { PATTERN } from "./octant.js";
-import { Vector3 } from "../vector3.js";
 
 /**
  * A cubic octant.

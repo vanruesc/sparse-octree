@@ -5,8 +5,6 @@
  * @main octree
  */
 
-export { OctreeHelper } from "./helpers";
-
 export {
 	CubicOctant,
 	Octant,
@@ -14,6 +12,15 @@ export {
 	PATTERN,
 	Raycasting
 } from "./core";
+
+export {
+	OctreeHelper
+} from "./helpers";
+
+export {
+	Box3,
+	Vector3
+} from "./math";
 
 export {
 	PointOctant,

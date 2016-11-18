@@ -1,4 +1,4 @@
-import { Box3 } from "../box3.js";
+import { Box3 } from "../math/box3.js";
 import { Octant } from "./octant.js";
 import { Raycasting } from "./raycasting.js";
 
