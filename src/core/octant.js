@@ -173,4 +173,3 @@ export const PATTERN = [
 	new Uint8Array([1, 1, 1])
 
 ];
-
