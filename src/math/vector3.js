@@ -169,10 +169,29 @@ export class Vector3 {
 	}
 
 	/**
+	 * Adds a scaled vector to this one.
+	 *
+	 * @method addScaledVector
+	 * @param {Vector3} v - The vector to scale and add.
+	 * @param {Number} s - A scalar.
+	 * @return {Vector3} This vector.
+	 */
+
+	addScaledVector(v, s) {
+
+		this.x += v.x * s;
+		this.y += v.y * s;
+		this.z += v.z * s;
+
+		return this;
+
+	}
+
+	/**
 	 * Adds a scalar to this vector.
 	 *
 	 * @method addScalar
-	 * @param {Vector3} s - The scalar to add.
+	 * @param {Number} s - The scalar to add.
 	 * @return {Vector3} This vector.
 	 */
 
@@ -227,7 +246,7 @@ export class Vector3 {
 	 * Subtracts a scalar to this vector.
 	 *
 	 * @method subScalar
-	 * @param {Vector3} s - The scalar to subtract.
+	 * @param {Number} s - The scalar to subtract.
 	 * @return {Vector3} This vector.
 	 */
 
@@ -282,7 +301,7 @@ export class Vector3 {
 	 * Multiplies this vector with a given scalar.
 	 *
 	 * @method multiplyScalar
-	 * @param {Vector3} s - A scalar.
+	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
 
@@ -347,7 +366,7 @@ export class Vector3 {
 	 * Divides this vector by a given scalar.
 	 *
 	 * @method divideScalar
-	 * @param {Vector3} s - A scalar.
+	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
 
@@ -391,10 +410,10 @@ export class Vector3 {
 	}
 
 	/**
-	 * Calculates the length squared of this vector.
+	 * Calculates the squared length of this vector.
 	 *
 	 * @method lengthSq
-	 * @return {Vector3} This vector.
+	 * @return {Number} The squared length.
 	 */
 
 	lengthSq() {
@@ -407,7 +426,7 @@ export class Vector3 {
 	 * Calculates the length of this vector.
 	 *
 	 * @method length
-	 * @return {Vector3} This vector.
+	 * @return {Number} The length.
 	 */
 
 	length() {
@@ -421,7 +440,7 @@ export class Vector3 {
 	 *
 	 * @method distanceTo
 	 * @param {Vector3} v - A vector.
-	 * @return {Vector3} This vector.
+	 * @return {Number} The distance.
 	 */
 
 	distanceTo(v) {
@@ -431,11 +450,11 @@ export class Vector3 {
 	}
 
 	/**
-	 * Calculates the distance squared to a given vector.
+	 * Calculates the squared distance to a given vector.
 	 *
 	 * @method distanceToSquared
 	 * @param {Vector3} v - A vector.
-	 * @return {Vector3} This vector.
+	 * @return {Number} The squared distance.
 	 */
 
 	distanceToSquared(v) {
