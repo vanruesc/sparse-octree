@@ -1,7 +1,7 @@
 /**
  * Core components.
  *
- * @module octree
+ * @module sparse-octree
  * @submodule core
  */
 

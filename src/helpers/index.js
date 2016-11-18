@@ -1,7 +1,7 @@
 /**
  * A collection of helpers.
  *
- * @module octree
+ * @module sparse-octree
  * @submodule helpers
  */
 

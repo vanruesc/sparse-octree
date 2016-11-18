@@ -1,7 +1,7 @@
 /**
  * Point-oriented octree components.
  *
- * @module octree
+ * @module sparse-octree
  * @submodule points
  */
 

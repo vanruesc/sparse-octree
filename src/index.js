@@ -1,8 +1,8 @@
 /**
  * Exposure of the library components.
  *
- * @module octree
- * @main octree
+ * @module sparse-octree
+ * @main sparse-octree
  */
 
 export {
