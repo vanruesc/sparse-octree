@@ -1,4 +1,4 @@
-import { Octant } from "../core";
+import { Octant } from "../core/octant.js";
 
 /**
  * An octant that maintains points.

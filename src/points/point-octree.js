@@ -1,4 +1,4 @@
-import { Octree } from "../core";
+import { Octree } from "../core/octree.js";
 import { PointOctant } from "./point-octant.js";
 
 /**
