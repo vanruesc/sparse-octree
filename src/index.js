@@ -7,6 +7,7 @@
 
 export {
 	CubicOctant,
+	EDGES,
 	Octant,
 	Octree,
 	PATTERN,
