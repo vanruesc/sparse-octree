@@ -347,13 +347,13 @@
             "namespace": "",
             "file": "src\\helpers\\octree-helper.js",
             "line": 11,
-            "description": "An octree helper.\n\nThe update method must be called manually to generate the octree geometry.",
+            "description": "An octree helper.",
             "submodule": "helpers",
             "is_constructor": 1,
             "extends": "Object3D",
             "params": [
                 {
-                    "name": "tree",
+                    "name": "octree",
                     "description": "- The octree to visualise.",
                     "type": "Octree",
                     "optional": true,
@@ -1056,7 +1056,7 @@
         },
         {
             "file": "src\\helpers\\octree-helper.js",
-            "line": 31,
+            "line": 29,
             "description": "The octree.",
             "itemtype": "property",
             "name": "octree",
@@ -1067,7 +1067,7 @@
         },
         {
             "file": "src\\helpers\\octree-helper.js",
-            "line": 44,
+            "line": 42,
             "description": "Creates octant geometry.",
             "itemtype": "method",
             "name": "createLineSegments",
@@ -1086,7 +1086,7 @@
         },
         {
             "file": "src\\helpers\\octree-helper.js",
-            "line": 122,
+            "line": 120,
             "description": "Updates the helper geometry.",
             "itemtype": "method",
             "name": "update",
@@ -1096,7 +1096,7 @@
         },
         {
             "file": "src\\helpers\\octree-helper.js",
-            "line": 147,
+            "line": 145,
             "description": "Destroys this helper.",
             "itemtype": "method",
             "name": "dispose",

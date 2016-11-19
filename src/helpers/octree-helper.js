@@ -11,13 +11,11 @@ import { PATTERN, EDGES } from "../core/octant.js";
 /**
  * An octree helper.
  *
- * The update method must be called manually to generate the octree geometry.
- *
  * @class OctreeHelper
  * @submodule helpers
  * @constructor
  * @extends Object3D
- * @param {Octree} [tree=null] - The octree to visualise.
+ * @param {Octree} [octree=null] - The octree to visualise.
  */
 
 export class OctreeHelper extends Object3D {
