@@ -13,8 +13,10 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "core",
-        "octree",
-        "points"
+        "helpers",
+        "math",
+        "points",
+        "sparse-octree"
     ],
     "allModules": [
         {
@@ -23,14 +25,24 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Core components."
         },
         {
-            "displayName": "octree",
-            "name": "octree",
-            "description": "Exposure of the library components."
+            "displayName": "helpers",
+            "name": "helpers",
+            "description": "A collection of helpers."
+        },
+        {
+            "displayName": "math",
+            "name": "math",
+            "description": "Math components."
         },
         {
             "displayName": "points",
             "name": "points",
             "description": "Point-oriented octree components."
+        },
+        {
+            "displayName": "sparse-octree",
+            "name": "sparse-octree",
+            "description": "Exposure of the library components."
         }
     ],
     "elements": []

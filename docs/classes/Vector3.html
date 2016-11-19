@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.4.2</em>
+            <em>API Docs for: 2.5.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -52,8 +52,10 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/core.html">core</a></li>
-                                <li><a href="../modules/octree.html">octree</a></li>
+                                <li><a href="../modules/helpers.html">helpers</a></li>
+                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/points.html">points</a></li>
+                                <li><a href="../modules/sparse-octree.html">sparse-octree</a></li>
                             </ul>
                         </div>
                     </div>
@@ -92,18 +94,17 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_vector3.js.html#l1"><code>src\vector3.js:1</code></a>
+            Defined in: <a href="../files/src_math_vector3.js.html#l1"><code>src\math\vector3.js:1</code></a>
         </div>
 
-            Module: <a href="../modules/octree.html">octree</a>
+            Module: <a href="../modules/math.html">math</a><br>
+            Parent Module: <a href="../modules/sparse-octree.html">sparse-octree</a>
 
 </div>
 
 
 <div class="box intro">
     <p>A vector with three components.</p>
-<p>This class is a copy of THREE.Vector3. It can be removed as soon as three.js
-starts supporting ES6 modules.</p>
 
 </div>
 
@@ -136,7 +137,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l1"><code>src\vector3.js:1</code></a>
+        <a href="../files/src_math_vector3.js.html#l1"><code>src\math\vector3.js:1</code></a>
         </p>
 
 
@@ -223,6 +224,10 @@ starts supporting ES6 modules.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_addScalar">addScalar</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addScaledVector">addScaledVector</a>
 
                             </li>
                             <li class="index-item method">
@@ -385,7 +390,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l155"><code>src\vector3.js:155</code></a>
+        <a href="../files/src_math_vector3.js.html#l153"><code>src\math\vector3.js:153</code></a>
         </p>
 
 
@@ -453,7 +458,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l173"><code>src\vector3.js:173</code></a>
+        <a href="../files/src_math_vector3.js.html#l190"><code>src\math\vector3.js:190</code></a>
         </p>
 
 
@@ -471,12 +476,96 @@ starts supporting ES6 modules.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">s</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
                         <ul>
 <li>The scalar to add.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                    <p>This vector.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_addScaledVector" class="method item">
+    <h3 class="name"><code>addScaledVector</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>v</code>
+                </li>
+                <li class="arg">
+                        <code>s</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_math_vector3.js.html#l171"><code>src\math\vector3.js:171</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a scaled vector to this one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">v</code>
+                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>The vector to scale and add.</li>
+</ul>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">s</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>A scalar.</li>
 </ul>
 
                     </div>
@@ -524,7 +613,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l191"><code>src\vector3.js:191</code></a>
+        <a href="../files/src_math_vector3.js.html#l208"><code>src\math\vector3.js:208</code></a>
         </p>
 
 
@@ -605,7 +694,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l521"><code>src\vector3.js:521</code></a>
+        <a href="../files/src_math_vector3.js.html#l538"><code>src\math\vector3.js:538</code></a>
         </p>
 
 
@@ -673,7 +762,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l542"><code>src\vector3.js:542</code></a>
+        <a href="../files/src_math_vector3.js.html#l559"><code>src\math\vector3.js:559</code></a>
         </p>
 
 
@@ -744,7 +833,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l502"><code>src\vector3.js:502</code></a>
+        <a href="../files/src_math_vector3.js.html#l519"><code>src\math\vector3.js:519</code></a>
         </p>
 
 
@@ -819,7 +908,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l142"><code>src\vector3.js:142</code></a>
+        <a href="../files/src_math_vector3.js.html#l140"><code>src\math\vector3.js:140</code></a>
         </p>
 
 
@@ -868,7 +957,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l67"><code>src\vector3.js:67</code></a>
+        <a href="../files/src_math_vector3.js.html#l65"><code>src\math\vector3.js:65</code></a>
         </p>
 
 
@@ -924,7 +1013,7 @@ starts supporting ES6 modules.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -936,7 +1025,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l421"><code>src\vector3.js:421</code></a>
+        <a href="../files/src_math_vector3.js.html#l438"><code>src\math\vector3.js:438</code></a>
         </p>
 
 
@@ -972,8 +1061,8 @@ starts supporting ES6 modules.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>This vector.</p>
+                        <span class="type">Number</span>:
+                    <p>The distance.</p>
 
             </div>
         </div>
@@ -992,7 +1081,7 @@ starts supporting ES6 modules.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -1004,7 +1093,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l435"><code>src\vector3.js:435</code></a>
+        <a href="../files/src_math_vector3.js.html#l452"><code>src\math\vector3.js:452</code></a>
         </p>
 
 
@@ -1012,7 +1101,7 @@ starts supporting ES6 modules.</p>
     </div>
 
     <div class="description">
-        <p>Calculates the distance squared to a given vector.</p>
+        <p>Calculates the squared distance to a given vector.</p>
 
     </div>
 
@@ -1040,8 +1129,8 @@ starts supporting ES6 modules.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>This vector.</p>
+                        <span class="type">Number</span>:
+                    <p>The squared distance.</p>
 
             </div>
         </div>
@@ -1072,7 +1161,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l330"><code>src\vector3.js:330</code></a>
+        <a href="../files/src_math_vector3.js.html#l347"><code>src\math\vector3.js:347</code></a>
         </p>
 
 
@@ -1140,7 +1229,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l348"><code>src\vector3.js:348</code></a>
+        <a href="../files/src_math_vector3.js.html#l365"><code>src\math\vector3.js:365</code></a>
         </p>
 
 
@@ -1158,7 +1247,7 @@ starts supporting ES6 modules.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">s</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -1211,7 +1300,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l362"><code>src\vector3.js:362</code></a>
+        <a href="../files/src_math_vector3.js.html#l379"><code>src\math\vector3.js:379</code></a>
         </p>
 
 
@@ -1292,7 +1381,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l381"><code>src\vector3.js:381</code></a>
+        <a href="../files/src_math_vector3.js.html#l398"><code>src\math\vector3.js:398</code></a>
         </p>
 
 
@@ -1360,7 +1449,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l128"><code>src\vector3.js:128</code></a>
+        <a href="../files/src_math_vector3.js.html#l126"><code>src\math\vector3.js:126</code></a>
         </p>
 
 
@@ -1431,7 +1520,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l85"><code>src\vector3.js:85</code></a>
+        <a href="../files/src_math_vector3.js.html#l83"><code>src\math\vector3.js:83</code></a>
         </p>
 
 
@@ -1494,7 +1583,7 @@ starts supporting ES6 modules.</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -1506,7 +1595,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l408"><code>src\vector3.js:408</code></a>
+        <a href="../files/src_math_vector3.js.html#l425"><code>src\math\vector3.js:425</code></a>
         </p>
 
 
@@ -1523,8 +1612,8 @@ starts supporting ES6 modules.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>This vector.</p>
+                        <span class="type">Number</span>:
+                    <p>The length.</p>
 
             </div>
         </div>
@@ -1537,7 +1626,7 @@ starts supporting ES6 modules.</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -1549,7 +1638,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l395"><code>src\vector3.js:395</code></a>
+        <a href="../files/src_math_vector3.js.html#l412"><code>src\math\vector3.js:412</code></a>
         </p>
 
 
@@ -1557,7 +1646,7 @@ starts supporting ES6 modules.</p>
     </div>
 
     <div class="description">
-        <p>Calculates the length squared of this vector.</p>
+        <p>Calculates the squared length of this vector.</p>
 
     </div>
 
@@ -1566,8 +1655,8 @@ starts supporting ES6 modules.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>This vector.</p>
+                        <span class="type">Number</span>:
+                    <p>The squared length.</p>
 
             </div>
         </div>
@@ -1598,7 +1687,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l484"><code>src\vector3.js:484</code></a>
+        <a href="../files/src_math_vector3.js.html#l501"><code>src\math\vector3.js:501</code></a>
         </p>
 
 
@@ -1666,7 +1755,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l466"><code>src\vector3.js:466</code></a>
+        <a href="../files/src_math_vector3.js.html#l483"><code>src\math\vector3.js:483</code></a>
         </p>
 
 
@@ -1734,7 +1823,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l265"><code>src\vector3.js:265</code></a>
+        <a href="../files/src_math_vector3.js.html#l282"><code>src\math\vector3.js:282</code></a>
         </p>
 
 
@@ -1802,7 +1891,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l283"><code>src\vector3.js:283</code></a>
+        <a href="../files/src_math_vector3.js.html#l300"><code>src\math\vector3.js:300</code></a>
         </p>
 
 
@@ -1820,7 +1909,7 @@ starts supporting ES6 modules.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">s</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -1873,7 +1962,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l311"><code>src\vector3.js:311</code></a>
+        <a href="../files/src_math_vector3.js.html#l328"><code>src\math\vector3.js:328</code></a>
         </p>
 
 
@@ -1948,7 +2037,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l453"><code>src\vector3.js:453</code></a>
+        <a href="../files/src_math_vector3.js.html#l470"><code>src\math\vector3.js:470</code></a>
         </p>
 
 
@@ -2003,7 +2092,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l47"><code>src\vector3.js:47</code></a>
+        <a href="../files/src_math_vector3.js.html#l45"><code>src\math\vector3.js:45</code></a>
         </p>
 
 
@@ -2097,7 +2186,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l210"><code>src\vector3.js:210</code></a>
+        <a href="../files/src_math_vector3.js.html#l227"><code>src\math\vector3.js:227</code></a>
         </p>
 
 
@@ -2165,7 +2254,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l228"><code>src\vector3.js:228</code></a>
+        <a href="../files/src_math_vector3.js.html#l245"><code>src\math\vector3.js:245</code></a>
         </p>
 
 
@@ -2183,7 +2272,7 @@ starts supporting ES6 modules.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">s</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -2236,7 +2325,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l246"><code>src\vector3.js:246</code></a>
+        <a href="../files/src_math_vector3.js.html#l263"><code>src\math\vector3.js:263</code></a>
         </p>
 
 
@@ -2320,7 +2409,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l106"><code>src\vector3.js:106</code></a>
+        <a href="../files/src_math_vector3.js.html#l104"><code>src\math\vector3.js:104</code></a>
         </p>
 
 
@@ -2394,7 +2483,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l18"><code>src\vector3.js:18</code></a>
+        <a href="../files/src_math_vector3.js.html#l16"><code>src\math\vector3.js:16</code></a>
         </p>
 
 
@@ -2419,7 +2508,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l27"><code>src\vector3.js:27</code></a>
+        <a href="../files/src_math_vector3.js.html#l25"><code>src\math\vector3.js:25</code></a>
         </p>
 
 
@@ -2444,7 +2533,7 @@ starts supporting ES6 modules.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_vector3.js.html#l36"><code>src\vector3.js:36</code></a>
+        <a href="../files/src_math_vector3.js.html#l34"><code>src\math\vector3.js:34</code></a>
         </p>
 
 

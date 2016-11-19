@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.4.2",
+        "version": "2.5.0",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -11,15 +11,6 @@
             "modules": {},
             "classes": {
                 "CubicOctant": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src\\core\\helper.js": {
-            "name": "src\\core\\helper.js",
-            "modules": {},
-            "classes": {
-                "OctreeHelper": 1
             },
             "fors": {},
             "namespaces": {}
@@ -60,6 +51,51 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\helpers\\index.js": {
+            "name": "src\\helpers\\index.js",
+            "modules": {
+                "helpers": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\helpers\\octree-helper.js": {
+            "name": "src\\helpers\\octree-helper.js",
+            "modules": {},
+            "classes": {
+                "OctreeHelper": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\math\\box3.js": {
+            "name": "src\\math\\box3.js",
+            "modules": {},
+            "classes": {
+                "Box3": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\math\\index.js": {
+            "name": "src\\math\\index.js",
+            "modules": {
+                "math": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\math\\vector3.js": {
+            "name": "src\\math\\vector3.js",
+            "modules": {},
+            "classes": {
+                "Vector3": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\points\\index.js": {
             "name": "src\\points\\index.js",
             "modules": {
@@ -87,30 +123,12 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\box3.js": {
-            "name": "src\\box3.js",
-            "modules": {},
-            "classes": {
-                "Box3": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
         "src\\index.js": {
             "name": "src\\index.js",
             "modules": {
-                "octree": 1
+                "sparse-octree": 1
             },
             "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src\\vector3.js": {
-            "name": "src\\vector3.js",
-            "modules": {},
-            "classes": {
-                "Vector3": 1
-            },
             "fors": {},
             "namespaces": {}
         }
@@ -122,7 +140,6 @@
             "elements": {},
             "classes": {
                 "CubicOctant": 1,
-                "OctreeHelper": 1,
                 "Octant": 1,
                 "Octree": 1,
                 "Raycasting": 1
@@ -130,36 +147,71 @@
             "fors": {},
             "is_submodule": 1,
             "namespaces": {},
-            "module": "octree",
+            "module": "sparse-octree",
             "file": "src\\core\\raycasting.js",
             "line": 229,
             "description": "Core components."
         },
-        "octree": {
-            "name": "octree",
+        "sparse-octree": {
+            "name": "sparse-octree",
             "submodules": {
                 "core": 1,
+                "helpers": 1,
+                "math": 1,
                 "points": 1
             },
             "elements": {},
             "classes": {
                 "CubicOctant": 1,
-                "OctreeHelper": 1,
                 "Octant": 1,
                 "Octree": 1,
                 "Raycasting": 1,
-                "PointOctant": 1,
-                "PointOctree": 1,
+                "OctreeHelper": 1,
                 "Box3": 1,
-                "Vector3": 1
+                "Vector3": 1,
+                "PointOctant": 1,
+                "PointOctree": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "main",
-            "file": "src\\vector3.js",
-            "line": 1,
+            "file": "src\\points\\point-octree.js",
+            "line": 4,
             "description": "Exposure of the library components.",
             "itemtype": "main"
+        },
+        "helpers": {
+            "name": "helpers",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "OctreeHelper": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 11,
+            "description": "A collection of helpers."
+        },
+        "math": {
+            "name": "math",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Box3": 1,
+                "Vector3": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\math\\vector3.js",
+            "line": 1,
+            "description": "Math components."
         },
         "points": {
             "name": "points",
@@ -172,7 +224,7 @@
             "fors": {},
             "is_submodule": 1,
             "namespaces": {},
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\points\\point-octree.js",
             "line": 4,
@@ -188,7 +240,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "file": "src\\core\\cubic-octant.js",
             "line": 4,
             "description": "A cubic octant.",
@@ -209,31 +261,6 @@
                 }
             ]
         },
-        "OctreeHelper": {
-            "name": "OctreeHelper",
-            "shortname": "OctreeHelper",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "octree",
-            "file": "src\\core\\helper.js",
-            "line": 9,
-            "description": "An octree helper.\n\nThe update method must be called manually to generate the octree geometry.",
-            "submodule": "core",
-            "is_constructor": 1,
-            "extends": "Object3D",
-            "params": [
-                {
-                    "name": "tree",
-                    "description": "- The octree to visualise.",
-                    "type": "Octree",
-                    "optional": true,
-                    "optdefault": "null"
-                }
-            ]
-        },
         "Octant": {
             "name": "Octant",
             "shortname": "Octant",
@@ -242,7 +269,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\core\\octant.js",
             "line": 3,
@@ -270,7 +297,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\core\\octree.js",
             "line": 5,
@@ -300,13 +327,108 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\core\\raycasting.js",
             "line": 229,
             "description": "A collection of utility functions for octree raycasting.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000).",
             "submodule": "core",
             "static": 1
+        },
+        "OctreeHelper": {
+            "name": "OctreeHelper",
+            "shortname": "OctreeHelper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 11,
+            "description": "An octree helper.\n\nThe update method must be called manually to generate the octree geometry.",
+            "submodule": "helpers",
+            "is_constructor": 1,
+            "extends": "Object3D",
+            "params": [
+                {
+                    "name": "tree",
+                    "description": "- The octree to visualise.",
+                    "type": "Octree",
+                    "optional": true,
+                    "optdefault": "null"
+                }
+            ]
+        },
+        "Box3": {
+            "name": "Box3",
+            "shortname": "Box3",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\math\\box3.js",
+            "line": 3,
+            "description": "A bounding box.",
+            "submodule": "math",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- The lower bounds.",
+                    "type": "Vector3",
+                    "optional": true
+                },
+                {
+                    "name": "max",
+                    "description": "- The upper bounds.",
+                    "type": "Vector3",
+                    "optional": true
+                }
+            ]
+        },
+        "Vector3": {
+            "name": "Vector3",
+            "shortname": "Vector3",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\math\\vector3.js",
+            "line": 1,
+            "description": "A vector with three components.",
+            "submodule": "math",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "x",
+                    "description": "- The x value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                },
+                {
+                    "name": "y",
+                    "description": "- The y value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                },
+                {
+                    "name": "z",
+                    "description": "- The z value.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "0"
+                }
+            ]
         },
         "PointOctant": {
             "name": "PointOctant",
@@ -316,7 +438,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\points\\point-octant.js",
             "line": 3,
@@ -345,7 +467,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "octree",
+            "module": "sparse-octree",
             "namespace": "",
             "file": "src\\points\\point-octree.js",
             "line": 4,
@@ -384,59 +506,6 @@
                     "type": "Number",
                     "optional": true,
                     "optdefault": "8"
-                }
-            ]
-        },
-        "Box3": {
-            "name": "Box3",
-            "shortname": "Box3",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "octree",
-            "namespace": "",
-            "file": "src\\box3.js",
-            "line": 3,
-            "description": "A bounding box.\n\nThis class is a copy of THREE.Box3. It can be removed as soon as three.js\nstarts supporting ES6 modules.",
-            "is_constructor": 1
-        },
-        "Vector3": {
-            "name": "Vector3",
-            "shortname": "Vector3",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "octree",
-            "namespace": "",
-            "file": "src\\vector3.js",
-            "line": 1,
-            "description": "A vector with three components.\n\nThis class is a copy of THREE.Vector3. It can be removed as soon as three.js\nstarts supporting ES6 modules.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "x",
-                    "description": "- The x value.",
-                    "type": "Number",
-                    "optional": true,
-                    "optdefault": "0"
-                },
-                {
-                    "name": "y",
-                    "description": "- The y value.",
-                    "type": "Number",
-                    "optional": true,
-                    "optdefault": "0"
-                },
-                {
-                    "name": "z",
-                    "description": "- The z value.",
-                    "type": "Number",
-                    "optional": true,
-                    "optdefault": "0"
                 }
             ]
         }
@@ -528,38 +597,6 @@
             "submodule": "core"
         },
         {
-            "file": "src\\core\\helper.js",
-            "line": 29,
-            "description": "The octree.",
-            "itemtype": "property",
-            "name": "tree",
-            "type": "Octree",
-            "class": "OctreeHelper",
-            "submodule": "core"
-        },
-        {
-            "file": "src\\core\\helper.js",
-            "line": 40,
-            "description": "Creates the octree geometry.",
-            "itemtype": "method",
-            "name": "update",
-            "throws": {
-                "description": "An error is thrown if too many vertices are created.",
-                "type": "Error"
-            },
-            "class": "OctreeHelper",
-            "submodule": "core"
-        },
-        {
-            "file": "src\\core\\helper.js",
-            "line": 207,
-            "description": "Destroys this helper.",
-            "itemtype": "method",
-            "name": "dispose",
-            "class": "OctreeHelper",
-            "submodule": "core"
-        },
-        {
             "file": "src\\core\\octant.js",
             "line": 17,
             "description": "The lower bounds of this octant.",
@@ -567,7 +604,7 @@
             "name": "min",
             "type": "Vector3",
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -578,7 +615,7 @@
             "name": "max",
             "type": "Vector3",
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -590,7 +627,7 @@
             "type": "Array",
             "default": "null",
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -604,7 +641,7 @@
                 "type": "Vector3"
             },
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -618,7 +655,7 @@
                 "type": "Vector3"
             },
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -636,7 +673,7 @@
                 }
             ],
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -649,7 +686,20 @@
             "static": 1,
             "final": 1,
             "class": "Octant",
-            "module": "octree",
+            "module": "sparse-octree",
+            "submodule": "core"
+        },
+        {
+            "file": "src\\core\\octant.js",
+            "line": 177,
+            "description": "Describes all possible octant corner connections.",
+            "itemtype": "property",
+            "name": "EDGES",
+            "type": "Array",
+            "static": 1,
+            "final": 1,
+            "class": "Octant",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -661,7 +711,7 @@
             "type": "Octant",
             "default": "null",
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -672,7 +722,7 @@
             "name": "min",
             "type": "Vector3",
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -683,7 +733,7 @@
             "name": "max",
             "type": "Vector3",
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -694,7 +744,7 @@
             "name": "children",
             "type": "Array",
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -708,7 +758,7 @@
                 "type": "Vector3"
             },
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -722,7 +772,7 @@
                 "type": "Vector3"
             },
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -736,7 +786,7 @@
                 "type": "Number"
             },
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -757,7 +807,7 @@
                 "type": "Array"
             },
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -778,7 +828,7 @@
                 "type": "Array"
             },
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -800,7 +850,7 @@
                 }
             ],
             "class": "Octree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
         },
         {
@@ -815,7 +865,7 @@
             "static": 1,
             "final": 1,
             "class": "Raycasting",
-            "module": "octree"
+            "module": "sparse-octree"
         },
         {
             "file": "src\\core\\raycasting.js",
@@ -829,7 +879,7 @@
             "static": 1,
             "final": 1,
             "class": "Raycasting",
-            "module": "octree"
+            "module": "sparse-octree"
         },
         {
             "file": "src\\core\\raycasting.js",
@@ -877,7 +927,7 @@
                 "type": "Number"
             },
             "class": "Raycasting",
-            "module": "octree"
+            "module": "sparse-octree"
         },
         {
             "file": "src\\core\\raycasting.js",
@@ -915,7 +965,7 @@
                 "type": "Number"
             },
             "class": "Raycasting",
-            "module": "octree"
+            "module": "sparse-octree"
         },
         {
             "file": "src\\core\\raycasting.js",
@@ -974,7 +1024,7 @@
                 }
             ],
             "class": "Raycasting",
-            "module": "octree"
+            "module": "sparse-octree"
         },
         {
             "file": "src\\core\\raycasting.js",
@@ -1001,8 +1051,937 @@
                 }
             ],
             "class": "Raycasting",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "core"
+        },
+        {
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 31,
+            "description": "The octree.",
+            "itemtype": "property",
+            "name": "octree",
+            "type": "Octree",
+            "class": "OctreeHelper",
+            "module": "sparse-octree",
+            "submodule": "helpers"
+        },
+        {
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 44,
+            "description": "Creates octant geometry.",
+            "itemtype": "method",
+            "name": "createLineSegments",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "octants",
+                    "description": "- The octants.",
+                    "type": "Array"
+                }
+            ],
+            "class": "OctreeHelper",
+            "module": "sparse-octree",
+            "submodule": "helpers"
+        },
+        {
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 122,
+            "description": "Updates the helper geometry.",
+            "itemtype": "method",
+            "name": "update",
+            "class": "OctreeHelper",
+            "module": "sparse-octree",
+            "submodule": "helpers"
+        },
+        {
+            "file": "src\\helpers\\octree-helper.js",
+            "line": 147,
+            "description": "Destroys this helper.",
+            "itemtype": "method",
+            "name": "dispose",
+            "class": "OctreeHelper",
+            "module": "sparse-octree",
+            "submodule": "helpers"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 20,
+            "description": "The min bounds.",
+            "itemtype": "property",
+            "name": "min",
+            "type": "Vector3",
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 29,
+            "description": "The max bounds.",
+            "itemtype": "property",
+            "name": "max",
+            "type": "Vector3",
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 40,
+            "description": "Sets the values of this box.",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- The min bounds.",
+                    "type": "Number"
+                },
+                {
+                    "name": "max",
+                    "description": "- The max bounds.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Matrix3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 58,
+            "description": "Copies the values of a given box.",
+            "itemtype": "method",
+            "name": "copy",
+            "params": [
+                {
+                    "name": "b",
+                    "description": "- A box.",
+                    "type": "Matrix3"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Box3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 75,
+            "description": "Clones this matrix.",
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "A clone of this matrix.",
+                "type": "Matrix3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 88,
+            "description": "Expands this box by the given point.",
+            "itemtype": "method",
+            "name": "expandByPoint",
+            "params": [
+                {
+                    "name": "p",
+                    "description": "- A point.",
+                    "type": "Matrix3"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Box3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 105,
+            "description": "Expands this box by combining it with the given one.",
+            "itemtype": "method",
+            "name": "union",
+            "params": [
+                {
+                    "name": "b",
+                    "description": "- A box.",
+                    "type": "Box3"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Box3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 122,
+            "description": "Defines this box by the given points.",
+            "itemtype": "method",
+            "name": "setFromPoints",
+            "params": [
+                {
+                    "name": "points",
+                    "description": "- The points.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Box3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 144,
+            "description": "Defines this box by the given center and size.",
+            "itemtype": "method",
+            "name": "setFromCenterAndSize",
+            "params": [
+                {
+                    "name": "center",
+                    "description": "- The center.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "size",
+                    "description": "- The size.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This box.",
+                "type": "Box3"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\box3.js",
+            "line": 164,
+            "description": "Checks if this box intersects with the given one.",
+            "itemtype": "method",
+            "name": "intersectsBox",
+            "params": [
+                {
+                    "name": "box",
+                    "description": "- A box.",
+                    "type": "Matrix3"
+                }
+            ],
+            "return": {
+                "description": "Whether the boxes intersect.",
+                "type": "Boolean"
+            },
+            "class": "Box3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 16,
+            "description": "The x component.",
+            "itemtype": "property",
+            "name": "x",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 25,
+            "description": "The y component.",
+            "itemtype": "property",
+            "name": "y",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 34,
+            "description": "The z component.",
+            "itemtype": "property",
+            "name": "z",
+            "type": "Number",
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 45,
+            "description": "Sets the values of this vector",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "- The x value.",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "- The y value.",
+                    "type": "Number"
+                },
+                {
+                    "name": "z",
+                    "description": "- The z value.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 65,
+            "description": "Copies the values of another vector.",
+            "itemtype": "method",
+            "name": "copy",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 83,
+            "description": "Copies values from an array.",
+            "itemtype": "method",
+            "name": "fromArray",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- An array.",
+                    "type": "Array"
+                },
+                {
+                    "name": "offset",
+                    "description": "- An offset.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 104,
+            "description": "Stores this vector in an array.",
+            "itemtype": "method",
+            "name": "toArray",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "- A target array.",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "offset",
+                    "description": "- An offset.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The array.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 126,
+            "description": "Checks if this vector equals the given one.",
+            "itemtype": "method",
+            "name": "equals",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "Whether this vector equals the given one.",
+                "type": "Boolean"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 140,
+            "description": "Clones this vector.",
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "A clone of this vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 153,
+            "description": "Adds a vector to this one.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- The vector to add.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 171,
+            "description": "Adds a scaled vector to this one.",
+            "itemtype": "method",
+            "name": "addScaledVector",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- The vector to scale and add.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "s",
+                    "description": "- A scalar.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 190,
+            "description": "Adds a scalar to this vector.",
+            "itemtype": "method",
+            "name": "addScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- The scalar to add.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 208,
+            "description": "Sets this vector to the sum of two given vectors.",
+            "itemtype": "method",
+            "name": "addVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 227,
+            "description": "Subtracts a vector from this vector.",
+            "itemtype": "method",
+            "name": "sub",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- The vector to subtract.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 245,
+            "description": "Subtracts a scalar to this vector.",
+            "itemtype": "method",
+            "name": "subScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- The scalar to subtract.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 263,
+            "description": "Sets this vector to the difference between two given vectors.",
+            "itemtype": "method",
+            "name": "subVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- A second vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 282,
+            "description": "Multiplies this vector with another vector.",
+            "itemtype": "method",
+            "name": "multiply",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 300,
+            "description": "Multiplies this vector with a given scalar.",
+            "itemtype": "method",
+            "name": "multiplyScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- A scalar.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 328,
+            "description": "Sets this vector to the product of two given vectors.",
+            "itemtype": "method",
+            "name": "multiplyVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 347,
+            "description": "Divides this vector by another vector.",
+            "itemtype": "method",
+            "name": "divide",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 365,
+            "description": "Divides this vector by a given scalar.",
+            "itemtype": "method",
+            "name": "divideScalar",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "- A scalar.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 379,
+            "description": "Sets this vector to the quotient of two given vectors.",
+            "itemtype": "method",
+            "name": "divideVectors",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "b",
+                    "description": "- Another vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 398,
+            "description": "Calculates the dot product with another vector.",
+            "itemtype": "method",
+            "name": "dot",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The dot product.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 412,
+            "description": "Calculates the squared length of this vector.",
+            "itemtype": "method",
+            "name": "lengthSq",
+            "return": {
+                "description": "The squared length.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 425,
+            "description": "Calculates the length of this vector.",
+            "itemtype": "method",
+            "name": "length",
+            "return": {
+                "description": "The length.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 438,
+            "description": "Calculates the distance to a given vector.",
+            "itemtype": "method",
+            "name": "distanceTo",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The distance.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 452,
+            "description": "Calculates the squared distance to a given vector.",
+            "itemtype": "method",
+            "name": "distanceToSquared",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "The squared distance.",
+                "type": "Number"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 470,
+            "description": "Normalizes this vector.",
+            "itemtype": "method",
+            "name": "normalize",
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 483,
+            "description": "Adopts the min value for each component of this vector and the given one.",
+            "itemtype": "method",
+            "name": "min",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 501,
+            "description": "adopts the max value for each component of this vector and the given one.",
+            "itemtype": "method",
+            "name": "max",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "- A vector.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 519,
+            "description": "Clamps this vector.",
+            "itemtype": "method",
+            "name": "clamp",
+            "params": [
+                {
+                    "name": "min",
+                    "description": "- A vector, assumed to be smaller than max.",
+                    "type": "Vector3"
+                },
+                {
+                    "name": "max",
+                    "description": "- A vector, assumed to be greater than min.",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 538,
+            "description": "Applies a matrix to this vector.",
+            "itemtype": "method",
+            "name": "applyMatrix3",
+            "params": [
+                {
+                    "name": "m",
+                    "description": "- A matrix.",
+                    "type": "Matrix3"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 559,
+            "description": "Applies a matrix to this vector.",
+            "itemtype": "method",
+            "name": "applyMatrix4",
+            "params": [
+                {
+                    "name": "m",
+                    "description": "- A matrix.",
+                    "type": "Matrix4"
+                }
+            ],
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
         },
         {
             "file": "src\\points\\point-octant.js",
@@ -1012,7 +1991,7 @@
             "name": "points",
             "type": "Array",
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1023,7 +2002,7 @@
             "name": "data",
             "type": "Array",
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1037,7 +2016,7 @@
                 "type": "Number"
             },
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1058,7 +2037,7 @@
                 "type": "Number"
             },
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1079,7 +2058,7 @@
                 "type": "Number"
             },
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1105,7 +2084,7 @@
                 "type": "Boolean"
             },
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1122,7 +2101,7 @@
                 }
             ],
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1134,7 +2113,7 @@
             "access": "private",
             "tagname": "",
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1165,7 +2144,7 @@
                 "type": "Object"
             },
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1197,7 +2176,7 @@
                 }
             ],
             "class": "PointOctant",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1211,7 +2190,7 @@
             "tagname": "",
             "default": "0.0",
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1225,7 +2204,7 @@
             "tagname": "",
             "default": "0.0",
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1239,7 +2218,7 @@
             "tagname": "",
             "default": "8",
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1253,7 +2232,7 @@
             "tagname": "",
             "default": "8",
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1267,7 +2246,7 @@
                 "type": "Number"
             },
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1289,7 +2268,7 @@
                 }
             ],
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1306,7 +2285,7 @@
                 }
             ],
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1327,7 +2306,7 @@
                 "type": "Object"
             },
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1362,7 +2341,7 @@
                 "type": "Object"
             },
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1395,7 +2374,7 @@
                 "type": "Array"
             },
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1417,7 +2396,7 @@
                 }
             ],
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
         },
         {
@@ -1444,819 +2423,8 @@
                 }
             ],
             "class": "PointOctree",
-            "module": "octree",
+            "module": "sparse-octree",
             "submodule": "points"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 17,
-            "description": "The min bounds.",
-            "itemtype": "property",
-            "name": "min",
-            "type": "Vector3",
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 26,
-            "description": "The max bounds.",
-            "itemtype": "property",
-            "name": "max",
-            "type": "Vector3",
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 37,
-            "description": "Sets the values of this box.",
-            "itemtype": "method",
-            "name": "set",
-            "params": [
-                {
-                    "name": "min",
-                    "description": "- The min bounds.",
-                    "type": "Number"
-                },
-                {
-                    "name": "max",
-                    "description": "- The max bounds.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Matrix3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 55,
-            "description": "Copies the values of a given box.",
-            "itemtype": "method",
-            "name": "copy",
-            "params": [
-                {
-                    "name": "b",
-                    "description": "- A box.",
-                    "type": "Matrix3"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Box3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 72,
-            "description": "Clones this matrix.",
-            "itemtype": "method",
-            "name": "clone",
-            "return": {
-                "description": "A clone of this matrix.",
-                "type": "Matrix3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 85,
-            "description": "Expands this box by the given point.",
-            "itemtype": "method",
-            "name": "expandByPoint",
-            "params": [
-                {
-                    "name": "p",
-                    "description": "- A point.",
-                    "type": "Matrix3"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Box3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 102,
-            "description": "Expands this box by combining it with the given one.",
-            "itemtype": "method",
-            "name": "union",
-            "params": [
-                {
-                    "name": "b",
-                    "description": "- A box.",
-                    "type": "Box3"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Box3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 119,
-            "description": "Defines this box by the given points.",
-            "itemtype": "method",
-            "name": "setFromPoints",
-            "params": [
-                {
-                    "name": "points",
-                    "description": "- The points.",
-                    "type": "Array"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Box3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 141,
-            "description": "Defines this box by the given center and size.",
-            "itemtype": "method",
-            "name": "setFromCenterAndSize",
-            "params": [
-                {
-                    "name": "center",
-                    "description": "- The center.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "size",
-                    "description": "- The size.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "This box.",
-                "type": "Box3"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\box3.js",
-            "line": 161,
-            "description": "Checks if this box intersects with the given one.",
-            "itemtype": "method",
-            "name": "intersectsBox",
-            "params": [
-                {
-                    "name": "box",
-                    "description": "- A box.",
-                    "type": "Matrix3"
-                }
-            ],
-            "return": {
-                "description": "Whether the boxes intersect.",
-                "type": "Boolean"
-            },
-            "class": "Box3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 18,
-            "description": "The x component.",
-            "itemtype": "property",
-            "name": "x",
-            "type": "Number",
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 27,
-            "description": "The y component.",
-            "itemtype": "property",
-            "name": "y",
-            "type": "Number",
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 36,
-            "description": "The z component.",
-            "itemtype": "property",
-            "name": "z",
-            "type": "Number",
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 47,
-            "description": "Sets the values of this vector",
-            "itemtype": "method",
-            "name": "set",
-            "params": [
-                {
-                    "name": "x",
-                    "description": "- The x value.",
-                    "type": "Number"
-                },
-                {
-                    "name": "y",
-                    "description": "- The y value.",
-                    "type": "Number"
-                },
-                {
-                    "name": "z",
-                    "description": "- The z value.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 67,
-            "description": "Copies the values of another vector.",
-            "itemtype": "method",
-            "name": "copy",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 85,
-            "description": "Copies values from an array.",
-            "itemtype": "method",
-            "name": "fromArray",
-            "params": [
-                {
-                    "name": "array",
-                    "description": "- An array.",
-                    "type": "Array"
-                },
-                {
-                    "name": "offset",
-                    "description": "- An offset.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 106,
-            "description": "Stores this vector in an array.",
-            "itemtype": "method",
-            "name": "toArray",
-            "params": [
-                {
-                    "name": "array",
-                    "description": "- A target array.",
-                    "type": "Array",
-                    "optional": true
-                },
-                {
-                    "name": "offset",
-                    "description": "- An offset.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The array.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 128,
-            "description": "Checks if this vector equals the given one.",
-            "itemtype": "method",
-            "name": "equals",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "Whether this vector equals the given one.",
-                "type": "Boolean"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 142,
-            "description": "Clones this vector.",
-            "itemtype": "method",
-            "name": "clone",
-            "return": {
-                "description": "A clone of this vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 155,
-            "description": "Adds a vector to this one.",
-            "itemtype": "method",
-            "name": "add",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- The vector to add.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 173,
-            "description": "Adds a scalar to this vector.",
-            "itemtype": "method",
-            "name": "addScalar",
-            "params": [
-                {
-                    "name": "s",
-                    "description": "- The scalar to add.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 191,
-            "description": "Sets this vector to the sum of two given vectors.",
-            "itemtype": "method",
-            "name": "addVectors",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "b",
-                    "description": "- Another vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 210,
-            "description": "Subtracts a vector from this vector.",
-            "itemtype": "method",
-            "name": "sub",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- The vector to subtract.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 228,
-            "description": "Subtracts a scalar to this vector.",
-            "itemtype": "method",
-            "name": "subScalar",
-            "params": [
-                {
-                    "name": "s",
-                    "description": "- The scalar to subtract.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 246,
-            "description": "Sets this vector to the difference between two given vectors.",
-            "itemtype": "method",
-            "name": "subVectors",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "b",
-                    "description": "- A second vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 265,
-            "description": "Multiplies this vector with another vector.",
-            "itemtype": "method",
-            "name": "multiply",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 283,
-            "description": "Multiplies this vector with a given scalar.",
-            "itemtype": "method",
-            "name": "multiplyScalar",
-            "params": [
-                {
-                    "name": "s",
-                    "description": "- A scalar.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 311,
-            "description": "Sets this vector to the product of two given vectors.",
-            "itemtype": "method",
-            "name": "multiplyVectors",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "b",
-                    "description": "- Another vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 330,
-            "description": "Divides this vector by another vector.",
-            "itemtype": "method",
-            "name": "divide",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 348,
-            "description": "Divides this vector by a given scalar.",
-            "itemtype": "method",
-            "name": "divideScalar",
-            "params": [
-                {
-                    "name": "s",
-                    "description": "- A scalar.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 362,
-            "description": "Sets this vector to the quotient of two given vectors.",
-            "itemtype": "method",
-            "name": "divideVectors",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "b",
-                    "description": "- Another vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 381,
-            "description": "Calculates the dot product with another vector.",
-            "itemtype": "method",
-            "name": "dot",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "The dot product.",
-                "type": "Number"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 395,
-            "description": "Calculates the length squared of this vector.",
-            "itemtype": "method",
-            "name": "lengthSq",
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 408,
-            "description": "Calculates the length of this vector.",
-            "itemtype": "method",
-            "name": "length",
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 421,
-            "description": "Calculates the distance to a given vector.",
-            "itemtype": "method",
-            "name": "distanceTo",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 435,
-            "description": "Calculates the distance squared to a given vector.",
-            "itemtype": "method",
-            "name": "distanceToSquared",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 453,
-            "description": "Normalizes this vector.",
-            "itemtype": "method",
-            "name": "normalize",
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 466,
-            "description": "Adopts the min value for each component of this vector and the given one.",
-            "itemtype": "method",
-            "name": "min",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 484,
-            "description": "adopts the max value for each component of this vector and the given one.",
-            "itemtype": "method",
-            "name": "max",
-            "params": [
-                {
-                    "name": "v",
-                    "description": "- A vector.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 502,
-            "description": "Clamps this vector.",
-            "itemtype": "method",
-            "name": "clamp",
-            "params": [
-                {
-                    "name": "min",
-                    "description": "- A vector, assumed to be smaller than max.",
-                    "type": "Vector3"
-                },
-                {
-                    "name": "max",
-                    "description": "- A vector, assumed to be greater than min.",
-                    "type": "Vector3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 521,
-            "description": "Applies a matrix to this vector.",
-            "itemtype": "method",
-            "name": "applyMatrix3",
-            "params": [
-                {
-                    "name": "m",
-                    "description": "- A matrix.",
-                    "type": "Matrix3"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
-        },
-        {
-            "file": "src\\vector3.js",
-            "line": 542,
-            "description": "Applies a matrix to this vector.",
-            "itemtype": "method",
-            "name": "applyMatrix4",
-            "params": [
-                {
-                    "name": "m",
-                    "description": "- A matrix.",
-                    "type": "Matrix4"
-                }
-            ],
-            "return": {
-                "description": "This vector.",
-                "type": "Vector3"
-            },
-            "class": "Vector3",
-            "module": "octree"
         }
     ],
     "warnings": []

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.4.2</em>
+            <em>API Docs for: 2.5.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -52,8 +52,10 @@
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/core.html">core</a></li>
-                                <li><a href="../modules/octree.html">octree</a></li>
+                                <li><a href="../modules/helpers.html">helpers</a></li>
+                                <li><a href="../modules/math.html">math</a></li>
                                 <li><a href="../modules/points.html">points</a></li>
+                                <li><a href="../modules/sparse-octree.html">sparse-octree</a></li>
                             </ul>
                         </div>
                     </div>
@@ -95,11 +97,11 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_core_helper.js.html#l9"><code>src\core\helper.js:9</code></a>
+            Defined in: <a href="../files/src_helpers_octree-helper.js.html#l11"><code>src\helpers\octree-helper.js:11</code></a>
         </div>
 
-            Module: <a href="../modules/core.html">core</a><br>
-            Parent Module: <a href="../modules/octree.html">octree</a>
+            Module: <a href="../modules/helpers.html">helpers</a><br>
+            Parent Module: <a href="../modules/sparse-octree.html">sparse-octree</a>
 
 </div>
 
@@ -133,7 +135,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_helper.js.html#l9"><code>src\core\helper.js:9</code></a>
+        <a href="../files/src_helpers_octree-helper.js.html#l11"><code>src\helpers\octree-helper.js:11</code></a>
         </p>
 
 
@@ -186,6 +188,10 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                            <li class="index-item method private">
+                                <a href="#method_createLineSegments">createLineSegments</a>
+
+                            </li>
                             <li class="index-item method">
                                 <a href="#method_dispose">dispose</a>
 
@@ -202,7 +208,7 @@
 
                     <ul class="index-list properties extends">
                             <li class="index-item property">
-                                <a href="#property_tree">tree</a>
+                                <a href="#property_octree">octree</a>
 
                             </li>
                     </ul>
@@ -214,6 +220,63 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_createLineSegments" class="method item private">
+    <h3 class="name"><code>createLineSegments</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>octants</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_helpers_octree-helper.js.html#l44"><code>src\helpers\octree-helper.js:44</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates octant geometry.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">octants</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>The octants.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_dispose" class="method item">
     <h3 class="name"><code>dispose</code></h3>
 
@@ -229,7 +292,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_helper.js.html#l207"><code>src\core\helper.js:207</code></a>
+        <a href="../files/src_helpers_octree-helper.js.html#l147"><code>src\helpers\octree-helper.js:147</code></a>
         </p>
 
 
@@ -260,7 +323,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_helper.js.html#l40"><code>src\core\helper.js:40</code></a>
+        <a href="../files/src_helpers_octree-helper.js.html#l122"><code>src\helpers\octree-helper.js:122</code></a>
         </p>
 
 
@@ -268,21 +331,12 @@
     </div>
 
     <div class="description">
-        <p>Creates the octree geometry.</p>
+        <p>Updates the helper geometry.</p>
 
     </div>
 
 
 
-        <div class="throws">
-            <h4>Throws:</h4>
-
-            <div class="throws-description">
-                        <span class="type">Error</span>:
-                    <p>An error is thrown if too many vertices are created.</p>
-
-            </div>
-        </div>
 
 </div>
             </div>
@@ -290,8 +344,8 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_tree" class="property item">
-    <h3 class="name"><code>tree</code></h3>
+<div id="property_octree" class="property item">
+    <h3 class="name"><code>octree</code></h3>
     <span class="type"><a href="../classes/Octree.html" class="crosslink">Octree</a></span>
 
 
@@ -301,7 +355,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_helper.js.html#l29"><code>src\core\helper.js:29</code></a>
+        <a href="../files/src_helpers_octree-helper.js.html#l31"><code>src\helpers\octree-helper.js:31</code></a>
         </p>
 
 
