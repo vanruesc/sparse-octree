@@ -69,7 +69,7 @@ export class Demo {
 		const controls = new OrbitControls(camera, renderer.domElement);
 		controls.target.set(0, 0, 0);
 		controls.maxDistance = 60;
-		camera.position.set(5, 6, 8);
+		camera.position.set(10, 6, 10);
 		camera.lookAt(controls.target);
 
 		scene.add(camera);
@@ -174,7 +174,7 @@ export class Demo {
 
 				for(i = 0, l = array.length; i < l; i += 3) {
 
-					octree.add(v.fromArray(array, i * 3), p);
+					octree.add(v.fromArray(array, i), p);
 
 				}
 
@@ -193,17 +193,6 @@ export class Demo {
 			let t0 = performance.now();
 
 			const octreeHelper = new OctreeHelper(octree);
-
-			try {
-
-				octreeHelper.update();
-
-			} catch(error) {
-
-				console.warn(error.message);
-
-			}
-
 			octreeHelper.visible = false;
 
 			console.log("OctreeHelper:", octreeHelper, "created in", (((performance.now() - t0) * 100.0) / 100.0).toFixed(2) + " ms");
