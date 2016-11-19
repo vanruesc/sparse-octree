@@ -1,6 +1,6 @@
 "use strict";
 
-const LIBRARY = require("../build/sparse-octree");
+const lib = require("../build/sparse-octree");
 const THREE = require("three");
 
 const box = new THREE.Box3(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, 1, 1));
@@ -12,7 +12,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const octant = new LIBRARY.PointOctant();
+			const octant = new lib.PointOctant();
 
 			test.ok(octant, "point octant");
 			test.done();
@@ -25,7 +25,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const octree = new LIBRARY.PointOctree();
+			const octree = new lib.PointOctree();
 
 			test.ok(octree, "point octree");
 			test.done();
@@ -34,7 +34,7 @@ module.exports = {
 
 		"can add a point": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 
@@ -45,7 +45,7 @@ module.exports = {
 
 		"overwrites duplicates": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(0, 0, 0), data);
@@ -58,7 +58,7 @@ module.exports = {
 
 		"can remove a point": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.remove(new THREE.Vector3(0, 0, 0));
@@ -70,7 +70,7 @@ module.exports = {
 
 		"can look a point up": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 
@@ -81,7 +81,7 @@ module.exports = {
 
 		"adds points to intersecting octants": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(2, 0, 0), data);
 
@@ -92,7 +92,7 @@ module.exports = {
 
 		"splits octants that are at maximum capacity": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 1);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(1, 0, 0), data);
@@ -105,7 +105,7 @@ module.exports = {
 
 		"merges octants if possible": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(1, 0, 0), data);
@@ -120,7 +120,7 @@ module.exports = {
 
 		"can find the nearest point": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
 			const data2 = {};
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
@@ -136,7 +136,7 @@ module.exports = {
 
 		"can find points inside a radius": function(test) {
 
-			const octree = new LIBRARY.PointOctree(box.min, box.max, 0.0, 1, 2);
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
 
 			octree.add(new THREE.Vector3(0, 0, 0), data);
 			octree.add(new THREE.Vector3(0, 0.1, 0.005), data);

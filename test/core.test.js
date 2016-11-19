@@ -1,6 +1,6 @@
 "use strict";
 
-const LIBRARY = require("../build/sparse-octree");
+const lib = require("../build/sparse-octree");
 const THREE = require("three");
 
 const box = new THREE.Box3(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, 1, 1));
@@ -11,7 +11,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const octant = new LIBRARY.Octant();
+			const octant = new lib.Octant();
 
 			test.ok(octant, "octant");
 			test.done();
@@ -20,7 +20,7 @@ module.exports = {
 
 		"can compute its center": function(test) {
 
-			const octant = new LIBRARY.Octant(box.min, box.max);
+			const octant = new lib.Octant(box.min, box.max);
 
 			test.ok(octant.getCenter().equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
 			test.done();
@@ -29,7 +29,7 @@ module.exports = {
 
 		"can compute its dimensions": function(test) {
 
-			const octant = new LIBRARY.Octant(box.min, box.max);
+			const octant = new lib.Octant(box.min, box.max);
 
 			test.ok(octant.getDimensions().equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
 			test.done();
@@ -38,7 +38,7 @@ module.exports = {
 
 		"can be split": function(test) {
 
-			const octant = new LIBRARY.Octant(box.min, box.max);
+			const octant = new lib.Octant(box.min, box.max);
 
 			octant.split();
 
@@ -49,11 +49,11 @@ module.exports = {
 
 		"can recycle child octants": function(test) {
 
-			const octant = new LIBRARY.Octant(box.min, box.max);
+			const octant = new lib.Octant(box.min, box.max);
 
 			const mid = octant.getCenter();
 
-			const octant011 = new LIBRARY.Octant(
+			const octant011 = new lib.Octant(
 				new THREE.Vector3(octant.min.x, mid.y, mid.z),
 				new THREE.Vector3(mid.x, octant.max.y, octant.max.z)
 			);
@@ -72,7 +72,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const octant = new LIBRARY.CubicOctant();
+			const octant = new lib.CubicOctant();
 
 			test.ok(octant, "cubic octant");
 			test.done();
@@ -81,7 +81,7 @@ module.exports = {
 
 		"can compute its center": function(test) {
 
-			const octant = new LIBRARY.CubicOctant(box.min, 2);
+			const octant = new lib.CubicOctant(box.min, 2);
 
 			test.ok(octant.getCenter().equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
 			test.done();
@@ -90,7 +90,7 @@ module.exports = {
 
 		"can compute its dimensions": function(test) {
 
-			const octant = new LIBRARY.CubicOctant(box.min, 2);
+			const octant = new lib.CubicOctant(box.min, 2);
 
 			test.ok(octant.getDimensions().equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
 			test.done();
@@ -99,7 +99,7 @@ module.exports = {
 
 		"can be split": function(test) {
 
-			const octant = new LIBRARY.CubicOctant(box.min, 2);
+			const octant = new lib.CubicOctant(box.min, 2);
 
 			octant.split();
 
@@ -110,11 +110,11 @@ module.exports = {
 
 		"can recycle child octants": function(test) {
 
-			const octant = new LIBRARY.CubicOctant(box.min, 2);
+			const octant = new lib.CubicOctant(box.min, 2);
 
 			const mid = octant.getCenter();
 
-			const octant011 = new LIBRARY.CubicOctant(new THREE.Vector3(octant.min.x, mid.y, mid.z), 1);
+			const octant011 = new lib.CubicOctant(new THREE.Vector3(octant.min.x, mid.y, mid.z), 1);
 
 			octant.split([octant011]);
 
@@ -130,7 +130,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const octree = new LIBRARY.Octree();
+			const octree = new lib.Octree();
 
 			test.ok(octree, "octree");
 			test.done();
@@ -139,7 +139,7 @@ module.exports = {
 
 		"can compute its center": function(test) {
 
-			const octree = new LIBRARY.Octree(box.min, box.max);
+			const octree = new lib.Octree(box.min, box.max);
 
 			test.ok(octree.getCenter().equals(new THREE.Vector3(0, 0, 0)), "should be able to compute its center");
 			test.done();
@@ -148,7 +148,7 @@ module.exports = {
 
 		"can compute its dimensions": function(test) {
 
-			const octree = new LIBRARY.Octree(box.min, box.max);
+			const octree = new lib.Octree(box.min, box.max);
 
 			test.ok(octree.getDimensions().equals(new THREE.Vector3(2, 2, 2)), "should be able to compute its dimensions");
 			test.done();
@@ -157,7 +157,7 @@ module.exports = {
 
 		"can compute its depth": function(test) {
 
-			const octree = new LIBRARY.Octree(box.min, box.max);
+			const octree = new lib.Octree(box.min, box.max);
 
 			octree.root.split();
 			octree.root.children[0].split();
@@ -170,7 +170,7 @@ module.exports = {
 
 		"finds octants by depth level": function(test) {
 
-			const octree = new LIBRARY.Octree(box.min, box.max);
+			const octree = new lib.Octree(box.min, box.max);
 
 			octree.root.split();
 			octree.root.children[0].split();
@@ -190,7 +190,7 @@ module.exports = {
 
 		"can be instantiated": function(test) {
 
-			const helper = new LIBRARY.OctreeHelper();
+			const helper = new lib.OctreeHelper();
 
 			test.ok(helper, "helper");
 			test.done();
@@ -199,21 +199,11 @@ module.exports = {
 
 		"creates geometry for each tree level": function(test) {
 
-			const octree = new LIBRARY.Octree(box.min, box.max);
+			const octree = new lib.Octree(box.min, box.max);
 
 			octree.root.split();
 
-			const helper = new LIBRARY.OctreeHelper(octree);
-
-			try {
-
-				helper.update();
-
-			} catch(error) {
-
-				test.ok(false, "could not update the helper");
-
-			}
+			const helper = new lib.OctreeHelper(octree);
 
 			test.equal(helper.children.length, 2, "should have a child for each level");
 			test.done();
