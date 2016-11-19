@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.4.2 build Nov 05 2016
+ * sparse-octree v2.5.0 build Nov 19 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -267,10 +267,8 @@
   /**
    * A vector with three components.
    *
-   * This class is a copy of THREE.Vector3. It can be removed as soon as three.js
-   * starts supporting ES6 modules.
-   *
    * @class Vector3
+   * @submodule math
    * @constructor
    * @param {Number} [x=0] - The x value.
    * @param {Number} [y=0] - The y value.
@@ -278,7 +276,10 @@
    */
 
   var Vector3 = function () {
-  	function Vector3(x, y, z) {
+  	function Vector3() {
+  		var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  		var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  		var z = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
   		classCallCheck(this, Vector3);
 
 
@@ -289,7 +290,7 @@
      * @type Number
      */
 
-  		this.x = x || 0;
+  		this.x = x;
 
   		/**
      * The y component.
@@ -298,7 +299,7 @@
      * @type Number
      */
 
-  		this.y = y || 0;
+  		this.y = y;
 
   		/**
      * The z component.
@@ -307,7 +308,7 @@
      * @type Number
      */
 
-  		this.z = z || 0;
+  		this.z = z;
   	}
 
   	/**
@@ -450,10 +451,30 @@
   		}
 
   		/**
+     * Adds a scaled vector to this one.
+     *
+     * @method addScaledVector
+     * @param {Vector3} v - The vector to scale and add.
+     * @param {Number} s - A scalar.
+     * @return {Vector3} This vector.
+     */
+
+  	}, {
+  		key: "addScaledVector",
+  		value: function addScaledVector(v, s) {
+
+  			this.x += v.x * s;
+  			this.y += v.y * s;
+  			this.z += v.z * s;
+
+  			return this;
+  		}
+
+  		/**
      * Adds a scalar to this vector.
      *
      * @method addScalar
-     * @param {Vector3} s - The scalar to add.
+     * @param {Number} s - The scalar to add.
      * @return {Vector3} This vector.
      */
 
@@ -511,7 +532,7 @@
      * Subtracts a scalar to this vector.
      *
      * @method subScalar
-     * @param {Vector3} s - The scalar to subtract.
+     * @param {Number} s - The scalar to subtract.
      * @return {Vector3} This vector.
      */
 
@@ -569,7 +590,7 @@
      * Multiplies this vector with a given scalar.
      *
      * @method multiplyScalar
-     * @param {Vector3} s - A scalar.
+     * @param {Number} s - A scalar.
      * @return {Vector3} This vector.
      */
 
@@ -635,7 +656,7 @@
      * Divides this vector by a given scalar.
      *
      * @method divideScalar
-     * @param {Vector3} s - A scalar.
+     * @param {Number} s - A scalar.
      * @return {Vector3} This vector.
      */
 
@@ -682,10 +703,10 @@
   		}
 
   		/**
-     * Calculates the length squared of this vector.
+     * Calculates the squared length of this vector.
      *
      * @method lengthSq
-     * @return {Vector3} This vector.
+     * @return {Number} The squared length.
      */
 
   	}, {
@@ -699,7 +720,7 @@
      * Calculates the length of this vector.
      *
      * @method length
-     * @return {Vector3} This vector.
+     * @return {Number} The length.
      */
 
   	}, {
@@ -714,7 +735,7 @@
      *
      * @method distanceTo
      * @param {Vector3} v - A vector.
-     * @return {Vector3} This vector.
+     * @return {Number} The distance.
      */
 
   	}, {
@@ -725,11 +746,11 @@
   		}
 
   		/**
-     * Calculates the distance squared to a given vector.
+     * Calculates the squared distance to a given vector.
      *
      * @method distanceToSquared
      * @param {Vector3} v - A vector.
-     * @return {Vector3} This vector.
+     * @return {Number} The squared distance.
      */
 
   	}, {
@@ -877,7 +898,9 @@
    */
 
   var Octant = function () {
-  	function Octant(min, max) {
+  	function Octant() {
+  		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+  		var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
   		classCallCheck(this, Octant);
 
 
@@ -888,7 +911,7 @@
      * @type Vector3
      */
 
-  		this.min = min !== undefined ? min : new Vector3();
+  		this.min = min;
 
   		/**
      * The upper bounds of the octant.
@@ -897,7 +920,7 @@
      * @type Vector3
      */
 
-  		this.max = max !== undefined ? max : new Vector3();
+  		this.max = max;
 
   		/**
      * The children of this octant.
@@ -1021,6 +1044,26 @@
    */
 
   var PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+
+  /**
+   * Describes all possible octant corner connections.
+   *
+   * @property EDGES
+   * @type Array
+   * @static
+   * @final
+   */
+
+  var EDGES = [
+
+  // X-Axis.
+  new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]),
+
+  // Y-Axis.
+  new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]),
+
+  // Z-Axis.
+  new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
 
   /**
    * A cubic octant.
@@ -1174,15 +1217,17 @@
   /**
    * A bounding box.
    *
-   * This class is a copy of THREE.Box3. It can be removed as soon as three.js
-   * starts supporting ES6 modules.
-   *
    * @class Box3
+   * @submodule math
    * @constructor
+   * @param {Vector3} [min] - The lower bounds.
+   * @param {Vector3} [max] - The upper bounds.
    */
 
   var Box3 = function () {
-  	function Box3(min, max) {
+  	function Box3() {
+  		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(Infinity, Infinity, Infinity);
+  		var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3(-Infinity, -Infinity, -Infinity);
   		classCallCheck(this, Box3);
 
 
@@ -1193,7 +1238,7 @@
      * @type Vector3
      */
 
-  		this.min = min !== undefined ? min : new Vector3(Infinity, Infinity, Infinity);
+  		this.min = min;
 
   		/**
      * The max bounds.
@@ -1202,7 +1247,7 @@
      * @type Vector3
      */
 
-  		this.max = max !== undefined ? max : new Vector3(-Infinity, -Infinity, -Infinity);
+  		this.max = max;
   	}
 
   	/**
@@ -1922,12 +1967,19 @@
   }();
 
   /**
+   * Core components.
+   *
+   * @module sparse-octree
+   * @submodule core
+   */
+
+  /**
    * An octree helper.
    *
    * The update method must be called manually to generate the octree geometry.
    *
    * @class OctreeHelper
-   * @submodule core
+   * @submodule helpers
    * @constructor
    * @extends Object3D
    * @param {Octree} [tree=null] - The octree to visualise.
@@ -1937,7 +1989,7 @@
   		inherits(OctreeHelper, _Object3D);
 
   		function OctreeHelper() {
-  				var tree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  				var octree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   				classCallCheck(this, OctreeHelper);
 
   				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
@@ -1947,60 +1999,111 @@
   				/**
        * The octree.
        *
-       * @property tree
+       * @property octree
        * @type Octree
        */
 
-  				_this.tree = tree;
+  				_this.octree = octree;
+
+  				_this.update();
 
   				return _this;
   		}
 
   		/**
-     * Creates the octree geometry.
+     * Creates octant geometry.
      *
-     * @method update
-     * @throws {Error} An error is thrown if too many vertices are created.
+     * @method createLineSegments
+     * @private
+     * @param {Array} octants - The octants.
      */
 
   		createClass(OctreeHelper, [{
-  				key: "update",
-  				value: function update() {
+  				key: "createLineSegments",
+  				value: function createLineSegments(octants) {
 
-  						var vertexMap = new Map();
-  						var depth = this.tree !== null ? this.tree.getDepth() : -1;
+  						var maxOctants = Math.pow(2, 16) / 8 - 1;
+  						var group = new three.Object3D();
 
-  						var connections = [
-  						/* 0 */[1, 4],
-  						/* 1 */[2, 5],
-  						/* 2 */[3, 6],
-  						/* 3 */[0, 7],
-  						/* 4 */[5],
-  						/* 5 */[6],
-  						/* 6 */[7],
-  						/* 7 */[4]];
+  						var material = new three.LineBasicMaterial({
+  								color: 0xffffff * Math.random()
+  						});
+
+  						var octantCount = octants.length;
+  						var vertexCount = void 0;
+  						var length = void 0;
+
+  						var indices = void 0,
+  						    positions = void 0;
+  						var octant = void 0,
+  						    min = void 0,
+  						    max = void 0;
+  						var geometry = void 0;
 
   						var i = void 0,
   						    j = void 0,
-  						    k = void 0,
-  						    il = void 0,
-  						    kl = void 0;
-  						var octants = void 0,
-  						    octant = void 0;
+  						    c = void 0,
+  						    d = void 0,
+  						    n = void 0;
+  						var corner = void 0,
+  						    edge = void 0;
 
-  						var vertices = void 0,
-  						    v = void 0,
-  						    c = void 0;
-  						var entry = void 0,
-  						    key = void 0;
+  						// Create the geometry in limited runs - never create too many vertices.
+  						for (i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
 
-  						var geometry = void 0,
-  						    lineSegments = void 0,
-  						    material = void 0;
+  								length += octantCount < maxOctants ? octantCount : maxOctants;
+  								octantCount -= maxOctants;
 
-  						var indexCount = void 0;
-  						var indices = null;
-  						var positions = null;
+  								vertexCount = length * 8;
+  								indices = new Uint16Array(vertexCount * 3);
+  								positions = new Float32Array(vertexCount * 3);
+
+  								// Don't reset i, continue where a previous run left off.
+  								for (c = 0, d = 0; i < length; ++i) {
+
+  										octant = octants[i];
+  										min = octant.min;
+  										max = octant.max;
+
+  										for (j = 0; j < 12; ++j) {
+
+  												edge = EDGES[j];
+
+  												indices[d++] = c + edge[0];
+  												indices[d++] = c + edge[1];
+  										}
+
+  										for (j = 0; j < 8; ++j, ++c) {
+
+  												corner = PATTERN[j];
+
+  												positions[c * 3] = corner[0] === 0 ? min.x : max.x;
+  												positions[c * 3 + 1] = corner[1] === 0 ? min.y : max.y;
+  												positions[c * 3 + 2] = corner[2] === 0 ? min.z : max.z;
+  										}
+  								}
+
+  								geometry = new three.BufferGeometry();
+  								geometry.setIndex(new three.BufferAttribute(indices, 1));
+  								geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
+
+  								group.add(new three.LineSegments(geometry, material));
+  						}
+
+  						this.add(group);
+  				}
+
+  				/**
+       * Updates the helper geometry.
+       *
+       * @method update
+       */
+
+  		}, {
+  				key: "update",
+  				value: function update() {
+
+  						var depth = this.octree !== null ? this.octree.getDepth() : -1;
 
   						var level = 0;
 
@@ -2009,130 +2112,7 @@
 
   						while (level <= depth) {
 
-  								octants = this.tree.findOctantsByLevel(level);
-
-  								indexCount = 0;
-  								vertexMap.clear();
-
-  								for (i = 0, j = 0, il = octants.length; i < il; ++i) {
-
-  										octant = octants[i];
-
-  										vertices = [
-  										/* 0 */[octant.max.x, octant.max.y, octant.max.z],
-  										/* 1 */[octant.min.x, octant.max.y, octant.max.z],
-  										/* 2 */[octant.min.x, octant.min.y, octant.max.z],
-  										/* 3 */[octant.max.x, octant.min.y, octant.max.z],
-  										/* 4 */[octant.max.x, octant.max.y, octant.min.z],
-  										/* 5 */[octant.min.x, octant.max.y, octant.min.z],
-  										/* 6 */[octant.min.x, octant.min.y, octant.min.z],
-  										/* 7 */[octant.max.x, octant.min.y, octant.min.z]];
-
-  										// Update the vertex map.
-  										for (j = 0; j < 8; ++j) {
-
-  												v = vertices[j];
-  												c = connections[j];
-
-  												key = v.toString();
-  												entry = vertexMap.get(key);
-
-  												// Prevent duplicates.
-  												if (entry !== undefined) {
-
-  														// Adopt unique connections.
-  														for (k = 0, kl = c.length; k < kl; ++k) {
-
-  																key = vertices[c[k]].toString();
-
-  																if (entry.connectionKeys.indexOf(key) < 0) {
-
-  																		entry.connectionKeys.push(key);
-  																		++indexCount;
-  																}
-  														}
-  												} else {
-
-  														// No duplicate, create new entry.
-  														entry = {
-  																position: v,
-  																connectionKeys: [],
-  																index: vertexMap.size
-  														};
-
-  														for (k = 0, kl = c.length; k < kl; ++k) {
-
-  																entry.connectionKeys.push(vertices[c[k]].toString());
-  																++indexCount;
-  														}
-
-  														vertexMap.set(key, entry);
-  												}
-  										}
-  								}
-
-  								// Create the geometry for this level.
-  								if (vertexMap.size < 65536) {
-
-  										indices = new Uint16Array(indexCount * 2);
-  										positions = new Float32Array(vertexMap.size * 3);
-
-  										i = 0;j = 0;
-
-  										var _iteratorNormalCompletion = true;
-  										var _didIteratorError = false;
-  										var _iteratorError = undefined;
-
-  										try {
-  												for (var _iterator = vertexMap.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-  														entry = _step.value;
-
-
-  														v = entry.position;
-
-  														positions[i++] = v[0];
-  														positions[i++] = v[1];
-  														positions[i++] = v[2];
-
-  														c = entry.connectionKeys;
-
-  														// Add the index pairs that describe the lines.
-  														for (k = 0, kl = c.length; k < kl; ++k) {
-
-  																indices[j++] = entry.index;
-  																indices[j++] = vertexMap.get(c[k]).index;
-  														}
-  												}
-  										} catch (err) {
-  												_didIteratorError = true;
-  												_iteratorError = err;
-  										} finally {
-  												try {
-  														if (!_iteratorNormalCompletion && _iterator.return) {
-  																_iterator.return();
-  														}
-  												} finally {
-  														if (_didIteratorError) {
-  																throw _iteratorError;
-  														}
-  												}
-  										}
-
-  										geometry = new three.BufferGeometry();
-  										geometry.setIndex(new three.BufferAttribute(indices, 1));
-  										geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
-
-  										material = new three.LineBasicMaterial({
-  												color: 0xffffff * Math.random()
-  										});
-
-  										lineSegments = new three.LineSegments(geometry, material);
-
-  										this.add(lineSegments);
-  								} else {
-
-  										throw new Error("Could not create geometry for octree depth level " + level + " (vertex count of " + vertexMap.size + " exceeds limit of 65536)");
-  								}
+  								this.createLineSegments(this.octree.findOctantsByLevel(level));
 
   								++level;
   						}
@@ -2148,20 +2128,33 @@
   				key: "dispose",
   				value: function dispose() {
 
-  						var children = this.children;
-
+  						var child = void 0,
+  						    children = void 0;
   						var i = void 0,
-  						    l = void 0;
+  						    j = void 0,
+  						    il = void 0,
+  						    jl = void 0;
 
-  						for (i = 0, l = children.length; i < l; ++i) {
+  						for (i = 0, il = this.children.length; i < il; ++i) {
 
-  								children[i].geometry.dispose();
-  								children[i].material.dispose();
+  								child = this.children[i];
+  								children = child.children;
+
+  								for (j = 0, jl = children.length; j < jl; ++j) {
+
+  										children[j].geometry.dispose();
+  										children[j].material.dispose();
+  								}
+
+  								while (children.length > 0) {
+
+  										child.remove(children[0]);
+  								}
   						}
 
-  						while (children.length > 0) {
+  						while (this.children.length > 0) {
 
-  								children.remove(children[0]);
+  								this.remove(children[0]);
   						}
   				}
   		}]);
@@ -2169,10 +2162,17 @@
   }(three.Object3D);
 
   /**
-   * Core components.
+   * A collection of helpers.
    *
-   * @module octree
-   * @submodule core
+   * @module sparse-octree
+   * @submodule helpers
+   */
+
+  /**
+   * Math components.
+   *
+   * @module sparse-octree
+   * @submodule math
    */
 
   /**
@@ -2987,23 +2987,26 @@
   /**
    * Point-oriented octree components.
    *
-   * @module octree
+   * @module sparse-octree
    * @submodule points
    */
 
   /**
    * Exposure of the library components.
    *
-   * @module octree
-   * @main octree
+   * @module sparse-octree
+   * @main sparse-octree
    */
 
   exports.CubicOctant = CubicOctant;
+  exports.EDGES = EDGES;
   exports.Octant = Octant;
   exports.Octree = Octree;
-  exports.OctreeHelper = OctreeHelper;
   exports.PATTERN = PATTERN;
   exports.Raycasting = Raycasting;
+  exports.OctreeHelper = OctreeHelper;
+  exports.Box3 = Box3;
+  exports.Vector3 = Vector3;
   exports.PointOctant = PointOctant;
   exports.PointOctree = PointOctree;
 
