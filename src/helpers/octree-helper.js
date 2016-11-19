@@ -6,13 +6,15 @@ import {
 	Object3D
 } from "three";
 
+import { PATTERN, EDGES } from "../core/octant.js";
+
 /**
  * An octree helper.
  *
  * The update method must be called manually to generate the octree geometry.
  *
  * @class OctreeHelper
- * @submodule core
+ * @submodule helpers
  * @constructor
  * @extends Object3D
  * @param {Octree} [tree=null] - The octree to visualise.
@@ -20,7 +22,7 @@ import {
 
 export class OctreeHelper extends Object3D {
 
-	constructor(tree = null) {
+	constructor(octree = null) {
 
 		super();
 
@@ -29,48 +31,103 @@ export class OctreeHelper extends Object3D {
 		/**
 		 * The octree.
 		 *
-		 * @property tree
+		 * @property octree
 		 * @type Octree
 		 */
 
-		this.tree = tree;
+		this.octree = octree;
+
+		this.update();
 
 	}
 
 	/**
-	 * Creates the octree geometry.
+	 * Creates octant geometry.
+	 *
+	 * @method createLineSegments
+	 * @private
+	 * @param {Array} octants - The octants.
+	 */
+
+	createLineSegments(octants) {
+
+		const maxOctants = (Math.pow(2, 16) / 8) - 1;
+		const group = new Object3D();
+
+		const material = new LineBasicMaterial({
+			color: 0xffffff * Math.random()
+		});
+
+		let octantCount = octants.length;
+		let vertexCount;
+		let length;
+
+		let indices, positions;
+		let octant, min, max;
+		let geometry;
+
+		let i, j, c, d, n;
+		let corner, edge;
+
+		// Create the geometry in limited runs - never create too many vertices.
+		for(i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
+
+			length += (octantCount < maxOctants) ? octantCount : maxOctants;
+			octantCount -= maxOctants;
+
+			vertexCount = length * 8;
+			indices = new Uint16Array(vertexCount * 3);
+			positions = new Float32Array(vertexCount * 3);
+
+			// Don't reset i, continue where a previous run left off.
+			for(c = 0, d = 0; i < length; ++i) {
+
+				octant = octants[i];
+				min = octant.min;
+				max = octant.max;
+
+				for(j = 0; j < 12; ++j) {
+
+					edge = EDGES[j];
+
+					indices[d++] = c + edge[0];
+					indices[d++] = c + edge[1];
+
+				}
+
+				for(j = 0; j < 8; ++j, ++c) {
+
+					corner = PATTERN[j];
+
+					positions[c * 3] = (corner[0] === 0) ? min.x : max.x;
+					positions[c * 3 + 1] = (corner[1] === 0) ? min.y : max.y;
+					positions[c * 3 + 2] = (corner[2] === 0) ? min.z : max.z;
+
+				}
+
+			}
+
+			geometry = new BufferGeometry();
+			geometry.setIndex(new BufferAttribute(indices, 1));
+			geometry.addAttribute("position", new BufferAttribute(positions, 3));
+
+			group.add(new LineSegments(geometry, material));
+
+		}
+
+		this.add(group);
+
+	}
+
+	/**
+	 * Updates the helper geometry.
 	 *
 	 * @method update
-	 * @throws {Error} An error is thrown if too many vertices are created.
 	 */
 
 	update() {
 
-		const vertexMap = new Map();
-		const depth = (this.tree !== null) ? this.tree.getDepth() : -1;
-
-		const connections = [
-			/* 0 */ [1, 4],
-			/* 1 */ [2, 5],
-			/* 2 */ [3, 6],
-			/* 3 */ [0, 7],
-			/* 4 */ [5],
-			/* 5 */ [6],
-			/* 6 */ [7],
-			/* 7 */ [4]
-		];
-
-		let i, j, k, il, kl;
-		let octants, octant;
-
-		let vertices, v, c;
-		let entry, key;
-
-		let geometry, lineSegments, material;
-
-		let indexCount;
-		let indices = null;
-		let positions = null;
+		const depth = (this.octree !== null) ? this.octree.getDepth() : -1;
 
 		let level = 0;
 
@@ -79,124 +136,7 @@ export class OctreeHelper extends Object3D {
 
 		while(level <= depth) {
 
-			octants = this.tree.findOctantsByLevel(level);
-
-			indexCount = 0;
-			vertexMap.clear();
-
-			for(i = 0, j = 0, il = octants.length; i < il; ++i) {
-
-				octant = octants[i];
-
-				vertices = [
-					/* 0 */ [octant.max.x, octant.max.y, octant.max.z],
-					/* 1 */ [octant.min.x, octant.max.y, octant.max.z],
-					/* 2 */ [octant.min.x, octant.min.y, octant.max.z],
-					/* 3 */ [octant.max.x, octant.min.y, octant.max.z],
-					/* 4 */ [octant.max.x, octant.max.y, octant.min.z],
-					/* 5 */ [octant.min.x, octant.max.y, octant.min.z],
-					/* 6 */ [octant.min.x, octant.min.y, octant.min.z],
-					/* 7 */ [octant.max.x, octant.min.y, octant.min.z]
-				];
-
-				// Update the vertex map.
-				for(j = 0; j < 8; ++j) {
-
-					v = vertices[j];
-					c = connections[j];
-
-					key = v.toString();
-					entry = vertexMap.get(key);
-
-					// Prevent duplicates.
-					if(entry !== undefined) {
-
-						// Adopt unique connections.
-						for(k = 0, kl = c.length; k < kl; ++k) {
-
-							key = vertices[c[k]].toString();
-
-							if(entry.connectionKeys.indexOf(key) < 0) {
-
-								entry.connectionKeys.push(key);
-								++indexCount;
-
-							}
-
-						}
-
-					} else {
-
-						// No duplicate, create new entry.
-						entry = {
-							position: v,
-							connectionKeys: [],
-							index: vertexMap.size
-						};
-
-						for(k = 0, kl = c.length; k < kl; ++k) {
-
-							entry.connectionKeys.push(vertices[c[k]].toString());
-							++indexCount;
-
-						}
-
-						vertexMap.set(key, entry);
-
-					}
-
-				}
-
-			}
-
-			// Create the geometry for this level.
-			if(vertexMap.size < 65536) {
-
-				indices = new Uint16Array(indexCount * 2);
-				positions = new Float32Array(vertexMap.size * 3);
-
-				i = 0; j = 0;
-
-				for(entry of vertexMap.values()) {
-
-					v = entry.position;
-
-					positions[i++] = v[0];
-					positions[i++] = v[1];
-					positions[i++] = v[2];
-
-					c = entry.connectionKeys;
-
-					// Add the index pairs that describe the lines.
-					for(k = 0, kl = c.length; k < kl; ++k) {
-
-						indices[j++] = entry.index;
-						indices[j++] = vertexMap.get(c[k]).index;
-
-					}
-
-				}
-
-				geometry = new BufferGeometry();
-				geometry.setIndex(new BufferAttribute(indices, 1));
-				geometry.addAttribute("position", new BufferAttribute(positions, 3));
-
-				material = new LineBasicMaterial({
-					color: 0xffffff * Math.random()
-				});
-
-				lineSegments = new LineSegments(geometry, material);
-
-				this.add(lineSegments);
-
-			} else {
-
-				throw new Error(
-					"Could not create geometry for octree depth level " + level +
-					" (vertex count of " + vertexMap.size + " exceeds limit of 65536)"
-				);
-
-			}
+			this.createLineSegments(this.octree.findOctantsByLevel(level));
 
 			++level;
 
@@ -212,20 +152,32 @@ export class OctreeHelper extends Object3D {
 
 	dispose() {
 
-		const children = this.children;
+		let child, children;
+		let i, j, il, jl;
 
-		let i, l;
+		for(i = 0, il = this.children.length; i < il; ++i) {
 
-		for(i = 0, l = children.length; i < l; ++i) {
+			child = this.children[i];
+			children = child.children;
 
-			children[i].geometry.dispose();
-			children[i].material.dispose();
+			for(j = 0, jl = children.length; j < jl; ++j) {
+
+				children[j].geometry.dispose();
+				children[j].material.dispose();
+
+			}
+
+			while(children.length > 0) {
+
+				child.remove(children[0]);
+
+			}
 
 		}
 
-		while(children.length > 0) {
+		while(this.children.length > 0) {
 
-			children.remove(children[0]);
+			this.remove(children[0]);
 
 		}
 
