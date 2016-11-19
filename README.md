@@ -48,7 +48,7 @@ const octreeHelper = new OctreeHelper(octree);
 scene.add(octreeHelper);
 ```
 
-##### [Points](https://jsfiddle.net/6gt9fjmq/1/)
+##### [Points](https://jsfiddle.net/6gt9fjmq/2/)
 
 ```javascript
 import { Vector3 } from "three";
