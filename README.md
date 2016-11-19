@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/sparse-octree.svg)](http://badge.fury.io/js/sparse-octree) 
 [![Dependencies](https://david-dm.org/vanruesc/sparse-octree.svg?branch=master)](https://david-dm.org/vanruesc/sparse-octree)
 
-A sparse octree data structure for three.js.  
+A sparse octree data structure.  
 
 *[Extensive Demo](http://vanruesc.github.io/sparse-octree/public/index.html) ::
 [API Reference](http://vanruesc.github.io/sparse-octree/docs)*
@@ -42,18 +42,8 @@ import { Octree, OctreeHelper } from "sparse-octree";
 
 const scene = new Scene();
 
-const octree = new Octree(...);
+const octree = new Octree();
 const octreeHelper = new OctreeHelper(octree);
-
-try {
-
-	octreeHelper.update();
-
-} catch(error) {
-
-	console.warn(error.message);
-
-}
 
 scene.add(octreeHelper);
 ```
@@ -70,15 +60,16 @@ const max = new Vector3(1, 1, 1);
 const octree = new PointOctree(min, max);
 
 octree.add(new Vector3(0, 0, 0), {});
-octree.fetch(new Vector3(0, 0, 0)); // {}
+octree.fetch(new Vector3(0, 0, 0)); // => {}
 ```
 
 
 ## Features
 
 - Base Functionality
+	- Pointer-based structure
   - Handles octant splitting
-  - Adheres to a common octant layout
+  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/docs/classes/Octant.html#property_PATTERN)
   - Supports raycasting
   - Supports culling
   - Supports cubic octrees
