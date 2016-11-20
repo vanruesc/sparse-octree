@@ -57,7 +57,7 @@
 		"grunt-contrib-yuidoc": "1.0.x",
 		"grunt-contrib-copy": "1.0.x",
 		"grunt-eslint": "19.0.x",
-		"grunt-rollup": "0.8.x",
+		"grunt-rollup": "1.0.x",
 		"jit-grunt": "0.10.x",
 		"load-grunt-config": "0.19.x",
 		"rollup-plugin-babel": "2.6.x",
