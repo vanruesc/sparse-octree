@@ -67,7 +67,7 @@ export class OctreeHelper extends Object3D {
 		let i, j, c, d, n;
 		let corner, edge;
 
-		// Create the geometry in limited runs - never create too many vertices.
+		// Create geometry in multiple runs to limit the amount of vertices.
 		for(i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
 
 			length += (octantCount < maxOctants) ? octantCount : maxOctants;
