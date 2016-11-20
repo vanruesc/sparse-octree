@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.5.0 build Nov 19 2016
+ * sparse-octree v2.5.1 build Nov 20 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -1976,13 +1976,11 @@
   /**
    * An octree helper.
    *
-   * The update method must be called manually to generate the octree geometry.
-   *
    * @class OctreeHelper
    * @submodule helpers
    * @constructor
    * @extends Object3D
-   * @param {Octree} [tree=null] - The octree to visualise.
+   * @param {Octree} [octree=null] - The octree to visualise.
    */
 
   var OctreeHelper = function (_Object3D) {
@@ -2048,7 +2046,7 @@
   						var corner = void 0,
   						    edge = void 0;
 
-  						// Create the geometry in limited runs - never create too many vertices.
+  						// Create geometry in multiple runs to limit the amount of vertices.
   						for (i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
 
   								length += octantCount < maxOctants ? octantCount : maxOctants;
