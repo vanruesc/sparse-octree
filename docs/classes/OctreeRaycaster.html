@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Raycasting - sparse-octree</title>
+    <title>OctreeRaycaster - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.5.1</em>
+            <em>API Docs for: 2.5.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,9 +43,9 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/OctreeRaycaster.html">OctreeRaycaster</a></li>
                                 <li><a href="../classes/PointOctant.html">PointOctant</a></li>
                                 <li><a href="../classes/PointOctree.html">PointOctree</a></li>
-                                <li><a href="../classes/Raycasting.html">Raycasting</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
                 
@@ -89,12 +89,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Raycasting Class</h1>
+<h1>OctreeRaycaster Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_core_raycasting.js.html#l229"><code>src\core\raycasting.js:229</code></a>
+            Defined in: <a href="../files/src_core_octree-raycaster.js.html#l229"><code>src\core\octree-raycaster.js:229</code></a>
         </div>
 
             Module: <a href="../modules/core.html">core</a><br>
@@ -104,7 +104,7 @@
 
 
 <div class="box intro">
-    <p>A collection of utility functions for octree raycasting.</p>
+    <p>An octree raycaster.</p>
 <p>Based on:
 &quot;An Efficient Parametric Algorithm for Octree Traversal&quot;
 by J. Revelles et al. (2000).</p>
@@ -139,7 +139,7 @@ by J. Revelles et al. (2000).</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_raycast">raycast</a>
+                                <a href="#method_intersectOctree">intersectOctree</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -216,7 +216,7 @@ by J. Revelles et al. (2000).</p>
                     <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l38"><code>src\core\raycasting.js:38</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l38"><code>src\core\octree-raycaster.js:38</code></a>
         </p>
 
 
@@ -364,7 +364,7 @@ largest t0.</p>
                     <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l86"><code>src\core\raycasting.js:86</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l86"><code>src\core\octree-raycaster.js:86</code></a>
         </p>
 
 
@@ -448,8 +448,8 @@ the current one.</p>
 
 
 </div>
-<div id="method_raycast" class="method item">
-    <h3 class="name"><code>raycast</code></h3>
+<div id="method_intersectOctree" class="method item">
+    <h3 class="name"><code>intersectOctree</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -460,7 +460,7 @@ the current one.</p>
                         <code>raycaster</code>
                 </li>
                 <li class="arg">
-                        <code>octants</code>
+                        <code>intersects</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -476,7 +476,7 @@ the current one.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l243"><code>src\core\raycasting.js:243</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l243"><code>src\core\octree-raycaster.js:243</code></a>
         </p>
 
 
@@ -484,7 +484,8 @@ the current one.</p>
     </div>
 
     <div class="description">
-        <p>Finds the octants that intersect with the given ray.</p>
+        <p>Finds the octants that intersect with the given ray. The intersecting
+octants are sorted by distance, closest first.</p>
 
     </div>
 
@@ -512,20 +513,20 @@ the current one.</p>
 
                     <div class="param-description">
                         <ul>
-<li>The raycaster.</li>
+<li>A raycaster.</li>
 </ul>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">octants</code>
+                        <code class="param-name">intersects</code>
                         <span class="type">Array</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>An array to be filled with the intersecting octants.</li>
+<li>A list to be filled with intersecting octants.</li>
 </ul>
 
                     </div>
@@ -585,7 +586,7 @@ the current one.</p>
                     <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l128"><code>src\core\raycasting.js:128</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l128"><code>src\core\octree-raycaster.js:128</code></a>
         </p>
 
 
@@ -744,7 +745,7 @@ the current one.</p>
                     <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l1"><code>src\core\raycasting.js:1</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l1"><code>src\core\octree-raycaster.js:1</code></a>
         </p>
 
 
@@ -774,7 +775,7 @@ raycasting flags.</p>
                     <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_raycasting.js.html#l14"><code>src\core\raycasting.js:14</code></a>
+        <a href="../files/src_core_octree-raycaster.js.html#l14"><code>src\core\octree-raycaster.js:14</code></a>
         </p>
 
 

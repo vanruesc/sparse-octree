@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.5.1",
+        "version": "2.5.2",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -33,20 +33,20 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\core\\octree-raycaster.js": {
+            "name": "src\\core\\octree-raycaster.js",
+            "modules": {},
+            "classes": {
+                "OctreeRaycaster": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\core\\octree.js": {
             "name": "src\\core\\octree.js",
             "modules": {},
             "classes": {
                 "Octree": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src\\core\\raycasting.js": {
-            "name": "src\\core\\raycasting.js",
-            "modules": {},
-            "classes": {
-                "Raycasting": 1
             },
             "fors": {},
             "namespaces": {}
@@ -141,15 +141,15 @@
             "classes": {
                 "CubicOctant": 1,
                 "Octant": 1,
-                "Octree": 1,
-                "Raycasting": 1
+                "OctreeRaycaster": 1,
+                "Octree": 1
             },
             "fors": {},
             "is_submodule": 1,
             "namespaces": {},
             "module": "sparse-octree",
-            "file": "src\\core\\raycasting.js",
-            "line": 229,
+            "file": "src\\core\\octree.js",
+            "line": 5,
             "description": "Core components."
         },
         "sparse-octree": {
@@ -164,8 +164,8 @@
             "classes": {
                 "CubicOctant": 1,
                 "Octant": 1,
+                "OctreeRaycaster": 1,
                 "Octree": 1,
-                "Raycasting": 1,
                 "OctreeHelper": 1,
                 "Box3": 1,
                 "Vector3": 1,
@@ -289,6 +289,22 @@
                 }
             ]
         },
+        "OctreeRaycaster": {
+            "name": "OctreeRaycaster",
+            "shortname": "OctreeRaycaster",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "sparse-octree",
+            "namespace": "",
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 229,
+            "description": "An octree raycaster.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000).",
+            "submodule": "core",
+            "static": 1
+        },
         "Octree": {
             "name": "Octree",
             "shortname": "Octree",
@@ -318,22 +334,6 @@
                     "optional": true
                 }
             ]
-        },
-        "Raycasting": {
-            "name": "Raycasting",
-            "shortname": "Raycasting",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "sparse-octree",
-            "namespace": "",
-            "file": "src\\core\\raycasting.js",
-            "line": 229,
-            "description": "A collection of utility functions for octree raycasting.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000).",
-            "submodule": "core",
-            "static": 1
         },
         "OctreeHelper": {
             "name": "OctreeHelper",
@@ -703,6 +703,207 @@
             "submodule": "core"
         },
         {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 1,
+            "description": "Contains bytes used for bitwise operations. The last byte is used to store\nraycasting flags.",
+            "itemtype": "property",
+            "name": "flags",
+            "type": "Uint8Array",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "final": 1,
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree"
+        },
+        {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 14,
+            "description": "A lookup-table containing octant ids. Used to determine the exit plane from\nan octant.",
+            "itemtype": "property",
+            "name": "octantTable",
+            "type": "Array",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "final": 1,
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree"
+        },
+        {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 38,
+            "description": "Finds the entry plane of the first octant that a ray travels through.\n\nDetermining the first octant requires knowing which of the t0's is the\nlargest. The tm's of the other axes must also be compared against that\nlargest t0.",
+            "itemtype": "method",
+            "name": "findEntryOctant",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "tx0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz0",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "txm",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tym",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tzm",
+                    "description": "- Ray projection parameter mean.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The index of the first octant that the ray travels through.",
+                "type": "Number"
+            },
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree"
+        },
+        {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 86,
+            "description": "Finds the next octant that intersects with the ray based on the exit plane of\nthe current one.",
+            "itemtype": "method",
+            "name": "findNextOctant",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "currentOctant",
+                    "description": "- The index of the current octant.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tx1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz1",
+                    "description": "- Ray projection parameter.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The index of the next octant that the ray travels through.",
+                "type": "Number"
+            },
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree"
+        },
+        {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 128,
+            "description": "Finds all octants that intersect with the given ray.",
+            "itemtype": "method",
+            "name": "raycastOctant",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "octant",
+                    "description": "- The current octant.",
+                    "type": "Octant"
+                },
+                {
+                    "name": "tx0",
+                    "description": "- Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty0",
+                    "description": "- Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz0",
+                    "description": "- Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tx1",
+                    "description": "- Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.",
+                    "type": "Number"
+                },
+                {
+                    "name": "ty1",
+                    "description": "- Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.",
+                    "type": "Number"
+                },
+                {
+                    "name": "tz1",
+                    "description": "- Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.",
+                    "type": "Number"
+                },
+                {
+                    "name": "raycaster",
+                    "description": "- The raycaster.",
+                    "type": "Raycaster"
+                },
+                {
+                    "name": "intersects",
+                    "description": "- An array to be filled with the intersecting octants.",
+                    "type": "Array"
+                }
+            ],
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree"
+        },
+        {
+            "file": "src\\core\\octree-raycaster.js",
+            "line": 243,
+            "description": "Finds the octants that intersect with the given ray. The intersecting\noctants are sorted by distance, closest first.",
+            "itemtype": "method",
+            "name": "intersectOctree",
+            "static": 1,
+            "params": [
+                {
+                    "name": "octree",
+                    "description": "- An octree.",
+                    "type": "Octree"
+                },
+                {
+                    "name": "raycaster",
+                    "description": "- A raycaster.",
+                    "type": "Raycaster"
+                },
+                {
+                    "name": "intersects",
+                    "description": "- A list to be filled with intersecting octants.",
+                    "type": "Array"
+                }
+            ],
+            "class": "OctreeRaycaster",
+            "module": "sparse-octree",
+            "submodule": "core"
+        },
+        {
             "file": "src\\core\\octree.js",
             "line": 19,
             "description": "The root octant.",
@@ -834,223 +1035,23 @@
         {
             "file": "src\\core\\octree.js",
             "line": 210,
-            "description": "Finds the octants that intersect with the given ray.",
+            "description": "Finds the octants that intersect with the given ray. The intersecting\noctants are sorted by distance, closest first.",
             "itemtype": "method",
             "name": "raycast",
             "params": [
                 {
                     "name": "raycaster",
-                    "description": "- The raycaster.",
+                    "description": "- A raycaster.",
                     "type": "Raycaster"
                 },
                 {
                     "name": "intersects",
-                    "description": "- An array to be filled with the intersecting octants.",
-                    "type": "Array"
+                    "description": "- A list to be filled with intersecting octants.",
+                    "type": "Array",
+                    "optional": true
                 }
             ],
             "class": "Octree",
-            "module": "sparse-octree",
-            "submodule": "core"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 1,
-            "description": "Contains bytes used for bitwise operations. The last byte is used to store\nraycasting flags.",
-            "itemtype": "property",
-            "name": "flags",
-            "type": "Uint8Array",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "final": 1,
-            "class": "Raycasting",
-            "module": "sparse-octree"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 14,
-            "description": "A lookup-table containing octant ids. Used to determine the exit plane from\nan octant.",
-            "itemtype": "property",
-            "name": "octantTable",
-            "type": "Array",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "final": 1,
-            "class": "Raycasting",
-            "module": "sparse-octree"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 38,
-            "description": "Finds the entry plane of the first octant that a ray travels through.\n\nDetermining the first octant requires knowing which of the t0's is the\nlargest. The tm's of the other axes must also be compared against that\nlargest t0.",
-            "itemtype": "method",
-            "name": "findEntryOctant",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "params": [
-                {
-                    "name": "tx0",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                },
-                {
-                    "name": "ty0",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tz0",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                },
-                {
-                    "name": "txm",
-                    "description": "- Ray projection parameter mean.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tym",
-                    "description": "- Ray projection parameter mean.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tzm",
-                    "description": "- Ray projection parameter mean.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The index of the first octant that the ray travels through.",
-                "type": "Number"
-            },
-            "class": "Raycasting",
-            "module": "sparse-octree"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 86,
-            "description": "Finds the next octant that intersects with the ray based on the exit plane of\nthe current one.",
-            "itemtype": "method",
-            "name": "findNextOctant",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "params": [
-                {
-                    "name": "currentOctant",
-                    "description": "- The index of the current octant.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tx1",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                },
-                {
-                    "name": "ty1",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tz1",
-                    "description": "- Ray projection parameter.",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The index of the next octant that the ray travels through.",
-                "type": "Number"
-            },
-            "class": "Raycasting",
-            "module": "sparse-octree"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 128,
-            "description": "Finds all octants that intersect with the given ray.",
-            "itemtype": "method",
-            "name": "raycastOctant",
-            "access": "private",
-            "tagname": "",
-            "static": 1,
-            "params": [
-                {
-                    "name": "octant",
-                    "description": "- The current octant.",
-                    "type": "Octant"
-                },
-                {
-                    "name": "tx0",
-                    "description": "- Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.",
-                    "type": "Number"
-                },
-                {
-                    "name": "ty0",
-                    "description": "- Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tz0",
-                    "description": "- Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tx1",
-                    "description": "- Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.",
-                    "type": "Number"
-                },
-                {
-                    "name": "ty1",
-                    "description": "- Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.",
-                    "type": "Number"
-                },
-                {
-                    "name": "tz1",
-                    "description": "- Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.",
-                    "type": "Number"
-                },
-                {
-                    "name": "raycaster",
-                    "description": "- The raycaster.",
-                    "type": "Raycaster"
-                },
-                {
-                    "name": "intersects",
-                    "description": "- An array to be filled with the intersecting octants.",
-                    "type": "Array"
-                }
-            ],
-            "class": "Raycasting",
-            "module": "sparse-octree"
-        },
-        {
-            "file": "src\\core\\raycasting.js",
-            "line": 243,
-            "description": "Finds the octants that intersect with the given ray.",
-            "itemtype": "method",
-            "name": "raycast",
-            "static": 1,
-            "params": [
-                {
-                    "name": "octree",
-                    "description": "- An octree.",
-                    "type": "Octree"
-                },
-                {
-                    "name": "raycaster",
-                    "description": "- The raycaster.",
-                    "type": "Raycaster"
-                },
-                {
-                    "name": "octants",
-                    "description": "- An array to be filled with the intersecting octants.",
-                    "type": "Array"
-                }
-            ],
-            "class": "Raycasting",
             "module": "sparse-octree",
             "submodule": "core"
         },

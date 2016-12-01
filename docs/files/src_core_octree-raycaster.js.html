@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\core\raycasting.js - sparse-octree</title>
+    <title>src\core\octree-raycaster.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.5.1</em>
+            <em>API Docs for: 2.5.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,9 +43,9 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/OctreeRaycaster.html">OctreeRaycaster</a></li>
                                 <li><a href="../classes/PointOctant.html">PointOctant</a></li>
                                 <li><a href="../classes/PointOctree.html">PointOctree</a></li>
-                                <li><a href="../classes/Raycasting.html">Raycasting</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                             </ul>
                 
@@ -89,7 +89,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src\core\raycasting.js</h1>
+<h1 class="file-heading">File: src\core\octree-raycaster.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -322,30 +322,31 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 }
 
 /**
- * A collection of utility functions for octree raycasting.
+ * An octree raycaster.
  *
  * Based on:
  *  &quot;An Efficient Parametric Algorithm for Octree Traversal&quot;
  *  by J. Revelles et al. (2000).
  *
- * @class Raycasting
+ * @class OctreeRaycaster
  * @submodule core
  * @static
  */
 
-export class Raycasting {
+export class OctreeRaycaster {
 
 	/**
-	 * Finds the octants that intersect with the given ray.
+	 * Finds the octants that intersect with the given ray. The intersecting
+	 * octants are sorted by distance, closest first.
 	 *
-	 * @method raycast
+	 * @method intersectOctree
 	 * @static
 	 * @param {Octree} octree - An octree.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} octants - An array to be filled with the intersecting octants.
+	 * @param {Raycaster} raycaster - A raycaster.
+	 * @param {Array} intersects - A list to be filled with intersecting octants.
 	 */
 
-	static raycast(octree, raycaster, octants) {
+	static intersectOctree(octree, raycaster, intersects) {
 
 		const dimensions = octree.getDimensions();
 		const halfDimensions = dimensions.clone().multiplyScalar(0.5);
@@ -407,7 +408,7 @@ export class Raycasting {
 		// Check if the ray hits the octree.
 		if(Math.max(Math.max(tx0, ty0), tz0) &lt; Math.min(Math.min(tx1, ty1), tz1)) {
 
-			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
+			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
 
 		}
 
