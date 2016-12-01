@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.5.1 build Nov 20 2016
+ * sparse-octree v2.5.2 build Dec 01 2016
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2016 Raoul van Rüschen, Zlib
  */
@@ -1618,37 +1618,38 @@
   }
 
   /**
-   * A collection of utility functions for octree raycasting.
+   * An octree raycaster.
    *
    * Based on:
    *  "An Efficient Parametric Algorithm for Octree Traversal"
    *  by J. Revelles et al. (2000).
    *
-   * @class Raycasting
+   * @class OctreeRaycaster
    * @submodule core
    * @static
    */
 
-  var Raycasting = function () {
-  	function Raycasting() {
-  		classCallCheck(this, Raycasting);
+  var OctreeRaycaster = function () {
+  	function OctreeRaycaster() {
+  		classCallCheck(this, OctreeRaycaster);
   	}
 
-  	createClass(Raycasting, null, [{
-  		key: "raycast",
+  	createClass(OctreeRaycaster, null, [{
+  		key: "intersectOctree",
 
 
   		/**
-     * Finds the octants that intersect with the given ray.
+     * Finds the octants that intersect with the given ray. The intersecting
+     * octants are sorted by distance, closest first.
      *
-     * @method raycast
+     * @method intersectOctree
      * @static
      * @param {Octree} octree - An octree.
-     * @param {Raycaster} raycaster - The raycaster.
-     * @param {Array} octants - An array to be filled with the intersecting octants.
+     * @param {Raycaster} raycaster - A raycaster.
+     * @param {Array} intersects - A list to be filled with intersecting octants.
      */
 
-  		value: function raycast(octree, raycaster, octants) {
+  		value: function intersectOctree(octree, raycaster, intersects) {
 
   			var dimensions = octree.getDimensions();
   			var halfDimensions = dimensions.clone().multiplyScalar(0.5);
@@ -1714,11 +1715,11 @@
   			// Check if the ray hits the octree.
   			if (Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
 
-  				raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
+  				raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
   			}
   		}
   	}]);
-  	return Raycasting;
+  	return OctreeRaycaster;
   }();
 
   /**
@@ -1918,18 +1919,21 @@
   		}
 
   		/**
-     * Finds the octants that intersect with the given ray.
+     * Finds the octants that intersect with the given ray. The intersecting
+     * octants are sorted by distance, closest first.
      *
      * @method raycast
-     * @param {Raycaster} raycaster - The raycaster.
-     * @param {Array} intersects - An array to be filled with the intersecting octants.
+     * @param {Raycaster} raycaster - A raycaster.
+     * @param {Array} [intersects] - A list to be filled with intersecting octants.
      */
 
   	}, {
   		key: "raycast",
-  		value: function raycast(raycaster, intersects) {
+  		value: function raycast(raycaster) {
+  			var intersects = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-  			Raycasting.raycast(this, raycaster, intersects);
+
+  			OctreeRaycaster.intersectOctree(this, raycaster, intersects);
   		}
   	}, {
   		key: "min",
@@ -3000,8 +3004,8 @@
   exports.EDGES = EDGES;
   exports.Octant = Octant;
   exports.Octree = Octree;
+  exports.OctreeRaycaster = OctreeRaycaster;
   exports.PATTERN = PATTERN;
-  exports.Raycasting = Raycasting;
   exports.OctreeHelper = OctreeHelper;
   exports.Box3 = Box3;
   exports.Vector3 = Vector3;
