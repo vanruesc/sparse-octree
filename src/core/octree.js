@@ -208,14 +208,15 @@ export class Octree {
 	}
 
 	/**
-	 * Finds the octants that intersect with the given ray.
+	 * Finds the octants that intersect with the given ray. The intersecting
+	 * octants are sorted by distance, closest first.
 	 *
 	 * @method raycast
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting octants.
+	 * @param {Raycaster} raycaster - A raycaster.
+	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
 	 */
 
-	raycast(raycaster, intersects) {
+	raycast(raycaster, intersects = []) {
 
 		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
 
