@@ -227,30 +227,31 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 }
 
 /**
- * A collection of utility functions for octree raycasting.
+ * An octree raycaster.
  *
  * Based on:
  *  "An Efficient Parametric Algorithm for Octree Traversal"
  *  by J. Revelles et al. (2000).
  *
- * @class Raycasting
+ * @class OctreeRaycaster
  * @submodule core
  * @static
  */
 
-export class Raycasting {
+export class OctreeRaycaster {
 
 	/**
-	 * Finds the octants that intersect with the given ray.
+	 * Finds the octants that intersect with the given ray. The intersecting
+	 * octants are sorted by distance, closest first.
 	 *
-	 * @method raycast
+	 * @method intersectOctree
 	 * @static
 	 * @param {Octree} octree - An octree.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} octants - An array to be filled with the intersecting octants.
+	 * @param {Raycaster} raycaster - A raycaster.
+	 * @param {Array} intersects - A list to be filled with intersecting octants.
 	 */
 
-	static raycast(octree, raycaster, octants) {
+	static intersectOctree(octree, raycaster, intersects) {
 
 		const dimensions = octree.getDimensions();
 		const halfDimensions = dimensions.clone().multiplyScalar(0.5);
@@ -312,7 +313,7 @@ export class Raycasting {
 		// Check if the ray hits the octree.
 		if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
 
-			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, octants);
+			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
 
 		}
 

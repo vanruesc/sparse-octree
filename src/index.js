@@ -10,8 +10,8 @@ export {
 	EDGES,
 	Octant,
 	Octree,
-	PATTERN,
-	Raycasting
+	OctreeRaycaster,
+	PATTERN
 } from "./core";
 
 export {

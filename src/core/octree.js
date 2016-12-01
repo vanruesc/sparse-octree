@@ -1,6 +1,6 @@
 import { Box3 } from "../math/box3.js";
 import { Octant } from "./octant.js";
-import { Raycasting } from "./raycasting.js";
+import { OctreeRaycaster } from "./octree-raycaster.js";
 
 /**
  * An octree that subdivides space for fast spatial searches.
@@ -217,7 +217,7 @@ export class Octree {
 
 	raycast(raycaster, intersects) {
 
-		Raycasting.raycast(this, raycaster, intersects);
+		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
 
 	}
 
