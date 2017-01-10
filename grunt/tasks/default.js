@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
 
-	grunt.registerTask("default", ["build", "nodeunit", "uglify"]);
+	grunt.registerTask("default", grunt.option("production") ?
+		["build", "nodeunit", "uglify"] :
+		["build", "nodeunit"]
+	);
 
 };

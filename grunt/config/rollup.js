@@ -1,42 +1,53 @@
-module.exports = {
+const resolve = require("rollup-plugin-node-resolve");
+const babel = require("rollup-plugin-babel");
 
-	options: {
-		globals: {
-			"three": "THREE",
-			"stats.js": "Stats",
-			"dat.gui": "dat"
-		},
-		external: [
-			"three",
-			"stats.js",
-			"dat.gui"
-		],
-		plugins: () => [
-			require("rollup-plugin-node-resolve")({
-				jsnext: true
-			}),
-			require("rollup-plugin-babel")({
-				exclude: "node_modules/**"
-			})
-		]
-	},
+module.exports = function(grunt) {
 
-	lib: {
+	return {
+
 		options: {
-			format: "umd",
-			moduleName: "OCTREE",
-			banner: "<%= banner %>"
+			globals: {
+				"three": "THREE",
+				"stats.js": "Stats",
+				"dat.gui": "dat"
+			},
+			external: [
+				"three",
+				"stats.js",
+				"dat.gui"
+			],
+			plugins() {
+				return grunt.option("production") ? [
+					resolve({
+						jsnext: true
+					}),
+					babel()
+				] : [
+					resolve({
+						jsnext: true
+					})
+				];
+			}
 		},
-		src: "src/index.js",
-		dest: "build/<%= package.name %>.js"
-	},
 
-	demo: {
-		options: {
-			format: "iife"
+		lib: {
+			options: {
+				format: "umd",
+				moduleName: "OCTREE",
+				banner: "<%= banner %>"
+			},
+			src: "src/index.js",
+			dest: "build/<%= package.name %>.js"
 		},
-		src: "demo/index.js",
-		dest: "public/index.js"
-	}
+
+		demo: {
+			options: {
+				format: "iife"
+			},
+			src: "demo/index.js",
+			dest: "public/index.js"
+		}
+
+	};
 
 };
