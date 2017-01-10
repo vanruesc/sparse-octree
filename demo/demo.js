@@ -1,5 +1,4 @@
 import {
-	AxisHelper,
 	BufferAttribute,
 	BufferGeometry,
 	Box3,
@@ -83,10 +82,6 @@ export class Demo {
 
 		const gui = new dat.GUI();
 		aside.appendChild(gui.domElement.parentNode);
-
-		// Axis Helper.
-
-		scene.add(new AxisHelper(1));
 
 		// Points.
 
@@ -180,7 +175,7 @@ export class Demo {
 
 			}
 
-			console.log("Octree:", octree, "created in", (((performance.now() - t0) * 100.0) / 100.0).toFixed(2) + " ms");
+			console.log("Octree:", octree, "created in", (performance.now() - t0).toFixed(2) + " ms");
 
 			return octree;
 
@@ -195,7 +190,7 @@ export class Demo {
 			const octreeHelper = new OctreeHelper(octree);
 			octreeHelper.visible = false;
 
-			console.log("OctreeHelper:", octreeHelper, "created in", (((performance.now() - t0) * 100.0) / 100.0).toFixed(2) + " ms");
+			console.log("OctreeHelper:", octreeHelper, "created in", (performance.now() - t0).toFixed(2) + " ms");
 
 			return octreeHelper;
 
@@ -220,30 +215,34 @@ export class Demo {
 
 		// Additional Configurations.
 
-		const params = {
-			"level mask": octreeHelper.children.length
-		};
+		(function() {
 
-		let folder = gui.addFolder("Points");
-		folder.add(points, "visible");
-		folder.open();
+			const params = {
+				"level mask": octreeHelper.children.length
+			};
 
-		folder = gui.addFolder("Octree Helper");
-		folder.add(octreeHelper, "visible");
+			let folder = gui.addFolder("Points");
+			folder.add(points, "visible");
+			folder.open();
 
-		folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function() {
+			folder = gui.addFolder("Octree Helper");
+			folder.add(octreeHelper, "visible");
 
-			let i, l;
+			folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function() {
 
-			for(i = 0, l = octreeHelper.children.length; i < l; ++i) {
+				let i, l;
 
-				octreeHelper.children[i].visible = (params["level mask"] === octreeHelper.children.length || i === params["level mask"]);
+				for(i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
-			}
+					octreeHelper.children[i].visible = (params["level mask"] === octreeHelper.children.length || i === params["level mask"]);
 
-		});
+				}
 
-		folder.open();
+			});
+
+			folder.open();
+
+		}());
 
 		/**
 		 * Toggles the visibility of the interface on alt key press.

@@ -116,7 +116,7 @@ export class FrustumCuller {
 			new PointsMaterial({
 				color: 0xccff00,
 				sizeAttenuation: false,
-				size: 1
+				size: 2
 			})
 		);
 
@@ -183,7 +183,7 @@ export class FrustumCuller {
 			t0 = performance.now();
 			octants = this.octree.cull(FRUSTUM);
 
-			this.delta = (((performance.now() - t0) * 100.0) / 100.0).toFixed(2) + " ms";
+			this.delta = (performance.now() - t0).toFixed(2) + " ms";
 
 			if(octants.length > 0) {
 

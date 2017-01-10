@@ -127,7 +127,7 @@ export class OctreeRaycaster extends Raycaster {
 
 		}
 
-		this.delta = (((t - t0) * 100.0) / 100.0).toFixed(2) + " ms";
+		this.delta = (t - t0).toFixed(2) + " ms";
 
 		if(this.selection !== null) {
 
