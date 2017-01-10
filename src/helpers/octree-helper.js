@@ -150,13 +150,15 @@ export class OctreeHelper extends Object3D {
 
 	dispose() {
 
-		let child, children;
+		const groups = this.children;
+
+		let group, children;
 		let i, j, il, jl;
 
-		for(i = 0, il = this.children.length; i < il; ++i) {
+		for(i = 0, il = groups.length; i < il; ++i) {
 
-			child = this.children[i];
-			children = child.children;
+			group = groups[i];
+			children = group.children;
 
 			for(j = 0, jl = children.length; j < jl; ++j) {
 
@@ -167,15 +169,15 @@ export class OctreeHelper extends Object3D {
 
 			while(children.length > 0) {
 
-				child.remove(children[0]);
+				group.remove(children[0]);
 
 			}
 
 		}
 
-		while(this.children.length > 0) {
+		while(groups.length > 0) {
 
-			this.remove(children[0]);
+			this.remove(groups[0]);
 
 		}
 
