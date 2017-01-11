@@ -186,26 +186,33 @@ module.exports = {
 
 	},
 
-	"OctreeHelper": {
+	"OctreeIterator": {
 
 		"can be instantiated": function(test) {
 
-			const helper = new lib.OctreeHelper();
+			const iterator = new lib.OctreeIterator(new lib.Octree());
 
-			test.ok(helper, "helper");
+			test.ok(iterator, "iterator");
 			test.done();
 
 		},
 
-		"creates geometry for each tree level": function(test) {
+		"iterates over all leaf octants": function(test) {
 
 			const octree = new lib.Octree(box.min, box.max);
+			const iterator = octree.leaves();
+
+			let i = 0;
 
 			octree.root.split();
 
-			const helper = new lib.OctreeHelper(octree);
+			while(!iterator.next().done) {
 
-			test.equal(helper.children.length, 2, "should have a child for each level");
+				++i;
+
+			}
+
+			test.equal(i, 8, "should return eight leaf octants");
 			test.done();
 
 		}
