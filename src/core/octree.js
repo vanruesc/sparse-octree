@@ -1,5 +1,6 @@
 import { Box3 } from "../math/box3.js";
 import { Octant } from "./octant.js";
+import { OctreeIterator } from "./octree-iterator.js";
 import { OctreeRaycaster } from "./octree-raycaster.js";
 
 /**
@@ -7,6 +8,7 @@ import { OctreeRaycaster } from "./octree-raycaster.js";
  *
  * @class Octree
  * @submodule core
+ * @implements Iterable
  * @constructor
  * @param {Vector3} [min] - The lower bounds of the tree.
  * @param {Vector3} [max] - The upper bounds of the tree.
@@ -219,6 +221,32 @@ export class Octree {
 	raycast(raycaster, intersects = []) {
 
 		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns all leaf nodes.
+	 *
+	 * @method leaves
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	leaves() {
+
+		return this[Symbol.iterator]();
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns all leaf nodes.
+	 *
+	 * @method Symbol.iterator
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	[Symbol.iterator]() {
+
+		return new OctreeIterator(this);
 
 	}
 

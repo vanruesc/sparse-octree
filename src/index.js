@@ -10,6 +10,7 @@ export {
 	EDGES,
 	Octant,
 	Octree,
+	OctreeIterator,
 	OctreeRaycaster,
 	PATTERN
 } from "./core";
