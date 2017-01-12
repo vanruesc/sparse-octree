@@ -3,7 +3,11 @@
 const lib = require("../build/sparse-octree");
 const THREE = require("three");
 
-const box = new THREE.Box3(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, 1, 1));
+const box = new THREE.Box3(
+	new THREE.Vector3(-1, -1, -1),
+	new THREE.Vector3(1, 1, 1)
+);
+
 const data = {};
 
 module.exports = {
