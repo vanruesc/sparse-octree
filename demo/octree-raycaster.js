@@ -115,7 +115,7 @@ export class OctreeRaycaster extends Raycaster {
 
 			// Use the octree raycasting capabilities.
 			t0 = performance.now();
-			intersects = this.intersectObject(this.octree);
+			intersects = this.octree.raycast(this);
 			t = performance.now();
 
 		} else {

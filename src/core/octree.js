@@ -256,11 +256,14 @@ export class Octree {
 	 * @method raycast
 	 * @param {Raycaster} raycaster - A raycaster.
 	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
+	 * @return {Array} The intersecting octants.
 	 */
 
 	raycast(raycaster, intersects = []) {
 
 		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
+
+		return intersects;
 
 	}
 

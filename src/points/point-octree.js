@@ -572,14 +572,13 @@ export class PointOctree extends Octree {
 	 *
 	 * @method raycast
 	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
+	 * @param {Array} [intersects] - An array to be filled with the intersecting points.
+	 * @return {Array} The intersecting points.
 	 */
 
-	raycast(raycaster, intersects) {
+	raycast(raycaster, intersects = []) {
 
-		const octants = [];
-
-		super.raycast(raycaster, octants);
+		const octants = super.raycast(raycaster);
 
 		if(octants.length > 0) {
 
@@ -587,6 +586,8 @@ export class PointOctree extends Octree {
 			this.testPoints(octants, raycaster, intersects);
 
 		}
+
+		return intersects;
 
 	}
 
