@@ -3,7 +3,15 @@
 const lib = require("../build/sparse-octree");
 const THREE = require("three");
 
-const box = new THREE.Box3(new THREE.Vector3(-1, -1, -1), new THREE.Vector3(1, 1, 1));
+const box = new THREE.Box3(
+	new THREE.Vector3(-1, -1, -1),
+	new THREE.Vector3(1, 1, 1)
+);
+
+const region = new THREE.Box3(
+	new THREE.Vector3(0.1, 0.1, 0.1),
+	new THREE.Vector3(0.2, 0.2, 0.2)
+);
 
 module.exports = {
 
@@ -214,6 +222,28 @@ module.exports = {
 
 			test.equal(i, 8, "should return eight leaf octants");
 			test.done();
+
+		},
+
+		"can cull leaf octants": function(test) {
+
+			const octree = new lib.Octree(box.min, box.max);
+			const iterator = octree.leaves(region);
+
+			let i = 0;
+
+			octree.root.split();
+
+			while(!iterator.next().done) {
+
+				++i;
+
+			}
+
+			test.equal(i, 1, "should return one leaf octant");
+			test.done();
+
+		}
 
 		}
 

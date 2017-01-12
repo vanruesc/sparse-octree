@@ -1,4 +1,17 @@
+import { Box3 } from "../math/box3.js";
 import IteratorResult from "iterator-result";
+
+/**
+ * A computation helper.
+ *
+ * @property BOX3
+ * @type Box3
+ * @private
+ * @static
+ * @final
+ */
+
+const BOX3 = new Box3();
 
 /**
  * An octree iterator.
@@ -8,11 +21,12 @@ import IteratorResult from "iterator-result";
  * @implements Iterator
  * @constructor
  * @param {Octree} octree - An octree.
+ * @param {Frustum|Box3} [region] - A cull region.
  */
 
 export class OctreeIterator {
 
-	constructor(octree) {
+	constructor(octree, region = null) {
 
 		/**
 		 * The octree.
@@ -23,6 +37,25 @@ export class OctreeIterator {
 		 */
 
 		this.octree = octree;
+
+		/**
+		 * A region used for octree culling.
+		 *
+		 * @property region
+		 * @type Frustum|Box3
+		 */
+
+		this.region = region;
+
+		/**
+		 * Whether this iterator should respect the cull region.
+		 *
+		 * @property cull
+		 * @type Boolean
+		 * @default false
+		 */
+
+		this.cull = (region !== null);
 
 		/**
 		 * An iterator result.
@@ -62,14 +95,34 @@ export class OctreeIterator {
 	 * Resets this iterator.
 	 *
 	 * @method reset
+	 * @chainable
+	 * @return {OctreeIterator} This iterator.
 	 */
 
 	reset() {
 
-		this.trace = [this.octree.root];
-		this.indices = [0];
+		const root = this.octree.root;
+
+		this.trace = [];
+		this.indices = [];
+
+		if(root !== null) {
+
+			BOX3.min = root.min;
+			BOX3.max = root.max;
+
+			if(!this.cull || this.region.intersectsBox(BOX3)) {
+
+				this.trace.push(root);
+				this.indices.push(0);
+
+			}
+
+		}
 
 		this.result.reset();
+
+		return this;
 
 	}
 
@@ -82,20 +135,22 @@ export class OctreeIterator {
 
 	next() {
 
+		const cull = this.cull;
+		const region = this.region;
 		const indices = this.indices;
 		const trace = this.trace;
 
 		let octant = null;
-		let i = trace.length - 1;
+		let depth = trace.length - 1;
 
 		let index, children, child;
 
-		while(octant === null && i >= 0) {
+		while(octant === null && depth >= 0) {
 
-			index = indices[i];
-			children = trace[i].children;
+			index = indices[depth];
+			children = trace[depth].children;
 
-			++indices[i];
+			++indices[depth];
 
 			if(index < 8) {
 
@@ -103,10 +158,24 @@ export class OctreeIterator {
 
 					child = children[index];
 
+					if(cull) {
+
+						BOX3.min = child.min;
+						BOX3.max = child.max;
+
+						if(!region.intersectsBox(BOX3)) {
+
+							// Cull this octant.
+							continue;
+
+						}
+
+					}
+
 					trace.push(child);
 					indices.push(0);
 
-					++i;
+					++depth;
 
 				} else {
 
@@ -120,7 +189,7 @@ export class OctreeIterator {
 				trace.pop();
 				indices.pop();
 
-				--i;
+				--depth;
 
 			}
 

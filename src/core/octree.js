@@ -260,15 +260,19 @@ export class Octree {
 	}
 
 	/**
-	 * Returns an iterator that traverses the octree and returns all leaf nodes.
+	 * Returns an iterator that traverses the octree and returns leaf nodes.
+	 *
+	 * When a cull region is provided, the iterator will only return leaves that
+	 * intersect with that region.
 	 *
 	 * @method leaves
+	 * @param {Frustum|Box3} [region] - A cull region.
 	 * @return {OctreeIterator} An iterator.
 	 */
 
-	leaves() {
+	leaves(region) {
 
-		return this[Symbol.iterator]();
+		return new OctreeIterator(this, region);
 
 	}
 
