@@ -48,7 +48,7 @@ const octreeHelper = new OctreeHelper(octree);
 scene.add(octreeHelper);
 ```
 
-##### [Points](https://jsfiddle.net/6gt9fjmq/3/)
+##### Points
 
 ```javascript
 import { Vector3 } from "three";
@@ -62,6 +62,8 @@ const octree = new PointOctree(min, max);
 octree.add(new Vector3(0, 0, 0), {});
 octree.fetch(new Vector3(0, 0, 0)); // => {}
 ```
+
+A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/3/).
 
 
 ## Features
