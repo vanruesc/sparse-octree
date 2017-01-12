@@ -16,7 +16,7 @@ import { OctreeRaycaster } from "./octree-raycaster.js";
 const BOX3 = new Box3();
 
 /**
- * Calculates the depth of the given octree.
+ * Recursively calculates the depth of the given octree.
  *
  * @method getDepth
  * @private
@@ -53,14 +53,14 @@ function getDepth(octant) {
 }
 
 /**
- * Collects octants that lie inside the specified region.
+ * Recursively collects octants that lie inside the specified region.
  *
- * @method calculateDepth
+ * @method cull
  * @private
  * @static
  * @param {Octant} octant - An octant.
  * @param {Frustum|Box3} region - A region.
- * @param {Array} result - A list that will be filled with octants that lie inside the region.
+ * @param {Array} result - A list to be filled with octants that intersect with the region.
  */
 
 function cull(octant, region, result) {
@@ -69,7 +69,6 @@ function cull(octant, region, result) {
 
 	let i, l;
 
-	// Cache the computed max vector of cubic octants.
 	BOX3.min = octant.min;
 	BOX3.max = octant.max;
 
@@ -86,6 +85,42 @@ function cull(octant, region, result) {
 		} else {
 
 			result.push(octant);
+
+		}
+
+	}
+
+}
+
+/**
+ * Recursively fetches all octants with the specified depth level.
+ *
+ * @method findOctantsByLevel
+ * @private
+ * @static
+ * @param {Octant} octant - An octant.
+ * @param {Number} level - The target depth level.
+ * @param {Number} depth - The current depth level.
+ * @param {Array} result - A list to be filled with the identified octants.
+ */
+
+function findOctantsByLevel(octant, level, depth, result) {
+
+	const children = octant.children;
+
+	let i, l;
+
+	if(depth === level) {
+
+		result.push(octant);
+
+	} else if(children !== null) {
+
+		++depth;
+
+		for(i = 0, l = children.length; i < l; ++i) {
+
+			findOctantsByLevel(children[i], level, depth, result);
 
 		}
 
@@ -179,7 +214,7 @@ export class Octree {
 	}
 
 	/**
-	 * Collects octants that lie inside the specified region.
+	 * Recursively collects octants that intersect with the specified region.
 	 *
 	 * @method cull
 	 * @param {Frustum|Box3} region - A region.
@@ -208,37 +243,7 @@ export class Octree {
 
 		const result = [];
 
-		let h0 = [this.root];
-		let h1 = [];
-
-		let octant, children;
-		let currentLevel = 0;
-
-		while(h0.length > 0) {
-
-			octant = h0.pop();
-			children = octant.children;
-
-			if(currentLevel === level) {
-
-				result.push(octant);
-
-			} else if(children !== null) {
-
-				h1.push(...children);
-
-			}
-
-			if(h0.length === 0) {
-
-				h0 = h1;
-				h1 = [];
-
-				if(++currentLevel > level) { break; }
-
-			}
-
-		}
+		findOctantsByLevel(this.root, level, 0, result);
 
 		return result;
 
