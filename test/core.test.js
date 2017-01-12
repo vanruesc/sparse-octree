@@ -245,6 +245,26 @@ module.exports = {
 
 		}
 
+	},
+
+	"OctreeRaycaster": {
+
+		"can find intersecting octants": function(test) {
+
+			const octree = new lib.Octree(box.min, box.max);
+			const raycaster = new THREE.Raycaster(
+				new THREE.Vector3(0.5, -1, 0.5),
+				new THREE.Vector3(1, 1, 1)
+			);
+
+			octree.root.split();
+
+			const intersects = octree.raycast(raycaster);
+
+			test.equal(intersects.length, 1, "should return one intersecting octant");
+			test.equal(intersects[0], octree.root.children[5], "should return the sixth child");
+			test.done();
+
 		}
 
 	}
