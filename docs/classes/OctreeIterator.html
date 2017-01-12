@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Octant - sparse-octree</title>
+    <title>OctreeIterator - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -90,12 +90,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Octant Class</h1>
+<h1>OctreeIterator Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_core_octant.js.html#l3"><code>src\core\octant.js:3</code></a>
+            Defined in: <a href="../files/src_core_octree-iterator.js.html#l16"><code>src\core\octree-iterator.js:16</code></a>
         </div>
 
             Module: <a href="../modules/core.html">core</a><br>
@@ -105,22 +105,22 @@
 
 
 <div class="box intro">
-    <p>An octant.</p>
+    <p>An octree iterator.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_Octant" class="method item">
-    <h3 class="name"><code>Octant</code></h3>
+<div id="method_OctreeIterator" class="method item">
+    <h3 class="name"><code>OctreeIterator</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>min</code>
+                        <code>octree</code>
                 </li>
                 <li class="arg">
-                        <code>max</code>
+                        <code class="optional">[region]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -135,7 +135,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l3"><code>src\core\octant.js:3</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l16"><code>src\core\octree-iterator.js:16</code></a>
         </p>
 
 
@@ -151,26 +151,27 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">min</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <code class="param-name">octree</code>
+                        <span class="type"><a href="../classes/Octree.html" class="crosslink">Octree</a></span>
 
 
                     <div class="param-description">
                         <ul>
-<li>The lower bounds.</li>
+<li>An octree.</li>
 </ul>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">max</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <code class="param-name optional">[region]</code>
+                        <span class="type">Frustum | <a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>The upper bounds.</li>
+<li>A cull region.</li>
 </ul>
 
                     </div>
@@ -201,15 +202,19 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_getCenter">getCenter</a>
+                                <a href="#method_next">next</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getDimensions">getDimensions</a>
+                                <a href="#method_reset">reset</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_split">split</a>
+                                <a href="#method_return">return</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Symbol.iterator">Symbol.iterator</a>
 
                             </li>
                     </ul>
@@ -219,27 +224,34 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_children">children</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_EDGES">EDGES</a>
+                            <li class="index-item property private">
+                                <a href="#property_BOX3">BOX3</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
-                                <a href="#property_max">max</a>
+                                <a href="#property_cull">cull</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_indices">indices</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_octree">octree</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_min">min</a>
+                                <a href="#property_region">region</a>
 
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_PATTERN">PATTERN</a>
+                            <li class="index-item property private">
+                                <a href="#property_result">result</a>
 
-                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_trace">trace</a>
+
                             </li>
                     </ul>
                 </div>
@@ -250,13 +262,13 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_getCenter" class="method item">
-    <h3 class="name"><code>getCenter</code></h3>
+<div id="method_next" class="method item">
+    <h3 class="name"><code>next</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type">IteratorResult</span>
         </span>
 
 
@@ -268,7 +280,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l47"><code>src\core\octant.js:47</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l129"><code>src\core\octree-iterator.js:129</code></a>
         </p>
 
 
@@ -276,7 +288,7 @@
     </div>
 
     <div class="description">
-        <p>Computes the center of this octant.</p>
+        <p>Iterates over the volume chunks.</p>
 
     </div>
 
@@ -285,33 +297,34 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the center of this octant.</p>
+                        <span class="type">IteratorResult</span>:
+                    <p>The next voxel.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_getDimensions" class="method item">
-    <h3 class="name"><code>getDimensions</code></h3>
+<div id="method_reset" class="method item">
+    <h3 class="name"><code>reset</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/OctreeIterator.html" class="crosslink">OctreeIterator</a></span>
         </span>
 
 
 
 
 
+        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l56"><code>src\core\octant.js:56</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l94"><code>src\core\octree-iterator.js:94</code></a>
         </p>
 
 
@@ -319,7 +332,7 @@
     </div>
 
     <div class="description">
-        <p>Computes the size of this octant.</p>
+        <p>Resets this iterator.</p>
 
     </div>
 
@@ -328,25 +341,28 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p>A new vector that describes the size of this octant.</p>
+                        <span class="type"><a href="../classes/OctreeIterator.html" class="crosslink">OctreeIterator</a></span>:
+                    <p>This iterator.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_split" class="method item">
-    <h3 class="name"><code>split</code></h3>
+<div id="method_return" class="method item">
+    <h3 class="name"><code>return</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[octants]</code>
+                        <code>value</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type">IteratorResult</span>
+        </span>
 
 
 
@@ -357,7 +373,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l65"><code>src\core\octant.js:65</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l205"><code>src\core\octree-iterator.js:205</code></a>
         </p>
 
 
@@ -365,7 +381,7 @@
     </div>
 
     <div class="description">
-        <p>Splits this octant into eight smaller ones.</p>
+        <p>Called when this iterator will no longer be run to completion.</p>
 
     </div>
 
@@ -374,14 +390,13 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[octants]</code>
-                        <span class="type">Array</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                        <code class="param-name">value</code>
+                        <span class="type">Object</span>
 
 
                     <div class="param-description">
                         <ul>
-<li>A list of octants to recycle.</li>
+<li>An interator result value.</li>
 </ul>
 
                     </div>
@@ -390,6 +405,60 @@
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">IteratorResult</span>:
+                    <ul>
+<li>A premature completion result.</li>
+</ul>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Symbol.iterator" class="method item">
+    <h3 class="name"><code>Symbol.iterator</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">VoxelIterator</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree-iterator.js.html#l222"><code>src\core\octree-iterator.js:222</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns this iterator.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">VoxelIterator</span>:
+                    <p>An iterator.</p>
+
+            </div>
+        </div>
 
 
 </div>
@@ -398,62 +467,38 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_children" class="property item">
-    <h3 class="name"><code>children</code></h3>
-    <span class="type">Array</span>
+<div id="property_BOX3" class="property item private">
+    <h3 class="name"><code>BOX3</code></h3>
+    <span class="type"><a href="../classes/Box3.html" class="crosslink">Box3</a></span>
 
 
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octant.js.html#l35"><code>src\core\octant.js:35</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The children of this octant.</p>
-
-    </div>
-
-        <p><strong>Default:</strong> null</p>
-
-
-</div>
-<div id="property_EDGES" class="property item">
-    <h3 class="name"><code>EDGES</code></h3>
-    <span class="type">Array</span>
-
-
+        <span class="flag private">private</span>
 
         <span class="flag final">final</span>
 
         <span class="flag static">static</span>
 
     <div class="meta">
+                    <p>Provided by the <a href="../modules/sparse-octree.html">sparse-octree</a> module.</p>
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l177"><code>src\core\octant.js:177</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l4"><code>src\core\octree-iterator.js:4</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Describes all possible octant corner connections.</p>
+        <p>A computation helper.</p>
 
     </div>
 
 
 
 </div>
-<div id="property_max" class="property item">
-    <h3 class="name"><code>max</code></h3>
-    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+<div id="property_cull" class="property item">
+    <h3 class="name"><code>cull</code></h3>
+    <span class="type">Boolean</span>
 
 
 
@@ -462,73 +507,144 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l26"><code>src\core\octant.js:26</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l50"><code>src\core\octree-iterator.js:50</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>The upper bounds of the octant.</p>
+        <p>Whether this iterator should respect the cull region.</p>
 
     </div>
 
+        <p><strong>Default:</strong> false</p>
 
 
 </div>
-<div id="property_min" class="property item">
-    <h3 class="name"><code>min</code></h3>
-    <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_core_octant.js.html#l17"><code>src\core\octant.js:17</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The lower bounds of this octant.</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_PATTERN" class="property item">
-    <h3 class="name"><code>PATTERN</code></h3>
+<div id="property_indices" class="property item private">
+    <h3 class="name"><code>indices</code></h3>
     <span class="type">Array</span>
 
 
+        <span class="flag private">private</span>
 
-        <span class="flag final">final</span>
 
-        <span class="flag static">static</span>
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_core_octant.js.html#l145"><code>src\core\octant.js:145</code></a>
+        <a href="../files/src_core_octree-iterator.js.html#l80"><code>src\core\octree-iterator.js:80</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>A binary pattern that describes the standard octant layout:</p>
-<pre>
-   3____7
- 2/___6/|
- | 1__|_5
- 0/___4/
-</pre>
-<p>This common layout is crucial for positional assumptions.</p>
+        <p>Iteration indices.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_octree" class="property item private">
+    <h3 class="name"><code>octree</code></h3>
+    <span class="type"><a href="../classes/Octree.html" class="crosslink">Octree</a></span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree-iterator.js.html#l31"><code>src\core\octree-iterator.js:31</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The octree.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_region" class="property item">
+    <h3 class="name"><code>region</code></h3>
+    <span class="type">Frustum | <a href="../classes/Box3.html" class="crosslink">Box3</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree-iterator.js.html#l41"><code>src\core\octree-iterator.js:41</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>A region used for octree culling.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_result" class="property item private">
+    <h3 class="name"><code>result</code></h3>
+    <span class="type">IteratorResult</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree-iterator.js.html#l60"><code>src\core\octree-iterator.js:60</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>An iterator result.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_trace" class="property item private">
+    <h3 class="name"><code>trace</code></h3>
+    <span class="type">Array</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_core_octree-iterator.js.html#l70"><code>src\core\octree-iterator.js:70</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>An octant trace.</p>
 
     </div>
 

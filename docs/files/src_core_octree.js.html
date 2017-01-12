@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.5.2</em>
+            <em>API Docs for: 2.6.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,6 +43,7 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/OctreeIterator.html">OctreeIterator</a></li>
                                 <li><a href="../classes/OctreeRaycaster.html">OctreeRaycaster</a></li>
                                 <li><a href="../classes/PointOctant.html">PointOctant</a></li>
                                 <li><a href="../classes/PointOctree.html">PointOctree</a></li>
@@ -95,13 +96,140 @@
     <pre class="code prettyprint linenums">
 import { Box3 } from &quot;../math/box3.js&quot;;
 import { Octant } from &quot;./octant.js&quot;;
+import { OctreeIterator } from &quot;./octree-iterator.js&quot;;
 import { OctreeRaycaster } from &quot;./octree-raycaster.js&quot;;
+
+/**
+ * A computation helper.
+ *
+ * @property BOX3
+ * @type Box3
+ * @private
+ * @static
+ * @final
+ */
+
+const BOX3 = new Box3();
+
+/**
+ * Recursively calculates the depth of the given octree.
+ *
+ * @method getDepth
+ * @private
+ * @static
+ * @param {Octant} octant - An octant.
+ * @return {Number} The depth.
+ */
+
+function getDepth(octant) {
+
+	const children = octant.children;
+
+	let result = 0;
+	let i, l, d;
+
+	if(children !== null) {
+
+		for(i = 0, l = children.length; i &lt; l; ++i) {
+
+			d = 1 + getDepth(children[i]);
+
+			if(d &gt; result) {
+
+				result = d;
+
+			}
+
+		}
+
+	}
+
+	return result;
+
+}
+
+/**
+ * Recursively collects octants that lie inside the specified region.
+ *
+ * @method cull
+ * @private
+ * @static
+ * @param {Octant} octant - An octant.
+ * @param {Frustum|Box3} region - A region.
+ * @param {Array} result - A list to be filled with octants that intersect with the region.
+ */
+
+function cull(octant, region, result) {
+
+	const children = octant.children;
+
+	let i, l;
+
+	BOX3.min = octant.min;
+	BOX3.max = octant.max;
+
+	if(region.intersectsBox(BOX3)) {
+
+		if(children !== null) {
+
+			for(i = 0, l = children.length; i &lt; l; ++i) {
+
+				cull(children[i], region, result);
+
+			}
+
+		} else {
+
+			result.push(octant);
+
+		}
+
+	}
+
+}
+
+/**
+ * Recursively fetches all octants with the specified depth level.
+ *
+ * @method findOctantsByLevel
+ * @private
+ * @static
+ * @param {Octant} octant - An octant.
+ * @param {Number} level - The target depth level.
+ * @param {Number} depth - The current depth level.
+ * @param {Array} result - A list to be filled with the identified octants.
+ */
+
+function findOctantsByLevel(octant, level, depth, result) {
+
+	const children = octant.children;
+
+	let i, l;
+
+	if(depth === level) {
+
+		result.push(octant);
+
+	} else if(children !== null) {
+
+		++depth;
+
+		for(i = 0, l = children.length; i &lt; l; ++i) {
+
+			findOctantsByLevel(children[i], level, depth, result);
+
+		}
+
+	}
+
+}
 
 /**
  * An octree that subdivides space for fast spatial searches.
  *
  * @class Octree
  * @submodule core
+ * @implements Iterable
  * @constructor
  * @param {Vector3} [min] - The lower bounds of the tree.
  * @param {Vector3} [max] - The upper bounds of the tree.
@@ -177,78 +305,23 @@ export class Octree {
 
 	getDepth() {
 
-		let h0 = [this.root];
-		let h1 = [];
-
-		let depth = 0;
-		let octant, children;
-
-		while(h0.length &gt; 0) {
-
-			octant = h0.pop();
-			children = octant.children;
-
-			if(children !== null) {
-
-				h1.push(...children);
-
-			}
-
-			if(h0.length === 0) {
-
-				h0 = h1;
-				h1 = [];
-
-				if(h0.length &gt; 0) { ++depth; }
-
-			}
-
-		}
-
-		return depth;
+		return getDepth(this.root);
 
 	}
 
 	/**
-	 * Collects octants that lie inside the specified region.
+	 * Recursively collects octants that intersect with the specified region.
 	 *
 	 * @method cull
-	 * @param {Frustum|Box3} region - A frustum or a bounding box.
+	 * @param {Frustum|Box3} region - A region.
 	 * @return {Array} The octants.
 	 */
 
 	cull(region) {
 
 		const result = [];
-		const heap = [this.root];
-		const box = new Box3();
 
-		let octant, children;
-
-		while(heap.length &gt; 0) {
-
-			octant = heap.pop();
-			children = octant.children;
-
-			// Cache the computed max vector of cubic octants.
-			box.min = octant.min;
-			box.max = octant.max;
-
-			if(region.intersectsBox(box)) {
-
-				if(children !== null) {
-
-					heap.push(...children);
-
-				} else {
-
-					result.push(octant);
-
-				}
-
-			}
-
-		}
+		cull(this.root, region, result);
 
 		return result;
 
@@ -266,37 +339,7 @@ export class Octree {
 
 		const result = [];
 
-		let h0 = [this.root];
-		let h1 = [];
-
-		let octant, children;
-		let currentLevel = 0;
-
-		while(h0.length &gt; 0) {
-
-			octant = h0.pop();
-			children = octant.children;
-
-			if(currentLevel === level) {
-
-				result.push(octant);
-
-			} else if(children !== null) {
-
-				h1.push(...children);
-
-			}
-
-			if(h0.length === 0) {
-
-				h0 = h1;
-				h1 = [];
-
-				if(++currentLevel &gt; level) { break; }
-
-			}
-
-		}
+		findOctantsByLevel(this.root, level, 0, result);
 
 		return result;
 
@@ -309,11 +352,44 @@ export class Octree {
 	 * @method raycast
 	 * @param {Raycaster} raycaster - A raycaster.
 	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
+	 * @return {Array} The intersecting octants.
 	 */
 
 	raycast(raycaster, intersects = []) {
 
 		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
+
+		return intersects;
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns leaf nodes.
+	 *
+	 * When a cull region is provided, the iterator will only return leaves that
+	 * intersect with that region.
+	 *
+	 * @method leaves
+	 * @param {Frustum|Box3} [region] - A cull region.
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	leaves(region) {
+
+		return new OctreeIterator(this, region);
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns all leaf nodes.
+	 *
+	 * @method Symbol.iterator
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	[Symbol.iterator]() {
+
+		return new OctreeIterator(this);
 
 	}
 

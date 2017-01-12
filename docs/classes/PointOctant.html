@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="sparse-octree" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.5.2</em>
+            <em>API Docs for: 2.6.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,6 +43,7 @@
                                 <li><a href="../classes/Octant.html">Octant</a></li>
                                 <li><a href="../classes/Octree.html">Octree</a></li>
                                 <li><a href="../classes/OctreeHelper.html">OctreeHelper</a></li>
+                                <li><a href="../classes/OctreeIterator.html">OctreeIterator</a></li>
                                 <li><a href="../classes/OctreeRaycaster.html">OctreeRaycaster</a></li>
                                 <li><a href="../classes/PointOctant.html">PointOctant</a></li>
                                 <li><a href="../classes/PointOctree.html">PointOctree</a></li>
@@ -207,23 +208,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_countPoints">countPoints</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_distanceToCenterSquared">distanceToCenterSquared</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_distanceToSquared">distanceToSquared</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_findNearestPoint">findNearestPoint</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_findPoints">findPoints</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -309,7 +298,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_points_point-octant.js.html#l112"><code>src\points\point-octant.js:112</code></a>
+        <a href="../files/src_points_point-octant.js.html#l77"><code>src\points\point-octant.js:77</code></a>
         </p>
 
 
@@ -368,49 +357,6 @@ providing a radius as bias.</p>
 
 
 </div>
-<div id="method_countPoints" class="method item">
-    <h3 class="name"><code>countPoints</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_points_point-octant.js.html#l40"><code>src\points\point-octant.js:40</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Counts how many points are in this octant.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>The amount of points.</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_distanceToCenterSquared" class="method item">
     <h3 class="name"><code>distanceToCenterSquared</code></h3>
 
@@ -435,7 +381,7 @@ providing a radius as bias.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_points_point-octant.js.html#l91"><code>src\points\point-octant.js:91</code></a>
+        <a href="../files/src_points_point-octant.js.html#l56"><code>src\points\point-octant.js:56</code></a>
         </p>
 
 
@@ -504,7 +450,7 @@ point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_points_point-octant.js.html#l75"><code>src\points\point-octant.js:75</code></a>
+        <a href="../files/src_points_point-octant.js.html#l40"><code>src\points\point-octant.js:40</code></a>
         </p>
 
 
@@ -545,210 +491,6 @@ point.</p>
 
             </div>
         </div>
-
-
-</div>
-<div id="method_findNearestPoint" class="method item">
-    <h3 class="name"><code>findNearestPoint</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>maxDistance</code>
-                </li>
-                <li class="arg">
-                        <code>skipSelf</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Object</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_points_point-octant.js.html#l232"><code>src\points\point-octant.js:232</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Finds the closest point to the given one.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The point.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">maxDistance</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>The maximum distance.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">skipSelf</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Whether a point that is exactly at the given position should be skipped.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Object</span>:
-                    <p>An object representing the nearest point or null if there is none. The object has a point and a data property.</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_findPoints" class="method item">
-    <h3 class="name"><code>findPoints</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>p</code>
-                </li>
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>skipSelf</code>
-                </li>
-                <li class="arg">
-                        <code>result</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_points_point-octant.js.html#l327"><code>src\points\point-octant.js:327</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Finds points that are inside the specified radius around a given position.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">p</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A position.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>A radius.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">skipSelf</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>Whether a point that is exactly at the given position should be skipped.</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">result</code>
-                        <span class="type">Array</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>An array to be filled with objects, each containing a point and a data property.</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -854,7 +596,7 @@ point.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_points_point-octant.js.html#l193"><code>src\points\point-octant.js:193</code></a>
+        <a href="../files/src_points_point-octant.js.html#l159"><code>src\points\point-octant.js:159</code></a>
         </p>
 
 
@@ -892,7 +634,7 @@ octants and will be dropped afterwards.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_points_point-octant.js.html#l140"><code>src\points\point-octant.js:140</code></a>
+        <a href="../files/src_points_point-octant.js.html#l105"><code>src\points\point-octant.js:105</code></a>
         </p>
 
 

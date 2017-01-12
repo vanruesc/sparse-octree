@@ -6,6 +6,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Octant",
         "Octree",
         "OctreeHelper",
+        "OctreeIterator",
         "OctreeRaycaster",
         "PointOctant",
         "PointOctree",

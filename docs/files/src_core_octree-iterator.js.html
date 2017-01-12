@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\helpers\octree-helper.js - sparse-octree</title>
+    <title>src\core\octree-iterator.js - sparse-octree</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -90,192 +90,241 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src\helpers\octree-helper.js</h1>
+<h1 class="file-heading">File: src\core\octree-iterator.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import {
-	BufferAttribute,
-	BufferGeometry,
-	LineSegments,
-	LineBasicMaterial,
-	Object3D
-} from &quot;three&quot;;
-
-import { PATTERN, EDGES } from &quot;../core/octant.js&quot;;
+import { Box3 } from &quot;../math/box3.js&quot;;
+import IteratorResult from &quot;iterator-result&quot;;
 
 /**
- * An octree helper.
+ * A computation helper.
  *
- * @class OctreeHelper
- * @submodule helpers
- * @constructor
- * @extends Object3D
- * @param {Octree} [octree=null] - The octree to visualise.
+ * @property BOX3
+ * @type Box3
+ * @private
+ * @static
+ * @final
  */
 
-export class OctreeHelper extends Object3D {
+const BOX3 = new Box3();
 
-	constructor(octree = null) {
+/**
+ * An octree iterator.
+ *
+ * @class OctreeIterator
+ * @submodule core
+ * @implements Iterator
+ * @constructor
+ * @param {Octree} octree - An octree.
+ * @param {Frustum|Box3} [region] - A cull region.
+ */
 
-		super();
+export class OctreeIterator {
 
-		this.name = &quot;OctreeHelper&quot;;
+	constructor(octree, region = null) {
 
 		/**
 		 * The octree.
 		 *
 		 * @property octree
 		 * @type Octree
+		 * @private
 		 */
 
 		this.octree = octree;
 
-		this.update();
+		/**
+		 * A region used for octree culling.
+		 *
+		 * @property region
+		 * @type Frustum|Box3
+		 */
+
+		this.region = region;
+
+		/**
+		 * Whether this iterator should respect the cull region.
+		 *
+		 * @property cull
+		 * @type Boolean
+		 * @default false
+		 */
+
+		this.cull = (region !== null);
+
+		/**
+		 * An iterator result.
+		 *
+		 * @property result
+		 * @type IteratorResult
+		 * @private
+		 */
+
+		this.result = new IteratorResult();
+
+		/**
+		 * An octant trace.
+		 *
+		 * @property trace
+		 * @type Array
+		 * @private
+		 */
+
+		this.trace = null;
+
+		/**
+		 * Iteration indices.
+		 *
+		 * @property indices
+		 * @type Array
+		 * @private
+		 */
+
+		this.indices = null;
+
+		this.reset();
 
 	}
 
 	/**
-	 * Creates octant geometry.
+	 * Resets this iterator.
 	 *
-	 * @method createLineSegments
-	 * @private
-	 * @param {Array} octants - The octants.
+	 * @method reset
+	 * @chainable
+	 * @return {OctreeIterator} This iterator.
 	 */
 
-	createLineSegments(octants) {
+	reset() {
 
-		const maxOctants = (Math.pow(2, 16) / 8) - 1;
-		const group = new Object3D();
+		const root = this.octree.root;
 
-		const material = new LineBasicMaterial({
-			color: 0xffffff * Math.random()
-		});
+		this.trace = [];
+		this.indices = [];
 
-		let octantCount = octants.length;
-		let vertexCount;
-		let length;
+		if(root !== null) {
 
-		let indices, positions;
-		let octant, min, max;
-		let geometry;
+			BOX3.min = root.min;
+			BOX3.max = root.max;
 
-		let i, j, c, d, n;
-		let corner, edge;
+			if(!this.cull || this.region.intersectsBox(BOX3)) {
 
-		// Create geometry in multiple runs to limit the amount of vertices.
-		for(i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n &gt; 0; --n) {
+				this.trace.push(root);
+				this.indices.push(0);
 
-			length += (octantCount &lt; maxOctants) ? octantCount : maxOctants;
-			octantCount -= maxOctants;
+			}
 
-			vertexCount = length * 8;
-			indices = new Uint16Array(vertexCount * 3);
-			positions = new Float32Array(vertexCount * 3);
+		}
 
-			// Don&#x27;t reset i, continue where a previous run left off.
-			for(c = 0, d = 0; i &lt; length; ++i) {
+		this.result.reset();
 
-				octant = octants[i];
-				min = octant.min;
-				max = octant.max;
+		return this;
 
-				for(j = 0; j &lt; 12; ++j) {
+	}
 
-					edge = EDGES[j];
+	/**
+	 * Iterates over the volume chunks.
+	 *
+	 * @method next
+	 * @return {IteratorResult} The next voxel.
+	 */
 
-					indices[d++] = c + edge[0];
-					indices[d++] = c + edge[1];
+	next() {
+
+		const cull = this.cull;
+		const region = this.region;
+		const indices = this.indices;
+		const trace = this.trace;
+
+		let octant = null;
+		let depth = trace.length - 1;
+
+		let index, children, child;
+
+		while(octant === null &amp;&amp; depth &gt;= 0) {
+
+			index = indices[depth];
+			children = trace[depth].children;
+
+			++indices[depth];
+
+			if(index &lt; 8) {
+
+				if(children !== null) {
+
+					child = children[index];
+
+					if(cull) {
+
+						BOX3.min = child.min;
+						BOX3.max = child.max;
+
+						if(!region.intersectsBox(BOX3)) {
+
+							// Cull this octant.
+							continue;
+
+						}
+
+					}
+
+					trace.push(child);
+					indices.push(0);
+
+					++depth;
+
+				} else {
+
+					octant = trace.pop();
+					indices.pop();
 
 				}
 
-				for(j = 0; j &lt; 8; ++j, ++c) {
+			} else {
 
-					corner = PATTERN[j];
+				trace.pop();
+				indices.pop();
 
-					positions[c * 3] = (corner[0] === 0) ? min.x : max.x;
-					positions[c * 3 + 1] = (corner[1] === 0) ? min.y : max.y;
-					positions[c * 3 + 2] = (corner[2] === 0) ? min.z : max.z;
-
-				}
+				--depth;
 
 			}
 
-			geometry = new BufferGeometry();
-			geometry.setIndex(new BufferAttribute(indices, 1));
-			geometry.addAttribute(&quot;position&quot;, new BufferAttribute(positions, 3));
-
-			group.add(new LineSegments(geometry, material));
-
 		}
 
-		this.add(group);
+		this.result.value = octant;
+		this.result.done = (octant === null);
+
+		return this.result;
 
 	}
 
 	/**
-	 * Updates the helper geometry.
+	 * Called when this iterator will no longer be run to completion.
 	 *
-	 * @method update
+	 * @method return
+	 * @param {Object} value - An interator result value.
+	 * @return {IteratorResult} - A premature completion result.
 	 */
 
-	update() {
+	return(value) {
 
-		const depth = (this.octree !== null) ? this.octree.getDepth() : -1;
+		this.result.value = value;
+		this.result.done = true;
 
-		let level = 0;
-
-		// Remove existing geometry.
-		this.dispose();
-
-		while(level &lt;= depth) {
-
-			this.createLineSegments(this.octree.findOctantsByLevel(level));
-
-			++level;
-
-		}
+		return this.result;
 
 	}
 
 	/**
-	 * Destroys this helper.
+	 * Returns this iterator.
 	 *
-	 * @method dispose
+	 * @method Symbol.iterator
+	 * @return {VoxelIterator} An iterator.
 	 */
 
-	dispose() {
+	[Symbol.iterator]() {
 
-		const groups = this.children;
-
-		let group, children;
-		let i, j, il, jl;
-
-		for(i = 0, il = groups.length; i &lt; il; ++i) {
-
-			group = groups[i];
-			children = group.children;
-
-			for(j = 0, jl = children.length; j &lt; jl; ++j) {
-
-				children[j].geometry.dispose();
-				children[j].material.dispose();
-
-			}
-
-			while(children.length &gt; 0) {
-
-				group.remove(children[0]);
-
-			}
-
-		}
-
-		while(groups.length &gt; 0) {
-
-			this.remove(groups[0]);
-
-		}
+		return this;
 
 	}
 
