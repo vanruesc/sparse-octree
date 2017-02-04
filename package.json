@@ -4,7 +4,7 @@
 	"description": "A sparse octree data structure.",
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "build/sparse-octree.js",
-	"jsnext:main": "src/index.js",
+	"module": "src/index.js",
 	"license": "Zlib",
 
 	"keywords": [
