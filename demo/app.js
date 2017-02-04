@@ -23,11 +23,11 @@ import { FrustumCuller } from "./frustum-culler";
 /**
  * A demo application.
  *
- * @class Demo
+ * @class App
  * @static
  */
 
-export class Demo {
+export class App {
 
 	/**
 	 * Initialises the demo.

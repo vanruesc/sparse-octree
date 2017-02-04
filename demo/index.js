@@ -1,5 +1,5 @@
 import { LoadingManager } from "three";
-import { Demo } from "./demo.js";
+import { App } from "./app.js";
 
 /**
  * The program entry point.
@@ -28,7 +28,7 @@ window.addEventListener("load", function main(event) {
 
 		if(loaded === total) {
 
-			Demo.initialise(
+			App.initialise(
 				document.getElementById("viewport"),
 				document.getElementById("aside"),
 				assets
