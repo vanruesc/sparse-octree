@@ -12,7 +12,7 @@ A sparse octree data structure.
 ## Installation
 
 ```sh
-$ npm install sparse-octree
+npm install sparse-octree
 ``` 
 
 
