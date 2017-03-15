@@ -127,10 +127,10 @@ export class OctreeIterator {
 	}
 
 	/**
-	 * Iterates over the volume chunks.
+	 * Iterates over the leaf octants.
 	 *
 	 * @method next
-	 * @return {IteratorResult} The next voxel.
+	 * @return {IteratorResult} The next leaf octant.
 	 */
 
 	next() {

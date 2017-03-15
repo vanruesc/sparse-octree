@@ -40,6 +40,8 @@ function countPoints(octant) {
  * Recursively adds a point to the octree.
  *
  * @method add
+ * @private
+ * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - A point.
  * @param {Object} data - An object that the point represents.
@@ -120,6 +122,8 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
  * Recursively finds a point in the octree and removes it.
  *
  * @method remove
+ * @private
+ * @static
  * @param {Octant} octant - An octant.
  * @param {Octant} parent - The parent of the octant.
  * @param {Vector3} p - A point.
@@ -194,6 +198,8 @@ function remove(octant, parent, p, bias, maxPoints) {
  * Recursively finds a point in the octree and fetches the associated data.
  *
  * @method fetch
+ * @private
+ * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - A point.
  * @param {Number} bias - A threshold for proximity checks.
