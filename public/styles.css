@@ -64,7 +64,7 @@ div[role="complementary"] {
 	position: fixed;
 	right: 0;
 	top: 0;
-	visibility: hidden;
+	visibility: visible;
 }
 
 div[role="complementary"] h3 {
