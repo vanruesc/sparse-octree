@@ -46,6 +46,7 @@ export class Vector3 {
 	 * Sets the values of this vector
 	 *
 	 * @method set
+	 * @chainable
 	 * @param {Number} x - The x value.
 	 * @param {Number} y - The y value.
 	 * @param {Number} z - The z value.
@@ -66,6 +67,7 @@ export class Vector3 {
 	 * Copies the values of another vector.
 	 *
 	 * @method copy
+	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -84,14 +86,13 @@ export class Vector3 {
 	 * Copies values from an array.
 	 *
 	 * @method fromArray
+	 * @chainable
 	 * @param {Array} array - An array.
 	 * @param {Number} offset - An offset.
 	 * @return {Vector3} This vector.
 	 */
 
-	fromArray(array, offset) {
-
-		if(offset === undefined) { offset = 0; }
+	fromArray(array, offset = 0) {
 
 		this.x = array[offset];
 		this.y = array[offset + 1];
@@ -110,10 +111,7 @@ export class Vector3 {
 	 * @return {Vector3} The array.
 	 */
 
-	toArray(array, offset) {
-
-		if(array === undefined) { array = []; }
-		if(offset === undefined) { offset = 0; }
+	toArray(array = [], offset = 0) {
 
 		array[offset] = this.x;
 		array[offset + 1] = this.y;
@@ -154,6 +152,7 @@ export class Vector3 {
 	 * Adds a vector to this one.
 	 *
 	 * @method add
+	 * @chainable
 	 * @param {Vector3} v - The vector to add.
 	 * @return {Vector3} This vector.
 	 */
@@ -172,6 +171,7 @@ export class Vector3 {
 	 * Adds a scaled vector to this one.
 	 *
 	 * @method addScaledVector
+	 * @chainable
 	 * @param {Vector3} v - The vector to scale and add.
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
@@ -191,6 +191,7 @@ export class Vector3 {
 	 * Adds a scalar to this vector.
 	 *
 	 * @method addScalar
+	 * @chainable
 	 * @param {Number} s - The scalar to add.
 	 * @return {Vector3} This vector.
 	 */
@@ -209,6 +210,7 @@ export class Vector3 {
 	 * Sets this vector to the sum of two given vectors.
 	 *
 	 * @method addVectors
+	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -228,6 +230,7 @@ export class Vector3 {
 	 * Subtracts a vector from this vector.
 	 *
 	 * @method sub
+	 * @chainable
 	 * @param {Vector3} v - The vector to subtract.
 	 * @return {Vector3} This vector.
 	 */
@@ -246,6 +249,7 @@ export class Vector3 {
 	 * Subtracts a scalar to this vector.
 	 *
 	 * @method subScalar
+	 * @chainable
 	 * @param {Number} s - The scalar to subtract.
 	 * @return {Vector3} This vector.
 	 */
@@ -264,6 +268,7 @@ export class Vector3 {
 	 * Sets this vector to the difference between two given vectors.
 	 *
 	 * @method subVectors
+	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - A second vector.
 	 * @return {Vector3} This vector.
@@ -283,6 +288,7 @@ export class Vector3 {
 	 * Multiplies this vector with another vector.
 	 *
 	 * @method multiply
+	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -301,6 +307,7 @@ export class Vector3 {
 	 * Multiplies this vector with a given scalar.
 	 *
 	 * @method multiplyScalar
+	 * @chainable
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
@@ -329,6 +336,7 @@ export class Vector3 {
 	 * Sets this vector to the product of two given vectors.
 	 *
 	 * @method multiplyVectors
+	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -348,6 +356,7 @@ export class Vector3 {
 	 * Divides this vector by another vector.
 	 *
 	 * @method divide
+	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -366,6 +375,7 @@ export class Vector3 {
 	 * Divides this vector by a given scalar.
 	 *
 	 * @method divideScalar
+	 * @chainable
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
@@ -380,6 +390,7 @@ export class Vector3 {
 	 * Sets this vector to the quotient of two given vectors.
 	 *
 	 * @method divideVectors
+	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -390,6 +401,24 @@ export class Vector3 {
 		this.x = a.x / b.x;
 		this.y = a.y / b.y;
 		this.z = a.z / b.z;
+
+		return this;
+
+	}
+
+	/**
+	 * Negates this vector.
+	 *
+	 * @method negate
+	 * @chainable
+	 * @return {Vector3} This vector.
+	 */
+
+	negate() {
+
+		this.x = -this.x;
+		this.y = -this.y;
+		this.z = -this.z;
 
 		return this;
 
@@ -471,6 +500,7 @@ export class Vector3 {
 	 * Normalizes this vector.
 	 *
 	 * @method normalize
+	 * @chainable
 	 * @return {Vector3} This vector.
 	 */
 
@@ -484,6 +514,7 @@ export class Vector3 {
 	 * Adopts the min value for each component of this vector and the given one.
 	 *
 	 * @method min
+	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -502,6 +533,7 @@ export class Vector3 {
 	 * adopts the max value for each component of this vector and the given one.
 	 *
 	 * @method max
+	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -520,6 +552,7 @@ export class Vector3 {
 	 * Clamps this vector.
 	 *
 	 * @method clamp
+	 * @chainable
 	 * @param {Vector3} min - A vector, assumed to be smaller than max.
 	 * @param {Vector3} max - A vector, assumed to be greater than min.
 	 * @return {Vector3} This vector.
@@ -539,6 +572,7 @@ export class Vector3 {
 	 * Applies a matrix to this vector.
 	 *
 	 * @method applyMatrix3
+	 * @chainable
 	 * @param {Matrix3} m - A matrix.
 	 * @return {Vector3} This vector.
 	 */
@@ -560,6 +594,7 @@ export class Vector3 {
 	 * Applies a matrix to this vector.
 	 *
 	 * @method applyMatrix4
+	 * @chainable
 	 * @param {Matrix4} m - A matrix.
 	 * @return {Vector3} This vector.
 	 */
