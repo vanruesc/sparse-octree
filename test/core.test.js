@@ -190,7 +190,7 @@ module.exports = {
 			test.equal(octants.length, 16, "should find all octants");
 			test.done();
 
-		},
+		}
 
 	},
 
