@@ -2,7 +2,7 @@
     "project": {
         "name": "sparse-octree",
         "description": "A sparse octree data structure.",
-        "version": "2.6.0",
+        "version": "2.6.1",
         "url": "https://github.com/vanruesc/sparse-octree"
     },
     "files": {
@@ -187,7 +187,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "src\\points\\point-octree.js",
-            "line": 404,
+            "line": 410,
             "description": "Exposure of the library components.",
             "itemtype": "main"
         },
@@ -238,7 +238,7 @@
             "module": "sparse-octree",
             "namespace": "",
             "file": "src\\points\\point-octree.js",
-            "line": 404,
+            "line": 410,
             "description": "Point-oriented octree components."
         }
     },
@@ -512,7 +512,7 @@
             "module": "sparse-octree",
             "namespace": "",
             "file": "src\\points\\point-octree.js",
-            "line": 404,
+            "line": 410,
             "description": "An octree that manages points.",
             "submodule": "points",
             "extends": "Octree",
@@ -851,11 +851,11 @@
         {
             "file": "src\\core\\octree-iterator.js",
             "line": 129,
-            "description": "Iterates over the volume chunks.",
+            "description": "Iterates over the leaf octants.",
             "itemtype": "method",
             "name": "next",
             "return": {
-                "description": "The next voxel.",
+                "description": "The next leaf octant.",
                 "type": "IteratorResult"
             },
             "class": "OctreeIterator",
@@ -1672,6 +1672,7 @@
             "description": "Sets the values of this vector",
             "itemtype": "method",
             "name": "set",
+            "chainable": 1,
             "params": [
                 {
                     "name": "x",
@@ -1699,10 +1700,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 65,
+            "line": 66,
             "description": "Copies the values of another vector.",
             "itemtype": "method",
             "name": "copy",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -1720,10 +1722,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 83,
+            "line": 85,
             "description": "Copies values from an array.",
             "itemtype": "method",
             "name": "fromArray",
+            "chainable": 1,
             "params": [
                 {
                     "name": "array",
@@ -1746,7 +1749,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 104,
+            "line": 105,
             "description": "Stores this vector in an array.",
             "itemtype": "method",
             "name": "toArray",
@@ -1773,7 +1776,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 126,
+            "line": 124,
             "description": "Checks if this vector equals the given one.",
             "itemtype": "method",
             "name": "equals",
@@ -1794,7 +1797,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 140,
+            "line": 138,
             "description": "Clones this vector.",
             "itemtype": "method",
             "name": "clone",
@@ -1808,10 +1811,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 153,
+            "line": 151,
             "description": "Adds a vector to this one.",
             "itemtype": "method",
             "name": "add",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -1829,10 +1833,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 171,
+            "line": 170,
             "description": "Adds a scaled vector to this one.",
             "itemtype": "method",
             "name": "addScaledVector",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -1859,6 +1864,7 @@
             "description": "Adds a scalar to this vector.",
             "itemtype": "method",
             "name": "addScalar",
+            "chainable": 1,
             "params": [
                 {
                     "name": "s",
@@ -1876,10 +1882,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 208,
+            "line": 209,
             "description": "Sets this vector to the sum of two given vectors.",
             "itemtype": "method",
             "name": "addVectors",
+            "chainable": 1,
             "params": [
                 {
                     "name": "a",
@@ -1902,10 +1909,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 227,
+            "line": 229,
             "description": "Subtracts a vector from this vector.",
             "itemtype": "method",
             "name": "sub",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -1923,10 +1931,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 245,
+            "line": 248,
             "description": "Subtracts a scalar to this vector.",
             "itemtype": "method",
             "name": "subScalar",
+            "chainable": 1,
             "params": [
                 {
                     "name": "s",
@@ -1944,10 +1953,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 263,
+            "line": 267,
             "description": "Sets this vector to the difference between two given vectors.",
             "itemtype": "method",
             "name": "subVectors",
+            "chainable": 1,
             "params": [
                 {
                     "name": "a",
@@ -1970,10 +1980,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 282,
+            "line": 287,
             "description": "Multiplies this vector with another vector.",
             "itemtype": "method",
             "name": "multiply",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -1991,10 +2002,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 300,
+            "line": 306,
             "description": "Multiplies this vector with a given scalar.",
             "itemtype": "method",
             "name": "multiplyScalar",
+            "chainable": 1,
             "params": [
                 {
                     "name": "s",
@@ -2012,10 +2024,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 328,
+            "line": 335,
             "description": "Sets this vector to the product of two given vectors.",
             "itemtype": "method",
             "name": "multiplyVectors",
+            "chainable": 1,
             "params": [
                 {
                     "name": "a",
@@ -2038,10 +2051,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 347,
+            "line": 355,
             "description": "Divides this vector by another vector.",
             "itemtype": "method",
             "name": "divide",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -2059,10 +2073,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 365,
+            "line": 374,
             "description": "Divides this vector by a given scalar.",
             "itemtype": "method",
             "name": "divideScalar",
+            "chainable": 1,
             "params": [
                 {
                     "name": "s",
@@ -2080,10 +2095,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 379,
+            "line": 389,
             "description": "Sets this vector to the quotient of two given vectors.",
             "itemtype": "method",
             "name": "divideVectors",
+            "chainable": 1,
             "params": [
                 {
                     "name": "a",
@@ -2106,7 +2122,22 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 398,
+            "line": 409,
+            "description": "Negates this vector.",
+            "itemtype": "method",
+            "name": "negate",
+            "chainable": 1,
+            "return": {
+                "description": "This vector.",
+                "type": "Vector3"
+            },
+            "class": "Vector3",
+            "module": "sparse-octree",
+            "submodule": "math"
+        },
+        {
+            "file": "src\\math\\vector3.js",
+            "line": 427,
             "description": "Calculates the dot product with another vector.",
             "itemtype": "method",
             "name": "dot",
@@ -2127,7 +2158,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 412,
+            "line": 441,
             "description": "Calculates the squared length of this vector.",
             "itemtype": "method",
             "name": "lengthSq",
@@ -2141,7 +2172,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 425,
+            "line": 454,
             "description": "Calculates the length of this vector.",
             "itemtype": "method",
             "name": "length",
@@ -2155,7 +2186,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 438,
+            "line": 467,
             "description": "Calculates the distance to a given vector.",
             "itemtype": "method",
             "name": "distanceTo",
@@ -2176,7 +2207,7 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 452,
+            "line": 481,
             "description": "Calculates the squared distance to a given vector.",
             "itemtype": "method",
             "name": "distanceToSquared",
@@ -2197,10 +2228,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 470,
+            "line": 499,
             "description": "Normalizes this vector.",
             "itemtype": "method",
             "name": "normalize",
+            "chainable": 1,
             "return": {
                 "description": "This vector.",
                 "type": "Vector3"
@@ -2211,10 +2243,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 483,
+            "line": 513,
             "description": "Adopts the min value for each component of this vector and the given one.",
             "itemtype": "method",
             "name": "min",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -2232,10 +2265,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 501,
+            "line": 532,
             "description": "adopts the max value for each component of this vector and the given one.",
             "itemtype": "method",
             "name": "max",
+            "chainable": 1,
             "params": [
                 {
                     "name": "v",
@@ -2253,10 +2287,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 519,
+            "line": 551,
             "description": "Clamps this vector.",
             "itemtype": "method",
             "name": "clamp",
+            "chainable": 1,
             "params": [
                 {
                     "name": "min",
@@ -2279,10 +2314,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 538,
+            "line": 571,
             "description": "Applies a matrix to this vector.",
             "itemtype": "method",
             "name": "applyMatrix3",
+            "chainable": 1,
             "params": [
                 {
                     "name": "m",
@@ -2300,10 +2336,11 @@
         },
         {
             "file": "src\\math\\vector3.js",
-            "line": 559,
+            "line": 593,
             "description": "Applies a matrix to this vector.",
             "itemtype": "method",
             "name": "applyMatrix4",
+            "chainable": 1,
             "params": [
                 {
                     "name": "m",
@@ -2467,6 +2504,9 @@
             "description": "Recursively adds a point to the octree.",
             "itemtype": "method",
             "name": "add",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
             "params": [
                 {
                     "name": "octant",
@@ -2509,10 +2549,13 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 119,
+            "line": 121,
             "description": "Recursively finds a point in the octree and removes it.",
             "itemtype": "method",
             "name": "remove",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
             "params": [
                 {
                     "name": "octant",
@@ -2545,10 +2588,13 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 193,
+            "line": 197,
             "description": "Recursively finds a point in the octree and fetches the associated data.",
             "itemtype": "method",
             "name": "fetch",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
             "params": [
                 {
                     "name": "octant",
@@ -2580,7 +2626,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 245,
+            "line": 251,
             "description": "Recursively finds the closest point to the given one.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -2618,7 +2664,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 343,
+            "line": 349,
             "description": "Recursively finds points that are inside the specified radius around a given\nposition.",
             "itemtype": "method",
             "name": "findPoints",
@@ -2657,7 +2703,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 426,
+            "line": 432,
             "description": "A threshold for proximity checks.",
             "itemtype": "property",
             "name": "bias",
@@ -2671,7 +2717,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 437,
+            "line": 443,
             "description": "The proximity threshold squared.",
             "itemtype": "property",
             "name": "biasSquared",
@@ -2685,7 +2731,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 448,
+            "line": 454,
             "description": "Number of points per octant before a split occurs.\n\nThis value works together with the maximum depth as a secondary limiting\nfactor. Smaller values cause splits to occur earlier which results in a\nfaster and deeper tree growth.",
             "itemtype": "property",
             "name": "maxPoints",
@@ -2699,7 +2745,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 463,
+            "line": 469,
             "description": "The maximum tree depth level.\n\nIt's possible to use Infinity, but be aware that allowing infinitely\nsmall octants can have a negative impact on performance.\nFinding a value that works best for a specific scene is advisable.",
             "itemtype": "property",
             "name": "maxDepth",
@@ -2713,7 +2759,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 480,
+            "line": 486,
             "description": "Counts how many points are in this octree.",
             "itemtype": "method",
             "name": "countPoints",
@@ -2727,7 +2773,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 493,
+            "line": 499,
             "description": "Adds a point to the octree.",
             "itemtype": "method",
             "name": "add",
@@ -2749,7 +2795,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 507,
+            "line": 513,
             "description": "Removes a point from the tree.",
             "itemtype": "method",
             "name": "remove",
@@ -2766,7 +2812,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 520,
+            "line": 526,
             "description": "Retrieves the data of the specified point.",
             "itemtype": "method",
             "name": "fetch",
@@ -2787,7 +2833,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 534,
+            "line": 540,
             "description": "Finds the closest point to the given one.",
             "itemtype": "method",
             "name": "findNearestPoint",
@@ -2822,7 +2868,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 550,
+            "line": 556,
             "description": "Finds points that are in the specified radius around the given position.",
             "itemtype": "method",
             "name": "findPoints",
@@ -2855,7 +2901,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 570,
+            "line": 576,
             "description": "Finds the points that intersect with the given ray.",
             "itemtype": "method",
             "name": "raycast",
@@ -2882,7 +2928,7 @@
         },
         {
             "file": "src\\points\\point-octree.js",
-            "line": 594,
+            "line": 600,
             "description": "Collects points that intersect with the given ray.",
             "itemtype": "method",
             "name": "testPoints",
