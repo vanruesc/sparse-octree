@@ -1,5 +1,5 @@
 /**
- * sparse-octree v2.6.1 build Jan 20 2017
+ * sparse-octree v2.6.1 build Mar 15 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
@@ -178,6 +178,7 @@
     * Sets the values of this vector
     *
     * @method set
+    * @chainable
     * @param {Number} x - The x value.
     * @param {Number} y - The y value.
     * @param {Number} z - The z value.
@@ -199,6 +200,7 @@
      * Copies the values of another vector.
      *
      * @method copy
+     * @chainable
      * @param {Vector3} v - A vector.
      * @return {Vector3} This vector.
      */
@@ -218,6 +220,7 @@
      * Copies values from an array.
      *
      * @method fromArray
+     * @chainable
      * @param {Array} array - An array.
      * @param {Number} offset - An offset.
      * @return {Vector3} This vector.
@@ -225,11 +228,9 @@
 
   	}, {
   		key: "fromArray",
-  		value: function fromArray(array, offset) {
+  		value: function fromArray(array) {
+  			var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-  			if (offset === undefined) {
-  				offset = 0;
-  			}
 
   			this.x = array[offset];
   			this.y = array[offset + 1];
@@ -249,14 +250,10 @@
 
   	}, {
   		key: "toArray",
-  		value: function toArray$$1(array, offset) {
+  		value: function toArray$$1() {
+  			var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  			var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-  			if (array === undefined) {
-  				array = [];
-  			}
-  			if (offset === undefined) {
-  				offset = 0;
-  			}
 
   			array[offset] = this.x;
   			array[offset + 1] = this.y;
@@ -298,6 +295,7 @@
      * Adds a vector to this one.
      *
      * @method add
+     * @chainable
      * @param {Vector3} v - The vector to add.
      * @return {Vector3} This vector.
      */
@@ -317,6 +315,7 @@
      * Adds a scaled vector to this one.
      *
      * @method addScaledVector
+     * @chainable
      * @param {Vector3} v - The vector to scale and add.
      * @param {Number} s - A scalar.
      * @return {Vector3} This vector.
@@ -337,6 +336,7 @@
      * Adds a scalar to this vector.
      *
      * @method addScalar
+     * @chainable
      * @param {Number} s - The scalar to add.
      * @return {Vector3} This vector.
      */
@@ -356,6 +356,7 @@
      * Sets this vector to the sum of two given vectors.
      *
      * @method addVectors
+     * @chainable
      * @param {Vector3} a - A vector.
      * @param {Vector3} b - Another vector.
      * @return {Vector3} This vector.
@@ -376,6 +377,7 @@
      * Subtracts a vector from this vector.
      *
      * @method sub
+     * @chainable
      * @param {Vector3} v - The vector to subtract.
      * @return {Vector3} This vector.
      */
@@ -395,6 +397,7 @@
      * Subtracts a scalar to this vector.
      *
      * @method subScalar
+     * @chainable
      * @param {Number} s - The scalar to subtract.
      * @return {Vector3} This vector.
      */
@@ -414,6 +417,7 @@
      * Sets this vector to the difference between two given vectors.
      *
      * @method subVectors
+     * @chainable
      * @param {Vector3} a - A vector.
      * @param {Vector3} b - A second vector.
      * @return {Vector3} This vector.
@@ -434,6 +438,7 @@
      * Multiplies this vector with another vector.
      *
      * @method multiply
+     * @chainable
      * @param {Vector3} v - A vector.
      * @return {Vector3} This vector.
      */
@@ -453,6 +458,7 @@
      * Multiplies this vector with a given scalar.
      *
      * @method multiplyScalar
+     * @chainable
      * @param {Number} s - A scalar.
      * @return {Vector3} This vector.
      */
@@ -480,6 +486,7 @@
      * Sets this vector to the product of two given vectors.
      *
      * @method multiplyVectors
+     * @chainable
      * @param {Vector3} a - A vector.
      * @param {Vector3} b - Another vector.
      * @return {Vector3} This vector.
@@ -500,6 +507,7 @@
      * Divides this vector by another vector.
      *
      * @method divide
+     * @chainable
      * @param {Vector3} v - A vector.
      * @return {Vector3} This vector.
      */
@@ -519,6 +527,7 @@
      * Divides this vector by a given scalar.
      *
      * @method divideScalar
+     * @chainable
      * @param {Number} s - A scalar.
      * @return {Vector3} This vector.
      */
@@ -534,6 +543,7 @@
      * Sets this vector to the quotient of two given vectors.
      *
      * @method divideVectors
+     * @chainable
      * @param {Vector3} a - A vector.
      * @param {Vector3} b - Another vector.
      * @return {Vector3} This vector.
@@ -546,6 +556,25 @@
   			this.x = a.x / b.x;
   			this.y = a.y / b.y;
   			this.z = a.z / b.z;
+
+  			return this;
+  		}
+
+  		/**
+     * Negates this vector.
+     *
+     * @method negate
+     * @chainable
+     * @return {Vector3} This vector.
+     */
+
+  	}, {
+  		key: "negate",
+  		value: function negate() {
+
+  			this.x = -this.x;
+  			this.y = -this.y;
+  			this.z = -this.z;
 
   			return this;
   		}
@@ -631,6 +660,7 @@
      * Normalizes this vector.
      *
      * @method normalize
+     * @chainable
      * @return {Vector3} This vector.
      */
 
@@ -645,6 +675,7 @@
      * Adopts the min value for each component of this vector and the given one.
      *
      * @method min
+     * @chainable
      * @param {Vector3} v - A vector.
      * @return {Vector3} This vector.
      */
@@ -664,6 +695,7 @@
      * adopts the max value for each component of this vector and the given one.
      *
      * @method max
+     * @chainable
      * @param {Vector3} v - A vector.
      * @return {Vector3} This vector.
      */
@@ -683,6 +715,7 @@
      * Clamps this vector.
      *
      * @method clamp
+     * @chainable
      * @param {Vector3} min - A vector, assumed to be smaller than max.
      * @param {Vector3} max - A vector, assumed to be greater than min.
      * @return {Vector3} This vector.
@@ -703,6 +736,7 @@
      * Applies a matrix to this vector.
      *
      * @method applyMatrix3
+     * @chainable
      * @param {Matrix3} m - A matrix.
      * @return {Vector3} This vector.
      */
@@ -727,6 +761,7 @@
      * Applies a matrix to this vector.
      *
      * @method applyMatrix4
+     * @chainable
      * @param {Matrix4} m - A matrix.
      * @return {Vector3} This vector.
      */
@@ -1445,10 +1480,10 @@
   				}
 
   				/**
-       * Iterates over the volume chunks.
+       * Iterates over the leaf octants.
        *
        * @method next
-       * @return {IteratorResult} The next voxel.
+       * @return {IteratorResult} The next leaf octant.
        */
 
   		}, {
@@ -2632,6 +2667,8 @@
    * Recursively adds a point to the octree.
    *
    * @method add
+   * @private
+   * @static
    * @param {Octant} octant - An octant.
    * @param {Vector3} p - A point.
    * @param {Object} data - An object that the point represents.
@@ -2702,6 +2739,8 @@
    * Recursively finds a point in the octree and removes it.
    *
    * @method remove
+   * @private
+   * @static
    * @param {Octant} octant - An octant.
    * @param {Octant} parent - The parent of the octant.
    * @param {Vector3} p - A point.
@@ -2770,6 +2809,8 @@
    * Recursively finds a point in the octree and fetches the associated data.
    *
    * @method fetch
+   * @private
+   * @static
    * @param {Octant} octant - An octant.
    * @param {Vector3} p - A point.
    * @param {Number} bias - A threshold for proximity checks.
