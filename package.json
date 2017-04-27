@@ -46,7 +46,7 @@
 
 	"dependencies": {
 		"iterator-result": "0.0.x",
-		"three": "0.84.x"
+		"three": "0.85.x"
 	},
 
 	"devDependencies": {
