@@ -1,4 +1,4 @@
-import { Vector3 } from "../math/vector3.js";
+import { Vector3 } from "math-ds";
 import { PATTERN } from "./octant.js";
 
 /**

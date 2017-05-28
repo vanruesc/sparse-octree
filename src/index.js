@@ -19,11 +19,6 @@ export {
 } from "./helpers";
 
 export {
-	Box3,
-	Vector3
-} from "./math";
-
-export {
 	PointOctant,
 	PointOctree
 } from "./points";
