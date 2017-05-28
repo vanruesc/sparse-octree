@@ -6,8 +6,8 @@
 
 A sparse octree data structure.
 
-*[Extensive Demo](http://vanruesc.github.io/sparse-octree/public/index.html) &there4;
-[API Reference](http://vanruesc.github.io/sparse-octree/docs)*
+*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/index.html) &there4;
+[API Reference](https://vanruesc.github.io/sparse-octree/docs)*
 
 
 ## Installation
