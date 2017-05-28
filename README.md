@@ -45,12 +45,13 @@ const min = new Vector3(-1, -1, -1);
 const max = new Vector3(1, 1, 1);
 
 const octree = new PointOctree(min, max);
+const myData = {};
 
-octree.add(new Vector3(0, 0, 0), {});
-octree.fetch(new Vector3(0, 0, 0)); // => {}
+octree.add(new Vector3(0, 0, 0), myData);
+octree.fetch(new Vector3(0, 0, 0)); // => myData
 ```
 
-A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/3/).
+A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/4/).
 
 
 ## Features
