@@ -1,8 +1,7 @@
 /**
  * Core components.
  *
- * @module sparse-octree
- * @submodule core
+ * @module sparse-octree/core
  */
 
 export { CubicOctant } from "./cubic-octant.js";

@@ -1,16 +1,17 @@
 import { Vector3 } from "./vector3.js";
 
 /**
- * A bounding box.
- *
- * @class Box3
- * @submodule math
- * @constructor
- * @param {Vector3} [min] - The lower bounds.
- * @param {Vector3} [max] - The upper bounds.
+ * A 3D box.
  */
 
 export class Box3 {
+
+	/**
+	 * Constructs a new box3.
+	 *
+	 * @param {Vector3} [min] - The lower bounds.
+	 * @param {Vector3} [max] - The upper bounds.
+	 */
 
 	constructor(
 		min = new Vector3(Infinity, Infinity, Infinity),
@@ -18,19 +19,17 @@ export class Box3 {
 	) {
 
 		/**
-		 * The min bounds.
+		 * The lower bounds.
 		 *
-		 * @property min
-		 * @type Vector3
+		 * @type {Vector3}
 		 */
 
 		this.min = min;
 
 		/**
-		 * The max bounds.
+		 * The upper bounds.
 		 *
-		 * @property max
-		 * @type Vector3
+		 * @type {Vector3}
 		 */
 
 		this.max = max;
@@ -40,10 +39,9 @@ export class Box3 {
 	/**
 	 * Sets the values of this box.
 	 *
-	 * @method set
-	 * @param {Number} min - The min bounds.
-	 * @param {Number} max - The max bounds.
-	 * @return {Matrix3} This box.
+	 * @param {Number} min - The lower bounds.
+	 * @param {Number} max - The upper bounds.
+	 * @return {Box3} This box.
 	 */
 
 	set(min, max) {
@@ -58,8 +56,7 @@ export class Box3 {
 	/**
 	 * Copies the values of a given box.
 	 *
-	 * @method copy
-	 * @param {Matrix3} b - A box.
+	 * @param {Box3} b - A box.
 	 * @return {Box3} This box.
 	 */
 
@@ -75,8 +72,7 @@ export class Box3 {
 	/**
 	 * Clones this matrix.
 	 *
-	 * @method clone
-	 * @return {Matrix3} A clone of this matrix.
+	 * @return {Box3} A clone of this matrix.
 	 */
 
 	clone() {
@@ -88,8 +84,7 @@ export class Box3 {
 	/**
 	 * Expands this box by the given point.
 	 *
-	 * @method expandByPoint
-	 * @param {Matrix3} p - A point.
+	 * @param {Vector3} p - A point.
 	 * @return {Box3} This box.
 	 */
 
@@ -105,7 +100,6 @@ export class Box3 {
 	/**
 	 * Expands this box by combining it with the given one.
 	 *
-	 * @method union
 	 * @param {Box3} b - A box.
 	 * @return {Box3} This box.
 	 */
@@ -122,8 +116,7 @@ export class Box3 {
 	/**
 	 * Defines this box by the given points.
 	 *
-	 * @method setFromPoints
-	 * @param {Array} points - The points.
+	 * @param {Vector3[]} points - The points.
 	 * @return {Box3} This box.
 	 */
 
@@ -144,7 +137,6 @@ export class Box3 {
 	/**
 	 * Defines this box by the given center and size.
 	 *
-	 * @method setFromCenterAndSize
 	 * @param {Vector3} center - The center.
 	 * @param {Number} size - The size.
 	 * @return {Box3} This box.
@@ -164,8 +156,7 @@ export class Box3 {
 	/**
 	 * Checks if this box intersects with the given one.
 	 *
-	 * @method intersectsBox
-	 * @param {Matrix3} box - A box.
+	 * @param {Box3} box - A box.
 	 * @return {Boolean} Whether the boxes intersect.
 	 */
 

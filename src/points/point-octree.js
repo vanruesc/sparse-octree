@@ -4,9 +4,7 @@ import { PointOctant } from "./point-octant.js";
 /**
  * Recursively counts how many points are in the given octree.
  *
- * @method countPoints
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @return {Number} The amount of points.
  */
@@ -39,9 +37,7 @@ function countPoints(octant) {
 /**
  * Recursively adds a point to the octree.
  *
- * @method add
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - A point.
  * @param {Object} data - An object that the point represents.
@@ -121,9 +117,7 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 /**
  * Recursively finds a point in the octree and removes it.
  *
- * @method remove
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @param {Octant} parent - The parent of the octant.
  * @param {Vector3} p - A point.
@@ -197,9 +191,7 @@ function remove(octant, parent, p, bias, maxPoints) {
 /**
  * Recursively finds a point in the octree and fetches the associated data.
  *
- * @method fetch
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - A point.
  * @param {Number} bias - A threshold for proximity checks.
@@ -251,9 +243,7 @@ function fetch(octant, p, bias, biasSquared) {
 /**
  * Recursively finds the closest point to the given one.
  *
- * @method findNearestPoint
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - The point.
  * @param {Number} maxDistance - The maximum distance.
@@ -350,9 +340,7 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
  * Recursively finds points that are inside the specified radius around a given
  * position.
  *
- * @method findPoints
  * @private
- * @static
  * @param {Octant} octant - An octant.
  * @param {Vector3} p - A position.
  * @param {Number} r - A radius.
@@ -409,31 +397,34 @@ function findPoints(octant, p, r, skipSelf, result) {
 
 /**
  * An octree that manages points.
- *
- * @class PointOctree
- * @submodule points
- * @extends Octree
- * @constructor
- * @param {Vector3} min - The lower bounds of the tree.
- * @param {Vector3} max - The upper bounds of the tree.
- * @param {Number} [bias=0.0] - A threshold for proximity checks.
- * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
- * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
  */
 
 export class PointOctree extends Octree {
 
+	/**
+	 * Constructs a new point octree.
+	 *
+	 * @param {Vector3} min - The lower bounds of the tree.
+	 * @param {Vector3} max - The upper bounds of the tree.
+	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
+	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
+	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
+	 */
+
 	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
 		super();
+
+		/**
+		 * The root octant.
+		 */
 
 		this.root = new PointOctant(min, max);
 
 		/**
 		 * A threshold for proximity checks.
 		 *
-		 * @property bias
-		 * @type Number
+		 * @type {Number}
 		 * @private
 		 * @default 0.0
 		 */
@@ -443,8 +434,7 @@ export class PointOctree extends Octree {
 		/**
 		 * The proximity threshold squared.
 		 *
-		 * @property biasSquared
-		 * @type Number
+		 * @type {Number}
 		 * @private
 		 * @default 0.0
 		 */
@@ -458,8 +448,7 @@ export class PointOctree extends Octree {
 		 * factor. Smaller values cause splits to occur earlier which results in a
 		 * faster and deeper tree growth.
 		 *
-		 * @property maxPoints
-		 * @type Number
+		 * @type {Number}
 		 * @private
 		 * @default 8
 		 */
@@ -473,8 +462,7 @@ export class PointOctree extends Octree {
 		 * small octants can have a negative impact on performance.
 		 * Finding a value that works best for a specific scene is advisable.
 		 *
-		 * @property maxDepth
-		 * @type Number
+		 * @type {Number}
 		 * @private
 		 * @default 8
 		 */
@@ -486,7 +474,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Counts how many points are in this octree.
 	 *
-	 * @method countPoints
 	 * @return {Number} The amount of points.
 	 */
 
@@ -499,7 +486,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Adds a point to the octree.
 	 *
-	 * @method add
 	 * @param {Vector3} p - A point.
 	 * @param {Object} data - An object that the point represents.
 	 */
@@ -513,7 +499,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Removes a point from the tree.
 	 *
-	 * @method remove
 	 * @param {Vector3} p - A point.
 	 */
 
@@ -526,7 +511,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Retrieves the data of the specified point.
 	 *
-	 * @method fetch
 	 * @param {Vector3} p - A position.
 	 * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
 	 */
@@ -540,7 +524,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Finds the closest point to the given one.
 	 *
-	 * @method findNearestPoint
 	 * @param {Vector3} p - A point.
 	 * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
@@ -556,7 +539,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Finds points that are in the specified radius around the given position.
 	 *
-	 * @method findPoints
 	 * @param {Vector3} p - A position.
 	 * @param {Number} r - A radius.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
@@ -576,7 +558,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Finds the points that intersect with the given ray.
 	 *
-	 * @method raycast
 	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} [intersects] - An array to be filled with the intersecting points.
 	 * @return {Array} The intersecting points.
@@ -600,7 +581,6 @@ export class PointOctree extends Octree {
 	/**
 	 * Collects points that intersect with the given ray.
 	 *
-	 * @method testPoints
 	 * @param {Array} octants - An array containing octants that intersect with the ray.
 	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} intersects - An array to be filled with the intersecting points.

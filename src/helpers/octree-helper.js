@@ -11,14 +11,16 @@ import { PATTERN, EDGES } from "../core/octant.js";
 /**
  * An octree helper.
  *
- * @class OctreeHelper
- * @submodule helpers
- * @constructor
- * @extends Object3D
  * @param {Octree} [octree=null] - The octree to visualise.
  */
 
 export class OctreeHelper extends Object3D {
+
+	/**
+	 * Constructs a new octree helper.
+	 *
+	 * @param {Octree} [octree=null] - The octree to visualise.
+	 */
 
 	constructor(octree = null) {
 
@@ -29,8 +31,7 @@ export class OctreeHelper extends Object3D {
 		/**
 		 * The octree.
 		 *
-		 * @property octree
-		 * @type Octree
+		 * @type {Octree}
 		 */
 
 		this.octree = octree;
@@ -42,9 +43,8 @@ export class OctreeHelper extends Object3D {
 	/**
 	 * Creates octant geometry.
 	 *
-	 * @method createLineSegments
 	 * @private
-	 * @param {Array} octants - The octants.
+	 * @param {Octant[]} octants - The octants.
 	 */
 
 	createLineSegments(octants) {
@@ -119,8 +119,6 @@ export class OctreeHelper extends Object3D {
 
 	/**
 	 * Updates the helper geometry.
-	 *
-	 * @method update
 	 */
 
 	update() {
@@ -144,8 +142,6 @@ export class OctreeHelper extends Object3D {
 
 	/**
 	 * Destroys this helper.
-	 *
-	 * @method dispose
 	 */
 
 	dispose() {

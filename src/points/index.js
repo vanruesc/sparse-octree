@@ -1,8 +1,7 @@
 /**
  * Point-oriented octree components.
  *
- * @module sparse-octree
- * @submodule points
+ * @module sparse-octree/points
  */
 
 export { PointOctant } from "./point-octant.js";

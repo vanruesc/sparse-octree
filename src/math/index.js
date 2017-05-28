@@ -1,8 +1,7 @@
 /**
  * Math components.
  *
- * @module sparse-octree
- * @submodule math
+ * @module sparse-octree/math
  */
 
 export { Box3 } from "./box3.js";

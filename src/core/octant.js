@@ -2,23 +2,23 @@ import { Vector3 } from "../math/vector3.js";
 
 /**
  * An octant.
- *
- * @class Octant
- * @submodule core
- * @constructor
- * @param {Vector3} min - The lower bounds.
- * @param {Vector3} max - The upper bounds.
  */
 
 export class Octant {
+
+	/**
+	 * Constructs a new octant.
+	 *
+	 * @param {Vector3} min - The lower bounds.
+	 * @param {Vector3} max - The upper bounds.
+	 */
 
 	constructor(min = new Vector3(), max = new Vector3()) {
 
 		/**
 		 * The lower bounds of this octant.
 		 *
-		 * @property min
-		 * @type Vector3
+		 * @type {Vector3}
 		 */
 
 		this.min = min;
@@ -26,8 +26,7 @@ export class Octant {
 		/**
 		 * The upper bounds of the octant.
 		 *
-		 * @property max
-		 * @type Vector3
+		 * @type {Vector3}
 		 */
 
 		this.max = max;
@@ -35,8 +34,7 @@ export class Octant {
 		/**
 		 * The children of this octant.
 		 *
-		 * @property children
-		 * @type Array
+		 * @type {Octant[]}
 		 * @default null
 		 */
 
@@ -47,7 +45,6 @@ export class Octant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
@@ -56,7 +53,6 @@ export class Octant {
 	/**
 	 * Computes the size of this octant.
 	 *
-	 * @method getDimensions
 	 * @return {Vector3} A new vector that describes the size of this octant.
 	 */
 
@@ -65,7 +61,6 @@ export class Octant {
 	/**
 	 * Splits this octant into eight smaller ones.
 	 *
-	 * @method split
 	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 
@@ -154,10 +149,7 @@ export class Octant {
  *
  * This common layout is crucial for positional assumptions.
  *
- * @property PATTERN
- * @type Array
- * @static
- * @final
+ * @type {Uint8Array[]}
  */
 
 export const PATTERN = [
@@ -177,10 +169,7 @@ export const PATTERN = [
 /**
  * Describes all possible octant corner connections.
  *
- * @property EDGES
- * @type Array
- * @static
- * @final
+ * @type {Uint8Array[]}
  */
 
 export const EDGES = [

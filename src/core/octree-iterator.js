@@ -2,37 +2,35 @@ import { Box3 } from "../math/box3.js";
 import IteratorResult from "iterator-result";
 
 /**
- * A computation helper.
+ * A 3D box.
  *
- * @property BOX3
  * @type Box3
  * @private
- * @static
- * @final
  */
 
-const BOX3 = new Box3();
+const box3 = new Box3();
 
 /**
  * An octree iterator.
  *
- * @class OctreeIterator
- * @submodule core
- * @implements Iterator
- * @constructor
- * @param {Octree} octree - An octree.
- * @param {Frustum|Box3} [region] - A cull region.
+ * @implements {Iterator}
  */
 
 export class OctreeIterator {
+
+	/**
+	 * Constructs a new octree iterator.
+	 *
+	 * @param {Octree} octree - An octree.
+	 * @param {Frustum|Box3} [region] - A cull region.
+	 */
 
 	constructor(octree, region = null) {
 
 		/**
 		 * The octree.
 		 *
-		 * @property octree
-		 * @type Octree
+		 * @type {Octree}
 		 * @private
 		 */
 
@@ -41,8 +39,7 @@ export class OctreeIterator {
 		/**
 		 * A region used for octree culling.
 		 *
-		 * @property region
-		 * @type Frustum|Box3
+		 * @type {Frustum|Box3}
 		 */
 
 		this.region = region;
@@ -50,8 +47,7 @@ export class OctreeIterator {
 		/**
 		 * Whether this iterator should respect the cull region.
 		 *
-		 * @property cull
-		 * @type Boolean
+		 * @type {Boolean}
 		 * @default false
 		 */
 
@@ -60,8 +56,7 @@ export class OctreeIterator {
 		/**
 		 * An iterator result.
 		 *
-		 * @property result
-		 * @type IteratorResult
+		 * @type {IteratorResult}
 		 * @private
 		 */
 
@@ -70,8 +65,7 @@ export class OctreeIterator {
 		/**
 		 * An octant trace.
 		 *
-		 * @property trace
-		 * @type Array
+		 * @type {Octant[]}
 		 * @private
 		 */
 
@@ -80,8 +74,7 @@ export class OctreeIterator {
 		/**
 		 * Iteration indices.
 		 *
-		 * @property indices
-		 * @type Array
+		 * @type {Number[]}
 		 * @private
 		 */
 
@@ -94,8 +87,6 @@ export class OctreeIterator {
 	/**
 	 * Resets this iterator.
 	 *
-	 * @method reset
-	 * @chainable
 	 * @return {OctreeIterator} This iterator.
 	 */
 
@@ -108,10 +99,10 @@ export class OctreeIterator {
 
 		if(root !== null) {
 
-			BOX3.min = root.min;
-			BOX3.max = root.max;
+			box3.min = root.min;
+			box3.max = root.max;
 
-			if(!this.cull || this.region.intersectsBox(BOX3)) {
+			if(!this.cull || this.region.intersectsBox(box3)) {
 
 				this.trace.push(root);
 				this.indices.push(0);
@@ -129,7 +120,6 @@ export class OctreeIterator {
 	/**
 	 * Iterates over the leaf octants.
 	 *
-	 * @method next
 	 * @return {IteratorResult} The next leaf octant.
 	 */
 
@@ -160,10 +150,10 @@ export class OctreeIterator {
 
 					if(cull) {
 
-						BOX3.min = child.min;
-						BOX3.max = child.max;
+						box3.min = child.min;
+						box3.max = child.max;
 
-						if(!region.intersectsBox(BOX3)) {
+						if(!region.intersectsBox(box3)) {
 
 							// Cull this octant.
 							continue;
@@ -205,7 +195,6 @@ export class OctreeIterator {
 	/**
 	 * Called when this iterator will no longer be run to completion.
 	 *
-	 * @method return
 	 * @param {Object} value - An interator result value.
 	 * @return {IteratorResult} - A premature completion result.
 	 */
@@ -222,7 +211,6 @@ export class OctreeIterator {
 	/**
 	 * Returns this iterator.
 	 *
-	 * @method Symbol.iterator
 	 * @return {VoxelIterator} An iterator.
 	 */
 

@@ -2,11 +2,8 @@
  * Contains bytes used for bitwise operations. The last byte is used to store
  * raycasting flags.
  *
- * @property flags
  * @type Uint8Array
  * @private
- * @static
- * @final
  */
 
 const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
@@ -15,11 +12,8 @@ const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
  * A lookup-table containing octant ids. Used to determine the exit plane from
  * an octant.
  *
- * @property octantTable
- * @type Array
+ * @type {Uint8Array[]}
  * @private
- * @static
- * @final
  */
 
 const octantTable = [
@@ -42,9 +36,7 @@ const octantTable = [
  * largest. The tm's of the other axes must also be compared against that
  * largest t0.
  *
- * @method findEntryOctant
  * @private
- * @static
  * @param {Number} tx0 - Ray projection parameter.
  * @param {Number} ty0 - Ray projection parameter.
  * @param {Number} tz0 - Ray projection parameter.
@@ -87,9 +79,7 @@ function findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {
  * Finds the next octant that intersects with the ray based on the exit plane of
  * the current one.
  *
- * @method findNextOctant
  * @private
- * @static
  * @param {Number} currentOctant - The index of the current octant.
  * @param {Number} tx1 - Ray projection parameter.
  * @param {Number} ty1 - Ray projection parameter.
@@ -128,9 +118,7 @@ function findNextOctant(currentOctant, tx1, ty1, tz1) {
 /**
  * Finds all octants that intersect with the given ray.
  *
- * @method raycastOctant
  * @private
- * @static
  * @param {Octant} octant - The current octant.
  * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.
  * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.
@@ -232,10 +220,6 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
  * Based on:
  *  "An Efficient Parametric Algorithm for Octree Traversal"
  *  by J. Revelles et al. (2000).
- *
- * @class OctreeRaycaster
- * @submodule core
- * @static
  */
 
 export class OctreeRaycaster {
@@ -244,8 +228,6 @@ export class OctreeRaycaster {
 	 * Finds the octants that intersect with the given ray. The intersecting
 	 * octants are sorted by distance, closest first.
 	 *
-	 * @method intersectOctree
-	 * @static
 	 * @param {Octree} octree - An octree.
 	 * @param {Raycaster} raycaster - A raycaster.
 	 * @param {Array} intersects - A list to be filled with intersecting octants.

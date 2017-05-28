@@ -11,47 +11,42 @@ import {
 } from "three";
 
 /**
- * A computation helper.
+ * A matrix.
  *
- * @property MATRIX4
- * @type Matrix4
+ * @type {Matrix4}
  * @private
- * @static
- * @final
  */
 
-const MATRIX4 = new Matrix4();
+const matrix4 = new Matrix4();
 
 /**
  * A frustum.
  *
- * @property FRUSTUM
- * @type Frustum
+ * @type {Frustum}
  * @private
- * @static
- * @final
  */
 
-const FRUSTUM = new Frustum();
+const frustum = new Frustum();
 
 /**
  * A frustum-based octree culler.
- *
- * @class FrustumCuller
- * @constructor
- * @param {Octree} octree - An octree.
- * @param {Scene} scene - A scene.
  */
 
 export class FrustumCuller {
+
+	/**
+	 * Constructs a new octree culler.
+	 *
+	 * @param {Octree} octree - An octree.
+	 * @param {Scene} scene - A scene.
+	 */
 
 	constructor(octree, scene) {
 
 		/**
 		 * An octree.
 		 *
-		 * @property octree
-		 * @type Octree
+		 * @type {Octree}
 		 * @private
 		 */
 
@@ -60,8 +55,7 @@ export class FrustumCuller {
 		/**
 		 * A scene.
 		 *
-		 * @property scene
-		 * @type Scene
+		 * @type {Scene}
 		 */
 
 		this.scene = scene;
@@ -69,8 +63,7 @@ export class FrustumCuller {
 		/**
 		 * Indicates whether the frustum culling is active.
 		 *
-		 * @property enabled
-		 * @type Boolean
+		 * @type {Boolean}
 		 * @default false
 		 */
 
@@ -79,8 +72,7 @@ export class FrustumCuller {
 		/**
 		 * A camera.
 		 *
-		 * @property cullCamera
-		 * @type PerspectiveCamera
+		 * @type {PerspectiveCamera}
 		 */
 
 		this.cullCamera = new PerspectiveCamera(20, 1.77, 0.5, 5);
@@ -89,8 +81,7 @@ export class FrustumCuller {
 		/**
 		 * A sphere descriptor.
 		 *
-		 * @property spherical
-		 * @type Spherical
+		 * @type {Spherical}
 		 */
 
 		this.s = new Spherical(5, Math.PI / 3, Math.PI * 1.75);
@@ -98,8 +89,7 @@ export class FrustumCuller {
 		/**
 		 * A delta time.
 		 *
-		 * @property delta
-		 * @type String
+		 * @type {String}
 		 */
 
 		this.delta = "";
@@ -107,8 +97,7 @@ export class FrustumCuller {
 		/**
 		 * A point cloud that visualises the culled octants.
 		 *
-		 * @property culledOctants
-		 * @type Points
+		 * @type {Points}
 		 */
 
 		this.culledOctants = new Points(
@@ -125,8 +114,7 @@ export class FrustumCuller {
 		/**
 		 * A camera helper.
 		 *
-		 * @property cameraHelper
-		 * @type CameraHelper
+		 * @type {CameraHelper}
 		 */
 
 		this.cameraHelper = new CameraHelper(this.cullCamera);
@@ -137,7 +125,6 @@ export class FrustumCuller {
 	/**
 	 * Updates the cull camera.
 	 *
-	 * @method updateCamera
 	 * @private
 	 */
 
@@ -152,8 +139,8 @@ export class FrustumCuller {
 		cullCamera.updateMatrixWorld();
 		cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
 
-		FRUSTUM.setFromMatrix(
-			MATRIX4.multiplyMatrices(
+		frustum.setFromMatrix(
+			matrix4.multiplyMatrices(
 				cullCamera.projectionMatrix,
 				cullCamera.matrixWorldInverse
 			)
@@ -163,8 +150,6 @@ export class FrustumCuller {
 
 	/**
 	 * Culls the octree.
-	 *
-	 * @method cull
 	 */
 
 	cull() {
@@ -181,7 +166,7 @@ export class FrustumCuller {
 			this.updateCamera();
 
 			t0 = performance.now();
-			octants = this.octree.cull(FRUSTUM);
+			octants = this.octree.cull(frustum);
 
 			this.delta = (performance.now() - t0).toFixed(2) + " ms";
 
@@ -220,7 +205,6 @@ export class FrustumCuller {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @method configure
 	 * @param {GUI} gui - A GUI.
 	 */
 

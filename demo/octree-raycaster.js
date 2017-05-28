@@ -6,39 +6,40 @@ import {
 /**
  * A mouse position.
  *
- * @property MOUSE
- * @type Vector2
+ * @type {Vector2}
  * @private
- * @static
- * @final
  */
 
-const MOUSE = new Vector2();
+const mouse = new Vector2();
 
 /**
  * An octree raycaster.
- *
- * @class OctreeRaycaster
- * @extends Raycaster
- * @constructor
- * @param {Octree} octree - An octree.
- * @param {PerspectiveCamera} camera - A camera.
- * @param {Object3D} object - An object.
  */
 
 export class OctreeRaycaster extends Raycaster {
 
+	/**
+	 * Constructs a new octree raycaster.
+	 *
+	 * @param {Octree} octree - An octree.
+	 * @param {PerspectiveCamera} camera - A camera.
+	 * @param {Object3D} object - An object.
+	 */
+
 	constructor(octree, camera, object) {
 
 		super();
+
+		/**
+		 * A picking accuracy threshold for points.
+		 */
 
 		this.params.Points.threshold = 1e-1;
 
 		/**
 		 * An octree.
 		 *
-		 * @property octree
-		 * @type Octree
+		 * @type {Octree}
 		 * @private
 		 */
 
@@ -47,8 +48,7 @@ export class OctreeRaycaster extends Raycaster {
 		/**
 		 * A camera.
 		 *
-		 * @property camera
-		 * @type PerspectiveCamera
+		 * @type {PerspectiveCamera}
 		 * @private
 		 */
 
@@ -57,8 +57,7 @@ export class OctreeRaycaster extends Raycaster {
 		/**
 		 * An object to raycast with a brute force approach.
 		 *
-		 * @property object
-		 * @type Object3D
+		 * @type {Object3D}
 		 */
 
 		this.object = object;
@@ -66,8 +65,7 @@ export class OctreeRaycaster extends Raycaster {
 		/**
 		 * Indicates whether the frustum culling is active.
 		 *
-		 * @property enabled
-		 * @type Boolean
+		 * @type {Boolean}
 		 * @default false
 		 */
 
@@ -76,8 +74,7 @@ export class OctreeRaycaster extends Raycaster {
 		/**
 		 * A delta time.
 		 *
-		 * @property delta
-		 * @type String
+		 * @type {String}
 		 */
 
 		this.delta = "";
@@ -85,8 +82,7 @@ export class OctreeRaycaster extends Raycaster {
 		/**
 		 * A selected object.
 		 *
-		 * @property selection
-		 * @type Object3D
+		 * @type {Object3D}
 		 * @private
 		 */
 
@@ -97,7 +93,6 @@ export class OctreeRaycaster extends Raycaster {
 	/**
 	 * Raycasts the octree.
 	 *
-	 * @method raycast
 	 * @param {Event} event - An event.
 	 */
 
@@ -106,10 +101,10 @@ export class OctreeRaycaster extends Raycaster {
 		let intersects;
 		let t0, t;
 
-		MOUSE.x = (event.clientX / window.innerWidth) * 2 - 1;
-		MOUSE.y = -(event.clientY / window.innerHeight) * 2 + 1;
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-		this.setFromCamera(MOUSE, this.camera);
+		this.setFromCamera(mouse, this.camera);
 
 		if(this.enabled) {
 
@@ -156,7 +151,6 @@ export class OctreeRaycaster extends Raycaster {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @method configure
 	 * @param {GUI} gui - A GUI.
 	 */
 

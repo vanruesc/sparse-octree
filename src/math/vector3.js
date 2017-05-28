@@ -1,23 +1,23 @@
 /**
  * A vector with three components.
- *
- * @class Vector3
- * @submodule math
- * @constructor
- * @param {Number} [x=0] - The x value.
- * @param {Number} [y=0] - The y value.
- * @param {Number} [z=0] - The z value.
  */
 
 export class Vector3 {
+
+	/**
+	 * Constructs a new vector3.
+	 *
+	 * @param {Number} [x=0] - The x value.
+	 * @param {Number} [y=0] - The y value.
+	 * @param {Number} [z=0] - The z value.
+	 */
 
 	constructor(x = 0, y = 0, z = 0) {
 
 		/**
 		 * The x component.
 		 *
-		 * @property x
-		 * @type Number
+		 * @type {Number}
 		 */
 
 		this.x = x;
@@ -25,8 +25,7 @@ export class Vector3 {
 		/**
 		 * The y component.
 		 *
-		 * @property y
-		 * @type Number
+		 * @type {Number}
 		 */
 
 		this.y = y;
@@ -34,8 +33,7 @@ export class Vector3 {
 		/**
 		 * The z component.
 		 *
-		 * @property z
-		 * @type Number
+		 * @type {Number}
 		 */
 
 		this.z = z;
@@ -45,8 +43,6 @@ export class Vector3 {
 	/**
 	 * Sets the values of this vector
 	 *
-	 * @method set
-	 * @chainable
 	 * @param {Number} x - The x value.
 	 * @param {Number} y - The y value.
 	 * @param {Number} z - The z value.
@@ -66,8 +62,6 @@ export class Vector3 {
 	/**
 	 * Copies the values of another vector.
 	 *
-	 * @method copy
-	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -85,8 +79,6 @@ export class Vector3 {
 	/**
 	 * Copies values from an array.
 	 *
-	 * @method fromArray
-	 * @chainable
 	 * @param {Array} array - An array.
 	 * @param {Number} offset - An offset.
 	 * @return {Vector3} This vector.
@@ -105,7 +97,6 @@ export class Vector3 {
 	/**
 	 * Stores this vector in an array.
 	 *
-	 * @method toArray
 	 * @param {Array} [array] - A target array.
 	 * @param {Number} offset - An offset.
 	 * @return {Vector3} The array.
@@ -124,7 +115,6 @@ export class Vector3 {
 	/**
 	 * Checks if this vector equals the given one.
 	 *
-	 * @method equals
 	 * @param {Vector3} v - A vector.
 	 * @return {Boolean} Whether this vector equals the given one.
 	 */
@@ -138,7 +128,6 @@ export class Vector3 {
 	/**
 	 * Clones this vector.
 	 *
-	 * @method clone
 	 * @return {Vector3} A clone of this vector.
 	 */
 
@@ -151,8 +140,6 @@ export class Vector3 {
 	/**
 	 * Adds a vector to this one.
 	 *
-	 * @method add
-	 * @chainable
 	 * @param {Vector3} v - The vector to add.
 	 * @return {Vector3} This vector.
 	 */
@@ -170,8 +157,6 @@ export class Vector3 {
 	/**
 	 * Adds a scaled vector to this one.
 	 *
-	 * @method addScaledVector
-	 * @chainable
 	 * @param {Vector3} v - The vector to scale and add.
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
@@ -190,8 +175,6 @@ export class Vector3 {
 	/**
 	 * Adds a scalar to this vector.
 	 *
-	 * @method addScalar
-	 * @chainable
 	 * @param {Number} s - The scalar to add.
 	 * @return {Vector3} This vector.
 	 */
@@ -209,8 +192,6 @@ export class Vector3 {
 	/**
 	 * Sets this vector to the sum of two given vectors.
 	 *
-	 * @method addVectors
-	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -229,8 +210,6 @@ export class Vector3 {
 	/**
 	 * Subtracts a vector from this vector.
 	 *
-	 * @method sub
-	 * @chainable
 	 * @param {Vector3} v - The vector to subtract.
 	 * @return {Vector3} This vector.
 	 */
@@ -248,8 +227,6 @@ export class Vector3 {
 	/**
 	 * Subtracts a scalar to this vector.
 	 *
-	 * @method subScalar
-	 * @chainable
 	 * @param {Number} s - The scalar to subtract.
 	 * @return {Vector3} This vector.
 	 */
@@ -267,8 +244,6 @@ export class Vector3 {
 	/**
 	 * Sets this vector to the difference between two given vectors.
 	 *
-	 * @method subVectors
-	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - A second vector.
 	 * @return {Vector3} This vector.
@@ -287,8 +262,6 @@ export class Vector3 {
 	/**
 	 * Multiplies this vector with another vector.
 	 *
-	 * @method multiply
-	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -306,8 +279,6 @@ export class Vector3 {
 	/**
 	 * Multiplies this vector with a given scalar.
 	 *
-	 * @method multiplyScalar
-	 * @chainable
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
@@ -335,8 +306,6 @@ export class Vector3 {
 	/**
 	 * Sets this vector to the product of two given vectors.
 	 *
-	 * @method multiplyVectors
-	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -355,8 +324,6 @@ export class Vector3 {
 	/**
 	 * Divides this vector by another vector.
 	 *
-	 * @method divide
-	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -374,8 +341,6 @@ export class Vector3 {
 	/**
 	 * Divides this vector by a given scalar.
 	 *
-	 * @method divideScalar
-	 * @chainable
 	 * @param {Number} s - A scalar.
 	 * @return {Vector3} This vector.
 	 */
@@ -389,8 +354,6 @@ export class Vector3 {
 	/**
 	 * Sets this vector to the quotient of two given vectors.
 	 *
-	 * @method divideVectors
-	 * @chainable
 	 * @param {Vector3} a - A vector.
 	 * @param {Vector3} b - Another vector.
 	 * @return {Vector3} This vector.
@@ -409,8 +372,6 @@ export class Vector3 {
 	/**
 	 * Negates this vector.
 	 *
-	 * @method negate
-	 * @chainable
 	 * @return {Vector3} This vector.
 	 */
 
@@ -427,7 +388,6 @@ export class Vector3 {
 	/**
 	 * Calculates the dot product with another vector.
 	 *
-	 * @method dot
 	 * @param {Vector3} v - A vector.
 	 * @return {Number} The dot product.
 	 */
@@ -441,7 +401,6 @@ export class Vector3 {
 	/**
 	 * Calculates the squared length of this vector.
 	 *
-	 * @method lengthSq
 	 * @return {Number} The squared length.
 	 */
 
@@ -454,7 +413,6 @@ export class Vector3 {
 	/**
 	 * Calculates the length of this vector.
 	 *
-	 * @method length
 	 * @return {Number} The length.
 	 */
 
@@ -467,7 +425,6 @@ export class Vector3 {
 	/**
 	 * Calculates the distance to a given vector.
 	 *
-	 * @method distanceTo
 	 * @param {Vector3} v - A vector.
 	 * @return {Number} The distance.
 	 */
@@ -481,7 +438,6 @@ export class Vector3 {
 	/**
 	 * Calculates the squared distance to a given vector.
 	 *
-	 * @method distanceToSquared
 	 * @param {Vector3} v - A vector.
 	 * @return {Number} The squared distance.
 	 */
@@ -499,8 +455,6 @@ export class Vector3 {
 	/**
 	 * Normalizes this vector.
 	 *
-	 * @method normalize
-	 * @chainable
 	 * @return {Vector3} This vector.
 	 */
 
@@ -513,8 +467,6 @@ export class Vector3 {
 	/**
 	 * Adopts the min value for each component of this vector and the given one.
 	 *
-	 * @method min
-	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -532,8 +484,6 @@ export class Vector3 {
 	/**
 	 * adopts the max value for each component of this vector and the given one.
 	 *
-	 * @method max
-	 * @chainable
 	 * @param {Vector3} v - A vector.
 	 * @return {Vector3} This vector.
 	 */
@@ -551,8 +501,6 @@ export class Vector3 {
 	/**
 	 * Clamps this vector.
 	 *
-	 * @method clamp
-	 * @chainable
 	 * @param {Vector3} min - A vector, assumed to be smaller than max.
 	 * @param {Vector3} max - A vector, assumed to be greater than min.
 	 * @return {Vector3} This vector.
@@ -571,8 +519,6 @@ export class Vector3 {
 	/**
 	 * Applies a matrix to this vector.
 	 *
-	 * @method applyMatrix3
-	 * @chainable
 	 * @param {Matrix3} m - A matrix.
 	 * @return {Vector3} This vector.
 	 */
@@ -593,8 +539,6 @@ export class Vector3 {
 	/**
 	 * Applies a matrix to this vector.
 	 *
-	 * @method applyMatrix4
-	 * @chainable
 	 * @param {Matrix4} m - A matrix.
 	 * @return {Vector3} This vector.
 	 */

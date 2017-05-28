@@ -2,18 +2,9 @@ import { LoadingManager } from "three";
 import { App } from "./app.js";
 
 /**
- * The program entry point.
- *
- * @class Main
- * @static
- */
-
-/**
  * Starts the program.
  *
- * @method main
  * @private
- * @static
  * @param {Event} event - An event.
  */
 

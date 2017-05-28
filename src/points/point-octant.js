@@ -2,16 +2,16 @@ import { Octant } from "../core/octant.js";
 
 /**
  * An octant that maintains points.
- *
- * @class PointOctant
- * @submodule points
- * @extends Octant
- * @constructor
- * @param {Vector3} min - The lower bounds.
- * @param {Vector3} max - The upper bounds.
  */
 
 export class PointOctant extends Octant {
+
+	/**
+	 * Constructs a new point octant.
+	 *
+	 * @param {Vector3} min - The lower bounds.
+	 * @param {Vector3} max - The upper bounds.
+	 */
 
 	constructor(min, max) {
 
@@ -20,8 +20,7 @@ export class PointOctant extends Octant {
 		/**
 		 * The points that are inside this octant.
 		 *
-		 * @property points
-		 * @type Array
+		 * @type {Array}
 		 */
 
 		this.points = null;
@@ -29,8 +28,7 @@ export class PointOctant extends Octant {
 		/**
 		 * Point data.
 		 *
-		 * @property data
-		 * @type Array
+		 * @type {Array}
 		 */
 
 		this.data = null;
@@ -40,7 +38,6 @@ export class PointOctant extends Octant {
 	/**
 	 * Computes the distance squared from this octant to the given point.
 	 *
-	 * @method distanceToSquared
 	 * @param {Vector3} p - A point.
 	 * @return {Number} The distance squared.
 	 */
@@ -57,7 +54,6 @@ export class PointOctant extends Octant {
 	 * Computes the distance squared from the center of this octant to the given
 	 * point.
 	 *
-	 * @method distanceToCenterSquared
 	 * @param {Vector3} p - A point.
 	 * @return {Number} The distance squared.
 	 */
@@ -80,7 +76,6 @@ export class PointOctant extends Octant {
 	 * This method can also be used to check if this octant intersects a sphere by
 	 * providing a radius as bias.
 	 *
-	 * @method contains
 	 * @param {Vector3} p - A point.
 	 * @param {Number} bias - A padding that extends the boundaries temporarily.
 	 * @return {Boolean} Whether the given point lies inside this octant.
@@ -105,7 +100,6 @@ export class PointOctant extends Octant {
 	/**
 	 * Redistributes existing points to child octants.
 	 *
-	 * @method redistribute
 	 * @param {Number} bias - A proximity threshold.
 	 */
 
@@ -160,7 +154,6 @@ export class PointOctant extends Octant {
 	 * Gathers all points from the children. The children are expected to be leaf
 	 * octants and will be dropped afterwards.
 	 *
-	 * @method merge
 	 * @private
 	 */
 

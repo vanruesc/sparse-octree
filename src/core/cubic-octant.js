@@ -3,23 +3,23 @@ import { PATTERN } from "./octant.js";
 
 /**
  * A cubic octant.
- *
- * @class CubicOctant
- * @submodule core
- * @constructor
- * @param {Vector3} min - The lower bounds.
- * @param {Number} [size=0] - The size of the octant.
  */
 
 export class CubicOctant {
+
+	/**
+	 * Constructs a new cubic octant.
+	 *
+	 * @param {Vector3} min - The lower bounds.
+	 * @param {Number} [size=0] - The size of the octant.
+	 */
 
 	constructor(min = new Vector3(), size = 0) {
 
 		/**
 		 * The lower bounds of this octant.
 		 *
-		 * @property min
-		 * @type Vector3
+		 * @type {Vector3}
 		 */
 
 		this.min = min;
@@ -27,8 +27,7 @@ export class CubicOctant {
 		/**
 		 * The size of this octant.
 		 *
-		 * @property size
-		 * @type Number
+		 * @type {Number}
 		 */
 
 		this.size = size;
@@ -36,8 +35,7 @@ export class CubicOctant {
 		/**
 		 * The children of this octant.
 		 *
-		 * @property children
-		 * @type Array
+		 * @type {CubicOctant[]}
 		 * @default null
 		 */
 
@@ -48,8 +46,9 @@ export class CubicOctant {
 	/**
 	 * The upper bounds of this octant.
 	 *
-	 * @property max
-	 * @type Vector3
+	 * Accessing this property creates a new vector.
+	 *
+	 * @type {Vector3}
 	 */
 
 	get max() { return this.min.clone().addScalar(this.size); }
@@ -57,7 +56,6 @@ export class CubicOctant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @method getCenter
 	 * @return {Vector3} A new vector that describes the center of this octant.
 	 */
 
@@ -66,7 +64,6 @@ export class CubicOctant {
 	/**
 	 * Returns the size of this octant as a vector.
 	 *
-	 * @method getDimensions
 	 * @return {Vector3} A new vector that describes the size of this octant.
 	 */
 
@@ -75,7 +72,6 @@ export class CubicOctant {
 	/**
 	 * Splits this octant into eight smaller ones.
 	 *
-	 * @method split
 	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 

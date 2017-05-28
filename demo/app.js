@@ -22,9 +22,6 @@ import { FrustumCuller } from "./frustum-culler";
 
 /**
  * A demo application.
- *
- * @class App
- * @static
  */
 
 export class App {
@@ -32,8 +29,6 @@ export class App {
 	/**
 	 * Initialises the demo.
 	 *
-	 * @method initialise
-	 * @static
 	 * @param {HTMLElement} viewport - The viewport.
 	 * @param {HTMLElement} aside - A secondary container.
 	 * @param {Map} assets - Preloaded assets.
@@ -247,9 +242,7 @@ export class App {
 		/**
 		 * Toggles the visibility of the interface on alt key press.
 		 *
-		 * @method onKeyDown
 		 * @private
-		 * @static
 		 * @param {Event} event - An event.
 		 */
 
@@ -267,9 +260,7 @@ export class App {
 		/**
 		 * Handles browser resizing.
 		 *
-		 * @method onresize
 		 * @private
-		 * @static
 		 * @param {Event} event - An event.
 		 */
 
@@ -287,9 +278,7 @@ export class App {
 		/**
 		 * The main render loop.
 		 *
-		 * @method render
 		 * @private
-		 * @static
 		 * @param {DOMHighResTimeStamp} now - An execution timestamp.
 		 */
 
