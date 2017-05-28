@@ -417,6 +417,8 @@ export class PointOctree extends Octree {
 
 		/**
 		 * The root octant.
+		 *
+		 * @type {PointOctant}
 		 */
 
 		this.root = new PointOctant(min, max);

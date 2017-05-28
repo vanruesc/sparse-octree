@@ -122,7 +122,7 @@ function findOctantsByLevel(octant, level, depth, result) {
 /**
  * An octree that subdivides space for fast spatial searches.
  *
- * @implements Iterable
+ * @implements {Iterable}
  */
 
 export class Octree {
