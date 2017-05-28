@@ -1,7 +1,4 @@
-import {
-	Raycaster,
-	Vector2
-} from "three";
+import { Raycaster, Vector2 } from "three";
 
 /**
  * A mouse position.
