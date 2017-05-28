@@ -59,7 +59,7 @@ A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/4/
 - Base Functionality
 	- Pointer-based structure
   - Handles octant splitting
-  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/docs/classes/Octant.html#property_PATTERN)
+  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/docs/variable/index.html#static-variable-PATTERN)
   - Supports raycasting
   - Supports culling
   - Supports cubic octrees

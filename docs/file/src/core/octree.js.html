@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/core/octree.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/cubic-octant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree-iterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree-raycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree.js~Octree.html">Octree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/point-octant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/point-octree.js~PointOctree.html">PointOctree</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/core/octree.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Box3 } from &quot;math-ds&quot;;
+import { Octant } from &quot;./octant.js&quot;;
+import { OctreeIterator } from &quot;./octree-iterator.js&quot;;
+import { OctreeRaycaster } from &quot;./octree-raycaster.js&quot;;
+
+/**
+ * A 3D box.
+ *
+ * @type Box3
+ * @private
+ */
+
+const box3 = new Box3();
+
+/**
+ * Recursively calculates the depth of the given octree.
+ *
+ * @private
+ * @param {Octant} octant - An octant.
+ * @return {Number} The depth.
+ */
+
+function getDepth(octant) {
+
+	const children = octant.children;
+
+	let result = 0;
+	let i, l, d;
+
+	if(children !== null) {
+
+		for(i = 0, l = children.length; i &lt; l; ++i) {
+
+			d = 1 + getDepth(children[i]);
+
+			if(d &gt; result) {
+
+				result = d;
+
+			}
+
+		}
+
+	}
+
+	return result;
+
+}
+
+/**
+ * Recursively collects octants that lie inside the specified region.
+ *
+ * @private
+ * @param {Octant} octant - An octant.
+ * @param {Frustum|Box3} region - A region.
+ * @param {Array} result - A list to be filled with octants that intersect with the region.
+ */
+
+function cull(octant, region, result) {
+
+	const children = octant.children;
+
+	let i, l;
+
+	box3.min = octant.min;
+	box3.max = octant.max;
+
+	if(region.intersectsBox(box3)) {
+
+		if(children !== null) {
+
+			for(i = 0, l = children.length; i &lt; l; ++i) {
+
+				cull(children[i], region, result);
+
+			}
+
+		} else {
+
+			result.push(octant);
+
+		}
+
+	}
+
+}
+
+/**
+ * Recursively fetches all octants with the specified depth level.
+ *
+ * @private
+ * @param {Octant} octant - An octant.
+ * @param {Number} level - The target depth level.
+ * @param {Number} depth - The current depth level.
+ * @param {Array} result - A list to be filled with the identified octants.
+ */
+
+function findOctantsByLevel(octant, level, depth, result) {
+
+	const children = octant.children;
+
+	let i, l;
+
+	if(depth === level) {
+
+		result.push(octant);
+
+	} else if(children !== null) {
+
+		++depth;
+
+		for(i = 0, l = children.length; i &lt; l; ++i) {
+
+			findOctantsByLevel(children[i], level, depth, result);
+
+		}
+
+	}
+
+}
+
+/**
+ * An octree that subdivides space for fast spatial searches.
+ *
+ * @implements {Iterable}
+ */
+
+export class Octree {
+
+	/**
+	 * Constructs a new octree.
+	 *
+	 * @param {Vector3} [min] - The lower bounds of the tree.
+	 * @param {Vector3} [max] - The upper bounds of the tree.
+	 */
+
+	constructor(min, max) {
+
+		/**
+		 * The root octant.
+		 *
+		 * @type {Octant}
+		 * @default null
+		 */
+
+		this.root = (min !== undefined &amp;&amp; max !== undefined) ? new Octant(min, max) : null;
+
+	}
+
+	/**
+	 * The lower bounds of the root octant.
+	 *
+	 * @type {Vector3}
+	 */
+
+	get min() { return this.root.min; }
+
+	/**
+	 * The upper bounds of the root octant.
+	 *
+	 * @type {Vector3}
+	 */
+
+	get max() { return this.root.max; }
+
+	/**
+	 * The children of the root octant.
+	 *
+	 * @type {Octant[]}
+	 */
+
+	get children() { return this.root.children; }
+
+	/**
+	 * Calculates the center of this octree.
+	 *
+	 * @return {Vector3} A new vector that describes the center of this octree.
+	 */
+
+	getCenter() { return this.root.getCenter(); }
+
+	/**
+	 * Calculates the size of this octree.
+	 *
+	 * @return {Vector3} A new vector that describes the size of this octree.
+	 */
+
+	getDimensions() { return this.root.getDimensions(); }
+
+	/**
+	 * Calculates the current depth of this octree.
+	 *
+	 * @return {Number} The depth.
+	 */
+
+	getDepth() { return getDepth(this.root); }
+
+	/**
+	 * Recursively collects octants that intersect with the specified region.
+	 *
+	 * @param {Frustum|Box3} region - A region.
+	 * @return {Octant[]} The octants.
+	 */
+
+	cull(region) {
+
+		const result = [];
+
+		cull(this.root, region, result);
+
+		return result;
+
+	}
+
+	/**
+	 * Fetches all octants with the specified depth level.
+	 *
+	 * @param {Number} level - The depth level.
+	 * @return {Octant[]} The octants.
+	 */
+
+	findOctantsByLevel(level) {
+
+		const result = [];
+
+		findOctantsByLevel(this.root, level, 0, result);
+
+		return result;
+
+	}
+
+	/**
+	 * Finds the octants that intersect with the given ray. The intersecting
+	 * octants are sorted by distance, closest first.
+	 *
+	 * @param {Raycaster} raycaster - A raycaster.
+	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
+	 * @return {Octant[]} The intersecting octants.
+	 */
+
+	raycast(raycaster, intersects = []) {
+
+		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
+
+		return intersects;
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns leaf nodes.
+	 *
+	 * When a cull region is provided, the iterator will only return leaves that
+	 * intersect with that region.
+	 *
+	 * @param {Frustum|Box3} [region] - A cull region.
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	leaves(region) {
+
+		return new OctreeIterator(this, region);
+
+	}
+
+	/**
+	 * Returns an iterator that traverses the octree and returns all leaf nodes.
+	 *
+	 * @return {OctreeIterator} An iterator.
+	 */
+
+	[Symbol.iterator]() {
+
+		return new OctreeIterator(this);
+
+	}
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

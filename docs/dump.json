@@ -1,0 +1,3831 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/cubic-octant.js",
+    "memberof": null,
+    "longname": "src/core/cubic-octant.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Vector3 } from \"math-ds\";\r\nimport { PATTERN } from \"./octant.js\";\r\n\r\n/**\r\n * A cubic octant.\r\n */\r\n\r\nexport class CubicOctant {\r\n\r\n\t/**\r\n\t * Constructs a new cubic octant.\r\n\t *\r\n\t * @param {Vector3} min - The lower bounds.\r\n\t * @param {Number} [size=0] - The size of the octant.\r\n\t */\r\n\r\n\tconstructor(min = new Vector3(), size = 0) {\r\n\r\n\t\t/**\r\n\t\t * The lower bounds of this octant.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t */\r\n\r\n\t\tthis.min = min;\r\n\r\n\t\t/**\r\n\t\t * The size of this octant.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t */\r\n\r\n\t\tthis.size = size;\r\n\r\n\t\t/**\r\n\t\t * The children of this octant.\r\n\t\t *\r\n\t\t * @type {CubicOctant[]}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.children = null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * The upper bounds of this octant.\r\n\t *\r\n\t * Accessing this property creates a new vector.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget max() { return this.min.clone().addScalar(this.size); }\r\n\r\n\t/**\r\n\t * Computes the center of this octant.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the center of this octant.\r\n\t */\r\n\r\n\tgetCenter() { return this.min.clone().addScalar(this.size * 0.5); }\r\n\r\n\t/**\r\n\t * Returns the size of this octant as a vector.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the size of this octant.\r\n\t */\r\n\r\n\tgetDimensions() { return new Vector3(this.size, this.size, this.size); }\r\n\r\n\t/**\r\n\t * Splits this octant into eight smaller ones.\r\n\t *\r\n\t * @param {Array} [octants] - A list of octants to recycle.\r\n\t */\r\n\r\n\tsplit(octants) {\r\n\r\n\t\tconst min = this.min;\r\n\t\tconst mid = this.getCenter();\r\n\t\tconst halfSize = this.size * 0.5;\r\n\r\n\t\tlet i, j;\r\n\t\tlet l = 0;\r\n\t\tlet combination;\r\n\r\n\t\tlet v, child, octant;\r\n\r\n\t\tif(Array.isArray(octants)) {\r\n\r\n\t\t\tv = new Vector3();\r\n\t\t\tl = octants.length;\r\n\r\n\t\t}\r\n\r\n\t\tthis.children = [];\r\n\r\n\t\tfor(i = 0; i < 8; ++i) {\r\n\r\n\t\t\tcombination = PATTERN[i];\r\n\t\t\toctant = null;\r\n\r\n\t\t\tif(l > 0) {\r\n\r\n\t\t\t\tv.fromArray(combination).multiplyScalar(halfSize).add(min);\r\n\r\n\t\t\t\t// Find an octant that matches the current combination.\r\n\t\t\t\tfor(j = 0; j < l; ++j) {\r\n\r\n\t\t\t\t\tchild = octants[j];\r\n\r\n\t\t\t\t\tif(child !== null && child.size === halfSize && v.equals(child.min)) {\r\n\r\n\t\t\t\t\t\toctant = child;\r\n\t\t\t\t\t\toctants[j] = null;\r\n\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t\tthis.children.push((octant !== null) ? octant : new this.constructor(\r\n\r\n\t\t\t\tnew Vector3(\r\n\t\t\t\t\t((combination[0] === 0) ? min.x : mid.x),\r\n\t\t\t\t\t((combination[1] === 0) ? min.y : mid.y),\r\n\t\t\t\t\t((combination[2] === 0) ? min.z : mid.z)\r\n\t\t\t\t),\r\n\r\n\t\t\t\thalfSize\r\n\r\n\t\t\t));\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 1,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "CubicOctant",
+    "memberof": "src/core/cubic-octant.js",
+    "longname": "src/core/cubic-octant.js~CubicOctant",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/cubic-octant.js",
+    "importStyle": "{CubicOctant}",
+    "description": "A cubic octant.",
+    "lineNumber": 8,
+    "interface": false
+  },
+  {
+    "__docId__": 2,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#constructor",
+    "access": null,
+    "description": "Constructs a new cubic octant.",
+    "lineNumber": 17,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "min",
+        "description": "The lower bounds."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0",
+        "defaultRaw": 0,
+        "name": "size",
+        "description": "The size of the octant."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 3,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "min",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#min",
+    "access": null,
+    "description": "The lower bounds of this octant.",
+    "lineNumber": 25,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 4,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "size",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#size",
+    "access": null,
+    "description": "The size of this octant.",
+    "lineNumber": 33,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 5,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#children",
+    "access": null,
+    "description": "The children of this octant.",
+    "lineNumber": 42,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "null"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "CubicOctant[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "max",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#max",
+    "access": null,
+    "description": "The upper bounds of this octant.\n\nAccessing this property creates a new vector.",
+    "lineNumber": 54,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 7,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getCenter",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#getCenter",
+    "access": null,
+    "description": "Computes the center of this octant.",
+    "lineNumber": 62,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the center of this octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getDimensions",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#getDimensions",
+    "access": null,
+    "description": "Returns the size of this octant as a vector.",
+    "lineNumber": 70,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the size of this octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 9,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "split",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#split",
+    "access": null,
+    "description": "Splits this octant into eight smaller ones.",
+    "lineNumber": 78,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "octants",
+        "description": "A list of octants to recycle."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 10,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/core/cubic-octant.js~CubicOctant",
+    "longname": "src/core/cubic-octant.js~CubicOctant#children",
+    "access": null,
+    "description": null,
+    "lineNumber": 97,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 11,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/index.js",
+    "memberof": null,
+    "longname": "src/core/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 7,
+    "content": "/**\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n */\r\n\r\nexport { CubicOctant } from \"./cubic-octant.js\";\r\nexport { Octree } from \"./octree.js\";\r\nexport { Octant, PATTERN, EDGES } from \"./octant.js\";\r\nexport { OctreeIterator } from \"./octree-iterator.js\";\r\nexport { OctreeRaycaster } from \"./octree-raycaster.js\";\r\n"
+  },
+  {
+    "__docId__": 12,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/octant.js",
+    "memberof": null,
+    "longname": "src/core/octant.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Vector3 } from \"math-ds\";\r\n\r\n/**\r\n * An octant.\r\n */\r\n\r\nexport class Octant {\r\n\r\n\t/**\r\n\t * Constructs a new octant.\r\n\t *\r\n\t * @param {Vector3} min - The lower bounds.\r\n\t * @param {Vector3} max - The upper bounds.\r\n\t */\r\n\r\n\tconstructor(min = new Vector3(), max = new Vector3()) {\r\n\r\n\t\t/**\r\n\t\t * The lower bounds of this octant.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t */\r\n\r\n\t\tthis.min = min;\r\n\r\n\t\t/**\r\n\t\t * The upper bounds of the octant.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t */\r\n\r\n\t\tthis.max = max;\r\n\r\n\t\t/**\r\n\t\t * The children of this octant.\r\n\t\t *\r\n\t\t * @type {Octant[]}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.children = null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Computes the center of this octant.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the center of this octant.\r\n\t */\r\n\r\n\tgetCenter() { return this.min.clone().add(this.max).multiplyScalar(0.5); }\r\n\r\n\t/**\r\n\t * Computes the size of this octant.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the size of this octant.\r\n\t */\r\n\r\n\tgetDimensions() { return this.max.clone().sub(this.min); }\r\n\r\n\t/**\r\n\t * Splits this octant into eight smaller ones.\r\n\t *\r\n\t * @param {Array} [octants] - A list of octants to recycle.\r\n\t */\r\n\r\n\tsplit(octants) {\r\n\r\n\t\tconst min = this.min;\r\n\t\tconst max = this.max;\r\n\t\tconst mid = this.getCenter();\r\n\r\n\t\tlet i, j;\r\n\t\tlet l = 0;\r\n\t\tlet combination;\r\n\r\n\t\tlet halfDimensions;\r\n\t\tlet v, child, octant;\r\n\r\n\t\tif(Array.isArray(octants)) {\r\n\r\n\t\t\thalfDimensions = this.getDimensions().multiplyScalar(0.5);\r\n\t\t\tv = [new Vector3(), new Vector3(), new Vector3()];\r\n\t\t\tl = octants.length;\r\n\r\n\t\t}\r\n\r\n\t\tthis.children = [];\r\n\r\n\t\tfor(i = 0; i < 8; ++i) {\r\n\r\n\t\t\tcombination = PATTERN[i];\r\n\t\t\toctant = null;\r\n\r\n\t\t\tif(l > 0) {\r\n\r\n\t\t\t\tv[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));\r\n\t\t\t\tv[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));\r\n\r\n\t\t\t\t// Find an octant that matches the current combination.\r\n\t\t\t\tfor(j = 0; j < l; ++j) {\r\n\r\n\t\t\t\t\tchild = octants[j];\r\n\r\n\t\t\t\t\tif(child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {\r\n\r\n\t\t\t\t\t\toctant = child;\r\n\t\t\t\t\t\toctants[j] = null;\r\n\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t\tthis.children.push((octant !== null) ? octant : new this.constructor(\r\n\r\n\t\t\t\tnew Vector3(\r\n\t\t\t\t\t((combination[0] === 0) ? min.x : mid.x),\r\n\t\t\t\t\t((combination[1] === 0) ? min.y : mid.y),\r\n\t\t\t\t\t((combination[2] === 0) ? min.z : mid.z)\r\n\t\t\t\t),\r\n\r\n\t\t\t\tnew Vector3(\r\n\t\t\t\t\t((combination[0] === 0) ? mid.x : max.x),\r\n\t\t\t\t\t((combination[1] === 0) ? mid.y : max.y),\r\n\t\t\t\t\t((combination[2] === 0) ? mid.z : max.z)\r\n\t\t\t\t)\r\n\r\n\t\t\t));\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * A binary pattern that describes the standard octant layout:\r\n *\r\n * ```text\r\n *    3____7\r\n *  2/___6/|\r\n *  | 1__|_5\r\n *  0/___4/\r\n * ```\r\n *\r\n * This common layout is crucial for positional assumptions.\r\n *\r\n * @type {Uint8Array[]}\r\n */\r\n\r\nexport const PATTERN = [\r\n\r\n\tnew Uint8Array([0, 0, 0]),\r\n\tnew Uint8Array([0, 0, 1]),\r\n\tnew Uint8Array([0, 1, 0]),\r\n\tnew Uint8Array([0, 1, 1]),\r\n\r\n\tnew Uint8Array([1, 0, 0]),\r\n\tnew Uint8Array([1, 0, 1]),\r\n\tnew Uint8Array([1, 1, 0]),\r\n\tnew Uint8Array([1, 1, 1])\r\n\r\n];\r\n\r\n/**\r\n * Describes all possible octant corner connections.\r\n *\r\n * @type {Uint8Array[]}\r\n */\r\n\r\nexport const EDGES = [\r\n\r\n\t// X-Axis.\r\n\tnew Uint8Array([0, 4]),\r\n\tnew Uint8Array([1, 5]),\r\n\tnew Uint8Array([2, 6]),\r\n\tnew Uint8Array([3, 7]),\r\n\r\n\t// Y-Axis.\r\n\tnew Uint8Array([0, 2]),\r\n\tnew Uint8Array([1, 3]),\r\n\tnew Uint8Array([4, 6]),\r\n\tnew Uint8Array([5, 7]),\r\n\r\n\t// Z-Axis.\r\n\tnew Uint8Array([0, 1]),\r\n\tnew Uint8Array([2, 3]),\r\n\tnew Uint8Array([4, 5]),\r\n\tnew Uint8Array([6, 7])\r\n\r\n];\r\n"
+  },
+  {
+    "__docId__": 13,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Octant",
+    "memberof": "src/core/octant.js",
+    "longname": "src/core/octant.js~Octant",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octant.js",
+    "importStyle": "{Octant}",
+    "description": "An octant.",
+    "lineNumber": 7,
+    "interface": false
+  },
+  {
+    "__docId__": 14,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#constructor",
+    "access": null,
+    "description": "Constructs a new octant.",
+    "lineNumber": 16,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "min",
+        "description": "The lower bounds."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "max",
+        "description": "The upper bounds."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 15,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "min",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#min",
+    "access": null,
+    "description": "The lower bounds of this octant.",
+    "lineNumber": 24,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "max",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#max",
+    "access": null,
+    "description": "The upper bounds of the octant.",
+    "lineNumber": 32,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 17,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#children",
+    "access": null,
+    "description": "The children of this octant.",
+    "lineNumber": 41,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "null"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 18,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getCenter",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#getCenter",
+    "access": null,
+    "description": "Computes the center of this octant.",
+    "lineNumber": 51,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the center of this octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 19,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getDimensions",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#getDimensions",
+    "access": null,
+    "description": "Computes the size of this octant.",
+    "lineNumber": 59,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the size of this octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 20,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "split",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#split",
+    "access": null,
+    "description": "Splits this octant into eight smaller ones.",
+    "lineNumber": 67,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "octants",
+        "description": "A list of octants to recycle."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 21,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/core/octant.js~Octant",
+    "longname": "src/core/octant.js~Octant#children",
+    "access": null,
+    "description": null,
+    "lineNumber": 88,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 22,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "PATTERN",
+    "memberof": "src/core/octant.js",
+    "longname": "src/core/octant.js~PATTERN",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octant.js",
+    "importStyle": "{PATTERN}",
+    "description": "A binary pattern that describes the standard octant layout:\n\n```text\n   3____7\n 2/___6/|\n | 1__|_5\n 0/___4/\n```\n\nThis common layout is crucial for positional assumptions.",
+    "lineNumber": 155,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Uint8Array[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 23,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "EDGES",
+    "memberof": "src/core/octant.js",
+    "longname": "src/core/octant.js~EDGES",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octant.js",
+    "importStyle": "{EDGES}",
+    "description": "Describes all possible octant corner connections.",
+    "lineNumber": 175,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Uint8Array[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/octree-iterator.js",
+    "memberof": null,
+    "longname": "src/core/octree-iterator.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Box3 } from \"math-ds\";\r\nimport IteratorResult from \"iterator-result\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type Box3\r\n * @private\r\n */\r\n\r\nconst box3 = new Box3();\r\n\r\n/**\r\n * An octree iterator.\r\n *\r\n * @implements {Iterator}\r\n */\r\n\r\nexport class OctreeIterator {\r\n\r\n\t/**\r\n\t * Constructs a new octree iterator.\r\n\t *\r\n\t * @param {Octree} octree - An octree.\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t */\r\n\r\n\tconstructor(octree, region = null) {\r\n\r\n\t\t/**\r\n\t\t * The octree.\r\n\t\t *\r\n\t\t * @type {Octree}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.octree = octree;\r\n\r\n\t\t/**\r\n\t\t * A region used for octree culling.\r\n\t\t *\r\n\t\t * @type {Frustum|Box3}\r\n\t\t */\r\n\r\n\t\tthis.region = region;\r\n\r\n\t\t/**\r\n\t\t * Whether this iterator should respect the cull region.\r\n\t\t *\r\n\t\t * @type {Boolean}\r\n\t\t * @default false\r\n\t\t */\r\n\r\n\t\tthis.cull = (region !== null);\r\n\r\n\t\t/**\r\n\t\t * An iterator result.\r\n\t\t *\r\n\t\t * @type {IteratorResult}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.result = new IteratorResult();\r\n\r\n\t\t/**\r\n\t\t * An octant trace.\r\n\t\t *\r\n\t\t * @type {Octant[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.trace = null;\r\n\r\n\t\t/**\r\n\t\t * Iteration indices.\r\n\t\t *\r\n\t\t * @type {Number[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.indices = null;\r\n\r\n\t\tthis.reset();\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Resets this iterator.\r\n\t *\r\n\t * @return {OctreeIterator} This iterator.\r\n\t */\r\n\r\n\treset() {\r\n\r\n\t\tconst root = this.octree.root;\r\n\r\n\t\tthis.trace = [];\r\n\t\tthis.indices = [];\r\n\r\n\t\tif(root !== null) {\r\n\r\n\t\t\tbox3.min = root.min;\r\n\t\t\tbox3.max = root.max;\r\n\r\n\t\t\tif(!this.cull || this.region.intersectsBox(box3)) {\r\n\r\n\t\t\t\tthis.trace.push(root);\r\n\t\t\t\tthis.indices.push(0);\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.reset();\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Iterates over the leaf octants.\r\n\t *\r\n\t * @return {IteratorResult} The next leaf octant.\r\n\t */\r\n\r\n\tnext() {\r\n\r\n\t\tconst cull = this.cull;\r\n\t\tconst region = this.region;\r\n\t\tconst indices = this.indices;\r\n\t\tconst trace = this.trace;\r\n\r\n\t\tlet octant = null;\r\n\t\tlet depth = trace.length - 1;\r\n\r\n\t\tlet index, children, child;\r\n\r\n\t\twhile(octant === null && depth >= 0) {\r\n\r\n\t\t\tindex = indices[depth];\r\n\t\t\tchildren = trace[depth].children;\r\n\r\n\t\t\t++indices[depth];\r\n\r\n\t\t\tif(index < 8) {\r\n\r\n\t\t\t\tif(children !== null) {\r\n\r\n\t\t\t\t\tchild = children[index];\r\n\r\n\t\t\t\t\tif(cull) {\r\n\r\n\t\t\t\t\t\tbox3.min = child.min;\r\n\t\t\t\t\t\tbox3.max = child.max;\r\n\r\n\t\t\t\t\t\tif(!region.intersectsBox(box3)) {\r\n\r\n\t\t\t\t\t\t\t// Cull this octant.\r\n\t\t\t\t\t\t\tcontinue;\r\n\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\ttrace.push(child);\r\n\t\t\t\t\tindices.push(0);\r\n\r\n\t\t\t\t\t++depth;\r\n\r\n\t\t\t\t} else {\r\n\r\n\t\t\t\t\toctant = trace.pop();\r\n\t\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t} else {\r\n\r\n\t\t\t\ttrace.pop();\r\n\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t--depth;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.value = octant;\r\n\t\tthis.result.done = (octant === null);\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Called when this iterator will no longer be run to completion.\r\n\t *\r\n\t * @param {Object} value - An interator result value.\r\n\t * @return {IteratorResult} - A premature completion result.\r\n\t */\r\n\r\n\treturn(value) {\r\n\r\n\t\tthis.result.value = value;\r\n\t\tthis.result.done = true;\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns this iterator.\r\n\t *\r\n\t * @return {VoxelIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 25,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "box3",
+    "memberof": "src/core/octree-iterator.js",
+    "longname": "src/core/octree-iterator.js~box3",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-iterator.js",
+    "importStyle": null,
+    "description": "A 3D box.",
+    "lineNumber": 11,
+    "type": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "OctreeIterator",
+    "memberof": "src/core/octree-iterator.js",
+    "longname": "src/core/octree-iterator.js~OctreeIterator",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octree-iterator.js",
+    "importStyle": "{OctreeIterator}",
+    "description": "An octree iterator.",
+    "lineNumber": 19,
+    "interface": false,
+    "implements": [
+      "Iterator"
+    ]
+  },
+  {
+    "__docId__": 27,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#constructor",
+    "access": null,
+    "description": "Constructs a new octree iterator.",
+    "lineNumber": 28,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octree"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octree",
+        "description": "An octree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Frustum",
+          "Box3"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "region",
+        "description": "A cull region."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 28,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "octree",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#octree",
+    "access": "private",
+    "description": "The octree.",
+    "lineNumber": 37,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octree"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 29,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "region",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#region",
+    "access": null,
+    "description": "A region used for octree culling.",
+    "lineNumber": 45,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Frustum",
+        "Box3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 30,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "cull",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#cull",
+    "access": null,
+    "description": "Whether this iterator should respect the cull region.",
+    "lineNumber": 54,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "false"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 31,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "result",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#result",
+    "access": "private",
+    "description": "An iterator result.",
+    "lineNumber": 63,
+    "type": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "trace",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#trace",
+    "access": "private",
+    "description": "An octant trace.",
+    "lineNumber": 72,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 33,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "indices",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#indices",
+    "access": "private",
+    "description": "Iteration indices.",
+    "lineNumber": 81,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 34,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "reset",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#reset",
+    "access": null,
+    "description": "Resets this iterator.",
+    "lineNumber": 93,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OctreeIterator"
+      ],
+      "spread": false,
+      "description": "This iterator."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 35,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "trace",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#trace",
+    "access": null,
+    "description": null,
+    "lineNumber": 97,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 36,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "indices",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#indices",
+    "access": null,
+    "description": null,
+    "lineNumber": 98,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 37,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "next",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#next",
+    "access": null,
+    "description": "Iterates over the leaf octants.",
+    "lineNumber": 126,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": "The next leaf octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 38,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "return",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#return",
+    "access": null,
+    "description": "Called when this iterator will no longer be run to completion.",
+    "lineNumber": 202,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "An interator result value."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": "A premature completion result."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 39,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "[Symbol.iterator]",
+    "memberof": "src/core/octree-iterator.js~OctreeIterator",
+    "longname": "src/core/octree-iterator.js~OctreeIterator#[Symbol.iterator]",
+    "access": null,
+    "description": null,
+    "lineNumber": 217,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 40,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/octree-raycaster.js",
+    "memberof": null,
+    "longname": "src/core/octree-raycaster.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 9,
+    "content": "/**\r\n * Contains bytes used for bitwise operations. The last byte is used to store\r\n * raycasting flags.\r\n *\r\n * @type Uint8Array\r\n * @private\r\n */\r\n\r\nconst flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);\r\n\r\n/**\r\n * A lookup-table containing octant ids. Used to determine the exit plane from\r\n * an octant.\r\n *\r\n * @type {Uint8Array[]}\r\n * @private\r\n */\r\n\r\nconst octantTable = [\r\n\r\n\tnew Uint8Array([4, 2, 1]),\r\n\tnew Uint8Array([5, 3, 8]),\r\n\tnew Uint8Array([6, 8, 3]),\r\n\tnew Uint8Array([7, 8, 8]),\r\n\tnew Uint8Array([8, 6, 5]),\r\n\tnew Uint8Array([8, 7, 8]),\r\n\tnew Uint8Array([8, 8, 7]),\r\n\tnew Uint8Array([8, 8, 8])\r\n\r\n];\r\n\r\n/**\r\n * Finds the entry plane of the first octant that a ray travels through.\r\n *\r\n * Determining the first octant requires knowing which of the t0's is the\r\n * largest. The tm's of the other axes must also be compared against that\r\n * largest t0.\r\n *\r\n * @private\r\n * @param {Number} tx0 - Ray projection parameter.\r\n * @param {Number} ty0 - Ray projection parameter.\r\n * @param {Number} tz0 - Ray projection parameter.\r\n * @param {Number} txm - Ray projection parameter mean.\r\n * @param {Number} tym - Ray projection parameter mean.\r\n * @param {Number} tzm - Ray projection parameter mean.\r\n * @return {Number} The index of the first octant that the ray travels through.\r\n */\r\n\r\nfunction findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {\r\n\r\n\tlet entry = 0;\r\n\r\n\t// Find the entry plane.\r\n\tif(tx0 > ty0 && tx0 > tz0) {\r\n\r\n\t\t// YZ-plane.\r\n\t\tif(tym < tx0) { entry = entry | 2; }\r\n\t\tif(tzm < tx0) { entry = entry | 1; }\r\n\r\n\t} else if(ty0 > tz0) {\r\n\r\n\t\t// XZ-plane.\r\n\t\tif(txm < ty0) { entry = entry | 4; }\r\n\t\tif(tzm < ty0) { entry = entry | 1; }\r\n\r\n\t} else {\r\n\r\n\t\t// XY-plane.\r\n\t\tif(txm < tz0) { entry = entry | 4; }\r\n\t\tif(tym < tz0) { entry = entry | 2; }\r\n\r\n\t}\r\n\r\n\treturn entry;\r\n\r\n}\r\n\r\n/**\r\n * Finds the next octant that intersects with the ray based on the exit plane of\r\n * the current one.\r\n *\r\n * @private\r\n * @param {Number} currentOctant - The index of the current octant.\r\n * @param {Number} tx1 - Ray projection parameter.\r\n * @param {Number} ty1 - Ray projection parameter.\r\n * @param {Number} tz1 - Ray projection parameter.\r\n * @return {Number} The index of the next octant that the ray travels through.\r\n */\r\n\r\nfunction findNextOctant(currentOctant, tx1, ty1, tz1) {\r\n\r\n\tlet min;\r\n\tlet exit = 0;\r\n\r\n\t// Find the exit plane.\r\n\tif(tx1 < ty1) {\r\n\r\n\t\tmin = tx1;\r\n\t\texit = 0; // YZ-plane.\r\n\r\n\t} else {\r\n\r\n\t\tmin = ty1;\r\n\t\texit = 1; // XZ-plane.\r\n\r\n\t}\r\n\r\n\tif(tz1 < min) {\r\n\r\n\t\texit = 2; // XY-plane.\r\n\r\n\t}\r\n\r\n\treturn octantTable[currentOctant][exit];\r\n\r\n}\r\n\r\n/**\r\n * Finds all octants that intersect with the given ray.\r\n *\r\n * @private\r\n * @param {Octant} octant - The current octant.\r\n * @param {Number} tx0 - Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX.\r\n * @param {Number} ty0 - Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY.\r\n * @param {Number} tz0 - Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ.\r\n * @param {Number} tx1 - Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX.\r\n * @param {Number} ty1 - Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY.\r\n * @param {Number} tz1 - Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ.\r\n * @param {Raycaster} raycaster - The raycaster.\r\n * @param {Array} intersects - An array to be filled with the intersecting octants.\r\n */\r\n\r\nfunction raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet currentOctant;\r\n\tlet txm, tym, tzm;\r\n\r\n\tif(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {\r\n\r\n\t\tif(children === null) {\r\n\r\n\t\t\t// Leaf.\r\n\t\t\tintersects.push(octant);\r\n\r\n\t\t} else {\r\n\r\n\t\t\t// Compute means.\r\n\t\t\ttxm = 0.5 * (tx0 + tx1);\r\n\t\t\ttym = 0.5 * (ty0 + ty1);\r\n\t\t\ttzm = 0.5 * (tz0 + tz1);\r\n\r\n\t\t\tcurrentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);\r\n\r\n\t\t\tdo {\r\n\r\n\t\t\t\t/* The possibilities for the next node are passed in the same respective\r\n\t\t\t\t * order as the t-values. Hence, if the first value is found to be the\r\n\t\t\t\t * greatest, the fourth one will be returned. If the second value is the\r\n\t\t\t\t * greatest, the fifth one will be returned, etc.\r\n\t\t\t\t */\r\n\r\n\t\t\t\tswitch(currentOctant) {\r\n\r\n\t\t\t\t\tcase 0:\r\n\t\t\t\t\t\traycastOctant(children[flags[8]], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, txm, tym, tzm);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 1:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[1]], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, txm, tym, tz1);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 2:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[2]], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, txm, ty1, tzm);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 3:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[3]], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, txm, ty1, tz1);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 4:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[4]], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, tx1, tym, tzm);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 5:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[5]], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, tx1, tym, tz1);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 6:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[6]], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);\r\n\t\t\t\t\t\tcurrentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\tcase 7:\r\n\t\t\t\t\t\traycastOctant(children[flags[8] ^ flags[7]], txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);\r\n\t\t\t\t\t\t// Far top right octant. No other octants can be reached from here.\r\n\t\t\t\t\t\tcurrentOctant = 8;\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t} while(currentOctant < 8);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * An octree raycaster.\r\n *\r\n * Based on:\r\n *  \"An Efficient Parametric Algorithm for Octree Traversal\"\r\n *  by J. Revelles et al. (2000).\r\n */\r\n\r\nexport class OctreeRaycaster {\r\n\r\n\t/**\r\n\t * Finds the octants that intersect with the given ray. The intersecting\r\n\t * octants are sorted by distance, closest first.\r\n\t *\r\n\t * @param {Octree} octree - An octree.\r\n\t * @param {Raycaster} raycaster - A raycaster.\r\n\t * @param {Array} intersects - A list to be filled with intersecting octants.\r\n\t */\r\n\r\n\tstatic intersectOctree(octree, raycaster, intersects) {\r\n\r\n\t\tconst dimensions = octree.getDimensions();\r\n\t\tconst halfDimensions = dimensions.clone().multiplyScalar(0.5);\r\n\r\n\t\t// Translate the octree extents to the center of the octree.\r\n\t\tconst min = octree.min.clone().sub(octree.min);\r\n\t\tconst max = octree.max.clone().sub(octree.min);\r\n\r\n\t\tconst direction = raycaster.ray.direction.clone();\r\n\t\tconst origin = raycaster.ray.origin.clone();\r\n\r\n\t\t// Translate the ray to the center of the octree.\r\n\t\torigin.sub(octree.getCenter()).add(halfDimensions);\r\n\r\n\t\tlet invDirX, invDirY, invDirZ;\r\n\t\tlet tx0, tx1, ty0, ty1, tz0, tz1;\r\n\r\n\t\t// Reset the last byte.\r\n\t\tflags[8] = flags[0];\r\n\r\n\t\t// Handle rays with negative directions.\r\n\t\tif(direction.x < 0.0) {\r\n\r\n\t\t\torigin.x = dimensions.x - origin.x;\r\n\t\t\tdirection.x = -direction.x;\r\n\t\t\tflags[8] |= flags[4];\r\n\r\n\t\t}\r\n\r\n\t\tif(direction.y < 0.0) {\r\n\r\n\t\t\torigin.y = dimensions.y - origin.y;\r\n\t\t\tdirection.y = -direction.y;\r\n\t\t\tflags[8] |= flags[2];\r\n\r\n\t\t}\r\n\r\n\t\tif(direction.z < 0.0) {\r\n\r\n\t\t\torigin.z = dimensions.z - origin.z;\r\n\t\t\tdirection.z = -direction.z;\r\n\t\t\tflags[8] |= flags[1];\r\n\r\n\t\t}\r\n\r\n\t\t// Improve IEEE double stability.\r\n\t\tinvDirX = 1.0 / direction.x;\r\n\t\tinvDirY = 1.0 / direction.y;\r\n\t\tinvDirZ = 1.0 / direction.z;\r\n\r\n\t\t// Project the ray to the root's boundaries.\r\n\t\ttx0 = (min.x - origin.x) * invDirX;\r\n\t\ttx1 = (max.x - origin.x) * invDirX;\r\n\t\tty0 = (min.y - origin.y) * invDirY;\r\n\t\tty1 = (max.y - origin.y) * invDirY;\r\n\t\ttz0 = (min.z - origin.z) * invDirZ;\r\n\t\ttz1 = (max.z - origin.z) * invDirZ;\r\n\r\n\t\t// Check if the ray hits the octree.\r\n\t\tif(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {\r\n\r\n\t\t\traycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 41,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "flags",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~flags",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": null,
+    "description": "Contains bytes used for bitwise operations. The last byte is used to store\nraycasting flags.",
+    "lineNumber": 9,
+    "type": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 42,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "octantTable",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~octantTable",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": null,
+    "description": "A lookup-table containing octant ids. Used to determine the exit plane from\nan octant.",
+    "lineNumber": 19,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Uint8Array[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 43,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findEntryOctant",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~findEntryOctant",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": null,
+    "description": "Finds the entry plane of the first octant that a ray travels through.\n\nDetermining the first octant requires knowing which of the t0's is the\nlargest. The tm's of the other axes must also be compared against that\nlargest t0.",
+    "lineNumber": 49,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tx0",
+        "description": "Ray projection parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "ty0",
+        "description": "Ray projection parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tz0",
+        "description": "Ray projection parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "txm",
+        "description": "Ray projection parameter mean."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tym",
+        "description": "Ray projection parameter mean."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tzm",
+        "description": "Ray projection parameter mean."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The index of the first octant that the ray travels through."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 44,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findNextOctant",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~findNextOctant",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": null,
+    "description": "Finds the next octant that intersects with the ray based on the exit plane of\nthe current one.",
+    "lineNumber": 90,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "currentOctant",
+        "description": "The index of the current octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tx1",
+        "description": "Ray projection parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "ty1",
+        "description": "Ray projection parameter."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tz1",
+        "description": "Ray projection parameter."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The index of the next octant that the ray travels through."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 45,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "raycastOctant",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~raycastOctant",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": null,
+    "description": "Finds all octants that intersect with the given ray.",
+    "lineNumber": 133,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "The current octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tx0",
+        "description": "Ray projection parameter. Initial tx0 = (minX - rayOriginX) / rayDirectionX."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "ty0",
+        "description": "Ray projection parameter. Initial ty0 = (minY - rayOriginY) / rayDirectionY."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tz0",
+        "description": "Ray projection parameter. Initial tz0 = (minZ - rayOriginZ) / rayDirectionZ."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tx1",
+        "description": "Ray projection parameter. Initial tx1 = (maxX - rayOriginX) / rayDirectionX."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "ty1",
+        "description": "Ray projection parameter. Initial ty1 = (maxY - rayOriginY) / rayDirectionY."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tz1",
+        "description": "Ray projection parameter. Initial tz1 = (maxZ - rayOriginZ) / rayDirectionZ."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Raycaster"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "raycaster",
+        "description": "The raycaster."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "intersects",
+        "description": "An array to be filled with the intersecting octants."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 46,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "OctreeRaycaster",
+    "memberof": "src/core/octree-raycaster.js",
+    "longname": "src/core/octree-raycaster.js~OctreeRaycaster",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octree-raycaster.js",
+    "importStyle": "{OctreeRaycaster}",
+    "description": "An octree raycaster.\n\nBased on:\n \"An Efficient Parametric Algorithm for Octree Traversal\"\n by J. Revelles et al. (2000).",
+    "lineNumber": 225,
+    "interface": false
+  },
+  {
+    "__docId__": 47,
+    "kind": "method",
+    "static": true,
+    "variation": null,
+    "name": "intersectOctree",
+    "memberof": "src/core/octree-raycaster.js~OctreeRaycaster",
+    "longname": "src/core/octree-raycaster.js~OctreeRaycaster.intersectOctree",
+    "access": null,
+    "description": "Finds the octants that intersect with the given ray. The intersecting\noctants are sorted by distance, closest first.",
+    "lineNumber": 236,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octree"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octree",
+        "description": "An octree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Raycaster"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "raycaster",
+        "description": "A raycaster."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "intersects",
+        "description": "A list to be filled with intersecting octants."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/core/octree.js",
+    "memberof": null,
+    "longname": "src/core/octree.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Box3 } from \"math-ds\";\r\nimport { Octant } from \"./octant.js\";\r\nimport { OctreeIterator } from \"./octree-iterator.js\";\r\nimport { OctreeRaycaster } from \"./octree-raycaster.js\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type Box3\r\n * @private\r\n */\r\n\r\nconst box3 = new Box3();\r\n\r\n/**\r\n * Recursively calculates the depth of the given octree.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @return {Number} The depth.\r\n */\r\n\r\nfunction getDepth(octant) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet result = 0;\r\n\tlet i, l, d;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\td = 1 + getDepth(children[i]);\r\n\r\n\t\t\tif(d > result) {\r\n\r\n\t\t\t\tresult = d;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively collects octants that lie inside the specified region.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Frustum|Box3} region - A region.\r\n * @param {Array} result - A list to be filled with octants that intersect with the region.\r\n */\r\n\r\nfunction cull(octant, region, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tbox3.min = octant.min;\r\n\tbox3.max = octant.max;\r\n\r\n\tif(region.intersectsBox(box3)) {\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\t\tcull(children[i], region, result);\r\n\r\n\t\t\t}\r\n\r\n\t\t} else {\r\n\r\n\t\t\tresult.push(octant);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * Recursively fetches all octants with the specified depth level.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Number} level - The target depth level.\r\n * @param {Number} depth - The current depth level.\r\n * @param {Array} result - A list to be filled with the identified octants.\r\n */\r\n\r\nfunction findOctantsByLevel(octant, level, depth, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tif(depth === level) {\r\n\r\n\t\tresult.push(octant);\r\n\r\n\t} else if(children !== null) {\r\n\r\n\t\t++depth;\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\tfindOctantsByLevel(children[i], level, depth, result);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * An octree that subdivides space for fast spatial searches.\r\n *\r\n * @implements {Iterable}\r\n */\r\n\r\nexport class Octree {\r\n\r\n\t/**\r\n\t * Constructs a new octree.\r\n\t *\r\n\t * @param {Vector3} [min] - The lower bounds of the tree.\r\n\t * @param {Vector3} [max] - The upper bounds of the tree.\r\n\t */\r\n\r\n\tconstructor(min, max) {\r\n\r\n\t\t/**\r\n\t\t * The root octant.\r\n\t\t *\r\n\t\t * @type {Octant}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.root = (min !== undefined && max !== undefined) ? new Octant(min, max) : null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * The lower bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget min() { return this.root.min; }\r\n\r\n\t/**\r\n\t * The upper bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget max() { return this.root.max; }\r\n\r\n\t/**\r\n\t * The children of the root octant.\r\n\t *\r\n\t * @type {Octant[]}\r\n\t */\r\n\r\n\tget children() { return this.root.children; }\r\n\r\n\t/**\r\n\t * Calculates the center of this octree.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the center of this octree.\r\n\t */\r\n\r\n\tgetCenter() { return this.root.getCenter(); }\r\n\r\n\t/**\r\n\t * Calculates the size of this octree.\r\n\t *\r\n\t * @return {Vector3} A new vector that describes the size of this octree.\r\n\t */\r\n\r\n\tgetDimensions() { return this.root.getDimensions(); }\r\n\r\n\t/**\r\n\t * Calculates the current depth of this octree.\r\n\t *\r\n\t * @return {Number} The depth.\r\n\t */\r\n\r\n\tgetDepth() { return getDepth(this.root); }\r\n\r\n\t/**\r\n\t * Recursively collects octants that intersect with the specified region.\r\n\t *\r\n\t * @param {Frustum|Box3} region - A region.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tcull(region) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tcull(this.root, region, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Fetches all octants with the specified depth level.\r\n\t *\r\n\t * @param {Number} level - The depth level.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tfindOctantsByLevel(level) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tfindOctantsByLevel(this.root, level, 0, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds the octants that intersect with the given ray. The intersecting\r\n\t * octants are sorted by distance, closest first.\r\n\t *\r\n\t * @param {Raycaster} raycaster - A raycaster.\r\n\t * @param {Array} [intersects] - A list to be filled with intersecting octants.\r\n\t * @return {Octant[]} The intersecting octants.\r\n\t */\r\n\r\n\traycast(raycaster, intersects = []) {\r\n\r\n\t\tOctreeRaycaster.intersectOctree(this, raycaster, intersects);\r\n\r\n\t\treturn intersects;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctreeIterator} An iterator.\r\n\t */\r\n\r\n\tleaves(region) {\r\n\r\n\t\treturn new OctreeIterator(this, region);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctreeIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn new OctreeIterator(this);\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 49,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "box3",
+    "memberof": "src/core/octree.js",
+    "longname": "src/core/octree.js~box3",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree.js",
+    "importStyle": null,
+    "description": "A 3D box.",
+    "lineNumber": 13,
+    "type": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 50,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "getDepth",
+    "memberof": "src/core/octree.js",
+    "longname": "src/core/octree.js~getDepth",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree.js",
+    "importStyle": null,
+    "description": "Recursively calculates the depth of the given octree.",
+    "lineNumber": 23,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The depth."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 51,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "cull",
+    "memberof": "src/core/octree.js",
+    "longname": "src/core/octree.js~cull",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree.js",
+    "importStyle": null,
+    "description": "Recursively collects octants that lie inside the specified region.",
+    "lineNumber": 59,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Frustum",
+          "Box3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region",
+        "description": "A region."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "result",
+        "description": "A list to be filled with octants that intersect with the region."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 52,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findOctantsByLevel",
+    "memberof": "src/core/octree.js",
+    "longname": "src/core/octree.js~findOctantsByLevel",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/octree.js",
+    "importStyle": null,
+    "description": "Recursively fetches all octants with the specified depth level.",
+    "lineNumber": 98,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "level",
+        "description": "The target depth level."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "depth",
+        "description": "The current depth level."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "result",
+        "description": "A list to be filled with the identified octants."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 53,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Octree",
+    "memberof": "src/core/octree.js",
+    "longname": "src/core/octree.js~Octree",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/octree.js",
+    "importStyle": "{Octree}",
+    "description": "An octree that subdivides space for fast spatial searches.",
+    "lineNumber": 128,
+    "interface": false,
+    "implements": [
+      "Iterable"
+    ]
+  },
+  {
+    "__docId__": 54,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#constructor",
+    "access": null,
+    "description": "Constructs a new octree.",
+    "lineNumber": 137,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "min",
+        "description": "The lower bounds of the tree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "max",
+        "description": "The upper bounds of the tree."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 55,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "root",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#root",
+    "access": null,
+    "description": "The root octant.",
+    "lineNumber": 146,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "null"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octant"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "min",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#min",
+    "access": null,
+    "description": "The lower bounds of the root octant.",
+    "lineNumber": 156,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 57,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "max",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#max",
+    "access": null,
+    "description": "The upper bounds of the root octant.",
+    "lineNumber": 164,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 58,
+    "kind": "get",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#children",
+    "access": null,
+    "description": "The children of the root octant.",
+    "lineNumber": 172,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 59,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getCenter",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#getCenter",
+    "access": null,
+    "description": "Calculates the center of this octree.",
+    "lineNumber": 180,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the center of this octree."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 60,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getDimensions",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#getDimensions",
+    "access": null,
+    "description": "Calculates the size of this octree.",
+    "lineNumber": 188,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Vector3"
+      ],
+      "spread": false,
+      "description": "A new vector that describes the size of this octree."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 61,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getDepth",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#getDepth",
+    "access": null,
+    "description": "Calculates the current depth of this octree.",
+    "lineNumber": 196,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The depth."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "cull",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#cull",
+    "access": null,
+    "description": "Recursively collects octants that intersect with the specified region.",
+    "lineNumber": 205,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Frustum",
+          "Box3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "region",
+        "description": "A region."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": "The octants."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 63,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "findOctantsByLevel",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#findOctantsByLevel",
+    "access": null,
+    "description": "Fetches all octants with the specified depth level.",
+    "lineNumber": 222,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "level",
+        "description": "The depth level."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": "The octants."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "raycast",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#raycast",
+    "access": null,
+    "description": "Finds the octants that intersect with the given ray. The intersecting\noctants are sorted by distance, closest first.",
+    "lineNumber": 241,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Raycaster"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "raycaster",
+        "description": "A raycaster."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "intersects",
+        "description": "A list to be filled with intersecting octants."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": "The intersecting octants."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 65,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "leaves",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#leaves",
+    "access": null,
+    "description": "Returns an iterator that traverses the octree and returns leaf nodes.\n\nWhen a cull region is provided, the iterator will only return leaves that\nintersect with that region.",
+    "lineNumber": 259,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Frustum",
+          "Box3"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "region",
+        "description": "A cull region."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OctreeIterator"
+      ],
+      "spread": false,
+      "description": "An iterator."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 66,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "[Symbol.iterator]",
+    "memberof": "src/core/octree.js~Octree",
+    "longname": "src/core/octree.js~Octree#[Symbol.iterator]",
+    "access": null,
+    "description": null,
+    "lineNumber": 271,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 67,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/index.js",
+    "memberof": null,
+    "longname": "src/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 7,
+    "content": "/**\r\n * Exposure of the library components.\r\n *\r\n * @module sparse-octree\r\n */\r\n\r\nexport {\r\n\tCubicOctant,\r\n\tEDGES,\r\n\tOctant,\r\n\tOctree,\r\n\tOctreeIterator,\r\n\tOctreeRaycaster,\r\n\tPATTERN\r\n} from \"./core\";\r\n\r\nexport {\r\n\tPointOctant,\r\n\tPointOctree\r\n} from \"./points\";\r\n"
+  },
+  {
+    "__docId__": 68,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/points/index.js",
+    "memberof": null,
+    "longname": "src/points/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 7,
+    "content": "/**\r\n * Point-oriented octree components.\r\n *\r\n * @module sparse-octree/points\r\n */\r\n\r\nexport { PointOctant } from \"./point-octant.js\";\r\nexport { PointOctree } from \"./point-octree.js\";\r\n"
+  },
+  {
+    "__docId__": 69,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/points/point-octant.js",
+    "memberof": null,
+    "longname": "src/points/point-octant.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Octant } from \"../core/octant.js\";\r\n\r\n/**\r\n * An octant that maintains points.\r\n */\r\n\r\nexport class PointOctant extends Octant {\r\n\r\n\t/**\r\n\t * Constructs a new point octant.\r\n\t *\r\n\t * @param {Vector3} min - The lower bounds.\r\n\t * @param {Vector3} max - The upper bounds.\r\n\t */\r\n\r\n\tconstructor(min, max) {\r\n\r\n\t\tsuper(min, max);\r\n\r\n\t\t/**\r\n\t\t * The points that are inside this octant.\r\n\t\t *\r\n\t\t * @type {Array}\r\n\t\t */\r\n\r\n\t\tthis.points = null;\r\n\r\n\t\t/**\r\n\t\t * Point data.\r\n\t\t *\r\n\t\t * @type {Array}\r\n\t\t */\r\n\r\n\t\tthis.data = null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Computes the distance squared from this octant to the given point.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t * @return {Number} The distance squared.\r\n\t */\r\n\r\n\tdistanceToSquared(p) {\r\n\r\n\t\tconst clampedPoint = p.clone().clamp(this.min, this.max);\r\n\r\n\t\treturn clampedPoint.sub(p).lengthSq();\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Computes the distance squared from the center of this octant to the given\r\n\t * point.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t * @return {Number} The distance squared.\r\n\t */\r\n\r\n\tdistanceToCenterSquared(p) {\r\n\r\n\t\tconst center = this.getCenter();\r\n\r\n\t\tconst dx = p.x - center.x;\r\n\t\tconst dy = p.y - center.x;\r\n\t\tconst dz = p.z - center.z;\r\n\r\n\t\treturn dx * dx + dy * dy + dz * dz;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Checks if the given point lies inside this octant's boundaries.\r\n\t *\r\n\t * This method can also be used to check if this octant intersects a sphere by\r\n\t * providing a radius as bias.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t * @param {Number} bias - A padding that extends the boundaries temporarily.\r\n\t * @return {Boolean} Whether the given point lies inside this octant.\r\n\t */\r\n\r\n\tcontains(p, bias) {\r\n\r\n\t\tconst min = this.min;\r\n\t\tconst max = this.max;\r\n\r\n\t\treturn (\r\n\t\t\tp.x >= min.x - bias &&\r\n\t\t\tp.y >= min.y - bias &&\r\n\t\t\tp.z >= min.z - bias &&\r\n\t\t\tp.x <= max.x + bias &&\r\n\t\t\tp.y <= max.y + bias &&\r\n\t\t\tp.z <= max.z + bias\r\n\t\t);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Redistributes existing points to child octants.\r\n\t *\r\n\t * @param {Number} bias - A proximity threshold.\r\n\t */\r\n\r\n\tredistribute(bias) {\r\n\r\n\t\tconst children = this.children;\r\n\t\tconst points = this.points;\r\n\t\tconst data = this.data;\r\n\r\n\t\tlet i, l;\r\n\t\tlet child, point, entry;\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\twhile(points.length > 0) {\r\n\r\n\t\t\t\tpoint = points.pop();\r\n\t\t\t\tentry = data.pop();\r\n\r\n\t\t\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\t\t\tchild = children[i];\r\n\r\n\t\t\t\t\tif(child.contains(point, bias)) {\r\n\r\n\t\t\t\t\t\tif(child.points === null) {\r\n\r\n\t\t\t\t\t\t\tchild.points = [];\r\n\t\t\t\t\t\t\tchild.data = [];\r\n\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tchild.points.push(point);\r\n\t\t\t\t\t\tchild.data.push(entry);\r\n\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.points = null;\r\n\t\tthis.data = null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Gathers all points from the children. The children are expected to be leaf\r\n\t * octants and will be dropped afterwards.\r\n\t *\r\n\t * @private\r\n\t */\r\n\r\n\tmerge() {\r\n\r\n\t\tconst children = this.children;\r\n\r\n\t\tlet i, l;\r\n\t\tlet child;\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tthis.points = [];\r\n\t\t\tthis.data = [];\r\n\r\n\t\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\t\tchild = children[i];\r\n\r\n\t\t\t\tif(child.points !== null) {\r\n\r\n\t\t\t\t\tthis.points.push(...child.points);\r\n\t\t\t\t\tthis.data.push(...child.data);\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t\tthis.children = null;\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 70,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "PointOctant",
+    "memberof": "src/points/point-octant.js",
+    "longname": "src/points/point-octant.js~PointOctant",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/points/point-octant.js",
+    "importStyle": "{PointOctant}",
+    "description": "An octant that maintains points.",
+    "lineNumber": 7,
+    "interface": false,
+    "extends": [
+      "src/core/octant.js~Octant"
+    ]
+  },
+  {
+    "__docId__": 71,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#constructor",
+    "access": null,
+    "description": "Constructs a new point octant.",
+    "lineNumber": 16,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "min",
+        "description": "The lower bounds."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "max",
+        "description": "The upper bounds."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 72,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "points",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#points",
+    "access": null,
+    "description": "The points that are inside this octant.",
+    "lineNumber": 26,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 73,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#data",
+    "access": null,
+    "description": "Point data.",
+    "lineNumber": 34,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "distanceToSquared",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#distanceToSquared",
+    "access": null,
+    "description": "Computes the distance squared from this octant to the given point.",
+    "lineNumber": 45,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The distance squared."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 75,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "distanceToCenterSquared",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#distanceToCenterSquared",
+    "access": null,
+    "description": "Computes the distance squared from the center of this octant to the given\npoint.",
+    "lineNumber": 61,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The distance squared."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "contains",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#contains",
+    "access": null,
+    "description": "Checks if the given point lies inside this octant's boundaries.\n\nThis method can also be used to check if this octant intersects a sphere by\nproviding a radius as bias.",
+    "lineNumber": 84,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "bias",
+        "description": "A padding that extends the boundaries temporarily."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": "Whether the given point lies inside this octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 77,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "redistribute",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#redistribute",
+    "access": null,
+    "description": "Redistributes existing points to child octants.",
+    "lineNumber": 106,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "bias",
+        "description": "A proximity threshold."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 78,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "points",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#points",
+    "access": null,
+    "description": null,
+    "lineNumber": 148,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 149,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "merge",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#merge",
+    "access": "private",
+    "description": "Gathers all points from the children. The children are expected to be leaf\noctants and will be dropped afterwards.",
+    "lineNumber": 160,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 81,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "points",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#points",
+    "access": null,
+    "description": null,
+    "lineNumber": 169,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 82,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 170,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 83,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "children",
+    "memberof": "src/points/point-octant.js~PointOctant",
+    "longname": "src/points/point-octant.js~PointOctant#children",
+    "access": null,
+    "description": null,
+    "lineNumber": 185,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/points/point-octree.js",
+    "memberof": null,
+    "longname": "src/points/point-octree.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Octree } from \"../core/octree.js\";\r\nimport { PointOctant } from \"./point-octant.js\";\r\n\r\n/**\r\n * Recursively counts how many points are in the given octree.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @return {Number} The amount of points.\r\n */\r\n\r\nfunction countPoints(octant) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet result = 0;\r\n\tlet i, l;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\tresult += countPoints(children[i]);\r\n\r\n\t\t}\r\n\r\n\t} else if(octant.points !== null) {\r\n\r\n\t\tresult = octant.points.length;\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively adds a point to the octree.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Vector3} p - A point.\r\n * @param {Object} data - An object that the point represents.\r\n * @param {Number} depth - The current depth.\r\n * @param {Number} bias - A threshold for proximity checks.\r\n * @param {Number} maxPoints - Number of distinct points per octant before it splits up.\r\n * @param {Number} maxDepth - The maximum tree depth level, starting at 0.\r\n */\r\n\r\nfunction add(octant, p, data, depth, bias, maxPoints, maxDepth) {\r\n\r\n\tlet children = octant.children;\r\n\tlet exists = false;\r\n\tlet done = false;\r\n\tlet i, l;\r\n\r\n\tif(octant.contains(p, bias)) {\r\n\r\n\t\tif(children === null) {\r\n\r\n\t\t\tif(octant.points === null) {\r\n\r\n\t\t\t\toctant.points = [];\r\n\t\t\t\toctant.data = [];\r\n\r\n\t\t\t} else {\r\n\r\n\t\t\t\tfor(i = 0, l = octant.points.length; !exists && i < l; ++i) {\r\n\r\n\t\t\t\t\texists = octant.points[i].equals(p);\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t\tif(exists) {\r\n\r\n\t\t\t\toctant.data[i - 1] = data;\r\n\r\n\t\t\t\tdone = true;\r\n\r\n\t\t\t} else if(octant.points.length < maxPoints || depth === maxDepth) {\r\n\r\n\t\t\t\toctant.points.push(p.clone());\r\n\t\t\t\toctant.data.push(data);\r\n\r\n\t\t\t\tdone = true;\r\n\r\n\t\t\t} else {\r\n\r\n\t\t\t\toctant.split();\r\n\t\t\t\toctant.redistribute(bias);\r\n\t\t\t\tchildren = octant.children;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\t++depth;\r\n\r\n\t\t\tfor(i = 0, l = children.length; !done && i < l; ++i) {\r\n\r\n\t\t\t\tdone = add(children[i], p, data, depth, bias, maxPoints, maxDepth);\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn done;\r\n\r\n}\r\n\r\n/**\r\n * Recursively finds a point in the octree and removes it.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Octant} parent - The parent of the octant.\r\n * @param {Vector3} p - A point.\r\n * @param {Number} bias - A threshold for proximity checks.\r\n * @param {Number} maxPoints - Number of distinct points per octant before it splits up.\r\n */\r\n\r\nfunction remove(octant, parent, p, bias, maxPoints) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet done = false;\r\n\r\n\tlet i, l;\r\n\tlet points, data, last;\r\n\r\n\tif(octant.contains(p, bias)) {\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tfor(i = 0, l = children.length; !done && i < l; ++i) {\r\n\r\n\t\t\t\tdone = remove(children[i], octant, p, bias, maxPoints);\r\n\r\n\t\t\t}\r\n\r\n\t\t} else if(octant.points !== null) {\r\n\r\n\t\t\tpoints = octant.points;\r\n\t\t\tdata = octant.data;\r\n\r\n\t\t\tfor(i = 0, l = points.length; !done && i < l; ++i) {\r\n\r\n\t\t\t\tif(points[i].equals(p)) {\r\n\r\n\t\t\t\t\tlast = l - 1;\r\n\r\n\t\t\t\t\t// If the point is NOT the last one in the array:\r\n\t\t\t\t\tif(i < last) {\r\n\r\n\t\t\t\t\t\t// Overwrite with the last point and data entry.\r\n\t\t\t\t\t\tpoints[i] = points[last];\r\n\t\t\t\t\t\tdata[i] = data[last];\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t// Drop the last entry.\r\n\t\t\t\t\tpoints.pop();\r\n\t\t\t\t\tdata.pop();\r\n\r\n\t\t\t\t\tif(parent !== null && countPoints(parent) <= maxPoints) {\r\n\r\n\t\t\t\t\t\tparent.merge();\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tdone = true;\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn done;\r\n\r\n}\r\n\r\n/**\r\n * Recursively finds a point in the octree and fetches the associated data.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Vector3} p - A point.\r\n * @param {Number} bias - A threshold for proximity checks.\r\n * @param {Number} biasSquared - The threshold squared.\r\n * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.\r\n */\r\n\r\nfunction fetch(octant, p, bias, biasSquared) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet result = null;\r\n\r\n\tlet i, l;\r\n\tlet points;\r\n\r\n\tif(octant.contains(p, bias)) {\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tfor(i = 0, l = children.length; result === null && i < l; ++i) {\r\n\r\n\t\t\t\tresult = fetch(children[i], p, bias, biasSquared);\r\n\r\n\t\t\t}\r\n\r\n\t\t} else {\r\n\r\n\t\t\tpoints = octant.points;\r\n\r\n\t\t\tfor(i = 0, l = points.length; result === null && i < l; ++i) {\r\n\r\n\t\t\t\tif(p.distanceToSquared(points[i]) <= biasSquared) {\r\n\r\n\t\t\t\t\tresult = octant.data[i];\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively finds the closest point to the given one.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Vector3} p - The point.\r\n * @param {Number} maxDistance - The maximum distance.\r\n * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.\r\n * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.\r\n */\r\n\r\nfunction findNearestPoint(octant, p, maxDistance, skipSelf) {\r\n\r\n\tconst points = octant.points;\r\n\tconst children = octant.children;\r\n\r\n\tlet result = null;\r\n\tlet bestDist = maxDistance;\r\n\r\n\tlet i, l;\r\n\tlet point, distSq;\r\n\r\n\tlet sortedChildren;\r\n\tlet child, childResult;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\t// Sort the children.\r\n\t\tsortedChildren = children.map(function(child) {\r\n\r\n\t\t\t// Precompute distances.\r\n\t\t\treturn {\r\n\t\t\t\toctant: child,\r\n\t\t\t\tdistance: child.distanceToCenterSquared(p)\r\n\t\t\t};\r\n\r\n\t\t}).sort(function(a, b) {\r\n\r\n\t\t\t// Smallest distance to p first, ASC.\r\n\t\t\treturn a.distance - b.distance;\r\n\r\n\t\t});\r\n\r\n\t\t// Traverse from closest to furthest.\r\n\t\tfor(i = 0, l = sortedChildren.length; i < l; ++i) {\r\n\r\n\t\t\t// Unpack octant.\r\n\t\t\tchild = sortedChildren[i].octant;\r\n\r\n\t\t\tif(child.contains(p, bestDist)) {\r\n\r\n\t\t\t\tchildResult = findNearestPoint(child, p, bestDist, skipSelf);\r\n\r\n\t\t\t\tif(childResult !== null) {\r\n\r\n\t\t\t\t\tdistSq = childResult.point.distanceToSquared(p);\r\n\r\n\t\t\t\t\tif((!skipSelf || distSq > 0.0) && distSq < bestDist) {\r\n\r\n\t\t\t\t\t\tbestDist = distSq;\r\n\t\t\t\t\t\tresult = childResult;\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t} else if(points !== null) {\r\n\r\n\t\tfor(i = 0, l = points.length; i < l; ++i) {\r\n\r\n\t\t\tpoint = points[i];\r\n\t\t\tdistSq = p.distanceToSquared(point);\r\n\r\n\t\t\tif((!skipSelf || distSq > 0.0) && distSq < bestDist) {\r\n\r\n\t\t\t\tbestDist = distSq;\r\n\r\n\t\t\t\tresult = {\r\n\t\t\t\t\tpoint: point.clone(),\r\n\t\t\t\t\tdata: octant.data[i]\r\n\t\t\t\t};\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively finds points that are inside the specified radius around a given\r\n * position.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Vector3} p - A position.\r\n * @param {Number} r - A radius.\r\n * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.\r\n * @param {Array} result - An array to be filled with objects, each containing a point and a data property.\r\n */\r\n\r\nfunction findPoints(octant, p, r, skipSelf, result) {\r\n\r\n\tconst points = octant.points;\r\n\tconst children = octant.children;\r\n\tconst rSq = r * r;\r\n\r\n\tlet i, l;\r\n\r\n\tlet point, distSq;\r\n\tlet child;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\tchild = children[i];\r\n\r\n\t\t\tif(child.contains(p, r)) {\r\n\r\n\t\t\t\tfindPoints(child, p, r, skipSelf, result);\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t} else if(points !== null) {\r\n\r\n\t\tfor(i = 0, l = points.length; i < l; ++i) {\r\n\r\n\t\t\tpoint = points[i];\r\n\t\t\tdistSq = p.distanceToSquared(point);\r\n\r\n\t\t\tif((!skipSelf || distSq > 0.0) && distSq <= rSq) {\r\n\r\n\t\t\t\tresult.push({\r\n\t\t\t\t\tpoint: point.clone(),\r\n\t\t\t\t\tdata: octant.data[i]\r\n\t\t\t\t});\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * An octree that manages points.\r\n */\r\n\r\nexport class PointOctree extends Octree {\r\n\r\n\t/**\r\n\t * Constructs a new point octree.\r\n\t *\r\n\t * @param {Vector3} min - The lower bounds of the tree.\r\n\t * @param {Vector3} max - The upper bounds of the tree.\r\n\t * @param {Number} [bias=0.0] - A threshold for proximity checks.\r\n\t * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.\r\n\t * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.\r\n\t */\r\n\r\n\tconstructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {\r\n\r\n\t\tsuper();\r\n\r\n\t\t/**\r\n\t\t * The root octant.\r\n\t\t *\r\n\t\t * @type {PointOctant}\r\n\t\t */\r\n\r\n\t\tthis.root = new PointOctant(min, max);\r\n\r\n\t\t/**\r\n\t\t * A threshold for proximity checks.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t * @private\r\n\t\t * @default 0.0\r\n\t\t */\r\n\r\n\t\tthis.bias = Math.max(0.0, bias);\r\n\r\n\t\t/**\r\n\t\t * The proximity threshold squared.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t * @private\r\n\t\t * @default 0.0\r\n\t\t */\r\n\r\n\t\tthis.biasSquared = this.bias * this.bias;\r\n\r\n\t\t/**\r\n\t\t * Number of points per octant before a split occurs.\r\n\t\t *\r\n\t\t * This value works together with the maximum depth as a secondary limiting\r\n\t\t * factor. Smaller values cause splits to occur earlier which results in a\r\n\t\t * faster and deeper tree growth.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t * @private\r\n\t\t * @default 8\r\n\t\t */\r\n\r\n\t\tthis.maxPoints = Math.max(1, Math.round(maxPoints));\r\n\r\n\t\t/**\r\n\t\t * The maximum tree depth level.\r\n\t\t *\r\n\t\t * It's possible to use Infinity, but be aware that allowing infinitely\r\n\t\t * small octants can have a negative impact on performance.\r\n\t\t * Finding a value that works best for a specific scene is advisable.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t * @private\r\n\t\t * @default 8\r\n\t\t */\r\n\r\n\t\tthis.maxDepth = Math.max(0, Math.round(maxDepth));\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Counts how many points are in this octree.\r\n\t *\r\n\t * @return {Number} The amount of points.\r\n\t */\r\n\r\n\tcountPoints() {\r\n\r\n\t\treturn countPoints(this.root);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Adds a point to the octree.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t * @param {Object} data - An object that the point represents.\r\n\t */\r\n\r\n\tadd(p, data) {\r\n\r\n\t\tadd(this.root, p, data, 0, this.bias, this.maxPoints, this.maxDepth);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Removes a point from the tree.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t */\r\n\r\n\tremove(p) {\r\n\r\n\t\tremove(this.root, null, p, this.bias, this.maxPoints);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Retrieves the data of the specified point.\r\n\t *\r\n\t * @param {Vector3} p - A position.\r\n\t * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.\r\n\t */\r\n\r\n\tfetch(p) {\r\n\r\n\t\treturn fetch(this.root, p, this.bias, this.biasSquared);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds the closest point to the given one.\r\n\t *\r\n\t * @param {Vector3} p - A point.\r\n\t * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.\r\n\t * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.\r\n\t * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.\r\n\t */\r\n\r\n\tfindNearestPoint(p, maxDistance = Infinity, skipSelf = false) {\r\n\r\n\t\treturn findNearestPoint(this.root, p, maxDistance, skipSelf);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds points that are in the specified radius around the given position.\r\n\t *\r\n\t * @param {Vector3} p - A position.\r\n\t * @param {Number} r - A radius.\r\n\t * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.\r\n\t * @return {Array} An array of objects, each containing a point and a data property.\r\n\t */\r\n\r\n\tfindPoints(p, r, skipSelf = false) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tfindPoints(this.root, p, r, skipSelf, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds the points that intersect with the given ray.\r\n\t *\r\n\t * @param {Raycaster} raycaster - The raycaster.\r\n\t * @param {Array} [intersects] - An array to be filled with the intersecting points.\r\n\t * @return {Array} The intersecting points.\r\n\t */\r\n\r\n\traycast(raycaster, intersects = []) {\r\n\r\n\t\tconst octants = super.raycast(raycaster);\r\n\r\n\t\tif(octants.length > 0) {\r\n\r\n\t\t\t// Collect intersecting points.\r\n\t\t\tthis.testPoints(octants, raycaster, intersects);\r\n\r\n\t\t}\r\n\r\n\t\treturn intersects;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Collects points that intersect with the given ray.\r\n\t *\r\n\t * @param {Array} octants - An array containing octants that intersect with the ray.\r\n\t * @param {Raycaster} raycaster - The raycaster.\r\n\t * @param {Array} intersects - An array to be filled with the intersecting points.\r\n\t */\r\n\r\n\ttestPoints(octants, raycaster, intersects) {\r\n\r\n\t\tconst threshold = raycaster.params.Points.threshold;\r\n\t\tconst thresholdSq = threshold * threshold;\r\n\r\n\t\tlet intersectPoint;\r\n\t\tlet distance, distanceToRay;\r\n\t\tlet rayPointDistanceSq;\r\n\r\n\t\tlet i, j, il, jl;\r\n\t\tlet octant, points, point;\r\n\r\n\t\tfor(i = 0, il = octants.length; i < il; ++i) {\r\n\r\n\t\t\toctant = octants[i];\r\n\t\t\tpoints = octant.points;\r\n\r\n\t\t\tif(points !== null) {\r\n\r\n\t\t\t\tfor(j = 0, jl = points.length; j < jl; ++j) {\r\n\r\n\t\t\t\t\tpoint = points[j];\r\n\t\t\t\t\trayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);\r\n\r\n\t\t\t\t\tif(rayPointDistanceSq < thresholdSq) {\r\n\r\n\t\t\t\t\t\tintersectPoint = raycaster.ray.closestPointToPoint(point);\r\n\t\t\t\t\t\tdistance = raycaster.ray.origin.distanceTo(intersectPoint);\r\n\r\n\t\t\t\t\t\tif(distance >= raycaster.near && distance <= raycaster.far) {\r\n\r\n\t\t\t\t\t\t\tdistanceToRay = Math.sqrt(rayPointDistanceSq);\r\n\r\n\t\t\t\t\t\t\tintersects.push({\r\n\t\t\t\t\t\t\t\tdistance: distance,\r\n\t\t\t\t\t\t\t\tdistanceToRay: distanceToRay,\r\n\t\t\t\t\t\t\t\tpoint: intersectPoint.clone(),\r\n\t\t\t\t\t\t\t\tobject: octant.data[j]\r\n\t\t\t\t\t\t\t});\r\n\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 85,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "countPoints",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~countPoints",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively counts how many points are in the given octree.",
+    "lineNumber": 12,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The amount of points."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 86,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "add",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~add",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively adds a point to the octree.",
+    "lineNumber": 50,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "An object that the point represents."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "depth",
+        "description": "The current depth."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "bias",
+        "description": "A threshold for proximity checks."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "maxPoints",
+        "description": "Number of distinct points per octant before it splits up."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "maxDepth",
+        "description": "The maximum tree depth level, starting at 0."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 87,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "remove",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~remove",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively finds a point in the octree and removes it.",
+    "lineNumber": 128,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "parent",
+        "description": "The parent of the octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "bias",
+        "description": "A threshold for proximity checks."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "maxPoints",
+        "description": "Number of distinct points per octant before it splits up."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 88,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "fetch",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~fetch",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively finds a point in the octree and fetches the associated data.",
+    "lineNumber": 202,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "bias",
+        "description": "A threshold for proximity checks."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "biasSquared",
+        "description": "The threshold squared."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The data entry that is associated with the given point or null if it doesn't exist."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 89,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findNearestPoint",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~findNearestPoint",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively finds the closest point to the given one.",
+    "lineNumber": 254,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "The point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "maxDistance",
+        "description": "The maximum distance."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "skipSelf",
+        "description": "Whether a point that is exactly at the given position should be skipped."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "An object representing the nearest point or null if there is none. The object has a point and a data property."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 90,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findPoints",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~findPoints",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": null,
+    "description": "Recursively finds points that are inside the specified radius around a given\nposition.",
+    "lineNumber": 351,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octant"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octant",
+        "description": "An octant."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A position."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "r",
+        "description": "A radius."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "skipSelf",
+        "description": "Whether a point that is exactly at the given position should be skipped."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "result",
+        "description": "An array to be filled with objects, each containing a point and a data property."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 91,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "PointOctree",
+    "memberof": "src/points/point-octree.js",
+    "longname": "src/points/point-octree.js~PointOctree",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/points/point-octree.js",
+    "importStyle": "{PointOctree}",
+    "description": "An octree that manages points.",
+    "lineNumber": 402,
+    "interface": false,
+    "extends": [
+      "src/core/octree.js~Octree"
+    ]
+  },
+  {
+    "__docId__": 92,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#constructor",
+    "access": null,
+    "description": "Constructs a new point octree.",
+    "lineNumber": 414,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "min",
+        "description": "The lower bounds of the tree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "max",
+        "description": "The upper bounds of the tree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "0.0",
+        "defaultRaw": 0,
+        "name": "bias",
+        "description": "A threshold for proximity checks."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "8",
+        "defaultRaw": 8,
+        "name": "maxPoints",
+        "description": "Number of distinct points per octant before it splits up."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "8",
+        "defaultRaw": 8,
+        "name": "maxDepth",
+        "description": "The maximum tree depth level, starting at 0."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 93,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "root",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#root",
+    "access": null,
+    "description": "The root octant.",
+    "lineNumber": 424,
+    "type": {
+      "nullable": null,
+      "types": [
+        "PointOctant"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 94,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "bias",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#bias",
+    "access": "private",
+    "description": "A threshold for proximity checks.",
+    "lineNumber": 434,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "0.0"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 95,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "biasSquared",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#biasSquared",
+    "access": "private",
+    "description": "The proximity threshold squared.",
+    "lineNumber": 444,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "0.0"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 96,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "maxPoints",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#maxPoints",
+    "access": "private",
+    "description": "Number of points per octant before a split occurs.\n\nThis value works together with the maximum depth as a secondary limiting\nfactor. Smaller values cause splits to occur earlier which results in a\nfaster and deeper tree growth.",
+    "lineNumber": 458,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "8"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 97,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "maxDepth",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#maxDepth",
+    "access": "private",
+    "description": "The maximum tree depth level.\n\nIt's possible to use Infinity, but be aware that allowing infinitely\nsmall octants can have a negative impact on performance.\nFinding a value that works best for a specific scene is advisable.",
+    "lineNumber": 472,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "8"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 98,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "countPoints",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#countPoints",
+    "access": null,
+    "description": "Counts how many points are in this octree.",
+    "lineNumber": 482,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Number"
+      ],
+      "spread": false,
+      "description": "The amount of points."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "add",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#add",
+    "access": null,
+    "description": "Adds a point to the octree.",
+    "lineNumber": 495,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "An object that the point represents."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 100,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "remove",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#remove",
+    "access": null,
+    "description": "Removes a point from the tree.",
+    "lineNumber": 507,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 101,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "fetch",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#fetch",
+    "access": null,
+    "description": "Retrieves the data of the specified point.",
+    "lineNumber": 520,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A position."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The data entry that is associated with the given point or null if it doesn't exist."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 102,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "findNearestPoint",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#findNearestPoint",
+    "access": null,
+    "description": "Finds the closest point to the given one.",
+    "lineNumber": 535,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A point."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "Infinity",
+        "defaultRaw": "Infinity",
+        "name": "maxDistance",
+        "description": "An upper limit for the distance between the points."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "skipSelf",
+        "description": "Whether a point that is exactly at the given position should be skipped."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "An object representing the nearest point or null if there is none. The object has a point and a data property."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 103,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "findPoints",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#findPoints",
+    "access": null,
+    "description": "Finds points that are in the specified radius around the given position.",
+    "lineNumber": 550,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vector3"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "p",
+        "description": "A position."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "r",
+        "description": "A radius."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "skipSelf",
+        "description": "Whether a point that is exactly at the given position should be skipped."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "An array of objects, each containing a point and a data property."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 104,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "raycast",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#raycast",
+    "access": null,
+    "description": "Finds the points that intersect with the given ray.",
+    "lineNumber": 568,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Raycaster"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "raycaster",
+        "description": "The raycaster."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "intersects",
+        "description": "An array to be filled with the intersecting points."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": "The intersecting points."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 105,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "testPoints",
+    "memberof": "src/points/point-octree.js~PointOctree",
+    "longname": "src/points/point-octree.js~PointOctree#testPoints",
+    "access": null,
+    "description": "Collects points that intersect with the given ray.",
+    "lineNumber": 591,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octants",
+        "description": "An array containing octants that intersect with the ray."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Raycaster"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "raycaster",
+        "description": "The raycaster."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "intersects",
+        "description": "An array to be filled with the intersecting points."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 107,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 108,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 109,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 110,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 111,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 112,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 113,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 114,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 115,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 116,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 117,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 118,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 119,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 120,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 121,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 122,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 123,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 124,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 125,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 126,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 127,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 128,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 129,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 130,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 131,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 132,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 133,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 134,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 135,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 136,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 137,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 138,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 139,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 140,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 141,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 142,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 143,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 144,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 145,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 146,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 147,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 148,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 149,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 150,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 151,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 152,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 153,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 155,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 156,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 157,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 158,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 159,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 160,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 161,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 162,
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  }
+]

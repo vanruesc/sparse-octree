@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">API Document</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/core/index.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -45,66 +45,20 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="sparse-octree">Sparse Octree</h1>
-<p><a href="https://travis-ci.org/vanruesc/sparse-octree"><img src="https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master" alt="Build status"></a> 
-<a href="http://badge.fury.io/js/sparse-octree"><img src="https://badge.fury.io/js/sparse-octree.svg" alt="npm version"></a> 
-<a href="https://david-dm.org/vanruesc/sparse-octree"><img src="https://david-dm.org/vanruesc/sparse-octree.svg?branch=master" alt="Dependencies"></a></p>
-<p>A sparse octree data structure.</p>
-<p><em><a href="https://vanruesc.github.io/sparse-octree/public/index.html">Extensive Demo</a> &#x2234;
-<a href="https://vanruesc.github.io/sparse-octree/docs">API Reference</a></em></p>
-<h2 id="installation">Installation</h2>
-<pre><code class="lang-sh"><code class="source-code prettyprint">npm install sparse-octree</code>
+<div class="content" data-ice="content"><h1 data-ice="title">src/core/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Core components.
+ *
+ * @module sparse-octree/core
+ */
+
+export { CubicOctant } from &quot;./cubic-octant.js&quot;;
+export { Octree } from &quot;./octree.js&quot;;
+export { Octant, PATTERN, EDGES } from &quot;./octant.js&quot;;
+export { OctreeIterator } from &quot;./octree-iterator.js&quot;;
+export { OctreeRaycaster } from &quot;./octree-raycaster.js&quot;;
 </code></pre>
-<h2 id="usage">Usage</h2>
-<h5 id="custom-octrees">Custom Octrees</h5>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">import { Octree, CubicOctant } from &quot;sparse-octree&quot;;
 
-export class CubicOctree extends Octree {
-
-    constructor(min, size) {
-
-        this.root = new CubicOctant(min, size);
-
-    }
-
-}</code>
-</code></pre>
-<h5 id="points">Points</h5>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">import { Vector3 } from &quot;three&quot;;
-import { PointOctree } from &quot;sparse-octree&quot;;
-
-const min = new Vector3(-1, -1, -1);
-const max = new Vector3(1, 1, 1);
-
-const octree = new PointOctree(min, max);
-const myData = {};
-
-octree.add(new Vector3(0, 0, 0), myData);
-octree.fetch(new Vector3(0, 0, 0)); // =&gt; myData</code>
-</code></pre>
-<p>A full point octree example can be found <a href="https://jsfiddle.net/6gt9fjmq/4/">here</a>.</p>
-<h2 id="features">Features</h2>
-<ul>
-<li>Base Functionality<ul>
-<li>Pointer-based structure<ul>
-<li>Handles octant splitting</li>
-<li>Adheres to a <a href="http://vanruesc.github.io/sparse-octree/docs/variable/index.html#static-variable-PATTERN">common octant layout</a></li>
-<li>Supports raycasting</li>
-<li>Supports culling</li>
-<li>Supports cubic octrees</li>
-<li>Can be extended to manage any data</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Provides a point management implementation</li>
-</ul>
-<h2 id="octree-helper">Octree Helper</h2>
-<p>The <a href="https://github.com/vanruesc/octree-helper">octree-helper</a> module provides
-an octree visualisation tool for <a href="https://threejs.org/">three.js</a>.</p>
-<h2 id="contributing">Contributing</h2>
-<p>Maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.</p>
-</div>
 </div>
 
 <footer class="footer">

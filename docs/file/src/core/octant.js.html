@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/core/octant.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/cubic-octant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree-iterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree-raycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/octree.js~Octree.html">Octree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/point-octant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/point-octree.js~PointOctree.html">PointOctree</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/core/octant.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
+
+/**
+ * An octant.
+ */
+
+export class Octant {
+
+	/**
+	 * Constructs a new octant.
+	 *
+	 * @param {Vector3} min - The lower bounds.
+	 * @param {Vector3} max - The upper bounds.
+	 */
+
+	constructor(min = new Vector3(), max = new Vector3()) {
+
+		/**
+		 * The lower bounds of this octant.
+		 *
+		 * @type {Vector3}
+		 */
+
+		this.min = min;
+
+		/**
+		 * The upper bounds of the octant.
+		 *
+		 * @type {Vector3}
+		 */
+
+		this.max = max;
+
+		/**
+		 * The children of this octant.
+		 *
+		 * @type {Octant[]}
+		 * @default null
+		 */
+
+		this.children = null;
+
+	}
+
+	/**
+	 * Computes the center of this octant.
+	 *
+	 * @return {Vector3} A new vector that describes the center of this octant.
+	 */
+
+	getCenter() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
+
+	/**
+	 * Computes the size of this octant.
+	 *
+	 * @return {Vector3} A new vector that describes the size of this octant.
+	 */
+
+	getDimensions() { return this.max.clone().sub(this.min); }
+
+	/**
+	 * Splits this octant into eight smaller ones.
+	 *
+	 * @param {Array} [octants] - A list of octants to recycle.
+	 */
+
+	split(octants) {
+
+		const min = this.min;
+		const max = this.max;
+		const mid = this.getCenter();
+
+		let i, j;
+		let l = 0;
+		let combination;
+
+		let halfDimensions;
+		let v, child, octant;
+
+		if(Array.isArray(octants)) {
+
+			halfDimensions = this.getDimensions().multiplyScalar(0.5);
+			v = [new Vector3(), new Vector3(), new Vector3()];
+			l = octants.length;
+
+		}
+
+		this.children = [];
+
+		for(i = 0; i &lt; 8; ++i) {
+
+			combination = PATTERN[i];
+			octant = null;
+
+			if(l &gt; 0) {
+
+				v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
+				v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
+
+				// Find an octant that matches the current combination.
+				for(j = 0; j &lt; l; ++j) {
+
+					child = octants[j];
+
+					if(child !== null &amp;&amp; v[1].equals(child.min) &amp;&amp; v[2].equals(child.max)) {
+
+						octant = child;
+						octants[j] = null;
+
+						break;
+
+					}
+
+				}
+
+			}
+
+			this.children.push((octant !== null) ? octant : new this.constructor(
+
+				new Vector3(
+					((combination[0] === 0) ? min.x : mid.x),
+					((combination[1] === 0) ? min.y : mid.y),
+					((combination[2] === 0) ? min.z : mid.z)
+				),
+
+				new Vector3(
+					((combination[0] === 0) ? mid.x : max.x),
+					((combination[1] === 0) ? mid.y : max.y),
+					((combination[2] === 0) ? mid.z : max.z)
+				)
+
+			));
+
+		}
+
+	}
+
+}
+
+/**
+ * A binary pattern that describes the standard octant layout:
+ *
+ * ```text
+ *    3____7
+ *  2/___6/|
+ *  | 1__|_5
+ *  0/___4/
+ * ```
+ *
+ * This common layout is crucial for positional assumptions.
+ *
+ * @type {Uint8Array[]}
+ */
+
+export const PATTERN = [
+
+	new Uint8Array([0, 0, 0]),
+	new Uint8Array([0, 0, 1]),
+	new Uint8Array([0, 1, 0]),
+	new Uint8Array([0, 1, 1]),
+
+	new Uint8Array([1, 0, 0]),
+	new Uint8Array([1, 0, 1]),
+	new Uint8Array([1, 1, 0]),
+	new Uint8Array([1, 1, 1])
+
+];
+
+/**
+ * Describes all possible octant corner connections.
+ *
+ * @type {Uint8Array[]}
+ */
+
+export const EDGES = [
+
+	// X-Axis.
+	new Uint8Array([0, 4]),
+	new Uint8Array([1, 5]),
+	new Uint8Array([2, 6]),
+	new Uint8Array([3, 7]),
+
+	// Y-Axis.
+	new Uint8Array([0, 2]),
+	new Uint8Array([1, 3]),
+	new Uint8Array([4, 6]),
+	new Uint8Array([5, 7]),
+
+	// Z-Axis.
+	new Uint8Array([0, 1]),
+	new Uint8Array([2, 3]),
+	new Uint8Array([4, 5]),
+	new Uint8Array([6, 7])
+
+];
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

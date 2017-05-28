@@ -1,0 +1,48 @@
+{
+  "coverage": "95.23%",
+  "expectCount": 63,
+  "actualCount": 60,
+  "files": {
+    "src/core/cubic-octant.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/core/octant.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/core/octree.js": {
+      "expectCount": 14,
+      "actualCount": 13,
+      "undocumentLines": [
+        271
+      ]
+    },
+    "src/core/octree-iterator.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        217
+      ]
+    },
+    "src/core/octree-raycaster.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/points/point-octant.js": {
+      "expectCount": 9,
+      "actualCount": 8,
+      "undocumentLines": [
+        185
+      ]
+    },
+    "src/points/point-octree.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    }
+  }
+}
