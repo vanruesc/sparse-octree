@@ -47,6 +47,7 @@
 	"dependencies": {
 		"iterator-result": "0.x.x",
 		"math-ds": "0.x.x",
+		"octree-helper": "0.x.x",
 		"three": "0.85.x"
 	},
 

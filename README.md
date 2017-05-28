@@ -4,7 +4,7 @@
 [![npm version](https://badge.fury.io/js/sparse-octree.svg)](http://badge.fury.io/js/sparse-octree) 
 [![Dependencies](https://david-dm.org/vanruesc/sparse-octree.svg?branch=master)](https://david-dm.org/vanruesc/sparse-octree)
 
-A sparse octree data structure.  
+A sparse octree data structure.
 
 *[Extensive Demo](http://vanruesc.github.io/sparse-octree/public/index.html) &there4;
 [API Reference](http://vanruesc.github.io/sparse-octree/docs)*
@@ -33,20 +33,6 @@ export class CubicOctree extends Octree {
 	}
 
 }
-```
-
-##### Helper
-
-```javascript
-import { Scene } from "three";
-import { Octree, OctreeHelper } from "sparse-octree";
-
-const scene = new Scene();
-
-const octree = new Octree();
-const octreeHelper = new OctreeHelper(octree);
-
-scene.add(octreeHelper);
 ```
 
 ##### Points
@@ -78,7 +64,12 @@ A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/3/
   - Supports cubic octrees
   - Can be extended to manage any data
 - Provides a point management implementation
-- Provides a helper that can visualise octrees
+
+
+## Octree Helper
+
+The [octree-helper](https://github.com/vanruesc/octree-helper) module provides
+an octree visualisation tool for [three.js](https://threejs.org/).
 
 
 ## Contributing

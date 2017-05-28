@@ -15,10 +15,6 @@ export {
 } from "./core";
 
 export {
-	OctreeHelper
-} from "./helpers";
-
-export {
 	PointOctant,
 	PointOctree
 } from "./points";

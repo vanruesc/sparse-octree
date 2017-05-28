@@ -14,11 +14,12 @@ import {
 } from "three";
 
 import dat from "dat.gui";
+import OctreeHelper from "octree-helper";
 import Stats from "stats.js";
 
-import { PointOctree, OctreeHelper } from "../src";
-import { OctreeRaycaster } from "./octree-raycaster";
-import { FrustumCuller } from "./frustum-culler";
+import { PointOctree } from "../src";
+import { OctreeRaycaster } from "./octree-raycaster.js";
+import { FrustumCuller } from "./frustum-culler.js";
 
 /**
  * A demo application.
