@@ -33,10 +33,10 @@ module.exports = function(grunt) {
 		lib: {
 			options: {
 				format: "umd",
-				moduleName: "OCTREE",
+				moduleName: "<%= package.name.replace(/-/g, \"\").toUpperCase() %>",
 				banner: "<%= banner %>"
 			},
-			src: "src/index.js",
+			src: "<%= package.module %>",
 			dest: "build/<%= package.name %>.js"
 		},
 
