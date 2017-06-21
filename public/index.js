@@ -2521,18 +2521,13 @@
   						var subFolder = folder.addFolder("Camera Adjustment");
 
   						subFolder.add(this.s, "radius").min(0.1).max(10.0).step(0.1).onChange(function () {
-
-  								_this.s.radius = _this.s.radius;_this.cull();
+  								_this.cull();
   						});
-
   						subFolder.add(this.s, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(function () {
-
-  								_this.s.phi = _this.s.phi;_this.cull();
+  								_this.cull();
   						});
-
   						subFolder.add(this.s, "theta").min(0.0).max(Math.PI * 2.0).onChange(function () {
-
-  								_this.s.theta = _this.s.theta;_this.cull();
+  								_this.cull();
   						});
   				}
   		}]);
