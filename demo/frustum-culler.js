@@ -137,7 +137,6 @@ export class FrustumCuller {
 
 		cullCamera.updateMatrix();
 		cullCamera.updateMatrixWorld();
-		cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
 
 		frustum.setFromMatrix(
 			matrix4.multiplyMatrices(
