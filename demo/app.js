@@ -67,8 +67,6 @@ export class App {
 		camera.position.set(10, 6, 10);
 		camera.lookAt(controls.target);
 
-		scene.add(camera);
-
 		// Overlays.
 
 		const stats = new Stats();
@@ -206,7 +204,6 @@ export class App {
 		const frustumCuller = new FrustumCuller(octree, scene);
 		frustumCuller.configure(gui);
 
-		scene.add(frustumCuller.cullCamera);
 		scene.add(frustumCuller.cameraHelper);
 
 		// Additional Configurations.
