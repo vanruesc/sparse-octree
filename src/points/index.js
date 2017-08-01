@@ -4,5 +4,5 @@
  * @module sparse-octree/points
  */
 
-export { PointOctant } from "./point-octant.js";
-export { PointOctree } from "./point-octree.js";
+export { PointOctant } from "./PointOctant.js";
+export { PointOctree } from "./PointOctree.js";

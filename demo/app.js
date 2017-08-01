@@ -18,8 +18,8 @@ import OctreeHelper from "octree-helper";
 import Stats from "stats.js";
 
 import { PointOctree } from "../src";
-import { OctreeRaycaster } from "./octree-raycaster.js";
-import { FrustumCuller } from "./frustum-culler.js";
+import { OctreeRaycaster } from "./OctreeRaycaster.js";
+import { FrustumCuller } from "./FrustumCuller.js";
 
 /**
  * A demo application.
@@ -32,10 +32,9 @@ export class App {
 	 *
 	 * @param {HTMLElement} viewport - The viewport.
 	 * @param {HTMLElement} aside - A secondary container.
-	 * @param {Map} assets - Preloaded assets.
 	 */
 
-	static initialise(viewport, aside, assets) {
+	static initialise(viewport, aside) {
 
 		const width = window.innerWidth;
 		const height = window.innerHeight;
@@ -81,18 +80,19 @@ export class App {
 
 		const points = (function generatePoints() {
 
-			function createPlaneGeometry(particles, n, z) {
+			function createPlaneGeometry(particles, n, zBase, zBias) {
 
 				const geometry = new BufferGeometry();
 				const positions = new Float32Array(particles * 3);
 				const n2 = n / 2;
 
-				let x, y, i, l;
+				let x, y, z, i, l;
 
 				for(i = 0, l = positions.length; i < l; i += 3) {
 
 					x = Math.random() * n - n2;
 					y = Math.random() * n - n2;
+					z = zBase + (Math.random() * zBias * 2 - zBias);
 
 					positions[i] = x;
 					positions[i + 1] = y;
@@ -108,8 +108,8 @@ export class App {
 
 			const points = new Object3D();
 
-			const w = 128;
-			const h = 128;
+			const w = 256;
+			const h = 256;
 
 			let d = 8;
 
@@ -125,9 +125,11 @@ export class App {
 				size: 1
 			});
 
+			console.log("Generating", w * h * d, "points...");
+
 			while(d-- > 0) {
 
-				p = new Points(createPlaneGeometry(w * h, size, z), material);
+				p = new Points(createPlaneGeometry(w * h, size, z, 0.25), material);
 				material = material.clone();
 				z += zStep;
 
@@ -149,7 +151,7 @@ export class App {
 			const bbox = new Box3();
 			bbox.setFromObject(scene);
 
-			let t0 = performance.now();
+			const t0 = performance.now();
 
 			let d, p, i, l;
 			let array;
@@ -179,8 +181,7 @@ export class App {
 
 		const octreeHelper = (function createOctreeHelper(octree) {
 
-			let t0 = performance.now();
-
+			const t0 = performance.now();
 			const octreeHelper = new OctreeHelper(octree);
 			octreeHelper.visible = false;
 
@@ -199,6 +200,8 @@ export class App {
 
 		viewport.addEventListener("mousemove", function onMouseMove(event) { raycaster.raycast(event); });
 
+		scene.add(raycaster.selectedPoint);
+
 		// Frustum culling.
 
 		const frustumCuller = new FrustumCuller(octree, scene);
@@ -208,7 +211,7 @@ export class App {
 
 		// Additional Configurations.
 
-		(function() {
+		(function(gui, octreeHelper, points) {
 
 			const params = {
 				"level mask": octreeHelper.children.length
@@ -235,7 +238,7 @@ export class App {
 
 			folder.open();
 
-		}());
+		}(gui, octreeHelper, points));
 
 		/**
 		 * Toggles the visibility of the interface on alt key press.
@@ -285,8 +288,6 @@ export class App {
 			requestAnimationFrame(render);
 
 			stats.begin();
-
-			frustumCuller.cameraHelper.update();
 
 			renderer.render(scene, camera);
 

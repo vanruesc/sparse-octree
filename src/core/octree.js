@@ -1,7 +1,7 @@
 import { Box3 } from "math-ds";
-import { Octant } from "./octant.js";
-import { OctreeIterator } from "./octree-iterator.js";
-import { OctreeRaycaster } from "./octree-raycaster.js";
+import { Octant } from "./Octant.js";
+import { OctreeIterator } from "./OctreeIterator.js";
+import { OctreeRaycaster } from "./OctreeRaycaster.js";
 
 /**
  * A 3D box.

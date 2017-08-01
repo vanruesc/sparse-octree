@@ -4,8 +4,8 @@
  * @module sparse-octree/core
  */
 
-export { CubicOctant } from "./cubic-octant.js";
-export { Octree } from "./octree.js";
-export { Octant, PATTERN, EDGES } from "./octant.js";
-export { OctreeIterator } from "./octree-iterator.js";
-export { OctreeRaycaster } from "./octree-raycaster.js";
+export { CubicOctant } from "./CubicOctant.js";
+export { Octree } from "./Octree.js";
+export { Octant, PATTERN, EDGES } from "./Octant.js";
+export { OctreeIterator } from "./OctreeIterator.js";
+export { OctreeRaycaster } from "./OctreeRaycaster.js";

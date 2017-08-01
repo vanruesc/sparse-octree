@@ -1,5 +1,5 @@
-import { Octree } from "../core/octree.js";
-import { PointOctant } from "./point-octant.js";
+import { Octree } from "../core/Octree.js";
+import { PointOctant } from "./PointOctant.js";
 
 /**
  * Recursively counts how many points are in the given octree.

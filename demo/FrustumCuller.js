@@ -197,6 +197,8 @@ export class FrustumCuller {
 
 			}
 
+			this.cameraHelper.update();
+
 		}
 
 	}

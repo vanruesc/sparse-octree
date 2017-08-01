@@ -1,4 +1,10 @@
-import { Raycaster, Vector2 } from "three";
+import {
+	Mesh,
+	MeshBasicMaterial,
+	Raycaster,
+	SphereBufferGeometry,
+	Vector2
+} from "three";
 
 /**
  * A mouse position.
@@ -83,7 +89,24 @@ export class OctreeRaycaster extends Raycaster {
 		 * @private
 		 */
 
-		this.selection = null;
+		this.selectedObject = null;
+
+		/**
+		 * The currently selected point.
+		 *
+		 * @type {Mesh}
+		 */
+
+		this.selectedPoint = new Mesh(
+			new SphereBufferGeometry(0.2, 16, 16),
+			new MeshBasicMaterial({
+				transparent: true,
+				color: 0x00ccff,
+				opacity: 0.75
+			})
+		);
+
+		this.selectedPoint.visible = false;
 
 	}
 
@@ -96,7 +119,7 @@ export class OctreeRaycaster extends Raycaster {
 	raycast(event) {
 
 		let intersects;
-		let t0, t;
+		let t0, t, x;
 
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -121,19 +144,25 @@ export class OctreeRaycaster extends Raycaster {
 
 		this.delta = (t - t0).toFixed(2) + " ms";
 
-		if(this.selection !== null) {
+		if(this.selectedObject !== null) {
 
-			this.selection.material.color.setHex(0xc00000);
-			this.selection = null;
+			this.selectedObject.material.color.setHex(0xc00000);
+			this.selectedObject = null;
+			this.selectedPoint.visible = false;
 
 		}
 
 		if(intersects.length > 0) {
 
-			if(intersects[0].object !== undefined) {
+			x = intersects[0];
 
-				this.selection = intersects[0].object;
-				this.selection.material.color.setHex(0xccff00);
+			if(x.object !== undefined) {
+
+				this.selectedObject = x.object;
+				this.selectedObject.material.color.setHex(0xccff00);
+
+				this.selectedPoint.visible = true;
+				this.selectedPoint.position.copy(x.point);
 
 			} else {
 
