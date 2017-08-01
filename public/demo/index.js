@@ -1,8 +1,8 @@
 (function (three,dat,Stats) {
   'use strict';
 
-  dat = 'default' in dat ? dat['default'] : dat;
-  Stats = 'default' in Stats ? Stats['default'] : Stats;
+  dat = dat && dat.hasOwnProperty('default') ? dat['default'] : dat;
+  Stats = Stats && Stats.hasOwnProperty('default') ? Stats['default'] : Stats;
 
   var classCallCheck = function (instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -2341,7 +2341,15 @@
 
   				_this.delta = "";
 
-  				_this.selection = null;
+  				_this.selectedObject = null;
+
+  				_this.selectedPoint = new three.Mesh(new three.SphereBufferGeometry(0.2, 16, 16), new three.MeshBasicMaterial({
+  						transparent: true,
+  						color: 0x00ccff,
+  						opacity: 0.75
+  				}));
+
+  				_this.selectedPoint.visible = false;
 
   				return _this;
   		}
@@ -2352,7 +2360,8 @@
 
   						var intersects = void 0;
   						var t0 = void 0,
-  						    t = void 0;
+  						    t = void 0,
+  						    x = void 0;
 
   						mouse.x = event.clientX / window.innerWidth * 2 - 1;
   						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -2371,18 +2380,24 @@
 
   						this.delta = (t - t0).toFixed(2) + " ms";
 
-  						if (this.selection !== null) {
+  						if (this.selectedObject !== null) {
 
-  								this.selection.material.color.setHex(0xc00000);
-  								this.selection = null;
+  								this.selectedObject.material.color.setHex(0xc00000);
+  								this.selectedObject = null;
+  								this.selectedPoint.visible = false;
   						}
 
   						if (intersects.length > 0) {
 
-  								if (intersects[0].object !== undefined) {
+  								x = intersects[0];
 
-  										this.selection = intersects[0].object;
-  										this.selection.material.color.setHex(0xccff00);
+  								if (x.object !== undefined) {
+
+  										this.selectedObject = x.object;
+  										this.selectedObject.material.color.setHex(0xccff00);
+
+  										this.selectedPoint.visible = true;
+  										this.selectedPoint.position.copy(x.point);
   								} else {
 
   										console.warn(intersects);
@@ -2449,7 +2464,6 @@
 
   						cullCamera.updateMatrix();
   						cullCamera.updateMatrixWorld();
-  						cullCamera.matrixWorldInverse.getInverse(cullCamera.matrixWorld);
 
   						frustum.setFromMatrix(matrix4.multiplyMatrices(cullCamera.projectionMatrix, cullCamera.matrixWorldInverse));
   				}
@@ -2500,6 +2514,8 @@
 
   										this.scene.remove(culledOctants);
   								}
+
+  								this.cameraHelper.update();
   						}
   				}
   		}, {
@@ -2541,7 +2557,7 @@
 
   		createClass(App, null, [{
   				key: "initialise",
-  				value: function initialise(viewport, aside, assets) {
+  				value: function initialise(viewport, aside) {
 
   						var width = window.innerWidth;
   						var height = window.innerHeight;
@@ -2567,8 +2583,6 @@
   						camera.position.set(10, 6, 10);
   						camera.lookAt(controls.target);
 
-  						scene.add(camera);
-
   						var stats = new Stats();
   						stats.showPanel(0);
   						stats.dom.id = "stats";
@@ -2579,7 +2593,7 @@
 
   						var points = function generatePoints() {
 
-  								function createPlaneGeometry(particles, n, z) {
+  								function createPlaneGeometry(particles, n, zBase, zBias) {
 
   										var geometry = new three.BufferGeometry();
   										var positions = new Float32Array(particles * 3);
@@ -2587,6 +2601,7 @@
 
   										var x = void 0,
   										    y = void 0,
+  										    z = void 0,
   										    i = void 0,
   										    l = void 0;
 
@@ -2594,6 +2609,7 @@
 
   												x = Math.random() * n - n2;
   												y = Math.random() * n - n2;
+  												z = zBase + (Math.random() * zBias * 2 - zBias);
 
   												positions[i] = x;
   												positions[i + 1] = y;
@@ -2607,8 +2623,8 @@
 
   								var points = new three.Object3D();
 
-  								var w = 128;
-  								var h = 128;
+  								var w = 256;
+  								var h = 256;
 
   								var d = 8;
 
@@ -2624,9 +2640,11 @@
   										size: 1
   								});
 
+  								console.log("Generating", w * h * d, "points...");
+
   								while (d-- > 0) {
 
-  										p = new three.Points(createPlaneGeometry(w * h, size, z), material);
+  										p = new three.Points(createPlaneGeometry(w * h, size, z, 0.25), material);
   										material = material.clone();
   										z += zStep;
 
@@ -2673,7 +2691,6 @@
   						var octreeHelper = function createOctreeHelper(octree) {
 
   								var t0 = performance.now();
-
   								var octreeHelper = new OctreeHelper(octree);
   								octreeHelper.visible = false;
 
@@ -2691,13 +2708,14 @@
   								raycaster.raycast(event);
   						});
 
+  						scene.add(raycaster.selectedPoint);
+
   						var frustumCuller = new FrustumCuller(octree, scene);
   						frustumCuller.configure(gui);
 
-  						scene.add(frustumCuller.cullCamera);
   						scene.add(frustumCuller.cameraHelper);
 
-  						(function () {
+  						(function (gui, octreeHelper, points) {
 
   								var params = {
   										"level mask": octreeHelper.children.length
@@ -2722,7 +2740,7 @@
   								});
 
   								folder.open();
-  						})();
+  						})(gui, octreeHelper, points);
 
   						document.addEventListener("keydown", function onKeyDown(event) {
 
@@ -2749,8 +2767,6 @@
 
   								stats.begin();
 
-  								frustumCuller.cameraHelper.update();
-
   								renderer.render(scene, camera);
 
   								stats.end();
@@ -2762,20 +2778,9 @@
 
   window.addEventListener("load", function main(event) {
 
-  	window.removeEventListener("load", main);
+    window.removeEventListener("load", main);
 
-  	var assets = new Map();
-  	var loadingManager = new three.LoadingManager();
-
-  	loadingManager.onProgress = function onProgress(item, loaded, total) {
-
-  		if (loaded === total) {
-
-  			App.initialise(document.getElementById("viewport"), document.getElementById("aside"), assets);
-  		}
-  	};
-
-  	loadingManager.onProgress();
+    App.initialise(document.getElementById("viewport"), document.getElementById("aside"));
   });
 
 }(THREE,dat,Stats));
