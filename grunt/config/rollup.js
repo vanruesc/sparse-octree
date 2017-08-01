@@ -6,27 +6,12 @@ module.exports = function(grunt) {
 	return {
 
 		options: {
-			globals: {
-				"three": "THREE",
-				"stats.js": "Stats",
-				"dat.gui": "dat"
-			},
-			external: [
-				"three",
-				"stats.js",
-				"dat.gui"
-			],
 			plugins() {
-				return grunt.option("production") ? [
-					resolve({
-						jsnext: true
-					}),
-					babel()
-				] : [
+				return [
 					resolve({
 						jsnext: true
 					})
-				];
+				].concat(grunt.option("production") ? [babel()] : []);
 			}
 		},
 
@@ -42,6 +27,16 @@ module.exports = function(grunt) {
 
 		demo: {
 			options: {
+				globals: {
+					"three": "THREE",
+					"stats.js": "Stats",
+					"dat.gui": "dat"
+				},
+				external: [
+					"three",
+					"stats.js",
+					"dat.gui"
+				],
 				format: "iife"
 			},
 			src: "demo/index.js",
