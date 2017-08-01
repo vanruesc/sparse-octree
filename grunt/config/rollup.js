@@ -39,8 +39,8 @@ module.exports = function(grunt) {
 				],
 				format: "iife"
 			},
-			src: "demo/index.js",
-			dest: "public/index.js"
+			src: "demo/src/index.js",
+			dest: "public/demo/index.js"
 		}
 
 	};

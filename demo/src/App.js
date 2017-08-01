@@ -17,7 +17,7 @@ import dat from "dat.gui";
 import OctreeHelper from "octree-helper";
 import Stats from "stats.js";
 
-import { PointOctree } from "../src";
+import { PointOctree } from "../../src";
 import { OctreeRaycaster } from "./OctreeRaycaster.js";
 import { FrustumCuller } from "./FrustumCuller.js";
 
