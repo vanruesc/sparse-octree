@@ -6,8 +6,8 @@
 
 A sparse octree data structure.
 
-*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/index.html) &there4;
-[API Reference](https://vanruesc.github.io/sparse-octree/docs)*
+*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/demo) &there4;
+[API Reference](https://vanruesc.github.io/sparse-octree/public/docs)*
 
 
 ## Installation
@@ -59,7 +59,7 @@ A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/4/
 - Base Functionality
 	- Pointer-based structure
   - Handles octant splitting
-  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/docs/variable/index.html#static-variable-PATTERN)
+  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-PATTERN)
   - Supports raycasting
   - Supports culling
   - Supports cubic octrees

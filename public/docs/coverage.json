@@ -1,0 +1,48 @@
+{
+  "coverage": "95.23%",
+  "expectCount": 63,
+  "actualCount": 60,
+  "files": {
+    "src/core/CubicOctant.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/core/Octant.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/core/Octree.js": {
+      "expectCount": 14,
+      "actualCount": 13,
+      "undocumentLines": [
+        271
+      ]
+    },
+    "src/core/OctreeIterator.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        217
+      ]
+    },
+    "src/core/OctreeRaycaster.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/points/PointOctant.js": {
+      "expectCount": 9,
+      "actualCount": 8,
+      "undocumentLines": [
+        185
+      ]
+    },
+    "src/points/PointOctree.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    }
+  }
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/points/PointOctant.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/points/PointOctant.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Octant } from &quot;../core/Octant.js&quot;;
+
+/**
+ * An octant that maintains points.
+ */
+
+export class PointOctant extends Octant {
+
+	/**
+	 * Constructs a new point octant.
+	 *
+	 * @param {Vector3} min - The lower bounds.
+	 * @param {Vector3} max - The upper bounds.
+	 */
+
+	constructor(min, max) {
+
+		super(min, max);
+
+		/**
+		 * The points that are inside this octant.
+		 *
+		 * @type {Array}
+		 */
+
+		this.points = null;
+
+		/**
+		 * Point data.
+		 *
+		 * @type {Array}
+		 */
+
+		this.data = null;
+
+	}
+
+	/**
+	 * Computes the distance squared from this octant to the given point.
+	 *
+	 * @param {Vector3} p - A point.
+	 * @return {Number} The distance squared.
+	 */
+
+	distanceToSquared(p) {
+
+		const clampedPoint = p.clone().clamp(this.min, this.max);
+
+		return clampedPoint.sub(p).lengthSq();
+
+	}
+
+	/**
+	 * Computes the distance squared from the center of this octant to the given
+	 * point.
+	 *
+	 * @param {Vector3} p - A point.
+	 * @return {Number} The distance squared.
+	 */
+
+	distanceToCenterSquared(p) {
+
+		const center = this.getCenter();
+
+		const dx = p.x - center.x;
+		const dy = p.y - center.x;
+		const dz = p.z - center.z;
+
+		return dx * dx + dy * dy + dz * dz;
+
+	}
+
+	/**
+	 * Checks if the given point lies inside this octant&apos;s boundaries.
+	 *
+	 * This method can also be used to check if this octant intersects a sphere by
+	 * providing a radius as bias.
+	 *
+	 * @param {Vector3} p - A point.
+	 * @param {Number} bias - A padding that extends the boundaries temporarily.
+	 * @return {Boolean} Whether the given point lies inside this octant.
+	 */
+
+	contains(p, bias) {
+
+		const min = this.min;
+		const max = this.max;
+
+		return (
+			p.x &gt;= min.x - bias &amp;&amp;
+			p.y &gt;= min.y - bias &amp;&amp;
+			p.z &gt;= min.z - bias &amp;&amp;
+			p.x &lt;= max.x + bias &amp;&amp;
+			p.y &lt;= max.y + bias &amp;&amp;
+			p.z &lt;= max.z + bias
+		);
+
+	}
+
+	/**
+	 * Redistributes existing points to child octants.
+	 *
+	 * @param {Number} bias - A proximity threshold.
+	 */
+
+	redistribute(bias) {
+
+		const children = this.children;
+		const points = this.points;
+		const data = this.data;
+
+		let i, l;
+		let child, point, entry;
+
+		if(children !== null) {
+
+			while(points.length &gt; 0) {
+
+				point = points.pop();
+				entry = data.pop();
+
+				for(i = 0, l = children.length; i &lt; l; ++i) {
+
+					child = children[i];
+
+					if(child.contains(point, bias)) {
+
+						if(child.points === null) {
+
+							child.points = [];
+							child.data = [];
+
+						}
+
+						child.points.push(point);
+						child.data.push(entry);
+
+						break;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		this.points = null;
+		this.data = null;
+
+	}
+
+	/**
+	 * Gathers all points from the children. The children are expected to be leaf
+	 * octants and will be dropped afterwards.
+	 *
+	 * @private
+	 */
+
+	merge() {
+
+		const children = this.children;
+
+		let i, l;
+		let child;
+
+		if(children !== null) {
+
+			this.points = [];
+			this.data = [];
+
+			for(i = 0, l = children.length; i &lt; l; ++i) {
+
+				child = children[i];
+
+				if(child.points !== null) {
+
+					this.points.push(...child.points);
+					this.data.push(...child.data);
+
+				}
+
+			}
+
+			this.children = null;
+
+		}
+
+	}
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
