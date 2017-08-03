@@ -51,7 +51,7 @@ octree.add(new Vector3(0, 0, 0), myData);
 octree.fetch(new Vector3(0, 0, 0)); // => myData
 ```
 
-A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/4/).
+A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/5/).
 
 
 ## Features
