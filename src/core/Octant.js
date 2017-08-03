@@ -1,6 +1,15 @@
 import { Vector3 } from "math-ds";
 
 /**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const c = new Vector3();
+
+/**
  * An octant.
  */
 

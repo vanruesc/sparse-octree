@@ -2,6 +2,15 @@ import { Vector3 } from "math-ds";
 import { pattern } from "./Octant.js";
 
 /**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const c = new Vector3();
+
+/**
  * A cubic octant.
  */
 
