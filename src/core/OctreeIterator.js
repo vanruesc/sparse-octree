@@ -8,7 +8,7 @@ import IteratorResult from "iterator-result";
  * @private
  */
 
-const box3 = new Box3();
+const b = new Box3();
 
 /**
  * An octree iterator.
@@ -100,10 +100,10 @@ export class OctreeIterator {
 
 		if(root !== null) {
 
-			box3.min = root.min;
-			box3.max = root.max;
+			b.min = root.min;
+			b.max = root.max;
 
-			if(!this.cull || this.region.intersectsBox(box3)) {
+			if(!this.cull || this.region.intersectsBox(b)) {
 
 				this.trace.push(root);
 				this.indices.push(0);
@@ -151,10 +151,10 @@ export class OctreeIterator {
 
 					if(cull) {
 
-						box3.min = child.min;
-						box3.max = child.max;
+						b.min = child.min;
+						b.max = child.max;
 
-						if(!region.intersectsBox(box3)) {
+						if(!region.intersectsBox(b)) {
 
 							// Cull this octant.
 							continue;

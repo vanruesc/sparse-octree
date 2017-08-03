@@ -10,7 +10,7 @@ import { OctreeRaycaster } from "./OctreeRaycaster.js";
  * @private
  */
 
-const box3 = new Box3();
+const b = new Box3();
 
 /**
  * Recursively calculates the depth of the given octree.
@@ -62,10 +62,10 @@ function cull(octant, region, result) {
 
 	let i, l;
 
-	box3.min = octant.min;
-	box3.max = octant.max;
+	b.min = octant.min;
+	b.max = octant.max;
 
-	if(region.intersectsBox(box3)) {
+	if(region.intersectsBox(b)) {
 
 		if(children !== null) {
 
