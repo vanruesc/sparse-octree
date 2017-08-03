@@ -6,15 +6,19 @@
 
 export {
 	CubicOctant,
-	EDGES,
+	edges,
 	Octant,
 	Octree,
 	OctreeIterator,
 	OctreeRaycaster,
-	PATTERN
+	pattern
 } from "./core";
 
 export {
 	PointOctant,
 	PointOctree
 } from "./points";
+
+export {
+	OctreeUtils
+} from "./utils";

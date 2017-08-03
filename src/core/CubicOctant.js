@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { PATTERN } from "./Octant.js";
+import { pattern } from "./Octant.js";
 
 /**
  * A cubic octant.
@@ -81,69 +81,40 @@ export class CubicOctant {
 
 	/**
 	 * Splits this octant into eight smaller ones.
-	 *
-	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 
 	split(octants) {
 
 		const min = this.min;
-		const mid = this.getCenter();
+		const mid = this.getCenter(c);
 		const halfSize = this.size * 0.5;
 
-		let i, j;
-		let l = 0;
-		let combination;
+		const children = this.children = [
 
-		let v, child, octant;
+			null, null,
+			null, null,
+			null, null,
+			null, null
 
-		if(Array.isArray(octants)) {
+		];
 
-			v = new Vector3();
-			l = octants.length;
-
-		}
-
-		this.children = [];
+		let i, combination;
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = PATTERN[i];
-			octant = null;
+			combination = pattern[i];
 
-			if(l > 0) {
-
-				v.fromArray(combination).multiplyScalar(halfSize).add(min);
-
-				// Find an octant that matches the current combination.
-				for(j = 0; j < l; ++j) {
-
-					child = octants[j];
-
-					if(child !== null && child.size === halfSize && v.equals(child.min)) {
-
-						octant = child;
-						octants[j] = null;
-
-						break;
-
-					}
-
-				}
-
-			}
-
-			this.children.push((octant !== null) ? octant : new this.constructor(
+			children[i] = new this.constructor(
 
 				new Vector3(
-					((combination[0] === 0) ? min.x : mid.x),
-					((combination[1] === 0) ? min.y : mid.y),
-					((combination[2] === 0) ? min.z : mid.z)
+					(combination[0] === 0) ? min.x : mid.x,
+					(combination[1] === 0) ? min.y : mid.y,
+					(combination[2] === 0) ? min.z : mid.z
 				),
 
 				halfSize
 
-			));
+			);
 
 		}
 

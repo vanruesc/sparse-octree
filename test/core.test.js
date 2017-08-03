@@ -53,25 +53,6 @@ module.exports = {
 			test.equal(octant.children.length, 8, "should create eight children");
 			test.done();
 
-		},
-
-		"can recycle child octants": function(test) {
-
-			const octant = new lib.Octant(box.min, box.max);
-
-			const mid = octant.getCenter();
-
-			const octant011 = new lib.Octant(
-				new THREE.Vector3(octant.min.x, mid.y, mid.z),
-				new THREE.Vector3(mid.x, octant.max.y, octant.max.z)
-			);
-
-			octant.split([octant011]);
-
-			test.equal(octant.children.length, 8, "should create missing octants");
-			test.equal(octant.children[3], octant011, "should recycle suitable octants");
-			test.done();
-
 		}
 
 	},
@@ -112,22 +93,6 @@ module.exports = {
 			octant.split();
 
 			test.equal(octant.children.length, 8, "should create eight children");
-			test.done();
-
-		},
-
-		"can recycle child octants": function(test) {
-
-			const octant = new lib.CubicOctant(box.min, 2);
-
-			const mid = octant.getCenter();
-
-			const octant011 = new lib.CubicOctant(new THREE.Vector3(octant.min.x, mid.y, mid.z), 1);
-
-			octant.split([octant011]);
-
-			test.equal(octant.children.length, 8, "should create missing octants");
-			test.equal(octant.children[3], octant011, "should recycle suitable octants");
 			test.done();
 
 		}
@@ -188,6 +153,52 @@ module.exports = {
 
 			test.ok(Array.isArray(octants), "should return a list");
 			test.equal(octants.length, 16, "should find all octants");
+			test.done();
+
+		}
+
+	},
+
+	"OctreeUtils": {
+
+		"can recycle child octants": function(test) {
+
+			const octant = new lib.Octant(box.min, box.max);
+
+			const mid = octant.getCenter();
+
+			const octant011 = new lib.Octant(
+				new THREE.Vector3(octant.min.x, mid.y, mid.z),
+				new THREE.Vector3(mid.x, octant.max.y, octant.max.z)
+			);
+
+			octant.split();
+
+			lib.OctreeUtils.recycleOctants(octant, [octant011]);
+
+			test.equal(octant.children.length, 8, "should maintain eight children");
+			test.equal(octant.children[3], octant011, "should recycle suitable octants");
+			test.done();
+
+		},
+
+		"can recycle cubic child octants": function(test) {
+
+			const octant = new lib.CubicOctant(box.min, 2);
+
+			const mid = octant.getCenter();
+
+			const octant011 = new lib.CubicOctant(
+				new THREE.Vector3(octant.min.x, mid.y, mid.z),
+				1
+			);
+
+			octant.split();
+
+			lib.OctreeUtils.recycleOctants(octant, [octant011]);
+
+			test.equal(octant.children.length, 8, "should maintain eight children");
+			test.equal(octant.children[3], octant011, "should recycle suitable octants");
 			test.done();
 
 		}

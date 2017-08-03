@@ -70,76 +70,44 @@ export class Octant {
 
 	/**
 	 * Splits this octant into eight smaller ones.
-	 *
-	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 
-	split(octants) {
+	split() {
 
 		const min = this.min;
 		const max = this.max;
-		const mid = this.getCenter();
+		const mid = this.getCenter(c);
 
-		let i, j;
-		let l = 0;
-		let combination;
+		const children = this.children = [
 
-		let halfDimensions;
-		let v, child, octant;
+			null, null,
+			null, null,
+			null, null,
+			null, null
 
-		if(Array.isArray(octants)) {
+		];
 
-			halfDimensions = this.getDimensions().multiplyScalar(0.5);
-			v = [new Vector3(), new Vector3(), new Vector3()];
-			l = octants.length;
-
-		}
-
-		this.children = [];
+		let i, combination;
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = PATTERN[i];
-			octant = null;
+			combination = pattern[i];
 
-			if(l > 0) {
-
-				v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
-				v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
-
-				// Find an octant that matches the current combination.
-				for(j = 0; j < l; ++j) {
-
-					child = octants[j];
-
-					if(child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
-
-						octant = child;
-						octants[j] = null;
-
-						break;
-
-					}
-
-				}
-
-			}
-
-			this.children.push((octant !== null) ? octant : new this.constructor(
+			children[i] = new this.constructor(
 
 				new Vector3(
-					((combination[0] === 0) ? min.x : mid.x),
-					((combination[1] === 0) ? min.y : mid.y),
-					((combination[2] === 0) ? min.z : mid.z)
+					(combination[0] === 0) ? min.x : mid.x,
+					(combination[1] === 0) ? min.y : mid.y,
+					(combination[2] === 0) ? min.z : mid.z
 				),
 
 				new Vector3(
-					((combination[0] === 0) ? mid.x : max.x),
-					((combination[1] === 0) ? mid.y : max.y),
-					((combination[2] === 0) ? mid.z : max.z)
+					(combination[0] === 0) ? mid.x : max.x,
+					(combination[1] === 0) ? mid.y : max.y,
+					(combination[2] === 0) ? mid.z : max.z
 				)
 
-			));
+			);
 
 		}
 
@@ -162,7 +130,7 @@ export class Octant {
  * @type {Uint8Array[]}
  */
 
-export const PATTERN = [
+export const pattern = [
 
 	new Uint8Array([0, 0, 0]),
 	new Uint8Array([0, 0, 1]),
@@ -182,7 +150,7 @@ export const PATTERN = [
  * @type {Uint8Array[]}
  */
 
-export const EDGES = [
+export const edges = [
 
 	// X-Axis.
 	new Uint8Array([0, 4]),
