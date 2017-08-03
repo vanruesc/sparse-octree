@@ -9,8 +9,8 @@ export class Octant {
 	/**
 	 * Constructs a new octant.
 	 *
-	 * @param {Vector3} min - The lower bounds.
-	 * @param {Vector3} max - The upper bounds.
+	 * @param {Vector3} [min] - The lower bounds.
+	 * @param {Vector3} [max] - The upper bounds.
 	 */
 
 	constructor(min = new Vector3(), max = new Vector3()) {
@@ -45,18 +45,28 @@ export class Octant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @return {Vector3} A new vector that describes the center of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the center of this octant.
 	 */
 
-	getCenter() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
+	getCenter(target = new Vector3()) {
+
+		return target.copy(this.min).add(this.max).multiplyScalar(0.5);
+
+	}
 
 	/**
 	 * Computes the size of this octant.
 	 *
-	 * @return {Vector3} A new vector that describes the size of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the size of this octant.
 	 */
 
-	getDimensions() { return this.max.clone().sub(this.min); }
+	getDimensions(target = new Vector3()) {
+
+		return target.copy(this.max).sub(this.min);
+
+	}
 
 	/**
 	 * Splits this octant into eight smaller ones.

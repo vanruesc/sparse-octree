@@ -56,18 +56,28 @@ export class CubicOctant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @return {Vector3} A new vector that describes the center of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the center of this octant.
 	 */
 
-	getCenter() { return this.min.clone().addScalar(this.size * 0.5); }
+	getCenter(target = new Vector3()) {
+
+		return target.copy(this.min).addScalar(this.size * 0.5);
+
+	}
 
 	/**
 	 * Returns the size of this octant as a vector.
 	 *
-	 * @return {Vector3} A new vector that describes the size of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the size of this octant.
 	 */
 
-	getDimensions() { return new Vector3(this.size, this.size, this.size); }
+	getDimensions(target = new Vector3()) {
+
+		return target.set(this.size, this.size, this.size);
+
+	}
 
 	/**
 	 * Splits this octant into eight smaller ones.

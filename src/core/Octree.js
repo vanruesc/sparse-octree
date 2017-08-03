@@ -174,18 +174,20 @@ export class Octree {
 	/**
 	 * Calculates the center of this octree.
 	 *
-	 * @return {Vector3} A new vector that describes the center of this octree.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the center of this octree.
 	 */
 
-	getCenter() { return this.root.getCenter(); }
+	getCenter(target) { return this.root.getCenter(target); }
 
 	/**
 	 * Calculates the size of this octree.
 	 *
-	 * @return {Vector3} A new vector that describes the size of this octree.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the size of this octree.
 	 */
 
-	getDimensions() { return this.root.getDimensions(); }
+	getDimensions(target) { return this.root.getDimensions(target); }
 
 	/**
 	 * Calculates the current depth of this octree.
