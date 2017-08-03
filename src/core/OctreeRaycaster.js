@@ -1,3 +1,5 @@
+import { Vector3 } from "three";
+
 /**
  * Contains bytes used for bitwise operations. The last byte is used to store
  * raycasting flags.
@@ -215,6 +217,69 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 }
 
 /**
+ * The dimensions of an octree.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const dimensions = new Vector3();
+
+/**
+ * The half dimensions of an octree.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const halfDimensions = new Vector3();
+
+/**
+ * The center of an octree.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const center = new Vector3();
+
+/**
+ * The lower bounds of an octree.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const min = new Vector3();
+
+/**
+ * The upper bounds of an octree.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const max = new Vector3();
+
+/**
+ * A ray direction.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const direction = new Vector3();
+
+/**
+ * A ray origin.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const origin = new Vector3();
+
+/**
  * An octree raycaster.
  *
  * Based on:
@@ -235,23 +300,23 @@ export class OctreeRaycaster {
 
 	static intersectOctree(octree, raycaster, intersects) {
 
-		const dimensions = octree.getDimensions();
-		const halfDimensions = dimensions.clone().multiplyScalar(0.5);
-
-		// Translate the octree extents to the center of the octree.
-		const min = octree.min.clone().sub(octree.min);
-		const max = octree.max.clone().sub(octree.min);
-
-		const direction = raycaster.ray.direction.clone();
-		const origin = raycaster.ray.origin.clone();
-
-		// Translate the ray to the center of the octree.
-		origin.sub(octree.getCenter()).add(halfDimensions);
-
 		let invDirX, invDirY, invDirZ;
 		let tx0, tx1, ty0, ty1, tz0, tz1;
 
-		// Reset the last byte.
+		octree.getDimensions(dimensions);
+		halfDimensions.copy(dimensions).multiplyScalar(0.5);
+
+		// Translate the octree extents to the center of the octree.
+		min.copy(octree.min).sub(octree.min);
+		max.copy(octree.max).sub(octree.min);
+
+		direction.copy(raycaster.ray.direction);
+		origin.copy(raycaster.ray.origin);
+
+		// Translate the ray to the center of the octree.
+		origin.sub(octree.getCenter(center)).add(halfDimensions);
+
+		// Reset all flags.
 		flags[8] = flags[0];
 
 		// Handle rays with negative directions.
@@ -295,6 +360,7 @@ export class OctreeRaycaster {
 		// Check if the ray hits the octree.
 		if(Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
 
+			// Find the intersecting octants.
 			raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
 
 		}
