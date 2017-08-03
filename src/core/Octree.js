@@ -6,7 +6,7 @@ import { OctreeRaycaster } from "./OctreeRaycaster.js";
 /**
  * A 3D box.
  *
- * @type Box3
+ * @type {Box3}
  * @private
  */
 
@@ -53,7 +53,7 @@ function getDepth(octant) {
  * @private
  * @param {Octant} octant - An octant.
  * @param {Frustum|Box3} region - A region.
- * @param {Array} result - A list to be filled with octants that intersect with the region.
+ * @param {Octant[]} result - A list to be filled with octants that intersect with the region.
  */
 
 function cull(octant, region, result) {
@@ -92,7 +92,7 @@ function cull(octant, region, result) {
  * @param {Octant} octant - An octant.
  * @param {Number} level - The target depth level.
  * @param {Number} depth - The current depth level.
- * @param {Array} result - A list to be filled with the identified octants.
+ * @param {Octant[]} result - A list to be filled with the identified octants.
  */
 
 function findOctantsByLevel(octant, level, depth, result) {
@@ -130,8 +130,8 @@ export class Octree {
 	/**
 	 * Constructs a new octree.
 	 *
-	 * @param {Vector3} [min] - The lower bounds of the tree.
-	 * @param {Vector3} [max] - The upper bounds of the tree.
+	 * @param {Vector3} [min] - The lower bounds of the tree. If not provided, the octree will not create a root node.
+	 * @param {Vector3} [max] - The upper bounds of the tree. If not provided, the octree will not create a root node.
 	 */
 
 	constructor(min, max) {
@@ -236,7 +236,7 @@ export class Octree {
 	 * octants are sorted by distance, closest first.
 	 *
 	 * @param {Raycaster} raycaster - A raycaster.
-	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
+	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
 	 * @return {Octant[]} The intersecting octants.
 	 */
 

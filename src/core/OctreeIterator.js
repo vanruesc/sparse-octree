@@ -4,7 +4,7 @@ import IteratorResult from "iterator-result";
 /**
  * A 3D box.
  *
- * @type Box3
+ * @type {Box3}
  * @private
  */
 
@@ -22,7 +22,7 @@ export class OctreeIterator {
 	 * Constructs a new octree iterator.
 	 *
 	 * @param {Octree} octree - An octree.
-	 * @param {Frustum|Box3} [region] - A cull region.
+	 * @param {Frustum|Box3} [region=null] - A cull region.
 	 */
 
 	constructor(octree, region = null) {
@@ -40,6 +40,7 @@ export class OctreeIterator {
 		 * A region used for octree culling.
 		 *
 		 * @type {Frustum|Box3}
+		 * @default null
 		 */
 
 		this.region = region;

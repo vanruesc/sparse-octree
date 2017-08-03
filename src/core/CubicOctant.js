@@ -10,7 +10,7 @@ export class CubicOctant {
 	/**
 	 * Constructs a new cubic octant.
 	 *
-	 * @param {Vector3} min - The lower bounds.
+	 * @param {Vector3} [min] - The lower bounds.
 	 * @param {Number} [size=0] - The size of the octant.
 	 */
 
@@ -46,7 +46,7 @@ export class CubicOctant {
 	/**
 	 * The upper bounds of this octant.
 	 *
-	 * Accessing this property creates a new vector.
+	 * Accessing this property always creates a new vector.
 	 *
 	 * @type {Vector3}
 	 */
