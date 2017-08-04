@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3 } from "math-ds";
 
 /**
  * Contains bytes used for bitwise operations. The last byte is used to store
