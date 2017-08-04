@@ -1,25 +1,8 @@
-import {
-	BufferAttribute,
-	BufferGeometry,
-	Box3,
-	FogExp2,
-	Object3D,
-	OrbitControls,
-	PerspectiveCamera,
-	Points,
-	PointsMaterial,
-	Scene,
-	Vector3,
-	WebGLRenderer
-} from "three";
-
+import { Clock, WebGLRenderer } from "three";
 import dat from "dat.gui";
-import OctreeHelper from "octree-helper";
 import Stats from "stats.js";
 
-import { PointOctree } from "../../src";
-import { OctreeRaycaster } from "./OctreeRaycaster.js";
-import { FrustumCuller } from "./FrustumCuller.js";
+import { PointOctreeDemo } from "./demos/PointOctreeDemo.js";
 
 /**
  * A demo application.
@@ -28,217 +11,172 @@ import { FrustumCuller } from "./FrustumCuller.js";
 export class App {
 
 	/**
-	 * Initialises the demo.
-	 *
-	 * @param {HTMLElement} viewport - The viewport.
-	 * @param {HTMLElement} aside - A secondary container.
+	 * Constructs a new demo application.
 	 */
 
-	static initialise(viewport, aside) {
+	constructor() {
 
-		const width = window.innerWidth;
-		const height = window.innerHeight;
-		const aspect = width / height;
+		/**
+		 * A clock.
+		 *
+		 * @type {Clock}
+		 * @private
+		 */
 
-		// Scene.
+		this.clock = new Clock();
 
-		const scene = new Scene();
-		scene.fog = new FogExp2(0x0d0d0d, 0.025);
+		/**
+		 * A renderer.
+		 *
+		 * @type {WebGLRenderer}
+		 * @private
+		 */
 
-		// Renderer.
-
-		const renderer = new WebGLRenderer({
+		this.renderer = new WebGLRenderer({
 			logarithmicDepthBuffer: true,
 			antialias: true
 		});
 
-		renderer.setSize(width, height);
-		renderer.setClearColor(scene.fog.color);
-		renderer.setPixelRatio(window.devicePixelRatio);
-		viewport.appendChild(renderer.domElement);
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setClearColor(0x000000);
+		this.renderer.setPixelRatio(window.devicePixelRatio);
 
-		// Camera.
+		/**
+		 * Statistics.
+		 *
+		 * @type {Stats}
+		 * @private
+		 */
 
-		const camera = new PerspectiveCamera(50, aspect, 0.1, 200);
-		const controls = new OrbitControls(camera, renderer.domElement);
-		controls.target.set(0, 0, 0);
-		controls.maxDistance = 60;
-		camera.position.set(10, 6, 10);
-		camera.lookAt(controls.target);
+		this.stats = (function() {
 
-		// Overlays.
+			const stats = new Stats();
+			stats.showPanel(0);
+			stats.dom.id = "stats";
 
-		const stats = new Stats();
-		stats.showPanel(0);
-		stats.dom.id = "stats";
-		aside.appendChild(stats.dom);
-
-		const gui = new dat.GUI();
-		aside.appendChild(gui.domElement.parentNode);
-
-		// Points.
-
-		const points = (function generatePoints() {
-
-			function createPlaneGeometry(particles, n, zBase, zBias) {
-
-				const geometry = new BufferGeometry();
-				const positions = new Float32Array(particles * 3);
-				const n2 = n / 2;
-
-				let x, y, z, i, l;
-
-				for(i = 0, l = positions.length; i < l; i += 3) {
-
-					x = Math.random() * n - n2;
-					y = Math.random() * n - n2;
-					z = zBase + (Math.random() * zBias * 2 - zBias);
-
-					positions[i] = x;
-					positions[i + 1] = y;
-					positions[i + 2] = z;
-
-				}
-
-				geometry.addAttribute("position", new BufferAttribute(positions, 3));
-
-				return geometry;
-
-			}
-
-			const points = new Object3D();
-
-			const w = 256;
-			const h = 256;
-
-			let d = 8;
-
-			const size = 6;
-			const zStep = size / (d - 1);
-
-			let z = size * -0.5;
-			let p;
-
-			let material = new PointsMaterial({
-				color: 0xc00000,
-				sizeAttenuation: false,
-				size: 1
-			});
-
-			console.log("Generating", w * h * d, "points...");
-
-			while(d-- > 0) {
-
-				p = new Points(createPlaneGeometry(w * h, size, z, 0.25), material);
-				material = material.clone();
-				z += zStep;
-
-				points.add(p);
-
-			}
-
-			return points;
+			return stats;
 
 		}());
 
-		scene.add(points);
+		/**
+		 * Available demos.
+		 *
+		 * @type {Map}
+		 * @private
+		 */
 
-		// Octree.
+		this.demos = (function(renderer) {
 
-		const octree = (function createOctree(points) {
+			const demos = new Map();
 
-			const v = new Vector3();
-			const bbox = new Box3();
-			bbox.setFromObject(scene);
+			demos.set("point-octree", new PointOctreeDemo(renderer));
 
-			const t0 = performance.now();
+			return demos;
 
-			let d, p, i, l;
-			let array;
+		}(this.renderer));
 
-			const octree = new PointOctree(bbox.min, bbox.max, 0.0, 8, 5);
+		/**
+		 * The key of the current demo.
+		 *
+		 * @type {String}
+		 * @private
+		 */
 
-			for(d = points.children.length - 1; d >= 0; --d) {
+		this.key = (function(demos) {
 
-				p = points.children[d];
-				array = p.geometry.getAttribute("position").array;
+			let key = window.location.hash.slice(1);
 
-				for(i = 0, l = array.length; i < l; i += 3) {
+			if(key.length === 0 || !demos.has(key)) {
 
-					octree.add(v.fromArray(array, i), p);
-
-				}
+				key = demos.keys().next().value;
 
 			}
 
-			console.log("Octree:", octree, "created in", (performance.now() - t0).toFixed(2) + " ms");
+			return key;
 
-			return octree;
+		}(this.demos));
 
-		}(points));
+	}
 
-		// Octree Helper.
+	/**
+	 * Initialises the demo.
+	 *
+	 * @param {HTMLElement} viewport - The viewport.
+	 * @param {HTMLElement} aside - A secondary DOM container.
+	 * @param {HTMLElement} loadingMessage - A loading message.
+	 */
 
-		const octreeHelper = (function createOctreeHelper(octree) {
+	initialise(viewport, aside, loadingMessage) {
 
-			const t0 = performance.now();
-			const octreeHelper = new OctreeHelper(octree);
-			octreeHelper.visible = false;
+		const app = this;
 
-			console.log("OctreeHelper:", octreeHelper, "created in", (performance.now() - t0).toFixed(2) + " ms");
+		const renderer = this.renderer;
+		const clock = this.clock;
+		const stats = this.stats;
+		const demos = this.demos;
 
-			return octreeHelper;
+		let demo = null;
+		let gui = null;
 
-		}(octree));
+		viewport.appendChild(renderer.domElement);
+		aside.appendChild(stats.dom);
 
-		scene.add(octreeHelper);
+		/**
+		 * Activates the currently selected demo.
+		 *
+		 * @private
+		 */
 
-		// Raycasting.
+		function activateDemo() {
 
-		const raycaster = new OctreeRaycaster(octree, camera, points);
-		raycaster.configure(gui);
+			demo.initialise();
 
-		viewport.addEventListener("mousemove", function onMouseMove(event) { raycaster.raycast(event); });
+			demo.camera.aspect = window.innerWidth / window.innerHeight;
+			demo.camera.updateProjectionMatrix();
 
-		scene.add(raycaster.selectedPoint);
+			gui = new dat.GUI({ autoPlace: false });
+			gui.add(app, "key", Array.from(demos.keys())).onChange(loadDemo);
+			demo.configure(gui);
+			aside.appendChild(gui.domElement);
 
-		// Frustum culling.
+			loadingMessage.style.display = "none";
+			renderer.domElement.style.visibility = "visible";
 
-		const frustumCuller = new FrustumCuller(octree, scene);
-		frustumCuller.configure(gui);
+		}
 
-		scene.add(frustumCuller.cameraHelper);
+		/**
+		 * Loads the currently selected demo.
+		 *
+		 * @private
+		 */
 
-		// Additional Configurations.
+		function loadDemo() {
 
-		(function(gui, octreeHelper, points) {
+			const size = renderer.getSize();
 
-			const params = {
-				"level mask": octreeHelper.children.length
-			};
+			loadingMessage.style.display = "block";
+			renderer.domElement.style.visibility = "hidden";
 
-			let folder = gui.addFolder("Points");
-			folder.add(points, "visible");
-			folder.open();
+			if(gui !== null) {
 
-			folder = gui.addFolder("Octree Helper");
-			folder.add(octreeHelper, "visible");
+				gui.destroy();
+				aside.removeChild(gui.domElement);
 
-			folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function() {
+			}
 
-				let i, l;
+			if(demo !== null) {
 
-				for(i = 0, l = octreeHelper.children.length; i < l; ++i) {
+				demo.reset();
+				renderer.setSize(size.width, size.height);
 
-					octreeHelper.children[i].visible = (params["level mask"] === octreeHelper.children.length || i === params["level mask"]);
+			}
 
-				}
+			demo = demos.get(app.key);
+			demo.load(activateDemo);
 
-			});
+		}
 
-			folder.open();
-
-		}(gui, octreeHelper, points));
+		loadDemo();
 
 		/**
 		 * Toggles the visibility of the interface on alt key press.
@@ -265,16 +203,34 @@ export class App {
 		 * @param {Event} event - An event.
 		 */
 
-		window.addEventListener("resize", function onresize(event) {
+		window.addEventListener("resize", (function() {
 
-			const width = event.target.innerWidth;
-			const height = event.target.innerHeight;
+			let id = 0;
 
-			renderer.setSize(width, height);
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
+			function handleResize(event) {
 
-		});
+				const width = event.target.innerWidth;
+				const height = event.target.innerHeight;
+
+				renderer.setSize(width, height);
+				demo.camera.aspect = width / height;
+				demo.camera.updateProjectionMatrix();
+
+				id = 0;
+
+			}
+
+			return function onResize(event) {
+
+				if(id === 0) {
+
+					id = setTimeout(handleResize, 66, event);
+
+				}
+
+			};
+
+		}()));
 
 		/**
 		 * The main render loop.
@@ -285,11 +241,13 @@ export class App {
 
 		(function render(now) {
 
+			const delta = clock.getDelta();
+
 			requestAnimationFrame(render);
 
 			stats.begin();
 
-			renderer.render(scene, camera);
+			demo.render(delta);
 
 			stats.end();
 

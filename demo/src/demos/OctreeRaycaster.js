@@ -17,6 +17,8 @@ const mouse = new Vector2();
 
 /**
  * An octree raycaster.
+ *
+ * @implements {EventListener}
  */
 
 export class OctreeRaycaster extends Raycaster {
@@ -107,6 +109,24 @@ export class OctreeRaycaster extends Raycaster {
 		);
 
 		this.selectedPoint.visible = false;
+
+	}
+
+	/**
+	 * Raycasts on mouse move events.
+	 *
+	 * @param {Event} event - A worker message event.
+	 */
+
+	handleEvent(event) {
+
+		switch(event.type) {
+
+			case "mousemove":
+				this.raycast(event);
+				break;
+
+		}
 
 	}
 

@@ -18,7 +18,6 @@ body {
 
 a {
 	color: grey;
-	font-size: 80%;
 	transition: color 0.2s;
 }
 
@@ -64,7 +63,7 @@ div[role="complementary"] {
 	position: fixed;
 	right: 0;
 	top: 0;
-	visibility: visible;
+	visibility: hidden;
 }
 
 div[role="complementary"] h3 {
@@ -104,7 +103,6 @@ div[role="complementary"] p {
 }
 
 #info {
-	font-size: 80%;
 	position: fixed;
 	left: 100px;
 	top: 5px;
