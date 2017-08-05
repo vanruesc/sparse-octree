@@ -16,7 +16,8 @@ export {
 
 export {
 	PointOctant,
-	PointOctree
+	PointOctree,
+	RayPointIntersection
 } from "./points";
 
 export {

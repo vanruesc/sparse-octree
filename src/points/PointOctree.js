@@ -1,5 +1,6 @@
 import { Octree } from "../core/Octree.js";
 import { PointOctant } from "./PointOctant.js";
+import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
  * Recursively counts how many points are in the given octree.
@@ -562,7 +563,7 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} [intersects] - An array to be filled with the intersecting points.
-	 * @return {Array} The intersecting points.
+	 * @return {RayPointIntersection[]} The intersecting points.
 	 */
 
 	raycast(raycaster, intersects = []) {
@@ -583,9 +584,9 @@ export class PointOctree extends Octree {
 	/**
 	 * Collects points that intersect with the given ray.
 	 *
-	 * @param {Array} octants - An array containing octants that intersect with the ray.
+	 * @param {Octant[]} octants - An array containing octants that intersect with the ray.
 	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
+	 * @param {Array} intersects - An array to be filled with intersecting points.
 	 */
 
 	testPoints(octants, raycaster, intersects) {
@@ -621,12 +622,12 @@ export class PointOctree extends Octree {
 
 							distanceToRay = Math.sqrt(rayPointDistanceSq);
 
-							intersects.push({
-								distance: distance,
-								distanceToRay: distanceToRay,
-								point: intersectPoint.clone(),
-								object: octant.data[j]
-							});
+							intersects.push(new RayPointIntersection(
+								distance,
+								distanceToRay,
+								intersectPoint,
+								octant.data[j]
+							));
 
 						}
 
