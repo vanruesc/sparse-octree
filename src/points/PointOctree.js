@@ -252,14 +252,13 @@ function fetch(point, octree, octant) {
  * Recursively finds the closest point to the given one.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - The point.
+ * @param {Vector3} point - The point.
  * @param {Number} maxDistance - The maximum distance.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
  */
 
-function findNearestPoint(octant, p, maxDistance, skipSelf) {
+function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 	const points = octant.points;
 	const children = octant.children;
@@ -268,7 +267,7 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 	let bestDist = maxDistance;
 
 	let i, l;
-	let point, distSq;
+	let p, distSq;
 
 	let sortedChildren;
 	let child, childResult;
@@ -281,12 +280,12 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 			// Precompute distances.
 			return {
 				octant: child,
-				distance: child.distanceToCenterSquared(p)
+				distance: child.distanceToCenterSquared(point)
 			};
 
 		}).sort(function(a, b) {
 
-			// Smallest distance to p first, ASC.
+			// Smallest distance to the point first, ASC.
 			return a.distance - b.distance;
 
 		});
@@ -297,13 +296,13 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 			// Unpack octant.
 			child = sortedChildren[i].octant;
 
-			if(child.contains(p, bestDist)) {
+			if(child.contains(point, bestDist)) {
 
-				childResult = findNearestPoint(child, p, bestDist, skipSelf);
+				childResult = findNearestPoint(point, bestDist, skipSelf, child);
 
 				if(childResult !== null) {
 
-					distSq = childResult.point.distanceToSquared(p);
+					distSq = childResult.point.distanceToSquared(point);
 
 					if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
@@ -322,15 +321,15 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 
 		for(i = 0, l = points.length; i < l; ++i) {
 
-			point = points[i];
-			distSq = p.distanceToSquared(point);
+			p = points[i];
+			distSq = point.distanceToSquared(p);
 
 			if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
 				bestDist = distSq;
 
 				result = {
-					point: point.clone(),
+					point: p.clone(),
 					data: octant.data[i]
 				};
 
@@ -519,6 +518,7 @@ export class PointOctree extends Octree {
 	 */
 
 	fetch(point) {
+
 		return fetch(point, this, this.root);
 
 
@@ -527,15 +527,15 @@ export class PointOctree extends Octree {
 	/**
 	 * Finds the closest point to the given one.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
 	 * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
 	 * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
 	 */
 
-	findNearestPoint(p, maxDistance = Infinity, skipSelf = false) {
+	findNearestPoint(point, maxDistance = Infinity, skipSelf = false) {
 
-		return findNearestPoint(this.root, p, maxDistance, skipSelf);
+		return findNearestPoint(point, maxDistance, skipSelf, this.root);
 
 	}
 
