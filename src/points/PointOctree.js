@@ -251,6 +251,79 @@ function fetch(point, octree, octant) {
 }
 
 /**
+ * Recursively moves an existing point to a new position.
+ *
+ * @private
+ * @param {Vector3} point - The point.
+ * @param {Vector3} position - The new position.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
+ * @param {Octant} octant - The parent of the current octant.
+ * @return {Boolean} Whether the operation was successful.
+ */
+
+function move(point, position, octree, octant, parent, depth) {
+
+	const children = octant.children;
+
+	let result = null;
+
+	let i, l;
+	let points;
+
+	if(octant.contains(point, octree.bias)) {
+
+		if(octant.contains(position, octree.bias)) {
+
+			// The point and the new position both fall into the current octant.
+			if(children !== null) {
+
+				++depth;
+
+				for(i = 0, l = children.length; result === null && i < l; ++i) {
+
+					result = move(point, position, octree, children[i], octant, depth);
+
+				}
+
+			} else {
+
+				// No divergence - the point can be updated in place.
+				points = octant.points;
+
+				for(i = 0, l = points.length; i < l; ++i) {
+
+					if(point.distanceToSquared(points[i]) <= THRESHOLD) {
+
+						// The point exists! Update its position.
+						points[i].copy(position);
+						result = octant.data[i];
+
+						break;
+
+					}
+
+				}
+
+			}
+
+		} else {
+
+			// Retrieve the point and remove it.
+			result = remove(point, octree, octant, parent);
+
+			// Go back to the parent octant and add the updated point.
+			put(position, result, octree, parent, depth - 1);
+
+		}
+
+	}
+
+	return result;
+
+}
+
+/**
  * Recursively finds the closest point to the given one.
  *
  * @private
@@ -533,6 +606,20 @@ export class PointOctree extends Octree {
 
 		return fetch(point, this, this.root);
 
+	}
+
+	/**
+	 * Moves an existing point to a new position. Has no effect if the point
+	 * doesn't exist.
+	 *
+	 * @param {Vector3} point - The point.
+	 * @param {Vector3} position - The new position.
+	 * @return {Boolean} Whether the operation was successful.
+	 */
+
+	move(point, position) {
+
+		return move(point, position, this, this.root, null, 0);
 
 	}
 
