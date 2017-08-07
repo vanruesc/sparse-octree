@@ -1101,6 +1101,8 @@
   	return SymmetricMatrix3;
   }();
 
+  var c$1 = new Vector3$1();
+
   var Octant = function () {
   	function Octant() {
   		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
@@ -1118,72 +1120,46 @@
   	createClass(Octant, [{
   		key: "getCenter",
   		value: function getCenter() {
-  			return this.min.clone().add(this.max).multiplyScalar(0.5);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  			return target.copy(this.min).add(this.max).multiplyScalar(0.5);
   		}
   	}, {
   		key: "getDimensions",
   		value: function getDimensions() {
-  			return this.max.clone().sub(this.min);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  			return target.copy(this.max).sub(this.min);
   		}
   	}, {
   		key: "split",
-  		value: function split(octants) {
+  		value: function split() {
 
   			var min = this.min;
   			var max = this.max;
-  			var mid = this.getCenter();
+  			var mid = this.getCenter(c$1);
+
+  			var children = this.children = [null, null, null, null, null, null, null, null];
 
   			var i = void 0,
-  			    j = void 0;
-  			var l = 0;
-  			var combination = void 0;
-
-  			var halfDimensions = void 0;
-  			var v = void 0,
-  			    child = void 0,
-  			    octant = void 0;
-
-  			if (Array.isArray(octants)) {
-
-  				halfDimensions = this.getDimensions().multiplyScalar(0.5);
-  				v = [new Vector3$1(), new Vector3$1(), new Vector3$1()];
-  				l = octants.length;
-  			}
-
-  			this.children = [];
+  			    combination = void 0;
 
   			for (i = 0; i < 8; ++i) {
 
-  				combination = PATTERN[i];
-  				octant = null;
+  				combination = pattern[i];
 
-  				if (l > 0) {
-
-  					v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
-  					v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
-
-  					for (j = 0; j < l; ++j) {
-
-  						child = octants[j];
-
-  						if (child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
-
-  							octant = child;
-  							octants[j] = null;
-
-  							break;
-  						}
-  					}
-  				}
-
-  				this.children.push(octant !== null ? octant : new this.constructor(new Vector3$1(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3$1(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
+  				children[i] = new this.constructor(new Vector3$1(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3$1(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z));
   			}
   		}
   	}]);
   	return Octant;
   }();
 
-  var PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+  var pattern = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+
+  var c = new Vector3$1();
 
   var CubicOctant = function () {
   	function CubicOctant() {
@@ -1202,62 +1178,37 @@
   	createClass(CubicOctant, [{
   		key: "getCenter",
   		value: function getCenter() {
-  			return this.min.clone().addScalar(this.size * 0.5);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  			return target.copy(this.min).addScalar(this.size * 0.5);
   		}
   	}, {
   		key: "getDimensions",
   		value: function getDimensions() {
-  			return new Vector3$1(this.size, this.size, this.size);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  			return target.set(this.size, this.size, this.size);
   		}
   	}, {
   		key: "split",
   		value: function split(octants) {
 
   			var min = this.min;
-  			var mid = this.getCenter();
+  			var mid = this.getCenter(c);
   			var halfSize = this.size * 0.5;
 
+  			var children = this.children = [null, null, null, null, null, null, null, null];
+
   			var i = void 0,
-  			    j = void 0;
-  			var l = 0;
-  			var combination = void 0;
-
-  			var v = void 0,
-  			    child = void 0,
-  			    octant = void 0;
-
-  			if (Array.isArray(octants)) {
-
-  				v = new Vector3$1();
-  				l = octants.length;
-  			}
-
-  			this.children = [];
+  			    combination = void 0;
 
   			for (i = 0; i < 8; ++i) {
 
-  				combination = PATTERN[i];
-  				octant = null;
+  				combination = pattern[i];
 
-  				if (l > 0) {
-
-  					v.fromArray(combination).multiplyScalar(halfSize).add(min);
-
-  					for (j = 0; j < l; ++j) {
-
-  						child = octants[j];
-
-  						if (child !== null && child.size === halfSize && v.equals(child.min)) {
-
-  							octant = child;
-  							octants[j] = null;
-
-  							break;
-  						}
-  					}
-  				}
-
-  				this.children.push(octant !== null ? octant : new this.constructor(new Vector3$1(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize));
+  				children[i] = new this.constructor(new Vector3$1(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize);
   			}
   		}
   	}, {
@@ -1292,7 +1243,7 @@
   	return IteratorResult;
   }();
 
-  var box3$1 = new Box3$1();
+  var b$1 = new Box3$1();
 
   var OctreeIterator = function () {
   		function OctreeIterator(octree) {
@@ -1326,10 +1277,10 @@
 
   						if (root !== null) {
 
-  								box3$1.min = root.min;
-  								box3$1.max = root.max;
+  								b$1.min = root.min;
+  								b$1.max = root.max;
 
-  								if (!this.cull || this.region.intersectsBox(box3$1)) {
+  								if (!this.cull || this.region.intersectsBox(b$1)) {
 
   										this.trace.push(root);
   										this.indices.push(0);
@@ -1371,10 +1322,10 @@
 
   												if (cull) {
 
-  														box3$1.min = child.min;
-  														box3$1.max = child.max;
+  														b$1.min = child.min;
+  														b$1.max = child.max;
 
-  														if (!region.intersectsBox(box3$1)) {
+  														if (!region.intersectsBox(b$1)) {
   																continue;
   														}
   												}
@@ -1549,6 +1500,20 @@
   	}
   }
 
+  var dimensions = new Vector3$1();
+
+  var halfDimensions = new Vector3$1();
+
+  var center = new Vector3$1();
+
+  var min = new Vector3$1();
+
+  var max = new Vector3$1();
+
+  var direction = new Vector3$1();
+
+  var origin = new Vector3$1();
+
   var OctreeRaycaster = function () {
   	function OctreeRaycaster() {
   		classCallCheck(this, OctreeRaycaster);
@@ -1557,17 +1522,6 @@
   	createClass(OctreeRaycaster, null, [{
   		key: "intersectOctree",
   		value: function intersectOctree(octree, raycaster, intersects) {
-
-  			var dimensions = octree.getDimensions();
-  			var halfDimensions = dimensions.clone().multiplyScalar(0.5);
-
-  			var min = octree.min.clone().sub(octree.min);
-  			var max = octree.max.clone().sub(octree.min);
-
-  			var direction = raycaster.ray.direction.clone();
-  			var origin = raycaster.ray.origin.clone();
-
-  			origin.sub(octree.getCenter()).add(halfDimensions);
 
   			var invDirX = void 0,
   			    invDirY = void 0,
@@ -1578,6 +1532,17 @@
   			    ty1 = void 0,
   			    tz0 = void 0,
   			    tz1 = void 0;
+
+  			octree.getDimensions(dimensions);
+  			halfDimensions.copy(dimensions).multiplyScalar(0.5);
+
+  			min.copy(octree.min).sub(octree.min);
+  			max.copy(octree.max).sub(octree.min);
+
+  			direction.copy(raycaster.ray.direction);
+  			origin.copy(raycaster.ray.origin);
+
+  			origin.sub(octree.getCenter(center)).add(halfDimensions);
 
   			flags[8] = flags[0];
 
@@ -1614,7 +1579,6 @@
   			tz1 = (max.z - origin.z) * invDirZ;
 
   			if (Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
-
   				raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
   			}
   		}
@@ -1622,7 +1586,7 @@
   	return OctreeRaycaster;
   }();
 
-  var box3 = new Box3$1();
+  var b = new Box3$1();
 
   function _getDepth(octant) {
 
@@ -1656,10 +1620,10 @@
   	var i = void 0,
   	    l = void 0;
 
-  	box3.min = octant.min;
-  	box3.max = octant.max;
+  	b.min = octant.min;
+  	b.max = octant.max;
 
-  	if (region.intersectsBox(box3)) {
+  	if (region.intersectsBox(b)) {
 
   		if (children !== null) {
 
@@ -1705,13 +1669,13 @@
 
   	createClass(Octree, [{
   		key: "getCenter",
-  		value: function getCenter() {
-  			return this.root.getCenter();
+  		value: function getCenter(target) {
+  			return this.root.getCenter(target);
   		}
   	}, {
   		key: "getDimensions",
-  		value: function getDimensions() {
-  			return this.root.getDimensions();
+  		value: function getDimensions(target) {
+  			return this.root.getDimensions(target);
   		}
   	}, {
   		key: "getDepth",
@@ -1779,128 +1743,148 @@
   	return Octree;
   }();
 
+  var p = new Vector3$1();
+
   var PointOctant = function (_Octant) {
-  		inherits(PointOctant, _Octant);
+  	inherits(PointOctant, _Octant);
 
-  		function PointOctant(min, max) {
-  				classCallCheck(this, PointOctant);
+  	function PointOctant(min, max) {
+  		classCallCheck(this, PointOctant);
 
-  				var _this = possibleConstructorReturn(this, (PointOctant.__proto__ || Object.getPrototypeOf(PointOctant)).call(this, min, max));
+  		var _this = possibleConstructorReturn(this, (PointOctant.__proto__ || Object.getPrototypeOf(PointOctant)).call(this, min, max));
 
-  				_this.points = null;
+  		_this.points = null;
 
-  				_this.data = null;
+  		_this.data = null;
 
-  				return _this;
+  		return _this;
+  	}
+
+  	createClass(PointOctant, [{
+  		key: "distanceToSquared",
+  		value: function distanceToSquared(point) {
+
+  			var clampedPoint = p.copy(point).clamp(this.min, this.max);
+
+  			return clampedPoint.sub(p).lengthSq();
   		}
+  	}, {
+  		key: "distanceToCenterSquared",
+  		value: function distanceToCenterSquared(point) {
 
-  		createClass(PointOctant, [{
-  				key: "distanceToSquared",
-  				value: function distanceToSquared(p) {
+  			var center = this.getCenter(p);
 
-  						var clampedPoint = p.clone().clamp(this.min, this.max);
+  			var dx = point.x - center.x;
+  			var dy = point.y - center.x;
+  			var dz = point.z - center.z;
 
-  						return clampedPoint.sub(p).lengthSq();
-  				}
-  		}, {
-  				key: "distanceToCenterSquared",
-  				value: function distanceToCenterSquared(p) {
+  			return dx * dx + dy * dy + dz * dz;
+  		}
+  	}, {
+  		key: "contains",
+  		value: function contains(point, bias) {
 
-  						var center = this.getCenter();
+  			var min = this.min;
+  			var max = this.max;
 
-  						var dx = p.x - center.x;
-  						var dy = p.y - center.x;
-  						var dz = p.z - center.z;
+  			return point.x >= min.x - bias && point.y >= min.y - bias && point.z >= min.z - bias && point.x <= max.x + bias && point.y <= max.y + bias && point.z <= max.z + bias;
+  		}
+  	}, {
+  		key: "redistribute",
+  		value: function redistribute(bias) {
 
-  						return dx * dx + dy * dy + dz * dz;
-  				}
-  		}, {
-  				key: "contains",
-  				value: function contains(p, bias) {
+  			var children = this.children;
+  			var points = this.points;
+  			var data = this.data;
 
-  						var min = this.min;
-  						var max = this.max;
+  			var i = void 0,
+  			    j = void 0,
+  			    il = void 0,
+  			    jl = void 0;
+  			var child = void 0,
+  			    point = void 0,
+  			    entry = void 0;
 
-  						return p.x >= min.x - bias && p.y >= min.y - bias && p.z >= min.z - bias && p.x <= max.x + bias && p.y <= max.y + bias && p.z <= max.z + bias;
-  				}
-  		}, {
-  				key: "redistribute",
-  				value: function redistribute(bias) {
+  			if (children !== null) {
 
-  						var children = this.children;
-  						var points = this.points;
-  						var data = this.data;
+  				for (i = 0, il = points.length; i < il; ++i) {
 
-  						var i = void 0,
-  						    l = void 0;
-  						var child = void 0,
-  						    point = void 0,
-  						    entry = void 0;
+  					point = points[i];
+  					entry = data[i];
 
-  						if (children !== null) {
+  					for (j = 0, jl = children.length; j < jl; ++j) {
 
-  								while (points.length > 0) {
+  						child = children[j];
 
-  										point = points.pop();
-  										entry = data.pop();
+  						if (child.contains(point, bias)) {
 
-  										for (i = 0, l = children.length; i < l; ++i) {
+  							if (child.points === null) {
 
-  												child = children[i];
+  								child.points = [];
+  								child.data = [];
+  							}
 
-  												if (child.contains(point, bias)) {
+  							child.points.push(point);
+  							child.data.push(entry);
 
-  														if (child.points === null) {
-
-  																child.points = [];
-  																child.data = [];
-  														}
-
-  														child.points.push(point);
-  														child.data.push(entry);
-
-  														break;
-  												}
-  										}
-  								}
+  							break;
   						}
-
-  						this.points = null;
-  						this.data = null;
+  					}
   				}
-  		}, {
-  				key: "merge",
-  				value: function merge() {
+  			}
 
-  						var children = this.children;
+  			this.points = null;
+  			this.data = null;
+  		}
+  	}, {
+  		key: "merge",
+  		value: function merge() {
 
-  						var i = void 0,
-  						    l = void 0;
-  						var child = void 0;
+  			var children = this.children;
 
-  						if (children !== null) {
+  			var i = void 0,
+  			    l = void 0;
+  			var child = void 0;
 
-  								this.points = [];
-  								this.data = [];
+  			if (children !== null) {
 
-  								for (i = 0, l = children.length; i < l; ++i) {
+  				this.points = [];
+  				this.data = [];
 
-  										child = children[i];
+  				for (i = 0, l = children.length; i < l; ++i) {
 
-  										if (child.points !== null) {
-  												var _points, _data;
+  					child = children[i];
 
-  												(_points = this.points).push.apply(_points, toConsumableArray(child.points));
-  												(_data = this.data).push.apply(_data, toConsumableArray(child.data));
-  										}
-  								}
+  					if (child.points !== null) {
+  						var _points, _data;
 
-  								this.children = null;
-  						}
+  						(_points = this.points).push.apply(_points, toConsumableArray(child.points));
+  						(_data = this.data).push.apply(_data, toConsumableArray(child.data));
+  					}
   				}
-  		}]);
-  		return PointOctant;
+
+  				this.children = null;
+  			}
+  		}
+  	}]);
+  	return PointOctant;
   }(Octant);
+
+  var RayPointIntersection = function RayPointIntersection(distance, distanceToRay, point) {
+  		var object = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  		classCallCheck(this, RayPointIntersection);
+
+
+  		this.distance = distance;
+
+  		this.distanceToRay = distanceToRay;
+
+  		this.point = point;
+
+  		this.object = object;
+  };
+
+  var THRESHOLD = 1e-6;
 
   function _countPoints(octant) {
 
@@ -1924,7 +1908,7 @@
   	return result;
   }
 
-  function _add(octant, p, data, depth, bias, maxPoints, maxDepth) {
+  function _put(point, data, octree, octant, depth) {
 
   	var children = octant.children;
   	var exists = false;
@@ -1932,7 +1916,7 @@
   	var i = void 0,
   	    l = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children === null) {
 
@@ -1944,25 +1928,24 @@
 
   				for (i = 0, l = octant.points.length; !exists && i < l; ++i) {
 
-  					exists = octant.points[i].equals(p);
+  					exists = octant.points[i].equals(point);
   				}
   			}
 
   			if (exists) {
 
   				octant.data[i - 1] = data;
-
   				done = true;
-  			} else if (octant.points.length < maxPoints || depth === maxDepth) {
+  			} else if (octant.points.length < octree.maxPoints || depth === octree.maxDepth) {
 
-  				octant.points.push(p.clone());
+  				octant.points.push(point.clone());
   				octant.data.push(data);
-
+  				++octree.pointCount;
   				done = true;
   			} else {
 
   				octant.split();
-  				octant.redistribute(bias);
+  				octant.redistribute(octree.bias);
   				children = octant.children;
   			}
   		}
@@ -1973,7 +1956,7 @@
 
   			for (i = 0, l = children.length; !done && i < l; ++i) {
 
-  				done = _add(children[i], p, data, depth, bias, maxPoints, maxDepth);
+  				done = _put(point, data, octree, children[i], depth);
   			}
   		}
   	}
@@ -1981,11 +1964,11 @@
   	return done;
   }
 
-  function _remove(octant, parent, p, bias, maxPoints) {
+  function _remove(point, octree, octant, parent) {
 
   	var children = octant.children;
 
-  	var done = false;
+  	var result = null;
 
   	var i = void 0,
   	    l = void 0;
@@ -1993,24 +1976,25 @@
   	    data = void 0,
   	    last = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children !== null) {
 
-  			for (i = 0, l = children.length; !done && i < l; ++i) {
+  			for (i = 0, l = children.length; result === null && i < l; ++i) {
 
-  				done = _remove(children[i], octant, p, bias, maxPoints);
+  				result = _remove(point, octree, children[i], octant);
   			}
   		} else if (octant.points !== null) {
 
   			points = octant.points;
   			data = octant.data;
 
-  			for (i = 0, l = points.length; !done && i < l; ++i) {
+  			for (i = 0, l = points.length; i < l; ++i) {
 
-  				if (points[i].equals(p)) {
+  				if (points[i].equals(point)) {
 
   					last = l - 1;
+  					result = data[i];
 
   					if (i < last) {
   						points[i] = points[last];
@@ -2020,21 +2004,23 @@
   					points.pop();
   					data.pop();
 
-  					if (parent !== null && _countPoints(parent) <= maxPoints) {
+  					--octree.pointCount;
+
+  					if (parent !== null && _countPoints(parent) <= octree.maxPoints) {
 
   						parent.merge();
   					}
 
-  					done = true;
+  					break;
   				}
   			}
   		}
   	}
 
-  	return done;
+  	return result;
   }
 
-  function _fetch(octant, p, bias, biasSquared) {
+  function _fetch(point, octree, octant) {
 
   	var children = octant.children;
 
@@ -2044,13 +2030,13 @@
   	    l = void 0;
   	var points = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children !== null) {
 
   			for (i = 0, l = children.length; result === null && i < l; ++i) {
 
-  				result = _fetch(children[i], p, bias, biasSquared);
+  				result = _fetch(point, octree, children[i]);
   			}
   		} else {
 
@@ -2058,7 +2044,7 @@
 
   			for (i = 0, l = points.length; result === null && i < l; ++i) {
 
-  				if (p.distanceToSquared(points[i]) <= biasSquared) {
+  				if (point.distanceToSquared(points[i]) <= THRESHOLD) {
 
   					result = octant.data[i];
   				}
@@ -2069,7 +2055,51 @@
   	return result;
   }
 
-  function _findNearestPoint(octant, p, maxDistance, skipSelf) {
+  function _move(point, position, octree, octant, parent, depth) {
+
+  	var children = octant.children;
+
+  	var result = null;
+
+  	var i = void 0,
+  	    l = void 0;
+  	var points = void 0;
+
+  	if (octant.contains(point, octree.bias)) {
+
+  		if (octant.contains(position, octree.bias)) {
+  			if (children !== null) {
+
+  				++depth;
+
+  				for (i = 0, l = children.length; result === null && i < l; ++i) {
+
+  					result = _move(point, position, octree, children[i], octant, depth);
+  				}
+  			} else {
+  				points = octant.points;
+
+  				for (i = 0, l = points.length; i < l; ++i) {
+
+  					if (point.distanceToSquared(points[i]) <= THRESHOLD) {
+  						points[i].copy(position);
+  						result = octant.data[i];
+
+  						break;
+  					}
+  				}
+  			}
+  		} else {
+  			result = _remove(point, octree, octant, parent);
+
+  			_put(position, result, octree, parent, depth - 1);
+  		}
+  	}
+
+  	return result;
+  }
+
+  function _findNearestPoint(point, maxDistance, skipSelf, octant) {
 
   	var points = octant.points;
   	var children = octant.children;
@@ -2079,7 +2109,7 @@
 
   	var i = void 0,
   	    l = void 0;
-  	var point = void 0,
+  	var p = void 0,
   	    distSq = void 0;
 
   	var sortedChildren = void 0;
@@ -2090,7 +2120,7 @@
   		sortedChildren = children.map(function (child) {
   			return {
   				octant: child,
-  				distance: child.distanceToCenterSquared(p)
+  				distance: child.distanceToCenterSquared(point)
   			};
   		}).sort(function (a, b) {
   			return a.distance - b.distance;
@@ -2099,13 +2129,13 @@
   		for (i = 0, l = sortedChildren.length; i < l; ++i) {
   			child = sortedChildren[i].octant;
 
-  			if (child.contains(p, bestDist)) {
+  			if (child.contains(point, bestDist)) {
 
-  				childResult = _findNearestPoint(child, p, bestDist, skipSelf);
+  				childResult = _findNearestPoint(point, bestDist, skipSelf, child);
 
   				if (childResult !== null) {
 
-  					distSq = childResult.point.distanceToSquared(p);
+  					distSq = childResult.point.distanceToSquared(point);
 
   					if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
@@ -2119,15 +2149,15 @@
 
   		for (i = 0, l = points.length; i < l; ++i) {
 
-  			point = points[i];
-  			distSq = p.distanceToSquared(point);
+  			p = points[i];
+  			distSq = point.distanceToSquared(p);
 
   			if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
   				bestDist = distSq;
 
   				result = {
-  					point: point.clone(),
+  					point: p.clone(),
   					data: octant.data[i]
   				};
   			}
@@ -2137,16 +2167,16 @@
   	return result;
   }
 
-  function _findPoints(octant, p, r, skipSelf, result) {
+  function _findPoints(point, radius, skipSelf, octant, result) {
 
   	var points = octant.points;
   	var children = octant.children;
-  	var rSq = r * r;
+  	var rSq = radius * radius;
 
   	var i = void 0,
   	    l = void 0;
 
-  	var point = void 0,
+  	var p = void 0,
   	    distSq = void 0;
   	var child = void 0;
 
@@ -2156,22 +2186,22 @@
 
   			child = children[i];
 
-  			if (child.contains(p, r)) {
+  			if (child.contains(point, radius)) {
 
-  				_findPoints(child, p, r, skipSelf, result);
+  				_findPoints(point, radius, skipSelf, child, result);
   			}
   		}
   	} else if (points !== null) {
 
   		for (i = 0, l = points.length; i < l; ++i) {
 
-  			point = points[i];
-  			distSq = p.distanceToSquared(point);
+  			p = points[i];
+  			distSq = point.distanceToSquared(p);
 
   			if ((!skipSelf || distSq > 0.0) && distSq <= rSq) {
 
   				result.push({
-  					point: point.clone(),
+  					point: p.clone(),
   					data: octant.data[i]
   				});
   			}
@@ -2194,57 +2224,63 @@
 
   		_this.bias = Math.max(0.0, bias);
 
-  		_this.biasSquared = _this.bias * _this.bias;
-
   		_this.maxPoints = Math.max(1, Math.round(maxPoints));
 
   		_this.maxDepth = Math.max(0, Math.round(maxDepth));
+
+  		_this.pointCount = 0;
 
   		return _this;
   	}
 
   	createClass(PointOctree, [{
   		key: "countPoints",
-  		value: function countPoints() {
+  		value: function countPoints(octant) {
 
-  			return _countPoints(this.root);
+  			return _countPoints(octant);
   		}
   	}, {
-  		key: "add",
-  		value: function add(p, data) {
+  		key: "put",
+  		value: function put(point, data) {
 
-  			_add(this.root, p, data, 0, this.bias, this.maxPoints, this.maxDepth);
+  			return _put(point, data, this, this.root, 0);
   		}
   	}, {
   		key: "remove",
-  		value: function remove(p) {
+  		value: function remove(point) {
 
-  			_remove(this.root, null, p, this.bias, this.maxPoints);
+  			return _remove(point, this, this.root, null);
   		}
   	}, {
   		key: "fetch",
-  		value: function fetch(p) {
+  		value: function fetch(point) {
 
-  			return _fetch(this.root, p, this.bias, this.biasSquared);
+  			return _fetch(point, this, this.root);
+  		}
+  	}, {
+  		key: "move",
+  		value: function move(point, position) {
+
+  			return _move(point, position, this, this.root, null, 0);
   		}
   	}, {
   		key: "findNearestPoint",
-  		value: function findNearestPoint(p) {
+  		value: function findNearestPoint(point) {
   			var maxDistance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
   			var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
-  			return _findNearestPoint(this.root, p, maxDistance, skipSelf);
+  			return _findNearestPoint(point, maxDistance, skipSelf, this.root);
   		}
   	}, {
   		key: "findPoints",
-  		value: function findPoints(p, r) {
+  		value: function findPoints(point, radius) {
   			var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
   			var result = [];
 
-  			_findPoints(this.root, p, r, skipSelf, result);
+  			_findPoints(point, radius, skipSelf, this.root, result);
 
   			return result;
   		}
@@ -2303,12 +2339,7 @@
 
   								distanceToRay = Math.sqrt(rayPointDistanceSq);
 
-  								intersects.push({
-  									distance: distance,
-  									distanceToRay: distanceToRay,
-  									point: intersectPoint.clone(),
-  									object: octant.data[j]
-  								});
+  								intersects.push(new RayPointIntersection(distance, distanceToRay, intersectPoint, octant.data[j]));
   							}
   						}
   					}
@@ -2318,6 +2349,110 @@
   	}]);
   	return PointOctree;
   }(Octree);
+
+  var OctreeUtils = function () {
+  		function OctreeUtils() {
+  				classCallCheck(this, OctreeUtils);
+  		}
+
+  		createClass(OctreeUtils, null, [{
+  				key: "recycleOctants",
+  				value: function recycleOctants(octant, octants) {
+
+  						var a = new Vector3$1();
+  						var b = new Vector3$1();
+  						var c = new Vector3$1();
+
+  						var min = octant.min;
+  						var mid = octant.getCenter();
+  						var halfDimensions = octant.getDimensions().multiplyScalar(0.5);
+
+  						var children = octant.children;
+  						var l = octants.length;
+
+  						var i = void 0,
+  						    j = void 0;
+  						var combination = void 0,
+  						    candidate = void 0;
+
+  						for (i = 0; i < 8; ++i) {
+
+  								combination = pattern[i];
+
+  								b.addVectors(min, a.fromArray(combination).multiply(halfDimensions));
+  								c.addVectors(mid, a.fromArray(combination).multiply(halfDimensions));
+
+  								for (j = 0; j < l; ++j) {
+
+  										candidate = octants[j];
+
+  										if (candidate !== null && b.equals(candidate.min) && c.equals(candidate.max)) {
+
+  												children[i] = candidate;
+  												octants[j] = null;
+
+  												break;
+  										}
+  								}
+  						}
+  				}
+  		}]);
+  		return OctreeUtils;
+  }();
+
+  var Demo = function () {
+  		function Demo(renderer) {
+  				classCallCheck(this, Demo);
+
+
+  				this.renderer = renderer;
+
+  				this.loadingManager = new three.LoadingManager();
+
+  				this.assets = null;
+
+  				this.scene = new three.Scene();
+  				this.scene.fog = new three.FogExp2(0x0d0d0d, 0.0025);
+
+  				this.camera = new three.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
+
+  				this.controls = null;
+  		}
+
+  		createClass(Demo, [{
+  				key: "load",
+  				value: function load(callback) {
+  						callback();
+  				}
+  		}, {
+  				key: "initialise",
+  				value: function initialise() {}
+  		}, {
+  				key: "render",
+  				value: function render(delta) {}
+  		}, {
+  				key: "configure",
+  				value: function configure(gui) {}
+  		}, {
+  				key: "reset",
+  				value: function reset() {
+
+  						var fog = this.scene.fog;
+
+  						this.scene = new three.Scene();
+  						this.scene.fog = fog;
+
+  						if (this.controls !== null) {
+
+  								this.controls.dispose();
+  								this.controls = null;
+  						}
+
+  						return this;
+  				}
+  		}]);
+  		return Demo;
+  }();
 
   var mouse = new three.Vector2();
 
@@ -2355,6 +2490,18 @@
   		}
 
   		createClass(OctreeRaycaster, [{
+  				key: "handleEvent",
+  				value: function handleEvent(event) {
+
+  						switch (event.type) {
+
+  								case "mousemove":
+  										this.raycast(event);
+  										break;
+
+  						}
+  				}
+  		}, {
   				key: "raycast",
   				value: function raycast(event) {
 
@@ -2550,46 +2697,42 @@
   		return FrustumCuller;
   }();
 
-  var App = function () {
-  		function App() {
-  				classCallCheck(this, App);
+  var PointOctreeDemo = function (_Demo) {
+  		inherits(PointOctreeDemo, _Demo);
+
+  		function PointOctreeDemo(renderer) {
+  				classCallCheck(this, PointOctreeDemo);
+
+  				var _this = possibleConstructorReturn(this, (PointOctreeDemo.__proto__ || Object.getPrototypeOf(PointOctreeDemo)).call(this, renderer));
+
+  				_this.points = null;
+
+  				_this.octreeHelper = null;
+
+  				_this.octreeRaycaster = null;
+
+  				_this.frustumCuller = null;
+
+  				return _this;
   		}
 
-  		createClass(App, null, [{
+  		createClass(PointOctreeDemo, [{
   				key: "initialise",
-  				value: function initialise(viewport, aside) {
+  				value: function initialise() {
 
-  						var width = window.innerWidth;
-  						var height = window.innerHeight;
-  						var aspect = width / height;
+  						var scene = this.scene;
+  						var camera = this.camera;
+  						var renderer = this.renderer;
 
-  						var scene = new three.Scene();
   						scene.fog = new three.FogExp2(0x0d0d0d, 0.025);
 
-  						var renderer = new three.WebGLRenderer({
-  								logarithmicDepthBuffer: true,
-  								antialias: true
-  						});
+  						this.controls = new three.OrbitControls(camera, renderer.domElement);
+  						this.controls.maxDistance = 60;
 
-  						renderer.setSize(width, height);
-  						renderer.setClearColor(scene.fog.color);
-  						renderer.setPixelRatio(window.devicePixelRatio);
-  						viewport.appendChild(renderer.domElement);
-
-  						var camera = new three.PerspectiveCamera(50, aspect, 0.1, 200);
-  						var controls = new three.OrbitControls(camera, renderer.domElement);
-  						controls.target.set(0, 0, 0);
-  						controls.maxDistance = 60;
+  						camera.near = 0.1;
+  						camera.far = 200;
   						camera.position.set(10, 6, 10);
-  						camera.lookAt(controls.target);
-
-  						var stats = new Stats();
-  						stats.showPanel(0);
-  						stats.dom.id = "stats";
-  						aside.appendChild(stats.dom);
-
-  						var gui = new dat.GUI();
-  						aside.appendChild(gui.domElement.parentNode);
+  						camera.lookAt(this.controls.target);
 
   						var points = function generatePoints() {
 
@@ -2654,6 +2797,7 @@
   								return points;
   						}();
 
+  						this.points = points;
   						scene.add(points);
 
   						var octree = function createOctree(points) {
@@ -2679,7 +2823,7 @@
 
   										for (i = 0, l = array.length; i < l; i += 3) {
 
-  												octree.add(v.fromArray(array, i), p);
+  												octree.put(v.fromArray(array, i), p);
   										}
   								}
 
@@ -2699,48 +2843,166 @@
   								return octreeHelper;
   						}(octree);
 
+  						this.octreeHelper = octreeHelper;
   						scene.add(octreeHelper);
 
-  						var raycaster = new OctreeRaycaster$1(octree, camera, points);
-  						raycaster.configure(gui);
+  						this.raycaster = new OctreeRaycaster$1(octree, camera, points);
 
-  						viewport.addEventListener("mousemove", function onMouseMove(event) {
-  								raycaster.raycast(event);
+  						renderer.domElement.parentNode.addEventListener("mousemove", this.raycaster);
+  						scene.add(this.raycaster.selectedPoint);
+
+  						this.frustumCuller = new FrustumCuller(octree, scene);
+
+  						scene.add(this.frustumCuller.cameraHelper);
+  				}
+  		}, {
+  				key: "render",
+  				value: function render(delta) {
+
+  						this.renderer.render(this.scene, this.camera);
+  				}
+  		}, {
+  				key: "configure",
+  				value: function configure(gui) {
+
+  						var points = this.points;
+  						var octreeHelper = this.octreeHelper;
+
+  						this.raycaster.configure(gui);
+  						this.frustumCuller.configure(gui);
+
+  						var params = {
+  								"level mask": octreeHelper.children.length
+  						};
+
+  						var folder = gui.addFolder("Points");
+  						folder.add(points, "visible");
+  						folder.open();
+
+  						folder = gui.addFolder("Octree Helper");
+  						folder.add(octreeHelper, "visible");
+
+  						folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function () {
+
+  								var i = void 0,
+  								    l = void 0;
+
+  								for (i = 0, l = octreeHelper.children.length; i < l; ++i) {
+
+  										octreeHelper.children[i].visible = params["level mask"] === octreeHelper.children.length || i === params["level mask"];
+  								}
   						});
 
-  						scene.add(raycaster.selectedPoint);
+  						folder.open();
+  				}
+  		}]);
+  		return PointOctreeDemo;
+  }(Demo);
 
-  						var frustumCuller = new FrustumCuller(octree, scene);
-  						frustumCuller.configure(gui);
+  var App = function () {
+  		function App() {
+  				classCallCheck(this, App);
 
-  						scene.add(frustumCuller.cameraHelper);
 
-  						(function (gui, octreeHelper, points) {
+  				this.clock = new three.Clock();
 
-  								var params = {
-  										"level mask": octreeHelper.children.length
-  								};
+  				this.renderer = new three.WebGLRenderer({
+  						logarithmicDepthBuffer: true,
+  						antialias: true
+  				});
 
-  								var folder = gui.addFolder("Points");
-  								folder.add(points, "visible");
-  								folder.open();
+  				this.renderer.setSize(window.innerWidth, window.innerHeight);
+  				this.renderer.setClearColor(0x000000);
+  				this.renderer.setPixelRatio(window.devicePixelRatio);
 
-  								folder = gui.addFolder("Octree Helper");
-  								folder.add(octreeHelper, "visible");
+  				this.stats = function () {
 
-  								folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function () {
+  						var stats = new Stats();
+  						stats.showPanel(0);
+  						stats.dom.id = "stats";
 
-  										var i = void 0,
-  										    l = void 0;
+  						return stats;
+  				}();
 
-  										for (i = 0, l = octreeHelper.children.length; i < l; ++i) {
+  				this.demos = function (renderer) {
 
-  												octreeHelper.children[i].visible = params["level mask"] === octreeHelper.children.length || i === params["level mask"];
-  										}
-  								});
+  						var demos = new Map();
 
-  								folder.open();
-  						})(gui, octreeHelper, points);
+  						demos.set("point-octree", new PointOctreeDemo(renderer));
+
+  						return demos;
+  				}(this.renderer);
+
+  				this.key = function (demos) {
+
+  						var key = window.location.hash.slice(1);
+
+  						if (key.length === 0 || !demos.has(key)) {
+
+  								key = demos.keys().next().value;
+  						}
+
+  						return key;
+  				}(this.demos);
+  		}
+
+  		createClass(App, [{
+  				key: "initialise",
+  				value: function initialise(viewport, aside, loadingMessage) {
+
+  						var app = this;
+
+  						var renderer = this.renderer;
+  						var clock = this.clock;
+  						var stats = this.stats;
+  						var demos = this.demos;
+
+  						var demo = null;
+  						var gui = null;
+
+  						viewport.appendChild(renderer.domElement);
+  						aside.appendChild(stats.dom);
+
+  						function activateDemo() {
+
+  								demo.initialise();
+
+  								demo.camera.aspect = window.innerWidth / window.innerHeight;
+  								demo.camera.updateProjectionMatrix();
+
+  								gui = new dat.GUI({ autoPlace: false });
+  								gui.add(app, "key", Array.from(demos.keys())).onChange(loadDemo);
+  								demo.configure(gui);
+  								aside.appendChild(gui.domElement);
+
+  								loadingMessage.style.display = "none";
+  								renderer.domElement.style.visibility = "visible";
+  						}
+
+  						function loadDemo() {
+
+  								var size = renderer.getSize();
+
+  								loadingMessage.style.display = "block";
+  								renderer.domElement.style.visibility = "hidden";
+
+  								if (gui !== null) {
+
+  										gui.destroy();
+  										aside.removeChild(gui.domElement);
+  								}
+
+  								if (demo !== null) {
+
+  										demo.reset();
+  										renderer.setSize(size.width, size.height);
+  								}
+
+  								demo = demos.get(app.key);
+  								demo.load(activateDemo);
+  						}
+
+  						loadDemo();
 
   						document.addEventListener("keydown", function onKeyDown(event) {
 
@@ -2751,23 +3013,40 @@
   								}
   						});
 
-  						window.addEventListener("resize", function onresize(event) {
+  						window.addEventListener("resize", function () {
 
-  								var width = event.target.innerWidth;
-  								var height = event.target.innerHeight;
+  								var id = 0;
 
-  								renderer.setSize(width, height);
-  								camera.aspect = width / height;
-  								camera.updateProjectionMatrix();
-  						});
+  								function handleResize(event) {
+
+  										var width = event.target.innerWidth;
+  										var height = event.target.innerHeight;
+
+  										renderer.setSize(width, height);
+  										demo.camera.aspect = width / height;
+  										demo.camera.updateProjectionMatrix();
+
+  										id = 0;
+  								}
+
+  								return function onResize(event) {
+
+  										if (id === 0) {
+
+  												id = setTimeout(handleResize, 66, event);
+  										}
+  								};
+  						}());
 
   						(function render(now) {
+
+  								var delta = clock.getDelta();
 
   								requestAnimationFrame(render);
 
   								stats.begin();
 
-  								renderer.render(scene, camera);
+  								demo.render(delta);
 
   								stats.end();
   						})();
@@ -2778,9 +3057,16 @@
 
   window.addEventListener("load", function main(event) {
 
-    window.removeEventListener("load", main);
+  	var viewport = document.getElementById("viewport");
+  	var loadingMessage = viewport.children[0];
+  	var aside = document.getElementById("aside");
 
-    App.initialise(document.getElementById("viewport"), document.getElementById("aside"));
+  	var app = new App();
+
+  	window.removeEventListener("load", main);
+  	aside.style.visibility = "visible";
+
+  	app.initialise(viewport, aside, loadingMessage);
   });
 
 }(THREE,dat,Stats));

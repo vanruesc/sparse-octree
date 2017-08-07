@@ -1,5 +1,5 @@
 /**
- * sparse-octree v3.0.0 build Jun 21 2017
+ * sparse-octree v4.0.0 build Aug 07 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
@@ -7,7 +7,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.SPARSEOCTREE = global.SPARSEOCTREE || {})));
+  (factory((global.SPARSEOCTREE = {})));
 }(this, (function (exports) { 'use strict';
 
   var classCallCheck = function (instance, Constructor) {
@@ -957,6 +957,8 @@
   	return SymmetricMatrix3;
   }();
 
+  var c$1 = new Vector3();
+
   var Octant = function () {
   	function Octant() {
   		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
@@ -974,74 +976,48 @@
   	createClass(Octant, [{
   		key: "getCenter",
   		value: function getCenter() {
-  			return this.min.clone().add(this.max).multiplyScalar(0.5);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+
+
+  			return target.copy(this.min).add(this.max).multiplyScalar(0.5);
   		}
   	}, {
   		key: "getDimensions",
   		value: function getDimensions() {
-  			return this.max.clone().sub(this.min);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+
+
+  			return target.copy(this.max).sub(this.min);
   		}
   	}, {
   		key: "split",
-  		value: function split(octants) {
+  		value: function split() {
 
   			var min = this.min;
   			var max = this.max;
-  			var mid = this.getCenter();
+  			var mid = this.getCenter(c$1);
+
+  			var children = this.children = [null, null, null, null, null, null, null, null];
 
   			var i = void 0,
-  			    j = void 0;
-  			var l = 0;
-  			var combination = void 0;
-
-  			var halfDimensions = void 0;
-  			var v = void 0,
-  			    child = void 0,
-  			    octant = void 0;
-
-  			if (Array.isArray(octants)) {
-
-  				halfDimensions = this.getDimensions().multiplyScalar(0.5);
-  				v = [new Vector3(), new Vector3(), new Vector3()];
-  				l = octants.length;
-  			}
-
-  			this.children = [];
+  			    combination = void 0;
 
   			for (i = 0; i < 8; ++i) {
 
-  				combination = PATTERN[i];
-  				octant = null;
+  				combination = pattern[i];
 
-  				if (l > 0) {
-
-  					v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
-  					v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
-
-  					for (j = 0; j < l; ++j) {
-
-  						child = octants[j];
-
-  						if (child !== null && v[1].equals(child.min) && v[2].equals(child.max)) {
-
-  							octant = child;
-  							octants[j] = null;
-
-  							break;
-  						}
-  					}
-  				}
-
-  				this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z)));
+  				children[i] = new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z));
   			}
   		}
   	}]);
   	return Octant;
   }();
 
-  var PATTERN = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+  var pattern = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
 
-  var EDGES = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
+  var edges = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
+
+  var c = new Vector3();
 
   var CubicOctant = function () {
   	function CubicOctant() {
@@ -1060,62 +1036,37 @@
   	createClass(CubicOctant, [{
   		key: "getCenter",
   		value: function getCenter() {
-  			return this.min.clone().addScalar(this.size * 0.5);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+
+
+  			return target.copy(this.min).addScalar(this.size * 0.5);
   		}
   	}, {
   		key: "getDimensions",
   		value: function getDimensions() {
-  			return new Vector3(this.size, this.size, this.size);
+  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+
+
+  			return target.set(this.size, this.size, this.size);
   		}
   	}, {
   		key: "split",
   		value: function split(octants) {
 
   			var min = this.min;
-  			var mid = this.getCenter();
+  			var mid = this.getCenter(c);
   			var halfSize = this.size * 0.5;
 
+  			var children = this.children = [null, null, null, null, null, null, null, null];
+
   			var i = void 0,
-  			    j = void 0;
-  			var l = 0;
-  			var combination = void 0;
-
-  			var v = void 0,
-  			    child = void 0,
-  			    octant = void 0;
-
-  			if (Array.isArray(octants)) {
-
-  				v = new Vector3();
-  				l = octants.length;
-  			}
-
-  			this.children = [];
+  			    combination = void 0;
 
   			for (i = 0; i < 8; ++i) {
 
-  				combination = PATTERN[i];
-  				octant = null;
+  				combination = pattern[i];
 
-  				if (l > 0) {
-
-  					v.fromArray(combination).multiplyScalar(halfSize).add(min);
-
-  					for (j = 0; j < l; ++j) {
-
-  						child = octants[j];
-
-  						if (child !== null && child.size === halfSize && v.equals(child.min)) {
-
-  							octant = child;
-  							octants[j] = null;
-
-  							break;
-  						}
-  					}
-  				}
-
-  				this.children.push(octant !== null ? octant : new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize));
+  				children[i] = new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize);
   			}
   		}
   	}, {
@@ -1150,7 +1101,7 @@
   	return IteratorResult;
   }();
 
-  var box3$1 = new Box3();
+  var b$1 = new Box3();
 
   var OctreeIterator = function () {
   		function OctreeIterator(octree) {
@@ -1184,10 +1135,10 @@
 
   						if (root !== null) {
 
-  								box3$1.min = root.min;
-  								box3$1.max = root.max;
+  								b$1.min = root.min;
+  								b$1.max = root.max;
 
-  								if (!this.cull || this.region.intersectsBox(box3$1)) {
+  								if (!this.cull || this.region.intersectsBox(b$1)) {
 
   										this.trace.push(root);
   										this.indices.push(0);
@@ -1229,10 +1180,10 @@
 
   												if (cull) {
 
-  														box3$1.min = child.min;
-  														box3$1.max = child.max;
+  														b$1.min = child.min;
+  														b$1.max = child.max;
 
-  														if (!region.intersectsBox(box3$1)) {
+  														if (!region.intersectsBox(b$1)) {
   																continue;
   														}
   												}
@@ -1407,6 +1358,20 @@
   	}
   }
 
+  var dimensions = new Vector3();
+
+  var halfDimensions = new Vector3();
+
+  var center = new Vector3();
+
+  var min = new Vector3();
+
+  var max = new Vector3();
+
+  var direction = new Vector3();
+
+  var origin = new Vector3();
+
   var OctreeRaycaster = function () {
   	function OctreeRaycaster() {
   		classCallCheck(this, OctreeRaycaster);
@@ -1415,17 +1380,6 @@
   	createClass(OctreeRaycaster, null, [{
   		key: "intersectOctree",
   		value: function intersectOctree(octree, raycaster, intersects) {
-
-  			var dimensions = octree.getDimensions();
-  			var halfDimensions = dimensions.clone().multiplyScalar(0.5);
-
-  			var min = octree.min.clone().sub(octree.min);
-  			var max = octree.max.clone().sub(octree.min);
-
-  			var direction = raycaster.ray.direction.clone();
-  			var origin = raycaster.ray.origin.clone();
-
-  			origin.sub(octree.getCenter()).add(halfDimensions);
 
   			var invDirX = void 0,
   			    invDirY = void 0,
@@ -1436,6 +1390,17 @@
   			    ty1 = void 0,
   			    tz0 = void 0,
   			    tz1 = void 0;
+
+  			octree.getDimensions(dimensions);
+  			halfDimensions.copy(dimensions).multiplyScalar(0.5);
+
+  			min.copy(octree.min).sub(octree.min);
+  			max.copy(octree.max).sub(octree.min);
+
+  			direction.copy(raycaster.ray.direction);
+  			origin.copy(raycaster.ray.origin);
+
+  			origin.sub(octree.getCenter(center)).add(halfDimensions);
 
   			flags[8] = flags[0];
 
@@ -1472,7 +1437,6 @@
   			tz1 = (max.z - origin.z) * invDirZ;
 
   			if (Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) {
-
   				raycastOctant(octree.root, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects);
   			}
   		}
@@ -1480,7 +1444,7 @@
   	return OctreeRaycaster;
   }();
 
-  var box3 = new Box3();
+  var b = new Box3();
 
   function _getDepth(octant) {
 
@@ -1514,10 +1478,10 @@
   	var i = void 0,
   	    l = void 0;
 
-  	box3.min = octant.min;
-  	box3.max = octant.max;
+  	b.min = octant.min;
+  	b.max = octant.max;
 
-  	if (region.intersectsBox(box3)) {
+  	if (region.intersectsBox(b)) {
 
   		if (children !== null) {
 
@@ -1563,13 +1527,13 @@
 
   	createClass(Octree, [{
   		key: "getCenter",
-  		value: function getCenter() {
-  			return this.root.getCenter();
+  		value: function getCenter(target) {
+  			return this.root.getCenter(target);
   		}
   	}, {
   		key: "getDimensions",
-  		value: function getDimensions() {
-  			return this.root.getDimensions();
+  		value: function getDimensions(target) {
+  			return this.root.getDimensions(target);
   		}
   	}, {
   		key: "getDepth",
@@ -1637,128 +1601,148 @@
   	return Octree;
   }();
 
+  var p = new Vector3();
+
   var PointOctant = function (_Octant) {
-  		inherits(PointOctant, _Octant);
+  	inherits(PointOctant, _Octant);
 
-  		function PointOctant(min, max) {
-  				classCallCheck(this, PointOctant);
+  	function PointOctant(min, max) {
+  		classCallCheck(this, PointOctant);
 
-  				var _this = possibleConstructorReturn(this, (PointOctant.__proto__ || Object.getPrototypeOf(PointOctant)).call(this, min, max));
+  		var _this = possibleConstructorReturn(this, (PointOctant.__proto__ || Object.getPrototypeOf(PointOctant)).call(this, min, max));
 
-  				_this.points = null;
+  		_this.points = null;
 
-  				_this.data = null;
+  		_this.data = null;
 
-  				return _this;
+  		return _this;
+  	}
+
+  	createClass(PointOctant, [{
+  		key: "distanceToSquared",
+  		value: function distanceToSquared(point) {
+
+  			var clampedPoint = p.copy(point).clamp(this.min, this.max);
+
+  			return clampedPoint.sub(p).lengthSq();
   		}
+  	}, {
+  		key: "distanceToCenterSquared",
+  		value: function distanceToCenterSquared(point) {
 
-  		createClass(PointOctant, [{
-  				key: "distanceToSquared",
-  				value: function distanceToSquared(p) {
+  			var center = this.getCenter(p);
 
-  						var clampedPoint = p.clone().clamp(this.min, this.max);
+  			var dx = point.x - center.x;
+  			var dy = point.y - center.x;
+  			var dz = point.z - center.z;
 
-  						return clampedPoint.sub(p).lengthSq();
-  				}
-  		}, {
-  				key: "distanceToCenterSquared",
-  				value: function distanceToCenterSquared(p) {
+  			return dx * dx + dy * dy + dz * dz;
+  		}
+  	}, {
+  		key: "contains",
+  		value: function contains(point, bias) {
 
-  						var center = this.getCenter();
+  			var min = this.min;
+  			var max = this.max;
 
-  						var dx = p.x - center.x;
-  						var dy = p.y - center.x;
-  						var dz = p.z - center.z;
+  			return point.x >= min.x - bias && point.y >= min.y - bias && point.z >= min.z - bias && point.x <= max.x + bias && point.y <= max.y + bias && point.z <= max.z + bias;
+  		}
+  	}, {
+  		key: "redistribute",
+  		value: function redistribute(bias) {
 
-  						return dx * dx + dy * dy + dz * dz;
-  				}
-  		}, {
-  				key: "contains",
-  				value: function contains(p, bias) {
+  			var children = this.children;
+  			var points = this.points;
+  			var data = this.data;
 
-  						var min = this.min;
-  						var max = this.max;
+  			var i = void 0,
+  			    j = void 0,
+  			    il = void 0,
+  			    jl = void 0;
+  			var child = void 0,
+  			    point = void 0,
+  			    entry = void 0;
 
-  						return p.x >= min.x - bias && p.y >= min.y - bias && p.z >= min.z - bias && p.x <= max.x + bias && p.y <= max.y + bias && p.z <= max.z + bias;
-  				}
-  		}, {
-  				key: "redistribute",
-  				value: function redistribute(bias) {
+  			if (children !== null) {
 
-  						var children = this.children;
-  						var points = this.points;
-  						var data = this.data;
+  				for (i = 0, il = points.length; i < il; ++i) {
 
-  						var i = void 0,
-  						    l = void 0;
-  						var child = void 0,
-  						    point = void 0,
-  						    entry = void 0;
+  					point = points[i];
+  					entry = data[i];
 
-  						if (children !== null) {
+  					for (j = 0, jl = children.length; j < jl; ++j) {
 
-  								while (points.length > 0) {
+  						child = children[j];
 
-  										point = points.pop();
-  										entry = data.pop();
+  						if (child.contains(point, bias)) {
 
-  										for (i = 0, l = children.length; i < l; ++i) {
+  							if (child.points === null) {
 
-  												child = children[i];
+  								child.points = [];
+  								child.data = [];
+  							}
 
-  												if (child.contains(point, bias)) {
+  							child.points.push(point);
+  							child.data.push(entry);
 
-  														if (child.points === null) {
-
-  																child.points = [];
-  																child.data = [];
-  														}
-
-  														child.points.push(point);
-  														child.data.push(entry);
-
-  														break;
-  												}
-  										}
-  								}
+  							break;
   						}
-
-  						this.points = null;
-  						this.data = null;
+  					}
   				}
-  		}, {
-  				key: "merge",
-  				value: function merge() {
+  			}
 
-  						var children = this.children;
+  			this.points = null;
+  			this.data = null;
+  		}
+  	}, {
+  		key: "merge",
+  		value: function merge() {
 
-  						var i = void 0,
-  						    l = void 0;
-  						var child = void 0;
+  			var children = this.children;
 
-  						if (children !== null) {
+  			var i = void 0,
+  			    l = void 0;
+  			var child = void 0;
 
-  								this.points = [];
-  								this.data = [];
+  			if (children !== null) {
 
-  								for (i = 0, l = children.length; i < l; ++i) {
+  				this.points = [];
+  				this.data = [];
 
-  										child = children[i];
+  				for (i = 0, l = children.length; i < l; ++i) {
 
-  										if (child.points !== null) {
-  												var _points, _data;
+  					child = children[i];
 
-  												(_points = this.points).push.apply(_points, toConsumableArray(child.points));
-  												(_data = this.data).push.apply(_data, toConsumableArray(child.data));
-  										}
-  								}
+  					if (child.points !== null) {
+  						var _points, _data;
 
-  								this.children = null;
-  						}
+  						(_points = this.points).push.apply(_points, toConsumableArray(child.points));
+  						(_data = this.data).push.apply(_data, toConsumableArray(child.data));
+  					}
   				}
-  		}]);
-  		return PointOctant;
+
+  				this.children = null;
+  			}
+  		}
+  	}]);
+  	return PointOctant;
   }(Octant);
+
+  var RayPointIntersection = function RayPointIntersection(distance, distanceToRay, point) {
+  		var object = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  		classCallCheck(this, RayPointIntersection);
+
+
+  		this.distance = distance;
+
+  		this.distanceToRay = distanceToRay;
+
+  		this.point = point;
+
+  		this.object = object;
+  };
+
+  var THRESHOLD = 1e-6;
 
   function _countPoints(octant) {
 
@@ -1782,7 +1766,7 @@
   	return result;
   }
 
-  function _add(octant, p, data, depth, bias, maxPoints, maxDepth) {
+  function _put(point, data, octree, octant, depth) {
 
   	var children = octant.children;
   	var exists = false;
@@ -1790,7 +1774,7 @@
   	var i = void 0,
   	    l = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children === null) {
 
@@ -1802,25 +1786,24 @@
 
   				for (i = 0, l = octant.points.length; !exists && i < l; ++i) {
 
-  					exists = octant.points[i].equals(p);
+  					exists = octant.points[i].equals(point);
   				}
   			}
 
   			if (exists) {
 
   				octant.data[i - 1] = data;
-
   				done = true;
-  			} else if (octant.points.length < maxPoints || depth === maxDepth) {
+  			} else if (octant.points.length < octree.maxPoints || depth === octree.maxDepth) {
 
-  				octant.points.push(p.clone());
+  				octant.points.push(point.clone());
   				octant.data.push(data);
-
+  				++octree.pointCount;
   				done = true;
   			} else {
 
   				octant.split();
-  				octant.redistribute(bias);
+  				octant.redistribute(octree.bias);
   				children = octant.children;
   			}
   		}
@@ -1831,7 +1814,7 @@
 
   			for (i = 0, l = children.length; !done && i < l; ++i) {
 
-  				done = _add(children[i], p, data, depth, bias, maxPoints, maxDepth);
+  				done = _put(point, data, octree, children[i], depth);
   			}
   		}
   	}
@@ -1839,11 +1822,11 @@
   	return done;
   }
 
-  function _remove(octant, parent, p, bias, maxPoints) {
+  function _remove(point, octree, octant, parent) {
 
   	var children = octant.children;
 
-  	var done = false;
+  	var result = null;
 
   	var i = void 0,
   	    l = void 0;
@@ -1851,24 +1834,25 @@
   	    data = void 0,
   	    last = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children !== null) {
 
-  			for (i = 0, l = children.length; !done && i < l; ++i) {
+  			for (i = 0, l = children.length; result === null && i < l; ++i) {
 
-  				done = _remove(children[i], octant, p, bias, maxPoints);
+  				result = _remove(point, octree, children[i], octant);
   			}
   		} else if (octant.points !== null) {
 
   			points = octant.points;
   			data = octant.data;
 
-  			for (i = 0, l = points.length; !done && i < l; ++i) {
+  			for (i = 0, l = points.length; i < l; ++i) {
 
-  				if (points[i].equals(p)) {
+  				if (points[i].equals(point)) {
 
   					last = l - 1;
+  					result = data[i];
 
   					if (i < last) {
   						points[i] = points[last];
@@ -1878,21 +1862,23 @@
   					points.pop();
   					data.pop();
 
-  					if (parent !== null && _countPoints(parent) <= maxPoints) {
+  					--octree.pointCount;
+
+  					if (parent !== null && _countPoints(parent) <= octree.maxPoints) {
 
   						parent.merge();
   					}
 
-  					done = true;
+  					break;
   				}
   			}
   		}
   	}
 
-  	return done;
+  	return result;
   }
 
-  function _fetch(octant, p, bias, biasSquared) {
+  function _fetch(point, octree, octant) {
 
   	var children = octant.children;
 
@@ -1902,13 +1888,13 @@
   	    l = void 0;
   	var points = void 0;
 
-  	if (octant.contains(p, bias)) {
+  	if (octant.contains(point, octree.bias)) {
 
   		if (children !== null) {
 
   			for (i = 0, l = children.length; result === null && i < l; ++i) {
 
-  				result = _fetch(children[i], p, bias, biasSquared);
+  				result = _fetch(point, octree, children[i]);
   			}
   		} else {
 
@@ -1916,7 +1902,7 @@
 
   			for (i = 0, l = points.length; result === null && i < l; ++i) {
 
-  				if (p.distanceToSquared(points[i]) <= biasSquared) {
+  				if (point.distanceToSquared(points[i]) <= THRESHOLD) {
 
   					result = octant.data[i];
   				}
@@ -1927,7 +1913,51 @@
   	return result;
   }
 
-  function _findNearestPoint(octant, p, maxDistance, skipSelf) {
+  function _move(point, position, octree, octant, parent, depth) {
+
+  	var children = octant.children;
+
+  	var result = null;
+
+  	var i = void 0,
+  	    l = void 0;
+  	var points = void 0;
+
+  	if (octant.contains(point, octree.bias)) {
+
+  		if (octant.contains(position, octree.bias)) {
+  			if (children !== null) {
+
+  				++depth;
+
+  				for (i = 0, l = children.length; result === null && i < l; ++i) {
+
+  					result = _move(point, position, octree, children[i], octant, depth);
+  				}
+  			} else {
+  				points = octant.points;
+
+  				for (i = 0, l = points.length; i < l; ++i) {
+
+  					if (point.distanceToSquared(points[i]) <= THRESHOLD) {
+  						points[i].copy(position);
+  						result = octant.data[i];
+
+  						break;
+  					}
+  				}
+  			}
+  		} else {
+  			result = _remove(point, octree, octant, parent);
+
+  			_put(position, result, octree, parent, depth - 1);
+  		}
+  	}
+
+  	return result;
+  }
+
+  function _findNearestPoint(point, maxDistance, skipSelf, octant) {
 
   	var points = octant.points;
   	var children = octant.children;
@@ -1937,7 +1967,7 @@
 
   	var i = void 0,
   	    l = void 0;
-  	var point = void 0,
+  	var p = void 0,
   	    distSq = void 0;
 
   	var sortedChildren = void 0;
@@ -1948,7 +1978,7 @@
   		sortedChildren = children.map(function (child) {
   			return {
   				octant: child,
-  				distance: child.distanceToCenterSquared(p)
+  				distance: child.distanceToCenterSquared(point)
   			};
   		}).sort(function (a, b) {
   			return a.distance - b.distance;
@@ -1957,13 +1987,13 @@
   		for (i = 0, l = sortedChildren.length; i < l; ++i) {
   			child = sortedChildren[i].octant;
 
-  			if (child.contains(p, bestDist)) {
+  			if (child.contains(point, bestDist)) {
 
-  				childResult = _findNearestPoint(child, p, bestDist, skipSelf);
+  				childResult = _findNearestPoint(point, bestDist, skipSelf, child);
 
   				if (childResult !== null) {
 
-  					distSq = childResult.point.distanceToSquared(p);
+  					distSq = childResult.point.distanceToSquared(point);
 
   					if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
@@ -1977,15 +2007,15 @@
 
   		for (i = 0, l = points.length; i < l; ++i) {
 
-  			point = points[i];
-  			distSq = p.distanceToSquared(point);
+  			p = points[i];
+  			distSq = point.distanceToSquared(p);
 
   			if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
 
   				bestDist = distSq;
 
   				result = {
-  					point: point.clone(),
+  					point: p.clone(),
   					data: octant.data[i]
   				};
   			}
@@ -1995,16 +2025,16 @@
   	return result;
   }
 
-  function _findPoints(octant, p, r, skipSelf, result) {
+  function _findPoints(point, radius, skipSelf, octant, result) {
 
   	var points = octant.points;
   	var children = octant.children;
-  	var rSq = r * r;
+  	var rSq = radius * radius;
 
   	var i = void 0,
   	    l = void 0;
 
-  	var point = void 0,
+  	var p = void 0,
   	    distSq = void 0;
   	var child = void 0;
 
@@ -2014,22 +2044,22 @@
 
   			child = children[i];
 
-  			if (child.contains(p, r)) {
+  			if (child.contains(point, radius)) {
 
-  				_findPoints(child, p, r, skipSelf, result);
+  				_findPoints(point, radius, skipSelf, child, result);
   			}
   		}
   	} else if (points !== null) {
 
   		for (i = 0, l = points.length; i < l; ++i) {
 
-  			point = points[i];
-  			distSq = p.distanceToSquared(point);
+  			p = points[i];
+  			distSq = point.distanceToSquared(p);
 
   			if ((!skipSelf || distSq > 0.0) && distSq <= rSq) {
 
   				result.push({
-  					point: point.clone(),
+  					point: p.clone(),
   					data: octant.data[i]
   				});
   			}
@@ -2052,57 +2082,63 @@
 
   		_this.bias = Math.max(0.0, bias);
 
-  		_this.biasSquared = _this.bias * _this.bias;
-
   		_this.maxPoints = Math.max(1, Math.round(maxPoints));
 
   		_this.maxDepth = Math.max(0, Math.round(maxDepth));
+
+  		_this.pointCount = 0;
 
   		return _this;
   	}
 
   	createClass(PointOctree, [{
   		key: "countPoints",
-  		value: function countPoints() {
+  		value: function countPoints(octant) {
 
-  			return _countPoints(this.root);
+  			return _countPoints(octant);
   		}
   	}, {
-  		key: "add",
-  		value: function add(p, data) {
+  		key: "put",
+  		value: function put(point, data) {
 
-  			_add(this.root, p, data, 0, this.bias, this.maxPoints, this.maxDepth);
+  			return _put(point, data, this, this.root, 0);
   		}
   	}, {
   		key: "remove",
-  		value: function remove(p) {
+  		value: function remove(point) {
 
-  			_remove(this.root, null, p, this.bias, this.maxPoints);
+  			return _remove(point, this, this.root, null);
   		}
   	}, {
   		key: "fetch",
-  		value: function fetch(p) {
+  		value: function fetch(point) {
 
-  			return _fetch(this.root, p, this.bias, this.biasSquared);
+  			return _fetch(point, this, this.root);
+  		}
+  	}, {
+  		key: "move",
+  		value: function move(point, position) {
+
+  			return _move(point, position, this, this.root, null, 0);
   		}
   	}, {
   		key: "findNearestPoint",
-  		value: function findNearestPoint(p) {
+  		value: function findNearestPoint(point) {
   			var maxDistance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
   			var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
-  			return _findNearestPoint(this.root, p, maxDistance, skipSelf);
+  			return _findNearestPoint(point, maxDistance, skipSelf, this.root);
   		}
   	}, {
   		key: "findPoints",
-  		value: function findPoints(p, r) {
+  		value: function findPoints(point, radius) {
   			var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
 
   			var result = [];
 
-  			_findPoints(this.root, p, r, skipSelf, result);
+  			_findPoints(point, radius, skipSelf, this.root, result);
 
   			return result;
   		}
@@ -2161,12 +2197,7 @@
 
   								distanceToRay = Math.sqrt(rayPointDistanceSq);
 
-  								intersects.push({
-  									distance: distance,
-  									distanceToRay: distanceToRay,
-  									point: intersectPoint.clone(),
-  									object: octant.data[j]
-  								});
+  								intersects.push(new RayPointIntersection(distance, distanceToRay, intersectPoint, octant.data[j]));
   							}
   						}
   					}
@@ -2177,15 +2208,67 @@
   	return PointOctree;
   }(Octree);
 
+  var OctreeUtils = function () {
+  		function OctreeUtils() {
+  				classCallCheck(this, OctreeUtils);
+  		}
+
+  		createClass(OctreeUtils, null, [{
+  				key: "recycleOctants",
+  				value: function recycleOctants(octant, octants) {
+
+  						var a = new Vector3();
+  						var b = new Vector3();
+  						var c = new Vector3();
+
+  						var min = octant.min;
+  						var mid = octant.getCenter();
+  						var halfDimensions = octant.getDimensions().multiplyScalar(0.5);
+
+  						var children = octant.children;
+  						var l = octants.length;
+
+  						var i = void 0,
+  						    j = void 0;
+  						var combination = void 0,
+  						    candidate = void 0;
+
+  						for (i = 0; i < 8; ++i) {
+
+  								combination = pattern[i];
+
+  								b.addVectors(min, a.fromArray(combination).multiply(halfDimensions));
+  								c.addVectors(mid, a.fromArray(combination).multiply(halfDimensions));
+
+  								for (j = 0; j < l; ++j) {
+
+  										candidate = octants[j];
+
+  										if (candidate !== null && b.equals(candidate.min) && c.equals(candidate.max)) {
+
+  												children[i] = candidate;
+  												octants[j] = null;
+
+  												break;
+  										}
+  								}
+  						}
+  				}
+  		}]);
+  		return OctreeUtils;
+  }();
+
   exports.CubicOctant = CubicOctant;
-  exports.EDGES = EDGES;
+  exports.edges = edges;
   exports.Octant = Octant;
   exports.Octree = Octree;
   exports.OctreeIterator = OctreeIterator;
   exports.OctreeRaycaster = OctreeRaycaster;
-  exports.PATTERN = PATTERN;
+  exports.pattern = pattern;
   exports.PointOctant = PointOctant;
   exports.PointOctree = PointOctree;
+  exports.RayPointIntersection = RayPointIntersection;
+  exports.OctreeUtils = OctreeUtils;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
