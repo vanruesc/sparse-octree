@@ -434,7 +434,8 @@ export class PointOctree extends Octree {
 		this.root = new PointOctant(min, max);
 
 		/**
-		 * A threshold for proximity checks.
+		 * An octant boundary bias. The octree becomes loose with a value greater
+		 * than 0.
 		 *
 		 * @type {Number}
 		 * @private
@@ -442,16 +443,6 @@ export class PointOctree extends Octree {
 		 */
 
 		this.bias = Math.max(0.0, bias);
-
-		/**
-		 * The proximity threshold squared.
-		 *
-		 * @type {Number}
-		 * @private
-		 * @default 0.0
-		 */
-
-		this.biasSquared = this.bias * this.bias;
 
 		/**
 		 * Number of points per octant before a split occurs.
