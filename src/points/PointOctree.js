@@ -125,29 +125,29 @@ function put(point, data, octree, octant, depth) {
  * Recursively finds a point in the octree and removes it.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Octant} parent - The parent of the octant.
- * @param {Vector3} p - A point.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} maxPoints - Number of distinct points per octant before it splits up.
+ * @param {Vector3} point - A point.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
+ * @param {Octant} parent - The parent of the current octant.
+ * @return {Object} The data entry of the removed point or null if it didn't exist.
  */
 
-function remove(octant, parent, p, bias, maxPoints) {
+function remove(point, octree, octant, parent) {
 
 	const children = octant.children;
 
-	let done = false;
+	let result = null;
 
 	let i, l;
 	let points, data, last;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children !== null) {
 
-			for(i = 0, l = children.length; !done && i < l; ++i) {
+			for(i = 0, l = children.length; result === null && i < l; ++i) {
 
-				done = remove(children[i], octant, p, bias, maxPoints);
+				result = remove(point, octree, children[i], octant);
 
 			}
 
@@ -156,11 +156,12 @@ function remove(octant, parent, p, bias, maxPoints) {
 			points = octant.points;
 			data = octant.data;
 
-			for(i = 0, l = points.length; !done && i < l; ++i) {
+			for(i = 0, l = points.length; i < l; ++i) {
 
-				if(points[i].equals(p)) {
+				if(points[i].equals(point)) {
 
 					last = l - 1;
+					result = data[i];
 
 					// If the point is NOT the last one in the array:
 					if(i < last) {
@@ -175,13 +176,14 @@ function remove(octant, parent, p, bias, maxPoints) {
 					points.pop();
 					data.pop();
 
-					if(parent !== null && countPoints(parent) <= maxPoints) {
+
+					if(parent !== null && countPoints(parent) <= octree.maxPoints) {
 
 						parent.merge();
 
 					}
 
-					done = true;
+					break;
 
 				}
 
@@ -191,7 +193,7 @@ function remove(octant, parent, p, bias, maxPoints) {
 
 	}
 
-	return done;
+	return result;
 
 }
 
@@ -500,12 +502,13 @@ export class PointOctree extends Octree {
 	/**
 	 * Removes a point from the tree.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
+	 * @return {Object} The data entry of the removed point or null if it didn't exist.
 	 */
 
-	remove(p) {
+	remove(point) {
 
-		remove(this.root, null, p, this.bias, this.maxPoints);
+		return remove(point, this, this.root, null);
 
 	}
 
