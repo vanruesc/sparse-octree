@@ -47,7 +47,7 @@ const max = new Vector3(1, 1, 1);
 const octree = new PointOctree(min, max);
 const myData = {};
 
-octree.add(new Vector3(0, 0, 0), myData);
+octree.put(new Vector3(0, 0, 0), myData);
 octree.fetch(new Vector3(0, 0, 0)); // => myData
 ```
 
@@ -59,7 +59,7 @@ A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/5/
 - Base Functionality
 	- Pointer-based structure
   - Handles octant splitting
-  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-PATTERN)
+  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-pattern)
   - Supports raycasting
   - Supports culling
   - Supports cubic octrees
