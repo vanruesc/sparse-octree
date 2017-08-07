@@ -91,6 +91,7 @@ function put(point, data, octree, octant, depth) {
 
 				octant.points.push(point.clone());
 				octant.data.push(data);
+				++octree.pointCount;
 				done = true;
 
 			} else {
@@ -176,6 +177,7 @@ function remove(point, octree, octant, parent) {
 					points.pop();
 					data.pop();
 
+					--octree.pointCount;
 
 					if(parent !== null && countPoints(parent) <= octree.maxPoints) {
 
@@ -469,17 +471,26 @@ export class PointOctree extends Octree {
 
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
 
+		/**
+		 * The amount of points that are currently in this octree.
+		 *
+		 * @type {Number}
+		 */
+
+		this.pointCount = 0;
+
 	}
 
 	/**
-	 * Counts how many points are in this octree.
+	 * Counts how many points are in the given octant.
 	 *
+	 * @param {Octant} octant - An octant.
 	 * @return {Number} The amount of points.
 	 */
 
-	countPoints() {
+	countPoints(octant) {
 
-		return countPoints(this.root);
+		return countPoints(octant);
 
 	}
 
