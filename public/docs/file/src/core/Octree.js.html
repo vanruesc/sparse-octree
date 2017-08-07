@@ -37,10 +37,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -54,11 +56,11 @@ import { OctreeRaycaster } from &quot;./OctreeRaycaster.js&quot;;
 /**
  * A 3D box.
  *
- * @type Box3
+ * @type {Box3}
  * @private
  */
 
-const box3 = new Box3();
+const b = new Box3();
 
 /**
  * Recursively calculates the depth of the given octree.
@@ -101,7 +103,7 @@ function getDepth(octant) {
  * @private
  * @param {Octant} octant - An octant.
  * @param {Frustum|Box3} region - A region.
- * @param {Array} result - A list to be filled with octants that intersect with the region.
+ * @param {Octant[]} result - A list to be filled with octants that intersect with the region.
  */
 
 function cull(octant, region, result) {
@@ -110,10 +112,10 @@ function cull(octant, region, result) {
 
 	let i, l;
 
-	box3.min = octant.min;
-	box3.max = octant.max;
+	b.min = octant.min;
+	b.max = octant.max;
 
-	if(region.intersectsBox(box3)) {
+	if(region.intersectsBox(b)) {
 
 		if(children !== null) {
 
@@ -140,7 +142,7 @@ function cull(octant, region, result) {
  * @param {Octant} octant - An octant.
  * @param {Number} level - The target depth level.
  * @param {Number} depth - The current depth level.
- * @param {Array} result - A list to be filled with the identified octants.
+ * @param {Octant[]} result - A list to be filled with the identified octants.
  */
 
 function findOctantsByLevel(octant, level, depth, result) {
@@ -178,8 +180,8 @@ export class Octree {
 	/**
 	 * Constructs a new octree.
 	 *
-	 * @param {Vector3} [min] - The lower bounds of the tree.
-	 * @param {Vector3} [max] - The upper bounds of the tree.
+	 * @param {Vector3} [min] - The lower bounds of the tree. If not provided, the octree will not create a root node.
+	 * @param {Vector3} [max] - The upper bounds of the tree. If not provided, the octree will not create a root node.
 	 */
 
 	constructor(min, max) {
@@ -222,18 +224,20 @@ export class Octree {
 	/**
 	 * Calculates the center of this octree.
 	 *
-	 * @return {Vector3} A new vector that describes the center of this octree.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the center of this octree.
 	 */
 
-	getCenter() { return this.root.getCenter(); }
+	getCenter(target) { return this.root.getCenter(target); }
 
 	/**
 	 * Calculates the size of this octree.
 	 *
-	 * @return {Vector3} A new vector that describes the size of this octree.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the size of this octree.
 	 */
 
-	getDimensions() { return this.root.getDimensions(); }
+	getDimensions(target) { return this.root.getDimensions(target); }
 
 	/**
 	 * Calculates the current depth of this octree.
@@ -282,7 +286,7 @@ export class Octree {
 	 * octants are sorted by distance, closest first.
 	 *
 	 * @param {Raycaster} raycaster - A raycaster.
-	 * @param {Array} [intersects] - A list to be filled with intersecting octants.
+	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
 	 * @return {Octant[]} The intersecting octants.
 	 */
 

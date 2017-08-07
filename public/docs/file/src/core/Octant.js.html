@@ -37,16 +37,27 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/core/Octant.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const c = new Vector3();
 
 /**
  * An octant.
@@ -57,8 +68,8 @@ export class Octant {
 	/**
 	 * Constructs a new octant.
 	 *
-	 * @param {Vector3} min - The lower bounds.
-	 * @param {Vector3} max - The upper bounds.
+	 * @param {Vector3} [min] - The lower bounds.
+	 * @param {Vector3} [max] - The upper bounds.
 	 */
 
 	constructor(min = new Vector3(), max = new Vector3()) {
@@ -93,91 +104,69 @@ export class Octant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @return {Vector3} A new vector that describes the center of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the center of this octant.
 	 */
 
-	getCenter() { return this.min.clone().add(this.max).multiplyScalar(0.5); }
+	getCenter(target = new Vector3()) {
+
+		return target.copy(this.min).add(this.max).multiplyScalar(0.5);
+
+	}
 
 	/**
 	 * Computes the size of this octant.
 	 *
-	 * @return {Vector3} A new vector that describes the size of this octant.
+	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
+	 * @return {Vector3} A vector that describes the size of this octant.
 	 */
 
-	getDimensions() { return this.max.clone().sub(this.min); }
+	getDimensions(target = new Vector3()) {
+
+		return target.copy(this.max).sub(this.min);
+
+	}
 
 	/**
 	 * Splits this octant into eight smaller ones.
-	 *
-	 * @param {Array} [octants] - A list of octants to recycle.
 	 */
 
-	split(octants) {
+	split() {
 
 		const min = this.min;
 		const max = this.max;
-		const mid = this.getCenter();
+		const mid = this.getCenter(c);
 
-		let i, j;
-		let l = 0;
-		let combination;
+		const children = this.children = [
 
-		let halfDimensions;
-		let v, child, octant;
+			null, null,
+			null, null,
+			null, null,
+			null, null
 
-		if(Array.isArray(octants)) {
+		];
 
-			halfDimensions = this.getDimensions().multiplyScalar(0.5);
-			v = [new Vector3(), new Vector3(), new Vector3()];
-			l = octants.length;
-
-		}
-
-		this.children = [];
+		let i, combination;
 
 		for(i = 0; i &lt; 8; ++i) {
 
-			combination = PATTERN[i];
-			octant = null;
+			combination = pattern[i];
 
-			if(l &gt; 0) {
-
-				v[1].addVectors(min, v[0].fromArray(combination).multiply(halfDimensions));
-				v[2].addVectors(mid, v[0].fromArray(combination).multiply(halfDimensions));
-
-				// Find an octant that matches the current combination.
-				for(j = 0; j &lt; l; ++j) {
-
-					child = octants[j];
-
-					if(child !== null &amp;&amp; v[1].equals(child.min) &amp;&amp; v[2].equals(child.max)) {
-
-						octant = child;
-						octants[j] = null;
-
-						break;
-
-					}
-
-				}
-
-			}
-
-			this.children.push((octant !== null) ? octant : new this.constructor(
+			children[i] = new this.constructor(
 
 				new Vector3(
-					((combination[0] === 0) ? min.x : mid.x),
-					((combination[1] === 0) ? min.y : mid.y),
-					((combination[2] === 0) ? min.z : mid.z)
+					(combination[0] === 0) ? min.x : mid.x,
+					(combination[1] === 0) ? min.y : mid.y,
+					(combination[2] === 0) ? min.z : mid.z
 				),
 
 				new Vector3(
-					((combination[0] === 0) ? mid.x : max.x),
-					((combination[1] === 0) ? mid.y : max.y),
-					((combination[2] === 0) ? mid.z : max.z)
+					(combination[0] === 0) ? mid.x : max.x,
+					(combination[1] === 0) ? mid.y : max.y,
+					(combination[2] === 0) ? mid.z : max.z
 				)
 
-			));
+			);
 
 		}
 
@@ -200,7 +189,7 @@ export class Octant {
  * @type {Uint8Array[]}
  */
 
-export const PATTERN = [
+export const pattern = [
 
 	new Uint8Array([0, 0, 0]),
 	new Uint8Array([0, 0, 1]),
@@ -220,7 +209,7 @@ export const PATTERN = [
  * @type {Uint8Array[]}
  */
 
-export const EDGES = [
+export const edges = [
 
 	// X-Axis.
 	new Uint8Array([0, 4]),

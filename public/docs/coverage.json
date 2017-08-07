@@ -1,7 +1,7 @@
 {
-  "coverage": "95.23%",
-  "expectCount": 63,
-  "actualCount": 60,
+  "coverage": "95.94%",
+  "expectCount": 74,
+  "actualCount": 71,
   "files": {
     "src/core/CubicOctant.js": {
       "expectCount": 9,
@@ -17,14 +17,14 @@
       "expectCount": 14,
       "actualCount": 13,
       "undocumentLines": [
-        271
+        273
       ]
     },
     "src/core/OctreeIterator.js": {
       "expectCount": 8,
       "actualCount": 7,
       "undocumentLines": [
-        217
+        218
       ]
     },
     "src/core/OctreeRaycaster.js": {
@@ -32,16 +32,26 @@
       "actualCount": 2,
       "undocumentLines": []
     },
+    "src/utils/OctreeUtils.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
     "src/points/PointOctant.js": {
-      "expectCount": 9,
-      "actualCount": 8,
+      "expectCount": 10,
+      "actualCount": 9,
       "undocumentLines": [
-        185
+        193
       ]
     },
     "src/points/PointOctree.js": {
-      "expectCount": 11,
-      "actualCount": 11,
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "src/points/RayPointIntersection.js": {
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     }
   }

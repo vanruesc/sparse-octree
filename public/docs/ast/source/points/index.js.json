@@ -204,12 +204,104 @@
           "column": 47
         }
       }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
+      "specifiers": [
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "RayPointIntersection",
+            "range": [
+              194,
+              214
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 9
+              },
+              "end": {
+                "line": 9,
+                "column": 29
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "RayPointIntersection",
+            "range": [
+              194,
+              214
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 9
+              },
+              "end": {
+                "line": 9,
+                "column": 29
+              }
+            }
+          },
+          "range": [
+            194,
+            214
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 9
+            },
+            "end": {
+              "line": 9,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./RayPointIntersection.js",
+        "raw": "\"./RayPointIntersection.js\"",
+        "range": [
+          222,
+          249
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 37
+          },
+          "end": {
+            "line": 9,
+            "column": 64
+          }
+        }
+      },
+      "range": [
+        185,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 65
+        }
+      }
     }
   ],
   "sourceType": "module",
   "range": [
     87,
-    183
+    250
   ],
   "loc": {
     "start": {
@@ -217,8 +309,8 @@
       "column": 0
     },
     "end": {
-      "line": 8,
-      "column": 47
+      "line": 9,
+      "column": 65
     }
   },
   "comments": [

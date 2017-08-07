@@ -62,7 +62,7 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "EDGES",
+            "name": "edges",
             "range": [
               108,
               113
@@ -80,7 +80,7 @@
           },
           "local": {
             "type": "Identifier",
-            "name": "EDGES",
+            "name": "edges",
             "range": [
               108,
               113
@@ -327,7 +327,7 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "PATTERN",
+            "name": "pattern",
             "range": [
               174,
               181
@@ -345,7 +345,7 @@
           },
           "local": {
             "type": "Identifier",
-            "name": "PATTERN",
+            "name": "pattern",
             "range": [
               174,
               181
@@ -540,6 +540,59 @@
               "column": 12
             }
           }
+        },
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "RayPointIntersection",
+            "range": [
+              244,
+              264
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 1
+              },
+              "end": {
+                "line": 20,
+                "column": 21
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "RayPointIntersection",
+            "range": [
+              244,
+              264
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 1
+              },
+              "end": {
+                "line": 20,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            244,
+            264
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 1
+            },
+            "end": {
+              "line": 20,
+              "column": 21
+            }
+          }
         }
       ],
       "source": {
@@ -547,23 +600,23 @@
         "value": "./points",
         "raw": "\"./points\"",
         "range": [
-          249,
-          259
+          273,
+          283
         ],
         "loc": {
           "start": {
-            "line": 20,
+            "line": 21,
             "column": 7
           },
           "end": {
-            "line": 20,
+            "line": 21,
             "column": 17
           }
         }
       },
       "range": [
         203,
-        260
+        284
       ],
       "loc": {
         "start": {
@@ -571,8 +624,100 @@
           "column": 0
         },
         "end": {
-          "line": 20,
+          "line": 21,
           "column": 18
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
+      "specifiers": [
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "OctreeUtils",
+            "range": [
+              299,
+              310
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 1
+              },
+              "end": {
+                "line": 24,
+                "column": 12
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "OctreeUtils",
+            "range": [
+              299,
+              310
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 1
+              },
+              "end": {
+                "line": 24,
+                "column": 12
+              }
+            }
+          },
+          "range": [
+            299,
+            310
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 1
+            },
+            "end": {
+              "line": 24,
+              "column": 12
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./utils",
+        "raw": "\"./utils\"",
+        "range": [
+          319,
+          328
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 7
+          },
+          "end": {
+            "line": 25,
+            "column": 16
+          }
+        }
+      },
+      "range": [
+        288,
+        329
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 17
         }
       }
     }
@@ -580,7 +725,7 @@
   "sourceType": "module",
   "range": [
     82,
-    260
+    329
   ],
   "loc": {
     "start": {
@@ -588,8 +733,8 @@
       "column": 0
     },
     "end": {
-      "line": 20,
-      "column": 18
+      "line": 25,
+      "column": 17
     }
   },
   "comments": [

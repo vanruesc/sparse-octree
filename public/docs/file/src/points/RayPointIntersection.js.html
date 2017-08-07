@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/points/PointOctant.js | API Document</title>
+  <title data-ice="title">src/points/RayPointIntersection.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -47,202 +47,56 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/points/PointOctant.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
-import { Octant } from &quot;../core/Octant.js&quot;;
-
-/**
- * A point.
- *
- * @type {Vector3}
- * @private
+<div class="content" data-ice="content"><h1 data-ice="title">src/points/RayPointIntersection.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * A collection of ray-point intersection data.
  */
 
-const p = new Vector3();
-
-/**
- * An octant that maintains points.
- */
-
-export class PointOctant extends Octant {
+export class RayPointIntersection {
 
 	/**
-	 * Constructs a new point octant.
+	 * Constructs new ray-point intersection data.
 	 *
-	 * @param {Vector3} [min] - The lower bounds.
-	 * @param {Vector3} [max] - The upper bounds.
+	 * @param {Number} distance - The distance from the origin of the ray to the point.
+	 * @param {Number} distanceToRay - The distance from the point to the ray.
+	 * @param {Vector3} point - The point.
+	 * @param {Object} [object=null] - The point&apos;s data.
 	 */
 
-	constructor(min, max) {
-
-		super(min, max);
+	constructor(distance, distanceToRay, point, object = null) {
 
 		/**
-		 * The points.
+		 * The distance from the origin of the ray to the point.
 		 *
-		 * @type {Vector3[]}
+		 * @type {Number}
 		 */
 
-		this.points = null;
+		this.distance = distance;
 
 		/**
-		 * Point data.
+		 * The shortest distance from the point to the ray.
 		 *
-		 * @type {Array}
+		 * @type {Number}
 		 */
 
-		this.data = null;
+		this.distanceToRay = distanceToRay;
 
-	}
+		/**
+		 * The point.
+		 *
+		 * @type {Vector3}
+		 */
 
-	/**
-	 * Computes the distance squared from this octant to the given point.
-	 *
-	 * @param {Vector3} point - A point.
-	 * @return {Number} The distance squared.
-	 */
+		this.point = point;
 
-	distanceToSquared(point) {
+		/**
+		 * The point&apos;s data.
+		 *
+		 * @type {Object}
+		 * @default null
+		 */
 
-		const clampedPoint = p.copy(point).clamp(this.min, this.max);
-
-		return clampedPoint.sub(p).lengthSq();
-
-	}
-
-	/**
-	 * Computes the distance squared from the center of this octant to the given
-	 * point.
-	 *
-	 * @param {Vector3} point - A point.
-	 * @return {Number} The distance squared.
-	 */
-
-	distanceToCenterSquared(point) {
-
-		const center = this.getCenter(p);
-
-		const dx = point.x - center.x;
-		const dy = point.y - center.x;
-		const dz = point.z - center.z;
-
-		return dx * dx + dy * dy + dz * dz;
-
-	}
-
-	/**
-	 * Checks if the given point lies inside this octant&apos;s boundaries.
-	 *
-	 * This method can also be used to check if this octant intersects a sphere by
-	 * providing a radius as bias.
-	 *
-	 * @param {Vector3} point - A point.
-	 * @param {Number} bias - A padding that extends the boundaries temporarily.
-	 * @return {Boolean} Whether the given point lies inside this octant.
-	 */
-
-	contains(point, bias) {
-
-		const min = this.min;
-		const max = this.max;
-
-		return (
-			point.x &gt;= min.x - bias &amp;&amp;
-			point.y &gt;= min.y - bias &amp;&amp;
-			point.z &gt;= min.z - bias &amp;&amp;
-			point.x &lt;= max.x + bias &amp;&amp;
-			point.y &lt;= max.y + bias &amp;&amp;
-			point.z &lt;= max.z + bias
-		);
-
-	}
-
-	/**
-	 * Redistributes existing points to child octants.
-	 *
-	 * @param {Number} bias - A proximity threshold.
-	 */
-
-	redistribute(bias) {
-
-		const children = this.children;
-		const points = this.points;
-		const data = this.data;
-
-		let i, j, il, jl;
-		let child, point, entry;
-
-		if(children !== null) {
-
-			for(i = 0, il = points.length; i &lt; il; ++i) {
-
-				point = points[i];
-				entry = data[i];
-
-				for(j = 0, jl = children.length; j &lt; jl; ++j) {
-
-					child = children[j];
-
-					if(child.contains(point, bias)) {
-
-						if(child.points === null) {
-
-							child.points = [];
-							child.data = [];
-
-						}
-
-						child.points.push(point);
-						child.data.push(entry);
-
-						break;
-
-					}
-
-				}
-
-			}
-
-		}
-
-		this.points = null;
-		this.data = null;
-
-	}
-
-	/**
-	 * Gathers all points from the children. The children are expected to be leaf
-	 * octants and will be dropped afterwards.
-	 */
-
-	merge() {
-
-		const children = this.children;
-
-		let i, l;
-		let child;
-
-		if(children !== null) {
-
-			this.points = [];
-			this.data = [];
-
-			for(i = 0, l = children.length; i &lt; l; ++i) {
-
-				child = children[i];
-
-				if(child.points !== null) {
-
-					this.points.push(...child.points);
-					this.data.push(...child.data);
-
-				}
-
-			}
-
-			this.children = null;
-
-		}
+		this.object = object;
 
 	}
 

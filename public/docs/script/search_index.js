@@ -6,12 +6,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "sparse-octree/src/core/octant.js~edges",
-    "variable/index.html#static-variable-EDGES",
-    "<span>EDGES</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
-    "variable"
-  ],
-  [
     "sparse-octree/src/core/octant.js~octant",
     "class/src/core/Octant.js~Octant.html",
     "<span>Octant</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
@@ -36,10 +30,10 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "sparse-octree/src/core/octant.js~pattern",
-    "variable/index.html#static-variable-PATTERN",
-    "<span>PATTERN</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
-    "variable"
+    "sparse-octree/src/utils/octreeutils.js~octreeutils",
+    "class/src/utils/OctreeUtils.js~OctreeUtils.html",
+    "<span>OctreeUtils</span> <span class=\"search-result-import-path\">sparse-octree/src/utils/OctreeUtils.js</span>",
+    "class"
   ],
   [
     "sparse-octree/src/points/pointoctant.js~pointoctant",
@@ -52,6 +46,24 @@ window.esdocSearchIndex = [
     "class/src/points/PointOctree.js~PointOctree.html",
     "<span>PointOctree</span> <span class=\"search-result-import-path\">sparse-octree/src/points/PointOctree.js</span>",
     "class"
+  ],
+  [
+    "sparse-octree/src/points/raypointintersection.js~raypointintersection",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html",
+    "<span>RayPointIntersection</span> <span class=\"search-result-import-path\">sparse-octree/src/points/RayPointIntersection.js</span>",
+    "class"
+  ],
+  [
+    "sparse-octree/src/core/octant.js~edges",
+    "variable/index.html#static-variable-edges",
+    "<span>edges</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
+    "variable"
+  ],
+  [
+    "sparse-octree/src/core/octant.js~pattern",
+    "variable/index.html#static-variable-pattern",
+    "<span>pattern</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
+    "variable"
   ],
   [
     "builtinexternal/ecmascriptexternal.js~array",
@@ -684,6 +696,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/points/pointoctant.js~pointoctant#merge",
+    "class/src/points/PointOctant.js~PointOctant.html#instance-method-merge",
+    "src/points/PointOctant.js~PointOctant#merge",
+    "method"
+  ],
+  [
     "src/points/pointoctant.js~pointoctant#points",
     "class/src/points/PointOctant.js~PointOctant.html#instance-member-points",
     "src/points/PointOctant.js~PointOctant#points",
@@ -700,12 +718,6 @@ window.esdocSearchIndex = [
     "file/src/points/PointOctree.js.html",
     "src/points/PointOctree.js",
     "file"
-  ],
-  [
-    "src/points/pointoctree.js~pointoctree#add",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-method-add",
-    "src/points/PointOctree.js~PointOctree#add",
-    "method"
   ],
   [
     "src/points/pointoctree.js~pointoctree#constructor",
@@ -738,6 +750,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/points/pointoctree.js~pointoctree#move",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-method-move",
+    "src/points/PointOctree.js~PointOctree#move",
+    "method"
+  ],
+  [
+    "src/points/pointoctree.js~pointoctree#pointcount",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-member-pointCount",
+    "src/points/PointOctree.js~PointOctree#pointCount",
+    "member"
+  ],
+  [
+    "src/points/pointoctree.js~pointoctree#put",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-method-put",
+    "src/points/PointOctree.js~PointOctree#put",
+    "method"
+  ],
+  [
     "src/points/pointoctree.js~pointoctree#raycast",
     "class/src/points/PointOctree.js~PointOctree.html#instance-method-raycast",
     "src/points/PointOctree.js~PointOctree#raycast",
@@ -762,9 +792,63 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/points/raypointintersection.js",
+    "file/src/points/RayPointIntersection.js.html",
+    "src/points/RayPointIntersection.js",
+    "file"
+  ],
+  [
+    "src/points/raypointintersection.js~raypointintersection#constructor",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-constructor-constructor",
+    "src/points/RayPointIntersection.js~RayPointIntersection#constructor",
+    "method"
+  ],
+  [
+    "src/points/raypointintersection.js~raypointintersection#distance",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distance",
+    "src/points/RayPointIntersection.js~RayPointIntersection#distance",
+    "member"
+  ],
+  [
+    "src/points/raypointintersection.js~raypointintersection#distancetoray",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distanceToRay",
+    "src/points/RayPointIntersection.js~RayPointIntersection#distanceToRay",
+    "member"
+  ],
+  [
+    "src/points/raypointintersection.js~raypointintersection#object",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-object",
+    "src/points/RayPointIntersection.js~RayPointIntersection#object",
+    "member"
+  ],
+  [
+    "src/points/raypointintersection.js~raypointintersection#point",
+    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-point",
+    "src/points/RayPointIntersection.js~RayPointIntersection#point",
+    "member"
+  ],
+  [
     "src/points/index.js",
     "file/src/points/index.js.html",
     "src/points/index.js",
+    "file"
+  ],
+  [
+    "src/utils/octreeutils.js",
+    "file/src/utils/OctreeUtils.js.html",
+    "src/utils/OctreeUtils.js",
+    "file"
+  ],
+  [
+    "src/utils/octreeutils.js~octreeutils.recycleoctants",
+    "class/src/utils/OctreeUtils.js~OctreeUtils.html#static-method-recycleOctants",
+    "src/utils/OctreeUtils.js~OctreeUtils.recycleOctants",
+    "method"
+  ],
+  [
+    "src/utils/index.js",
+    "file/src/utils/index.js.html",
+    "src/utils/index.js",
     "file"
   ]
 ]

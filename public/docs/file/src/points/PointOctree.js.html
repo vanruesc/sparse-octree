@@ -37,10 +37,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EDGES">EDGES</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PATTERN">PATTERN</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -48,9 +50,19 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/points/PointOctree.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Octree } from &quot;../core/Octree.js&quot;;
 import { PointOctant } from &quot;./PointOctant.js&quot;;
+import { RayPointIntersection } from &quot;./RayPointIntersection.js&quot;;
 
 /**
- * Recursively counts how many points are in the given octree.
+ * A threshold for distance comparisons.
+ *
+ * @type {Number}
+ * @private
+ */
+
+const THRESHOLD = 1e-6;
+
+/**
+ * Recursively counts how many points are in the given octant.
  *
  * @private
  * @param {Octant} octant - An octant.
@@ -83,26 +95,25 @@ function countPoints(octant) {
 }
 
 /**
- * Recursively adds a point to the octree.
+ * Recursively places a point into the octree.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A point.
+ * @param {Vector3} point - A point.
  * @param {Object} data - An object that the point represents.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
  * @param {Number} depth - The current depth.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} maxPoints - Number of distinct points per octant before it splits up.
- * @param {Number} maxDepth - The maximum tree depth level, starting at 0.
+ * @return {Boolean} Whether the operation was successful.
  */
 
-function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
+function put(point, data, octree, octant, depth) {
 
 	let children = octant.children;
 	let exists = false;
 	let done = false;
 	let i, l;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children === null) {
 
@@ -115,7 +126,7 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 
 				for(i = 0, l = octant.points.length; !exists &amp;&amp; i &lt; l; ++i) {
 
-					exists = octant.points[i].equals(p);
+					exists = octant.points[i].equals(point);
 
 				}
 
@@ -124,20 +135,19 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 			if(exists) {
 
 				octant.data[i - 1] = data;
-
 				done = true;
 
-			} else if(octant.points.length &lt; maxPoints || depth === maxDepth) {
+			} else if(octant.points.length &lt; octree.maxPoints || depth === octree.maxDepth) {
 
-				octant.points.push(p.clone());
+				octant.points.push(point.clone());
 				octant.data.push(data);
-
+				++octree.pointCount;
 				done = true;
 
 			} else {
 
 				octant.split();
-				octant.redistribute(bias);
+				octant.redistribute(octree.bias);
 				children = octant.children;
 
 			}
@@ -150,7 +160,7 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 
 			for(i = 0, l = children.length; !done &amp;&amp; i &lt; l; ++i) {
 
-				done = add(children[i], p, data, depth, bias, maxPoints, maxDepth);
+				done = put(point, data, octree, children[i], depth);
 
 			}
 
@@ -166,29 +176,29 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
  * Recursively finds a point in the octree and removes it.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Octant} parent - The parent of the octant.
- * @param {Vector3} p - A point.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} maxPoints - Number of distinct points per octant before it splits up.
+ * @param {Vector3} point - A point.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
+ * @param {Octant} parent - The parent of the current octant.
+ * @return {Object} The data entry of the removed point or null if it didn&apos;t exist.
  */
 
-function remove(octant, parent, p, bias, maxPoints) {
+function remove(point, octree, octant, parent) {
 
 	const children = octant.children;
 
-	let done = false;
+	let result = null;
 
 	let i, l;
 	let points, data, last;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children !== null) {
 
-			for(i = 0, l = children.length; !done &amp;&amp; i &lt; l; ++i) {
+			for(i = 0, l = children.length; result === null &amp;&amp; i &lt; l; ++i) {
 
-				done = remove(children[i], octant, p, bias, maxPoints);
+				result = remove(point, octree, children[i], octant);
 
 			}
 
@@ -197,11 +207,12 @@ function remove(octant, parent, p, bias, maxPoints) {
 			points = octant.points;
 			data = octant.data;
 
-			for(i = 0, l = points.length; !done &amp;&amp; i &lt; l; ++i) {
+			for(i = 0, l = points.length; i &lt; l; ++i) {
 
-				if(points[i].equals(p)) {
+				if(points[i].equals(point)) {
 
 					last = l - 1;
+					result = data[i];
 
 					// If the point is NOT the last one in the array:
 					if(i &lt; last) {
@@ -216,13 +227,15 @@ function remove(octant, parent, p, bias, maxPoints) {
 					points.pop();
 					data.pop();
 
-					if(parent !== null &amp;&amp; countPoints(parent) &lt;= maxPoints) {
+					--octree.pointCount;
+
+					if(parent !== null &amp;&amp; countPoints(parent) &lt;= octree.maxPoints) {
 
 						parent.merge();
 
 					}
 
-					done = true;
+					break;
 
 				}
 
@@ -232,7 +245,7 @@ function remove(octant, parent, p, bias, maxPoints) {
 
 	}
 
-	return done;
+	return result;
 
 }
 
@@ -240,14 +253,13 @@ function remove(octant, parent, p, bias, maxPoints) {
  * Recursively finds a point in the octree and fetches the associated data.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A point.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} biasSquared - The threshold squared.
+ * @param {Vector3} point - A point.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant octant.
  * @return {Object} The data entry that is associated with the given point or null if it doesn&apos;t exist.
  */
 
-function fetch(octant, p, bias, biasSquared) {
+function fetch(point, octree, octant) {
 
 	const children = octant.children;
 
@@ -256,13 +268,13 @@ function fetch(octant, p, bias, biasSquared) {
 	let i, l;
 	let points;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children !== null) {
 
 			for(i = 0, l = children.length; result === null &amp;&amp; i &lt; l; ++i) {
 
-				result = fetch(children[i], p, bias, biasSquared);
+				result = fetch(point, octree, children[i]);
 
 			}
 
@@ -272,7 +284,7 @@ function fetch(octant, p, bias, biasSquared) {
 
 			for(i = 0, l = points.length; result === null &amp;&amp; i &lt; l; ++i) {
 
-				if(p.distanceToSquared(points[i]) &lt;= biasSquared) {
+				if(point.distanceToSquared(points[i]) &lt;= THRESHOLD) {
 
 					result = octant.data[i];
 
@@ -289,17 +301,90 @@ function fetch(octant, p, bias, biasSquared) {
 }
 
 /**
+ * Recursively moves an existing point to a new position.
+ *
+ * @private
+ * @param {Vector3} point - The point.
+ * @param {Vector3} position - The new position.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
+ * @param {Octant} octant - The parent of the current octant.
+ * @return {Boolean} Whether the operation was successful.
+ */
+
+function move(point, position, octree, octant, parent, depth) {
+
+	const children = octant.children;
+
+	let result = null;
+
+	let i, l;
+	let points;
+
+	if(octant.contains(point, octree.bias)) {
+
+		if(octant.contains(position, octree.bias)) {
+
+			// The point and the new position both fall into the current octant.
+			if(children !== null) {
+
+				++depth;
+
+				for(i = 0, l = children.length; result === null &amp;&amp; i &lt; l; ++i) {
+
+					result = move(point, position, octree, children[i], octant, depth);
+
+				}
+
+			} else {
+
+				// No divergence - the point can be updated in place.
+				points = octant.points;
+
+				for(i = 0, l = points.length; i &lt; l; ++i) {
+
+					if(point.distanceToSquared(points[i]) &lt;= THRESHOLD) {
+
+						// The point exists! Update its position.
+						points[i].copy(position);
+						result = octant.data[i];
+
+						break;
+
+					}
+
+				}
+
+			}
+
+		} else {
+
+			// Retrieve the point and remove it.
+			result = remove(point, octree, octant, parent);
+
+			// Go back to the parent octant and add the updated point.
+			put(position, result, octree, parent, depth - 1);
+
+		}
+
+	}
+
+	return result;
+
+}
+
+/**
  * Recursively finds the closest point to the given one.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - The point.
+ * @param {Vector3} point - The point.
  * @param {Number} maxDistance - The maximum distance.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+ * @param {Octant} octant - The current octant.
  * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
  */
 
-function findNearestPoint(octant, p, maxDistance, skipSelf) {
+function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 	const points = octant.points;
 	const children = octant.children;
@@ -308,7 +393,7 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 	let bestDist = maxDistance;
 
 	let i, l;
-	let point, distSq;
+	let p, distSq;
 
 	let sortedChildren;
 	let child, childResult;
@@ -321,12 +406,12 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 			// Precompute distances.
 			return {
 				octant: child,
-				distance: child.distanceToCenterSquared(p)
+				distance: child.distanceToCenterSquared(point)
 			};
 
 		}).sort(function(a, b) {
 
-			// Smallest distance to p first, ASC.
+			// Smallest distance to the point first, ASC.
 			return a.distance - b.distance;
 
 		});
@@ -337,13 +422,13 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 			// Unpack octant.
 			child = sortedChildren[i].octant;
 
-			if(child.contains(p, bestDist)) {
+			if(child.contains(point, bestDist)) {
 
-				childResult = findNearestPoint(child, p, bestDist, skipSelf);
+				childResult = findNearestPoint(point, bestDist, skipSelf, child);
 
 				if(childResult !== null) {
 
-					distSq = childResult.point.distanceToSquared(p);
+					distSq = childResult.point.distanceToSquared(point);
 
 					if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt; bestDist) {
 
@@ -362,15 +447,15 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
 
 		for(i = 0, l = points.length; i &lt; l; ++i) {
 
-			point = points[i];
-			distSq = p.distanceToSquared(point);
+			p = points[i];
+			distSq = point.distanceToSquared(p);
 
 			if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt; bestDist) {
 
 				bestDist = distSq;
 
 				result = {
-					point: point.clone(),
+					point: p.clone(),
 					data: octant.data[i]
 				};
 
@@ -389,22 +474,22 @@ function findNearestPoint(octant, p, maxDistance, skipSelf) {
  * position.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A position.
- * @param {Number} r - A radius.
+ * @param {Vector3} point - A position.
+ * @param {Number} radius - A radius.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+ * @param {Octant} octant - The current octant.
  * @param {Array} result - An array to be filled with objects, each containing a point and a data property.
  */
 
-function findPoints(octant, p, r, skipSelf, result) {
+function findPoints(point, radius, skipSelf, octant, result) {
 
 	const points = octant.points;
 	const children = octant.children;
-	const rSq = r * r;
+	const rSq = radius * radius;
 
 	let i, l;
 
-	let point, distSq;
+	let p, distSq;
 	let child;
 
 	if(children !== null) {
@@ -413,9 +498,9 @@ function findPoints(octant, p, r, skipSelf, result) {
 
 			child = children[i];
 
-			if(child.contains(p, r)) {
+			if(child.contains(point, radius)) {
 
-				findPoints(child, p, r, skipSelf, result);
+				findPoints(point, radius, skipSelf, child, result);
 
 			}
 
@@ -425,13 +510,13 @@ function findPoints(octant, p, r, skipSelf, result) {
 
 		for(i = 0, l = points.length; i &lt; l; ++i) {
 
-			point = points[i];
-			distSq = p.distanceToSquared(point);
+			p = points[i];
+			distSq = point.distanceToSquared(p);
 
 			if((!skipSelf || distSq &gt; 0.0) &amp;&amp; distSq &lt;= rSq) {
 
 				result.push({
-					point: point.clone(),
+					point: p.clone(),
 					data: octant.data[i]
 				});
 
@@ -452,8 +537,8 @@ export class PointOctree extends Octree {
 	/**
 	 * Constructs a new point octree.
 	 *
-	 * @param {Vector3} min - The lower bounds of the tree.
-	 * @param {Vector3} max - The upper bounds of the tree.
+	 * @param {Vector3} [min] - The lower bounds of the tree.
+	 * @param {Vector3} [max] - The upper bounds of the tree.
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
@@ -472,7 +557,8 @@ export class PointOctree extends Octree {
 		this.root = new PointOctant(min, max);
 
 		/**
-		 * A threshold for proximity checks.
+		 * An octant boundary bias. The octree becomes loose with a value greater
+		 * than 0.
 		 *
 		 * @type {Number}
 		 * @private
@@ -480,16 +566,6 @@ export class PointOctree extends Octree {
 		 */
 
 		this.bias = Math.max(0.0, bias);
-
-		/**
-		 * The proximity threshold squared.
-		 *
-		 * @type {Number}
-		 * @private
-		 * @default 0.0
-		 */
-
-		this.biasSquared = this.bias * this.bias;
 
 		/**
 		 * Number of points per octant before a split occurs.
@@ -508,8 +584,8 @@ export class PointOctree extends Octree {
 		/**
 		 * The maximum tree depth level.
 		 *
-		 * It&apos;s possible to use Infinity, but be aware that allowing infinitely
-		 * small octants can have a negative impact on performance.
+		 * It&apos;s possible to use Infinity, but keep in mind that allowing infinitely
+		 * small octants can have a severely negative impact on performance.
 		 * Finding a value that works best for a specific scene is advisable.
 		 *
 		 * @type {Number}
@@ -519,87 +595,113 @@ export class PointOctree extends Octree {
 
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
 
+		/**
+		 * The amount of points that are currently in this octree.
+		 *
+		 * @type {Number}
+		 */
+
+		this.pointCount = 0;
+
 	}
 
 	/**
-	 * Counts how many points are in this octree.
+	 * Counts how many points are in the given octant.
 	 *
+	 * @param {Octant} octant - An octant.
 	 * @return {Number} The amount of points.
 	 */
 
-	countPoints() {
+	countPoints(octant) {
 
-		return countPoints(this.root);
+		return countPoints(octant);
 
 	}
 
 	/**
-	 * Adds a point to the octree.
+	 * Puts a point into the octree.
 	 *
-	 * @param {Vector3} p - A point.
-	 * @param {Object} data - An object that the point represents.
+	 * @param {Vector3} point - A point. If it&apos;s already in the octree, the data entry will be updated.
+	 * @param {Object} data - A data object that belongs to the point.
+	 * @return {Boolean} Whether the operation was successful.
 	 */
 
-	add(p, data) {
+	put(point, data) {
 
-		add(this.root, p, data, 0, this.bias, this.maxPoints, this.maxDepth);
+		return put(point, data, this, this.root, 0);
 
 	}
 
 	/**
 	 * Removes a point from the tree.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
+	 * @return {Object} The data entry of the removed point or null if it didn&apos;t exist.
 	 */
 
-	remove(p) {
+	remove(point) {
 
-		remove(this.root, null, p, this.bias, this.maxPoints);
+		return remove(point, this, this.root, null);
 
 	}
 
 	/**
 	 * Retrieves the data of the specified point.
 	 *
-	 * @param {Vector3} p - A position.
+	 * @param {Vector3} point - A position.
 	 * @return {Object} The data entry that is associated with the given point or null if it doesn&apos;t exist.
 	 */
 
-	fetch(p) {
+	fetch(point) {
 
-		return fetch(this.root, p, this.bias, this.biasSquared);
+		return fetch(point, this, this.root);
+
+	}
+
+	/**
+	 * Moves an existing point to a new position. Has no effect if the point
+	 * doesn&apos;t exist.
+	 *
+	 * @param {Vector3} point - The point.
+	 * @param {Vector3} position - The new position.
+	 * @return {Boolean} Whether the operation was successful.
+	 */
+
+	move(point, position) {
+
+		return move(point, position, this, this.root, null, 0);
 
 	}
 
 	/**
 	 * Finds the closest point to the given one.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
 	 * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
 	 * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
 	 */
 
-	findNearestPoint(p, maxDistance = Infinity, skipSelf = false) {
+	findNearestPoint(point, maxDistance = Infinity, skipSelf = false) {
 
-		return findNearestPoint(this.root, p, maxDistance, skipSelf);
+		return findNearestPoint(point, maxDistance, skipSelf, this.root);
 
 	}
 
 	/**
 	 * Finds points that are in the specified radius around the given position.
 	 *
-	 * @param {Vector3} p - A position.
-	 * @param {Number} r - A radius.
+	 * @param {Vector3} point - A position.
+	 * @param {Number} radius - A radius.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
 	 * @return {Array} An array of objects, each containing a point and a data property.
 	 */
 
-	findPoints(p, r, skipSelf = false) {
+	findPoints(point, radius, skipSelf = false) {
 
 		const result = [];
 
-		findPoints(this.root, p, r, skipSelf, result);
+		findPoints(point, radius, skipSelf, this.root, result);
 
 		return result;
 
@@ -610,7 +712,7 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Raycaster} raycaster - The raycaster.
 	 * @param {Array} [intersects] - An array to be filled with the intersecting points.
-	 * @return {Array} The intersecting points.
+	 * @return {RayPointIntersection[]} The intersecting points.
 	 */
 
 	raycast(raycaster, intersects = []) {
@@ -631,9 +733,9 @@ export class PointOctree extends Octree {
 	/**
 	 * Collects points that intersect with the given ray.
 	 *
-	 * @param {Array} octants - An array containing octants that intersect with the ray.
+	 * @param {Octant[]} octants - An array containing octants that intersect with the ray.
 	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with the intersecting points.
+	 * @param {Array} intersects - An array to be filled with intersecting points.
 	 */
 
 	testPoints(octants, raycaster, intersects) {
@@ -669,12 +771,12 @@ export class PointOctree extends Octree {
 
 							distanceToRay = Math.sqrt(rayPointDistanceSq);
 
-							intersects.push({
-								distance: distance,
-								distanceToRay: distanceToRay,
-								point: intersectPoint.clone(),
-								object: octant.data[j]
-							});
+							intersects.push(new RayPointIntersection(
+								distance,
+								distanceToRay,
+								intersectPoint,
+								octant.data[j]
+							));
 
 						}
 
