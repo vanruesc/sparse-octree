@@ -1193,7 +1193,7 @@
   		}
   	}, {
   		key: "split",
-  		value: function split(octants) {
+  		value: function split() {
 
   			var min = this.min;
   			var mid = this.getCenter(c);
