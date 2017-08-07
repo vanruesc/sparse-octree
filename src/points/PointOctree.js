@@ -3,7 +3,16 @@ import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
- * Recursively counts how many points are in the given octree.
+ * A threshold for distance comparisons.
+ *
+ * @type {Number}
+ * @private
+ */
+
+const THRESHOLD = 1e-6;
+
+/**
+ * Recursively counts how many points are in the given octant.
  *
  * @private
  * @param {Octant} octant - An octant.
@@ -225,7 +234,7 @@ function fetch(octant, p, bias, biasSquared) {
 
 			for(i = 0, l = points.length; result === null && i < l; ++i) {
 
-				if(p.distanceToSquared(points[i]) <= biasSquared) {
+				if(point.distanceToSquared(points[i]) <= THRESHOLD) {
 
 					result = octant.data[i];
 
