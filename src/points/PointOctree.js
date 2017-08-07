@@ -45,26 +45,25 @@ function countPoints(octant) {
 }
 
 /**
- * Recursively adds a point to the octree.
+ * Recursively places a point into the octree.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A point.
+ * @param {Vector3} point - A point.
  * @param {Object} data - An object that the point represents.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant.
  * @param {Number} depth - The current depth.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} maxPoints - Number of distinct points per octant before it splits up.
- * @param {Number} maxDepth - The maximum tree depth level, starting at 0.
+ * @return {Boolean} Whether the operation was successful.
  */
 
-function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
+function put(point, data, octree, octant, depth) {
 
 	let children = octant.children;
 	let exists = false;
 	let done = false;
 	let i, l;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children === null) {
 
@@ -77,7 +76,7 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 
 				for(i = 0, l = octant.points.length; !exists && i < l; ++i) {
 
-					exists = octant.points[i].equals(p);
+					exists = octant.points[i].equals(point);
 
 				}
 
@@ -86,20 +85,18 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 			if(exists) {
 
 				octant.data[i - 1] = data;
-
 				done = true;
 
-			} else if(octant.points.length < maxPoints || depth === maxDepth) {
+			} else if(octant.points.length < octree.maxPoints || depth === octree.maxDepth) {
 
-				octant.points.push(p.clone());
+				octant.points.push(point.clone());
 				octant.data.push(data);
-
 				done = true;
 
 			} else {
 
 				octant.split();
-				octant.redistribute(bias);
+				octant.redistribute(octree.bias);
 				children = octant.children;
 
 			}
@@ -112,7 +109,7 @@ function add(octant, p, data, depth, bias, maxPoints, maxDepth) {
 
 			for(i = 0, l = children.length; !done && i < l; ++i) {
 
-				done = add(children[i], p, data, depth, bias, maxPoints, maxDepth);
+				done = put(point, data, octree, children[i], depth);
 
 			}
 
@@ -487,15 +484,16 @@ export class PointOctree extends Octree {
 	}
 
 	/**
-	 * Adds a point to the octree.
+	 * Puts a point into the octree.
 	 *
-	 * @param {Vector3} p - A point.
-	 * @param {Object} data - An object that the point represents.
+	 * @param {Vector3} point - A point. If it's already in the octree, the data entry will be updated.
+	 * @param {Object} data - A data object that belongs to the point.
+	 * @return {Boolean} Whether the operation was successful.
 	 */
 
-	add(p, data) {
+	put(point, data) {
 
-		add(this.root, p, data, 0, this.bias, this.maxPoints, this.maxDepth);
+		return put(point, data, this, this.root, 0);
 
 	}
 
