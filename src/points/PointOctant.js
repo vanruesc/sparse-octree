@@ -1,4 +1,14 @@
+import { Vector3 } from "math-ds";
 import { Octant } from "../core/Octant.js";
+
+/**
+ * A point.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const p = new Vector3();
 
 /**
  * An octant that maintains points.
@@ -9,8 +19,8 @@ export class PointOctant extends Octant {
 	/**
 	 * Constructs a new point octant.
 	 *
-	 * @param {Vector3} min - The lower bounds.
-	 * @param {Vector3} max - The upper bounds.
+	 * @param {Vector3} [min] - The lower bounds.
+	 * @param {Vector3} [max] - The upper bounds.
 	 */
 
 	constructor(min, max) {
@@ -18,9 +28,9 @@ export class PointOctant extends Octant {
 		super(min, max);
 
 		/**
-		 * The points that are inside this octant.
+		 * The points.
 		 *
-		 * @type {Array}
+		 * @type {Vector3[]}
 		 */
 
 		this.points = null;
@@ -38,13 +48,13 @@ export class PointOctant extends Octant {
 	/**
 	 * Computes the distance squared from this octant to the given point.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
 	 * @return {Number} The distance squared.
 	 */
 
-	distanceToSquared(p) {
+	distanceToSquared(point) {
 
-		const clampedPoint = p.clone().clamp(this.min, this.max);
+		const clampedPoint = p.copy(point).clamp(this.min, this.max);
 
 		return clampedPoint.sub(p).lengthSq();
 
@@ -54,17 +64,17 @@ export class PointOctant extends Octant {
 	 * Computes the distance squared from the center of this octant to the given
 	 * point.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
 	 * @return {Number} The distance squared.
 	 */
 
-	distanceToCenterSquared(p) {
+	distanceToCenterSquared(point) {
 
-		const center = this.getCenter();
+		const center = this.getCenter(p);
 
-		const dx = p.x - center.x;
-		const dy = p.y - center.x;
-		const dz = p.z - center.z;
+		const dx = point.x - center.x;
+		const dy = point.y - center.x;
+		const dz = point.z - center.z;
 
 		return dx * dx + dy * dy + dz * dz;
 
@@ -76,23 +86,23 @@ export class PointOctant extends Octant {
 	 * This method can also be used to check if this octant intersects a sphere by
 	 * providing a radius as bias.
 	 *
-	 * @param {Vector3} p - A point.
+	 * @param {Vector3} point - A point.
 	 * @param {Number} bias - A padding that extends the boundaries temporarily.
 	 * @return {Boolean} Whether the given point lies inside this octant.
 	 */
 
-	contains(p, bias) {
+	contains(point, bias) {
 
 		const min = this.min;
 		const max = this.max;
 
 		return (
-			p.x >= min.x - bias &&
-			p.y >= min.y - bias &&
-			p.z >= min.z - bias &&
-			p.x <= max.x + bias &&
-			p.y <= max.y + bias &&
-			p.z <= max.z + bias
+			point.x >= min.x - bias &&
+			point.y >= min.y - bias &&
+			point.z >= min.z - bias &&
+			point.x <= max.x + bias &&
+			point.y <= max.y + bias &&
+			point.z <= max.z + bias
 		);
 
 	}
@@ -109,19 +119,19 @@ export class PointOctant extends Octant {
 		const points = this.points;
 		const data = this.data;
 
-		let i, l;
+		let i, j, il, jl;
 		let child, point, entry;
 
 		if(children !== null) {
 
-			while(points.length > 0) {
+			for(i = 0, il = points.length; i < il; ++i) {
 
-				point = points.pop();
-				entry = data.pop();
+				point = points[i];
+				entry = data[i];
 
-				for(i = 0, l = children.length; i < l; ++i) {
+				for(j = 0, jl = children.length; j < jl; ++j) {
 
-					child = children[i];
+					child = children[j];
 
 					if(child.contains(point, bias)) {
 
@@ -153,8 +163,6 @@ export class PointOctant extends Octant {
 	/**
 	 * Gathers all points from the children. The children are expected to be leaf
 	 * octants and will be dropped afterwards.
-	 *
-	 * @private
 	 */
 
 	merge() {
