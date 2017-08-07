@@ -8,7 +8,9 @@ const box = new THREE.Box3(
 	new THREE.Vector3(1, 1, 1)
 );
 
-const data = {};
+const data0 = {};
+const data1 = {};
+const data2 = {};
 
 module.exports = {
 
@@ -40,9 +42,8 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-
-			test.equal(octree.countPoints(), 1, "should be able to add a point");
+			test.ok(octree.put(new THREE.Vector3(0, 0, 0), data0), "should succeed");
+			test.equal(octree.pointCount, 1, "should be able to add a point");
 			test.done();
 
 		},
@@ -51,11 +52,11 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(1, 0, 0), data);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
+			octree.put(new THREE.Vector3(0, 0, 0), data1);
+			octree.put(new THREE.Vector3(1, 0, 0), data2);
 
-			test.equal(octree.countPoints(), 2, "should overwrite duplicates");
+			test.equal(octree.pointCount, 2, "should overwrite duplicates");
 			test.done();
 
 		},
@@ -64,10 +65,10 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.remove(new THREE.Vector3(0, 0, 0));
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
 
-			test.equal(octree.countPoints(), 0, "should remove a point completely");
+			test.equal(octree.remove(new THREE.Vector3(0, 0, 0)), data0, "should return the data of the removed point");
+			test.equal(octree.pointCount, 0, "should remove a point completely");
 			test.done();
 
 		},
@@ -76,9 +77,9 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
 
-			test.equal(octree.fetch(new THREE.Vector3(0, 0, 0)), data, "should find points and return their data");
+			test.equal(octree.fetch(new THREE.Vector3(0, 0, 0)), data0, "should find points and return their data");
 			test.done();
 
 		},
@@ -87,9 +88,9 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(2, 0, 0), data);
+			octree.put(new THREE.Vector3(2, 0, 0), data0);
 
-			test.equal(octree.countPoints(), 0, "should not add if the point lies outside");
+			test.equal(octree.pointCount, 0, "should not add if the point lies outside");
 			test.done();
 
 		},
@@ -98,11 +99,11 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 1);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(1, 0, 0), data);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
+			octree.put(new THREE.Vector3(1, 0, 0), data1);
 
 			test.equal(octree.getDepth(), 1, "should split octants when necessary");
-			test.equal(octree.countPoints(), 2, "should not lose any points during a split");
+			test.equal(octree.pointCount, 2, "should not lose any points during a split");
 			test.done();
 
 		},
@@ -111,9 +112,9 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(1, 0, 0), data);
-			octree.add(new THREE.Vector3(0.9, 0, 0), data);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
+			octree.put(new THREE.Vector3(1, 0, 0), data1);
+			octree.put(new THREE.Vector3(0.9, 0, 0), data2);
 
 			octree.remove(new THREE.Vector3(1, 0, 0));
 
@@ -122,18 +123,34 @@ module.exports = {
 
 		},
 
+		"can move points": function(test) {
+
+			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
+
+			octree.put(new THREE.Vector3(0.5, 0.5, 0.5), data0);
+			octree.put(new THREE.Vector3(-0.5, -0.5, -0.5), data1);
+
+			octree.move(new THREE.Vector3(0.5, 0.5, 0.5), new THREE.Vector3(0.5, 0.6, 0.5));
+			octree.move(new THREE.Vector3(-0.5, -0.5, -0.5), new THREE.Vector3(1, -0.5, 1));
+
+			test.equal(octree.pointCount, 2, "should correctly add and remove points");
+			test.equal(octree.fetch(new THREE.Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
+			test.equal(octree.fetch(new THREE.Vector3(1, -0.5, 1)), data1, "should correctly update points");
+			test.done();
+
+		},
+
 		"can find the nearest point": function(test) {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
-			const data2 = {};
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(1, 0, 0), data);
-			octree.add(new THREE.Vector3(0.9, 0, 0), data);
-			octree.add(new THREE.Vector3(0.9, 0, 0.00125), data2);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
+			octree.put(new THREE.Vector3(1, 0, 0), data0);
+			octree.put(new THREE.Vector3(0.9, 0, 0), data0);
+			octree.put(new THREE.Vector3(0.9, 0, 0.00125), data1);
 
-			test.equal(octree.findNearestPoint(new THREE.Vector3(0.9, 0, 0.001)).data, data2, "should find the nearest point");
-			test.equal(octree.findNearestPoint(new THREE.Vector3(0.9, 0, 0), Infinity, true).data, data2, "should be able to skip itself");
+			test.equal(octree.findNearestPoint(new THREE.Vector3(0.9, 0, 0.001)).data, data1, "should find the nearest point");
+			test.equal(octree.findNearestPoint(new THREE.Vector3(0.9, 0, 0), Infinity, true).data, data1, "should be able to skip itself");
 			test.done();
 
 		},
@@ -142,12 +159,12 @@ module.exports = {
 
 			const octree = new lib.PointOctree(box.min, box.max, 0.0, 1, 2);
 
-			octree.add(new THREE.Vector3(0, 0, 0), data);
-			octree.add(new THREE.Vector3(0, 0.1, 0.005), data);
-			octree.add(new THREE.Vector3(-0.075, -0.1, 0.005), data);
-			octree.add(new THREE.Vector3(1, 0, 0), data);
-			octree.add(new THREE.Vector3(0.9, 0, 0), data);
-			octree.add(new THREE.Vector3(0.9, 0, 0.00125), data);
+			octree.put(new THREE.Vector3(0, 0, 0), data0);
+			octree.put(new THREE.Vector3(0, 0.1, 0.005), data0);
+			octree.put(new THREE.Vector3(-0.075, -0.1, 0.005), data1);
+			octree.put(new THREE.Vector3(1, 0, 0), data1);
+			octree.put(new THREE.Vector3(0.9, 0, 0), data2);
+			octree.put(new THREE.Vector3(0.9, 0, 0.00125), data2);
 
 			test.equal(octree.findPoints(new THREE.Vector3(0, 0, 0), 0.15).length, 3, "should find points inside a radius");
 			test.equal(octree.findPoints(new THREE.Vector3(0, 0, 0), 0.15, true).length, 2, "should be able to skip itself");
