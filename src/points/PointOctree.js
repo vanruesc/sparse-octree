@@ -257,6 +257,7 @@ function fetch(point, octree, octant) {
  * @param {Vector3} point - The point.
  * @param {Number} maxDistance - The maximum distance.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+ * @param {Octant} octant - The current octant.
  * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
  */
 
@@ -413,8 +414,8 @@ export class PointOctree extends Octree {
 	/**
 	 * Constructs a new point octree.
 	 *
-	 * @param {Vector3} min - The lower bounds of the tree.
-	 * @param {Vector3} max - The upper bounds of the tree.
+	 * @param {Vector3} [min] - The lower bounds of the tree.
+	 * @param {Vector3} [max] - The upper bounds of the tree.
 	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
@@ -460,8 +461,8 @@ export class PointOctree extends Octree {
 		/**
 		 * The maximum tree depth level.
 		 *
-		 * It's possible to use Infinity, but be aware that allowing infinitely
-		 * small octants can have a negative impact on performance.
+		 * It's possible to use Infinity, but keep in mind that allowing infinitely
+		 * small octants can have a severely negative impact on performance.
 		 * Finding a value that works best for a specific scene is advisable.
 		 *
 		 * @type {Number}
