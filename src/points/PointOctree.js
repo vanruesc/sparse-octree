@@ -348,22 +348,22 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
  * position.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A position.
- * @param {Number} r - A radius.
+ * @param {Vector3} point - A position.
+ * @param {Number} radius - A radius.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
+ * @param {Octant} octant - The current octant.
  * @param {Array} result - An array to be filled with objects, each containing a point and a data property.
  */
 
-function findPoints(octant, p, r, skipSelf, result) {
+function findPoints(point, radius, skipSelf, octant, result) {
 
 	const points = octant.points;
 	const children = octant.children;
-	const rSq = r * r;
+	const rSq = radius * radius;
 
 	let i, l;
 
-	let point, distSq;
+	let p, distSq;
 	let child;
 
 	if(children !== null) {
@@ -372,9 +372,9 @@ function findPoints(octant, p, r, skipSelf, result) {
 
 			child = children[i];
 
-			if(child.contains(p, r)) {
+			if(child.contains(point, radius)) {
 
-				findPoints(child, p, r, skipSelf, result);
+				findPoints(point, radius, skipSelf, child, result);
 
 			}
 
@@ -384,13 +384,13 @@ function findPoints(octant, p, r, skipSelf, result) {
 
 		for(i = 0, l = points.length; i < l; ++i) {
 
-			point = points[i];
-			distSq = p.distanceToSquared(point);
+			p = points[i];
+			distSq = point.distanceToSquared(p);
 
 			if((!skipSelf || distSq > 0.0) && distSq <= rSq) {
 
 				result.push({
-					point: point.clone(),
+					point: p.clone(),
 					data: octant.data[i]
 				});
 
@@ -542,17 +542,17 @@ export class PointOctree extends Octree {
 	/**
 	 * Finds points that are in the specified radius around the given position.
 	 *
-	 * @param {Vector3} p - A position.
-	 * @param {Number} r - A radius.
+	 * @param {Vector3} point - A position.
+	 * @param {Number} radius - A radius.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
 	 * @return {Array} An array of objects, each containing a point and a data property.
 	 */
 
-	findPoints(p, r, skipSelf = false) {
+	findPoints(point, radius, skipSelf = false) {
 
 		const result = [];
 
-		findPoints(this.root, p, r, skipSelf, result);
+		findPoints(point, radius, skipSelf, this.root, result);
 
 		return result;
 
