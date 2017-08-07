@@ -201,14 +201,13 @@ function remove(point, octree, octant, parent) {
  * Recursively finds a point in the octree and fetches the associated data.
  *
  * @private
- * @param {Octant} octant - An octant.
- * @param {Vector3} p - A point.
- * @param {Number} bias - A threshold for proximity checks.
- * @param {Number} biasSquared - The threshold squared.
+ * @param {Vector3} point - A point.
+ * @param {Octree} octree - The octree.
+ * @param {Octant} octant - The current octant octant.
  * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
  */
 
-function fetch(octant, p, bias, biasSquared) {
+function fetch(point, octree, octant) {
 
 	const children = octant.children;
 
@@ -217,13 +216,13 @@ function fetch(octant, p, bias, biasSquared) {
 	let i, l;
 	let points;
 
-	if(octant.contains(p, bias)) {
+	if(octant.contains(point, octree.bias)) {
 
 		if(children !== null) {
 
 			for(i = 0, l = children.length; result === null && i < l; ++i) {
 
-				result = fetch(children[i], p, bias, biasSquared);
+				result = fetch(point, octree, children[i]);
 
 			}
 
@@ -515,13 +514,13 @@ export class PointOctree extends Octree {
 	/**
 	 * Retrieves the data of the specified point.
 	 *
-	 * @param {Vector3} p - A position.
+	 * @param {Vector3} point - A position.
 	 * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
 	 */
 
-	fetch(p) {
+	fetch(point) {
+		return fetch(point, this, this.root);
 
-		return fetch(this.root, p, this.bias, this.biasSquared);
 
 	}
 
