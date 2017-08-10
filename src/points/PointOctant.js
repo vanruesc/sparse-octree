@@ -56,7 +56,7 @@ export class PointOctant extends Octant {
 
 		const clampedPoint = p.copy(point).clamp(this.min, this.max);
 
-		return clampedPoint.sub(p).lengthSq();
+		return clampedPoint.sub(point).lengthSq();
 
 	}
 
