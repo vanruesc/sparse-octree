@@ -34,6 +34,29 @@ module.exports = {
 			test.equal(octant.distanceToSquared(point), box.max.distanceToSquared(point), "should calculate the squared distance");
 			test.done();
 
+		},
+
+		"correctly computes the distance from its center to a point": function(test) {
+
+			const octant = new lib.PointOctant(box.min, box.max);
+
+			const point = new THREE.Vector3(1, 2, 3);
+
+			test.equal(octant.distanceToCenterSquared(point), octant.getCenter().distanceToSquared(point), "should calculate the squared distance");
+			test.done();
+
+		},
+
+		"can determine whether a point lies inside it": function(test) {
+
+			const octant = new lib.PointOctant(box.min, box.max);
+
+			const point = new THREE.Vector3();
+
+			test.equal(octant.contains(point.set(0, 0, 0), 0), true, "should determine that it contains the point");
+			test.equal(octant.contains(point.set(2, 0, 0), 0), false, "should determine that the point lies outside");
+			test.done();
+
 		}
 
 	},
