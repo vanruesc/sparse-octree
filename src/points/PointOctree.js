@@ -489,7 +489,7 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Vector3} [min] - The lower bounds of the tree.
 	 * @param {Vector3} [max] - The upper bounds of the tree.
-	 * @param {Number} [bias=0.0] - A threshold for proximity checks.
+	 * @param {Number} [bias=0.0] - An octant boundary bias.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
 	 */
@@ -507,8 +507,9 @@ export class PointOctree extends Octree {
 		this.root = new PointOctant(min, max);
 
 		/**
-		 * An octant boundary bias. The octree becomes loose with a value greater
-		 * than 0.
+		 * An octant boundary bias.
+		 *
+		 * The octree is considered "loose" with a bias greater than 0.
 		 *
 		 * @type {Number}
 		 * @private
