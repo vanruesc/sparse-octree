@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.0.0 build Aug 07 2017
+ * sparse-octree v4.0.1 build Aug 11 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
@@ -1624,7 +1624,7 @@
 
   			var clampedPoint = p.copy(point).clamp(this.min, this.max);
 
-  			return clampedPoint.sub(p).lengthSq();
+  			return clampedPoint.sub(point).lengthSq();
   		}
   	}, {
   		key: "distanceToCenterSquared",
