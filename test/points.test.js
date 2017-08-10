@@ -23,6 +23,17 @@ module.exports = {
 			test.ok(octant, "point octant");
 			test.done();
 
+		},
+
+		"correctly computes the distance to a point": function(test) {
+
+			const octant = new lib.PointOctant(box.min, box.max);
+
+			const point = new THREE.Vector3(1, 2, 3);
+
+			test.equal(octant.distanceToSquared(point), box.max.distanceToSquared(point), "should calculate the squared distance");
+			test.done();
+
 		}
 
 	},
