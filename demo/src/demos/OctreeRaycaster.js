@@ -181,7 +181,7 @@ export class OctreeRaycaster extends Raycaster {
 				this.selectedObject = x.object;
 				this.selectedObject.material.color.setHex(0xccff00);
 
-				this.selectedPoint.visible = true;
+				this.selectedPoint.visible = x.object.parent.visible;
 				this.selectedPoint.position.copy(x.point);
 
 			} else {
