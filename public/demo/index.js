@@ -141,7 +141,7 @@
 
   		createClass(OctreeHelper, [{
   				key: "createLineSegments",
-  				value: function createLineSegments(octants) {
+  				value: function createLineSegments(octants, octantCount) {
 
   						var maxOctants = Math.pow(2, 16) / 8 - 1;
   						var group = new three.Object3D();
@@ -150,7 +150,7 @@
   								color: 0xffffff * Math.random()
   						});
 
-  						var octantCount = octants.length;
+  						var result = void 0;
   						var vertexCount = void 0;
   						var length = void 0;
 
@@ -178,9 +178,9 @@
   								indices = new Uint16Array(vertexCount * 3);
   								positions = new Float32Array(vertexCount * 3);
 
-  								for (c = 0, d = 0; i < length; ++i) {
+  								for (c = 0, d = 0, result = octants.next(); !result.done && i < length;) {
 
-  										octant = octants[i];
+  										octant = result.value;
   										min = octant.min;
   										max = octant.max;
 
@@ -200,6 +200,11 @@
   												positions[c * 3 + 1] = corner[1] === 0 ? min.y : max.y;
   												positions[c * 3 + 2] = corner[2] === 0 ? min.z : max.z;
   										}
+
+  										if (++i < length) {
+
+  												result = octants.next();
+  										}
   								}
 
   								geometry = new three.BufferGeometry();
@@ -218,12 +223,15 @@
   						var depth = this.octree !== null ? this.octree.getDepth() : -1;
 
   						var level = 0;
+  						var result = void 0;
 
   						this.dispose();
 
   						while (level <= depth) {
 
-  								this.createLineSegments(this.octree.findOctantsByLevel(level));
+  								result = this.octree.findOctantsByLevel(level);
+
+  								this.createLineSegments(result[Symbol.iterator](), typeof result.size === "number" ? result.size : result.length);
 
   								++level;
   						}
@@ -2543,7 +2551,7 @@
   										this.selectedObject = x.object;
   										this.selectedObject.material.color.setHex(0xccff00);
 
-  										this.selectedPoint.visible = true;
+  										this.selectedPoint.visible = x.object.parent.visible;
   										this.selectedPoint.position.copy(x.point);
   								} else {
 
