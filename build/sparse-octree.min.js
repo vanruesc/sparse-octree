@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.0.1 build Aug 14 2017
+ * sparse-octree v4.0.2 build Aug 18 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
