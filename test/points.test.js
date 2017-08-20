@@ -164,10 +164,12 @@ module.exports = {
 			octree.put(new THREE.Vector3(0.5, 0.5, 0.5), data0);
 			octree.put(new THREE.Vector3(-0.5, -0.5, -0.5), data1);
 
-			octree.move(new THREE.Vector3(0.5, 0.5, 0.5), new THREE.Vector3(0.5, 0.6, 0.5));
-			octree.move(new THREE.Vector3(-0.5, -0.5, -0.5), new THREE.Vector3(1, -0.5, 1));
+			const result0 = octree.move(new THREE.Vector3(0.5, 0.5, 0.5), new THREE.Vector3(0.5, 0.6, 0.5));
+			const result1 = octree.move(new THREE.Vector3(-0.5, -0.5, -0.5), new THREE.Vector3(1, -0.5, 1));
 
-			test.equal(octree.pointCount, 2, "should correctly add and remove points");
+			test.equal(octree.pointCount, 2, "should correctly relocate points");
+			test.equal(result0, data0, "should return the data of the updated point");
+			test.equal(result1, data1, "should return the data of the updated point");
 			test.equal(octree.fetch(new THREE.Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
 			test.equal(octree.fetch(new THREE.Vector3(1, -0.5, 1)), data1, "should correctly update points");
 			test.done();
