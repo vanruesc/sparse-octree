@@ -309,7 +309,7 @@ function fetch(point, octree, octant) {
  * @param {Octree} octree - The octree.
  * @param {Octant} octant - The current octant.
  * @param {Octant} octant - The parent of the current octant.
- * @return {Boolean} Whether the operation was successful.
+ * @return {Object} The data entry of the updated point or null if it didn&apos;t exist.
  */
 
 function move(point, position, octree, octant, parent, depth) {
@@ -665,7 +665,7 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Vector3} point - The point.
 	 * @param {Vector3} position - The new position.
-	 * @return {Boolean} Whether the operation was successful.
+	 * @return {Object} The data entry of the updated point or null if it didn&apos;t exist.
 	 */
 
 	move(point, position) {
