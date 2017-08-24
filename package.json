@@ -61,7 +61,7 @@
 		"grunt-contrib-copy": "1.x.x",
 		"grunt-esdoc": "0.x.x",
 		"grunt-eslint": "20.x.x",
-		"grunt-rollup": "3.x.x",
+		"grunt-rollup": "4.x.x",
 		"jit-grunt": "0.x.x",
 		"load-grunt-config": "0.x.x",
 		"rollup-plugin-babel": "3.x.x",
