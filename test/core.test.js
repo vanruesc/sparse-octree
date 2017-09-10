@@ -205,11 +205,11 @@ module.exports = {
 
 	},
 
-	"OctreeIterator": {
+	"OctantIterator": {
 
 		"can be instantiated": function(test) {
 
-			const iterator = new lib.OctreeIterator(new lib.Octree());
+			const iterator = new lib.OctantIterator(new lib.Octree());
 
 			test.ok(iterator, "iterator");
 			test.done();
