@@ -11,15 +11,16 @@ import IteratorResult from "iterator-result";
 const b = new Box3();
 
 /**
- * An octree iterator.
+ * An octant iterator.
  *
  * @implements {Iterator}
+ * @implements {Iterable}
  */
 
-export class OctreeIterator {
+export class OctantIterator {
 
 	/**
-	 * Constructs a new octree iterator.
+	 * Constructs a new octant iterator.
 	 *
 	 * @param {Octree} octree - An octree.
 	 * @param {Frustum|Box3} [region=null] - A cull region.
@@ -88,7 +89,7 @@ export class OctreeIterator {
 	/**
 	 * Resets this iterator.
 	 *
-	 * @return {OctreeIterator} This iterator.
+	 * @return {OctantIterator} This iterator.
 	 */
 
 	reset() {
@@ -212,7 +213,7 @@ export class OctreeIterator {
 	/**
 	 * Returns this iterator.
 	 *
-	 * @return {VoxelIterator} An iterator.
+	 * @return {OctantIterator} An iterator.
 	 */
 
 	[Symbol.iterator]() {

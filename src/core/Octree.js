@@ -1,6 +1,6 @@
 import { Box3 } from "math-ds";
 import { Octant } from "./Octant.js";
-import { OctreeIterator } from "./OctreeIterator.js";
+import { OctantIterator } from "./OctantIterator.js";
 import { OctreeRaycaster } from "./OctreeRaycaster.js";
 
 /**
@@ -255,24 +255,24 @@ export class Octree {
 	 * intersect with that region.
 	 *
 	 * @param {Frustum|Box3} [region] - A cull region.
-	 * @return {OctreeIterator} An iterator.
+	 * @return {OctantIterator} An iterator.
 	 */
 
 	leaves(region) {
 
-		return new OctreeIterator(this, region);
+		return new OctantIterator(this, region);
 
 	}
 
 	/**
 	 * Returns an iterator that traverses the octree and returns all leaf nodes.
 	 *
-	 * @return {OctreeIterator} An iterator.
+	 * @return {OctantIterator} An iterator.
 	 */
 
 	[Symbol.iterator]() {
 
-		return new OctreeIterator(this);
+		return new OctantIterator(this);
 
 	}
 
