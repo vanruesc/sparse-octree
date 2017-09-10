@@ -34,8 +34,8 @@
     
   <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
@@ -50,7 +50,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/core/Octree.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Box3 } from &quot;math-ds&quot;;
 import { Octant } from &quot;./Octant.js&quot;;
-import { OctreeIterator } from &quot;./OctreeIterator.js&quot;;
+import { OctantIterator } from &quot;./OctantIterator.js&quot;;
 import { OctreeRaycaster } from &quot;./OctreeRaycaster.js&quot;;
 
 /**
@@ -305,24 +305,24 @@ export class Octree {
 	 * intersect with that region.
 	 *
 	 * @param {Frustum|Box3} [region] - A cull region.
-	 * @return {OctreeIterator} An iterator.
+	 * @return {OctantIterator} An iterator.
 	 */
 
 	leaves(region) {
 
-		return new OctreeIterator(this, region);
+		return new OctantIterator(this, region);
 
 	}
 
 	/**
 	 * Returns an iterator that traverses the octree and returns all leaf nodes.
 	 *
-	 * @return {OctreeIterator} An iterator.
+	 * @return {OctantIterator} An iterator.
 	 */
 
 	[Symbol.iterator]() {
 
-		return new OctreeIterator(this);
+		return new OctantIterator(this);
 
 	}
 

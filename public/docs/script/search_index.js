@@ -12,15 +12,15 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "sparse-octree/src/core/octree.js~octree",
-    "class/src/core/Octree.js~Octree.html",
-    "<span>Octree</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octree.js</span>",
+    "sparse-octree/src/core/octantiterator.js~octantiterator",
+    "class/src/core/OctantIterator.js~OctantIterator.html",
+    "<span>OctantIterator</span> <span class=\"search-result-import-path\">sparse-octree/src/core/OctantIterator.js</span>",
     "class"
   ],
   [
-    "sparse-octree/src/core/octreeiterator.js~octreeiterator",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html",
-    "<span>OctreeIterator</span> <span class=\"search-result-import-path\">sparse-octree/src/core/OctreeIterator.js</span>",
+    "sparse-octree/src/core/octree.js~octree",
+    "class/src/core/Octree.js~Octree.html",
+    "<span>Octree</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octree.js</span>",
     "class"
   ],
   [
@@ -498,6 +498,54 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/core/octantiterator.js",
+    "file/src/core/OctantIterator.js.html",
+    "src/core/OctantIterator.js",
+    "file"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#[symbol.iterator]",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-[Symbol.iterator]",
+    "src/core/OctantIterator.js~OctantIterator#[Symbol.iterator]",
+    "method"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#constructor",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-constructor-constructor",
+    "src/core/OctantIterator.js~OctantIterator#constructor",
+    "method"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#cull",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-cull",
+    "src/core/OctantIterator.js~OctantIterator#cull",
+    "member"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#next",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-next",
+    "src/core/OctantIterator.js~OctantIterator#next",
+    "method"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#region",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-region",
+    "src/core/OctantIterator.js~OctantIterator#region",
+    "member"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#reset",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-reset",
+    "src/core/OctantIterator.js~OctantIterator#reset",
+    "method"
+  ],
+  [
+    "src/core/octantiterator.js~octantiterator#return",
+    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-return",
+    "src/core/OctantIterator.js~OctantIterator#return",
+    "method"
+  ],
+  [
     "src/core/octree.js",
     "file/src/core/Octree.js.html",
     "src/core/Octree.js",
@@ -580,54 +628,6 @@ window.esdocSearchIndex = [
     "class/src/core/Octree.js~Octree.html#instance-member-root",
     "src/core/Octree.js~Octree#root",
     "member"
-  ],
-  [
-    "src/core/octreeiterator.js",
-    "file/src/core/OctreeIterator.js.html",
-    "src/core/OctreeIterator.js",
-    "file"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#[symbol.iterator]",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-[Symbol.iterator]",
-    "src/core/OctreeIterator.js~OctreeIterator#[Symbol.iterator]",
-    "method"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#constructor",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-constructor-constructor",
-    "src/core/OctreeIterator.js~OctreeIterator#constructor",
-    "method"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#cull",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-member-cull",
-    "src/core/OctreeIterator.js~OctreeIterator#cull",
-    "member"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#next",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-next",
-    "src/core/OctreeIterator.js~OctreeIterator#next",
-    "method"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#region",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-member-region",
-    "src/core/OctreeIterator.js~OctreeIterator#region",
-    "member"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#reset",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-reset",
-    "src/core/OctreeIterator.js~OctreeIterator#reset",
-    "method"
-  ],
-  [
-    "src/core/octreeiterator.js~octreeiterator#return",
-    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-return",
-    "src/core/OctreeIterator.js~OctreeIterator#return",
-    "method"
   ],
   [
     "src/core/octreeraycaster.js",

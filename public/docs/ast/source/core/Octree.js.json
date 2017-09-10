@@ -190,7 +190,7 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "OctreeIterator",
+            "name": "OctantIterator",
             "range": [
               81,
               95
@@ -208,7 +208,7 @@
           },
           "imported": {
             "type": "Identifier",
-            "name": "OctreeIterator",
+            "name": "OctantIterator",
             "range": [
               81,
               95
@@ -242,8 +242,8 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./OctreeIterator.js",
-        "raw": "\"./OctreeIterator.js\"",
+        "value": "./OctantIterator.js",
+        "raw": "\"./OctantIterator.js\"",
         "range": [
           103,
           124
@@ -7417,7 +7417,7 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctreeIterator} An iterator.\r\n\t ",
+                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctantIterator} An iterator.\r\n\t ",
                   "range": [
                     4863,
                     5165
@@ -7488,7 +7488,7 @@
                         "type": "NewExpression",
                         "callee": {
                           "type": "Identifier",
-                          "name": "OctreeIterator",
+                          "name": "OctantIterator",
                           "range": [
                             5203,
                             5217
@@ -7623,7 +7623,7 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctreeIterator} An iterator.\r\n\t ",
+                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctantIterator} An iterator.\r\n\t ",
                   "range": [
                     4863,
                     5165
@@ -7643,7 +7643,7 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctreeIterator} An iterator.\r\n\t ",
+                  "value": "*\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctantIterator} An iterator.\r\n\t ",
                   "range": [
                     5243,
                     5379
@@ -7731,7 +7731,7 @@
                         "type": "NewExpression",
                         "callee": {
                           "type": "Identifier",
-                          "name": "OctreeIterator",
+                          "name": "OctantIterator",
                           "range": [
                             5422,
                             5436
@@ -8243,7 +8243,7 @@
     },
     {
       "type": "Block",
-      "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctreeIterator} An iterator.\r\n\t ",
+      "value": "*\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctantIterator} An iterator.\r\n\t ",
       "range": [
         4863,
         5165
@@ -8261,7 +8261,7 @@
     },
     {
       "type": "Block",
-      "value": "*\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctreeIterator} An iterator.\r\n\t ",
+      "value": "*\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctantIterator} An iterator.\r\n\t ",
       "range": [
         5243,
         5379

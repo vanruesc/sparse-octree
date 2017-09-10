@@ -411,7 +411,7 @@
           "type": "ExportSpecifier",
           "exported": {
             "type": "Identifier",
-            "name": "OctreeIterator",
+            "name": "OctantIterator",
             "range": [
               220,
               234
@@ -429,7 +429,7 @@
           },
           "local": {
             "type": "Identifier",
-            "name": "OctreeIterator",
+            "name": "OctantIterator",
             "range": [
               220,
               234
@@ -463,8 +463,8 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./OctreeIterator.js",
-        "raw": "\"./OctreeIterator.js\"",
+        "value": "./OctantIterator.js",
+        "raw": "\"./OctantIterator.js\"",
         "range": [
           242,
           263

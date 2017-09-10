@@ -266,7 +266,7 @@
     "access": null,
     "description": null,
     "lineNumber": 7,
-    "content": "/**\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n */\r\n\r\nexport { CubicOctant } from \"./CubicOctant.js\";\r\nexport { Octree } from \"./Octree.js\";\r\nexport { Octant, pattern, edges } from \"./Octant.js\";\r\nexport { OctreeIterator } from \"./OctreeIterator.js\";\r\nexport { OctreeRaycaster } from \"./OctreeRaycaster.js\";\r\n"
+    "content": "/**\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n */\r\n\r\nexport { CubicOctant } from \"./CubicOctant.js\";\r\nexport { Octree } from \"./Octree.js\";\r\nexport { Octant, pattern, edges } from \"./Octant.js\";\r\nexport { OctantIterator } from \"./OctantIterator.js\";\r\nexport { OctreeRaycaster } from \"./OctreeRaycaster.js\";\r\n"
   },
   {
     "__docId__": 12,
@@ -552,16 +552,376 @@
     "kind": "file",
     "static": true,
     "variation": null,
+    "name": "src/core/OctantIterator.js",
+    "memberof": null,
+    "longname": "src/core/OctantIterator.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import { Box3 } from \"math-ds\";\r\nimport IteratorResult from \"iterator-result\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type {Box3}\r\n * @private\r\n */\r\n\r\nconst b = new Box3();\r\n\r\n/**\r\n * An octant iterator.\r\n *\r\n * @implements {Iterator}\r\n * @implements {Iterable}\r\n */\r\n\r\nexport class OctantIterator {\r\n\r\n\t/**\r\n\t * Constructs a new octant iterator.\r\n\t *\r\n\t * @param {Octree} octree - An octree.\r\n\t * @param {Frustum|Box3} [region=null] - A cull region.\r\n\t */\r\n\r\n\tconstructor(octree, region = null) {\r\n\r\n\t\t/**\r\n\t\t * The octree.\r\n\t\t *\r\n\t\t * @type {Octree}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.octree = octree;\r\n\r\n\t\t/**\r\n\t\t * A region used for octree culling.\r\n\t\t *\r\n\t\t * @type {Frustum|Box3}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.region = region;\r\n\r\n\t\t/**\r\n\t\t * Whether this iterator should respect the cull region.\r\n\t\t *\r\n\t\t * @type {Boolean}\r\n\t\t * @default false\r\n\t\t */\r\n\r\n\t\tthis.cull = (region !== null);\r\n\r\n\t\t/**\r\n\t\t * An iterator result.\r\n\t\t *\r\n\t\t * @type {IteratorResult}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.result = new IteratorResult();\r\n\r\n\t\t/**\r\n\t\t * An octant trace.\r\n\t\t *\r\n\t\t * @type {Octant[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.trace = null;\r\n\r\n\t\t/**\r\n\t\t * Iteration indices.\r\n\t\t *\r\n\t\t * @type {Number[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.indices = null;\r\n\r\n\t\tthis.reset();\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Resets this iterator.\r\n\t *\r\n\t * @return {OctantIterator} This iterator.\r\n\t */\r\n\r\n\treset() {\r\n\r\n\t\tconst root = this.octree.root;\r\n\r\n\t\tthis.trace = [];\r\n\t\tthis.indices = [];\r\n\r\n\t\tif(root !== null) {\r\n\r\n\t\t\tb.min = root.min;\r\n\t\t\tb.max = root.max;\r\n\r\n\t\t\tif(!this.cull || this.region.intersectsBox(b)) {\r\n\r\n\t\t\t\tthis.trace.push(root);\r\n\t\t\t\tthis.indices.push(0);\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.reset();\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Iterates over the leaf octants.\r\n\t *\r\n\t * @return {IteratorResult} The next leaf octant.\r\n\t */\r\n\r\n\tnext() {\r\n\r\n\t\tconst cull = this.cull;\r\n\t\tconst region = this.region;\r\n\t\tconst indices = this.indices;\r\n\t\tconst trace = this.trace;\r\n\r\n\t\tlet octant = null;\r\n\t\tlet depth = trace.length - 1;\r\n\r\n\t\tlet index, children, child;\r\n\r\n\t\twhile(octant === null && depth >= 0) {\r\n\r\n\t\t\tindex = indices[depth];\r\n\t\t\tchildren = trace[depth].children;\r\n\r\n\t\t\t++indices[depth];\r\n\r\n\t\t\tif(index < 8) {\r\n\r\n\t\t\t\tif(children !== null) {\r\n\r\n\t\t\t\t\tchild = children[index];\r\n\r\n\t\t\t\t\tif(cull) {\r\n\r\n\t\t\t\t\t\tb.min = child.min;\r\n\t\t\t\t\t\tb.max = child.max;\r\n\r\n\t\t\t\t\t\tif(!region.intersectsBox(b)) {\r\n\r\n\t\t\t\t\t\t\t// Cull this octant.\r\n\t\t\t\t\t\t\tcontinue;\r\n\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\ttrace.push(child);\r\n\t\t\t\t\tindices.push(0);\r\n\r\n\t\t\t\t\t++depth;\r\n\r\n\t\t\t\t} else {\r\n\r\n\t\t\t\t\toctant = trace.pop();\r\n\t\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t} else {\r\n\r\n\t\t\t\ttrace.pop();\r\n\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t--depth;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.value = octant;\r\n\t\tthis.result.done = (octant === null);\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Called when this iterator will no longer be run to completion.\r\n\t *\r\n\t * @param {Object} value - An interator result value.\r\n\t * @return {IteratorResult} - A premature completion result.\r\n\t */\r\n\r\n\treturn(value) {\r\n\r\n\t\tthis.result.value = value;\r\n\t\tthis.result.done = true;\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns this iterator.\r\n\t *\r\n\t * @return {OctantIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n}\r\n"
+  },
+  {
+    "__docId__": 25,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "b",
+    "memberof": "src/core/OctantIterator.js",
+    "longname": "src/core/OctantIterator.js~b",
+    "access": "private",
+    "export": false,
+    "importPath": "sparse-octree/src/core/OctantIterator.js",
+    "importStyle": null,
+    "description": "A 3D box.",
+    "lineNumber": 11,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Box3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "OctantIterator",
+    "memberof": "src/core/OctantIterator.js",
+    "longname": "src/core/OctantIterator.js~OctantIterator",
+    "access": null,
+    "export": true,
+    "importPath": "sparse-octree/src/core/OctantIterator.js",
+    "importStyle": "{OctantIterator}",
+    "description": "An octant iterator.",
+    "lineNumber": 20,
+    "interface": false,
+    "implements": [
+      "Iterator",
+      "Iterable"
+    ]
+  },
+  {
+    "__docId__": 27,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#constructor",
+    "access": null,
+    "description": "Constructs a new octant iterator.",
+    "lineNumber": 29,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Octree"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "octree",
+        "description": "An octree."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Frustum",
+          "Box3"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "null",
+        "defaultRaw": null,
+        "name": "region",
+        "description": "A cull region."
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 28,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "octree",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#octree",
+    "access": "private",
+    "description": "The octree.",
+    "lineNumber": 38,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octree"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 29,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "region",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#region",
+    "access": null,
+    "description": "A region used for octree culling.",
+    "lineNumber": 47,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "null"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Frustum",
+        "Box3"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 30,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "cull",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#cull",
+    "access": null,
+    "description": "Whether this iterator should respect the cull region.",
+    "lineNumber": 56,
+    "unknown": [
+      {
+        "tagName": "@default",
+        "tagValue": "false"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 31,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "result",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#result",
+    "access": "private",
+    "description": "An iterator result.",
+    "lineNumber": 65,
+    "type": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "trace",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#trace",
+    "access": "private",
+    "description": "An octant trace.",
+    "lineNumber": 74,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Octant[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 33,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "indices",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#indices",
+    "access": "private",
+    "description": "Iteration indices.",
+    "lineNumber": 83,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Number[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 34,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "reset",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#reset",
+    "access": null,
+    "description": "Resets this iterator.",
+    "lineNumber": 95,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OctantIterator"
+      ],
+      "spread": false,
+      "description": "This iterator."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 35,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "trace",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#trace",
+    "access": null,
+    "description": null,
+    "lineNumber": 99,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 36,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "indices",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#indices",
+    "access": null,
+    "description": null,
+    "lineNumber": 100,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 37,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "next",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#next",
+    "access": null,
+    "description": "Iterates over the leaf octants.",
+    "lineNumber": 128,
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": "The next leaf octant."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 38,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "return",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#return",
+    "access": null,
+    "description": "Called when this iterator will no longer be run to completion.",
+    "lineNumber": 204,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "An interator result value."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IteratorResult"
+      ],
+      "spread": false,
+      "description": "A premature completion result."
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 39,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "[Symbol.iterator]",
+    "memberof": "src/core/OctantIterator.js~OctantIterator",
+    "longname": "src/core/OctantIterator.js~OctantIterator#[Symbol.iterator]",
+    "access": null,
+    "description": null,
+    "lineNumber": 219,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 40,
+    "kind": "file",
+    "static": true,
+    "variation": null,
     "name": "src/core/Octree.js",
     "memberof": null,
     "longname": "src/core/Octree.js",
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import { Box3 } from \"math-ds\";\r\nimport { Octant } from \"./Octant.js\";\r\nimport { OctreeIterator } from \"./OctreeIterator.js\";\r\nimport { OctreeRaycaster } from \"./OctreeRaycaster.js\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type {Box3}\r\n * @private\r\n */\r\n\r\nconst b = new Box3();\r\n\r\n/**\r\n * Recursively calculates the depth of the given octree.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @return {Number} The depth.\r\n */\r\n\r\nfunction getDepth(octant) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet result = 0;\r\n\tlet i, l, d;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\td = 1 + getDepth(children[i]);\r\n\r\n\t\t\tif(d > result) {\r\n\r\n\t\t\t\tresult = d;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively collects octants that lie inside the specified region.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Frustum|Box3} region - A region.\r\n * @param {Octant[]} result - A list to be filled with octants that intersect with the region.\r\n */\r\n\r\nfunction cull(octant, region, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tb.min = octant.min;\r\n\tb.max = octant.max;\r\n\r\n\tif(region.intersectsBox(b)) {\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\t\tcull(children[i], region, result);\r\n\r\n\t\t\t}\r\n\r\n\t\t} else {\r\n\r\n\t\t\tresult.push(octant);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * Recursively fetches all octants with the specified depth level.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Number} level - The target depth level.\r\n * @param {Number} depth - The current depth level.\r\n * @param {Octant[]} result - A list to be filled with the identified octants.\r\n */\r\n\r\nfunction findOctantsByLevel(octant, level, depth, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tif(depth === level) {\r\n\r\n\t\tresult.push(octant);\r\n\r\n\t} else if(children !== null) {\r\n\r\n\t\t++depth;\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\tfindOctantsByLevel(children[i], level, depth, result);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * An octree that subdivides space for fast spatial searches.\r\n *\r\n * @implements {Iterable}\r\n */\r\n\r\nexport class Octree {\r\n\r\n\t/**\r\n\t * Constructs a new octree.\r\n\t *\r\n\t * @param {Vector3} [min] - The lower bounds of the tree. If not provided, the octree will not create a root node.\r\n\t * @param {Vector3} [max] - The upper bounds of the tree. If not provided, the octree will not create a root node.\r\n\t */\r\n\r\n\tconstructor(min, max) {\r\n\r\n\t\t/**\r\n\t\t * The root octant.\r\n\t\t *\r\n\t\t * @type {Octant}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.root = (min !== undefined && max !== undefined) ? new Octant(min, max) : null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * The lower bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget min() { return this.root.min; }\r\n\r\n\t/**\r\n\t * The upper bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget max() { return this.root.max; }\r\n\r\n\t/**\r\n\t * The children of the root octant.\r\n\t *\r\n\t * @type {Octant[]}\r\n\t */\r\n\r\n\tget children() { return this.root.children; }\r\n\r\n\t/**\r\n\t * Calculates the center of this octree.\r\n\t *\r\n\t * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.\r\n\t * @return {Vector3} A vector that describes the center of this octree.\r\n\t */\r\n\r\n\tgetCenter(target) { return this.root.getCenter(target); }\r\n\r\n\t/**\r\n\t * Calculates the size of this octree.\r\n\t *\r\n\t * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.\r\n\t * @return {Vector3} A vector that describes the size of this octree.\r\n\t */\r\n\r\n\tgetDimensions(target) { return this.root.getDimensions(target); }\r\n\r\n\t/**\r\n\t * Calculates the current depth of this octree.\r\n\t *\r\n\t * @return {Number} The depth.\r\n\t */\r\n\r\n\tgetDepth() { return getDepth(this.root); }\r\n\r\n\t/**\r\n\t * Recursively collects octants that intersect with the specified region.\r\n\t *\r\n\t * @param {Frustum|Box3} region - A region.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tcull(region) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tcull(this.root, region, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Fetches all octants with the specified depth level.\r\n\t *\r\n\t * @param {Number} level - The depth level.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tfindOctantsByLevel(level) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tfindOctantsByLevel(this.root, level, 0, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds the octants that intersect with the given ray. The intersecting\r\n\t * octants are sorted by distance, closest first.\r\n\t *\r\n\t * @param {Raycaster} raycaster - A raycaster.\r\n\t * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.\r\n\t * @return {Octant[]} The intersecting octants.\r\n\t */\r\n\r\n\traycast(raycaster, intersects = []) {\r\n\r\n\t\tOctreeRaycaster.intersectOctree(this, raycaster, intersects);\r\n\r\n\t\treturn intersects;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctreeIterator} An iterator.\r\n\t */\r\n\r\n\tleaves(region) {\r\n\r\n\t\treturn new OctreeIterator(this, region);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctreeIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn new OctreeIterator(this);\r\n\r\n\t}\r\n\r\n}\r\n"
+    "content": "import { Box3 } from \"math-ds\";\r\nimport { Octant } from \"./Octant.js\";\r\nimport { OctantIterator } from \"./OctantIterator.js\";\r\nimport { OctreeRaycaster } from \"./OctreeRaycaster.js\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type {Box3}\r\n * @private\r\n */\r\n\r\nconst b = new Box3();\r\n\r\n/**\r\n * Recursively calculates the depth of the given octree.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @return {Number} The depth.\r\n */\r\n\r\nfunction getDepth(octant) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet result = 0;\r\n\tlet i, l, d;\r\n\r\n\tif(children !== null) {\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\td = 1 + getDepth(children[i]);\r\n\r\n\t\t\tif(d > result) {\r\n\r\n\t\t\t\tresult = d;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n\treturn result;\r\n\r\n}\r\n\r\n/**\r\n * Recursively collects octants that lie inside the specified region.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Frustum|Box3} region - A region.\r\n * @param {Octant[]} result - A list to be filled with octants that intersect with the region.\r\n */\r\n\r\nfunction cull(octant, region, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tb.min = octant.min;\r\n\tb.max = octant.max;\r\n\r\n\tif(region.intersectsBox(b)) {\r\n\r\n\t\tif(children !== null) {\r\n\r\n\t\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\t\tcull(children[i], region, result);\r\n\r\n\t\t\t}\r\n\r\n\t\t} else {\r\n\r\n\t\t\tresult.push(octant);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * Recursively fetches all octants with the specified depth level.\r\n *\r\n * @private\r\n * @param {Octant} octant - An octant.\r\n * @param {Number} level - The target depth level.\r\n * @param {Number} depth - The current depth level.\r\n * @param {Octant[]} result - A list to be filled with the identified octants.\r\n */\r\n\r\nfunction findOctantsByLevel(octant, level, depth, result) {\r\n\r\n\tconst children = octant.children;\r\n\r\n\tlet i, l;\r\n\r\n\tif(depth === level) {\r\n\r\n\t\tresult.push(octant);\r\n\r\n\t} else if(children !== null) {\r\n\r\n\t\t++depth;\r\n\r\n\t\tfor(i = 0, l = children.length; i < l; ++i) {\r\n\r\n\t\t\tfindOctantsByLevel(children[i], level, depth, result);\r\n\r\n\t\t}\r\n\r\n\t}\r\n\r\n}\r\n\r\n/**\r\n * An octree that subdivides space for fast spatial searches.\r\n *\r\n * @implements {Iterable}\r\n */\r\n\r\nexport class Octree {\r\n\r\n\t/**\r\n\t * Constructs a new octree.\r\n\t *\r\n\t * @param {Vector3} [min] - The lower bounds of the tree. If not provided, the octree will not create a root node.\r\n\t * @param {Vector3} [max] - The upper bounds of the tree. If not provided, the octree will not create a root node.\r\n\t */\r\n\r\n\tconstructor(min, max) {\r\n\r\n\t\t/**\r\n\t\t * The root octant.\r\n\t\t *\r\n\t\t * @type {Octant}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.root = (min !== undefined && max !== undefined) ? new Octant(min, max) : null;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * The lower bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget min() { return this.root.min; }\r\n\r\n\t/**\r\n\t * The upper bounds of the root octant.\r\n\t *\r\n\t * @type {Vector3}\r\n\t */\r\n\r\n\tget max() { return this.root.max; }\r\n\r\n\t/**\r\n\t * The children of the root octant.\r\n\t *\r\n\t * @type {Octant[]}\r\n\t */\r\n\r\n\tget children() { return this.root.children; }\r\n\r\n\t/**\r\n\t * Calculates the center of this octree.\r\n\t *\r\n\t * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.\r\n\t * @return {Vector3} A vector that describes the center of this octree.\r\n\t */\r\n\r\n\tgetCenter(target) { return this.root.getCenter(target); }\r\n\r\n\t/**\r\n\t * Calculates the size of this octree.\r\n\t *\r\n\t * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.\r\n\t * @return {Vector3} A vector that describes the size of this octree.\r\n\t */\r\n\r\n\tgetDimensions(target) { return this.root.getDimensions(target); }\r\n\r\n\t/**\r\n\t * Calculates the current depth of this octree.\r\n\t *\r\n\t * @return {Number} The depth.\r\n\t */\r\n\r\n\tgetDepth() { return getDepth(this.root); }\r\n\r\n\t/**\r\n\t * Recursively collects octants that intersect with the specified region.\r\n\t *\r\n\t * @param {Frustum|Box3} region - A region.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tcull(region) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tcull(this.root, region, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Fetches all octants with the specified depth level.\r\n\t *\r\n\t * @param {Number} level - The depth level.\r\n\t * @return {Octant[]} The octants.\r\n\t */\r\n\r\n\tfindOctantsByLevel(level) {\r\n\r\n\t\tconst result = [];\r\n\r\n\t\tfindOctantsByLevel(this.root, level, 0, result);\r\n\r\n\t\treturn result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Finds the octants that intersect with the given ray. The intersecting\r\n\t * octants are sorted by distance, closest first.\r\n\t *\r\n\t * @param {Raycaster} raycaster - A raycaster.\r\n\t * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.\r\n\t * @return {Octant[]} The intersecting octants.\r\n\t */\r\n\r\n\traycast(raycaster, intersects = []) {\r\n\r\n\t\tOctreeRaycaster.intersectOctree(this, raycaster, intersects);\r\n\r\n\t\treturn intersects;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns leaf nodes.\r\n\t *\r\n\t * When a cull region is provided, the iterator will only return leaves that\r\n\t * intersect with that region.\r\n\t *\r\n\t * @param {Frustum|Box3} [region] - A cull region.\r\n\t * @return {OctantIterator} An iterator.\r\n\t */\r\n\r\n\tleaves(region) {\r\n\r\n\t\treturn new OctantIterator(this, region);\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns an iterator that traverses the octree and returns all leaf nodes.\r\n\t *\r\n\t * @return {OctantIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn new OctantIterator(this);\r\n\r\n\t}\r\n\r\n}\r\n"
   },
   {
-    "__docId__": 25,
+    "__docId__": 41,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -584,7 +944,7 @@
     }
   },
   {
-    "__docId__": 26,
+    "__docId__": 42,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -620,7 +980,7 @@
     "generator": false
   },
   {
-    "__docId__": 27,
+    "__docId__": 43,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -669,7 +1029,7 @@
     "generator": false
   },
   {
-    "__docId__": 28,
+    "__docId__": 44,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -727,7 +1087,7 @@
     "generator": false
   },
   {
-    "__docId__": 29,
+    "__docId__": 45,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -746,7 +1106,7 @@
     ]
   },
   {
-    "__docId__": 30,
+    "__docId__": 46,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -781,7 +1141,7 @@
     "generator": false
   },
   {
-    "__docId__": 31,
+    "__docId__": 47,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -807,7 +1167,7 @@
     }
   },
   {
-    "__docId__": 32,
+    "__docId__": 48,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -828,7 +1188,7 @@
     "generator": false
   },
   {
-    "__docId__": 33,
+    "__docId__": 49,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -849,7 +1209,7 @@
     "generator": false
   },
   {
-    "__docId__": 34,
+    "__docId__": 50,
     "kind": "get",
     "static": false,
     "variation": null,
@@ -870,7 +1230,7 @@
     "generator": false
   },
   {
-    "__docId__": 35,
+    "__docId__": 51,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -903,7 +1263,7 @@
     "generator": false
   },
   {
-    "__docId__": 36,
+    "__docId__": 52,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -936,7 +1296,7 @@
     "generator": false
   },
   {
-    "__docId__": 37,
+    "__docId__": 53,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -958,7 +1318,7 @@
     "generator": false
   },
   {
-    "__docId__": 38,
+    "__docId__": 54,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -992,7 +1352,7 @@
     "generator": false
   },
   {
-    "__docId__": 39,
+    "__docId__": 55,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1025,7 +1385,7 @@
     "generator": false
   },
   {
-    "__docId__": 40,
+    "__docId__": 56,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1068,7 +1428,7 @@
     "generator": false
   },
   {
-    "__docId__": 41,
+    "__docId__": 57,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1094,369 +1454,10 @@
     "return": {
       "nullable": null,
       "types": [
-        "OctreeIterator"
+        "OctantIterator"
       ],
       "spread": false,
       "description": "An iterator."
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 42,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "[Symbol.iterator]",
-    "memberof": "src/core/Octree.js~Octree",
-    "longname": "src/core/Octree.js~Octree#[Symbol.iterator]",
-    "access": null,
-    "description": null,
-    "lineNumber": 273,
-    "undocument": true,
-    "params": [],
-    "return": {
-      "types": [
-        "*"
-      ]
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 43,
-    "kind": "file",
-    "static": true,
-    "variation": null,
-    "name": "src/core/OctreeIterator.js",
-    "memberof": null,
-    "longname": "src/core/OctreeIterator.js",
-    "access": null,
-    "description": null,
-    "lineNumber": 1,
-    "content": "import { Box3 } from \"math-ds\";\r\nimport IteratorResult from \"iterator-result\";\r\n\r\n/**\r\n * A 3D box.\r\n *\r\n * @type {Box3}\r\n * @private\r\n */\r\n\r\nconst b = new Box3();\r\n\r\n/**\r\n * An octree iterator.\r\n *\r\n * @implements {Iterator}\r\n */\r\n\r\nexport class OctreeIterator {\r\n\r\n\t/**\r\n\t * Constructs a new octree iterator.\r\n\t *\r\n\t * @param {Octree} octree - An octree.\r\n\t * @param {Frustum|Box3} [region=null] - A cull region.\r\n\t */\r\n\r\n\tconstructor(octree, region = null) {\r\n\r\n\t\t/**\r\n\t\t * The octree.\r\n\t\t *\r\n\t\t * @type {Octree}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.octree = octree;\r\n\r\n\t\t/**\r\n\t\t * A region used for octree culling.\r\n\t\t *\r\n\t\t * @type {Frustum|Box3}\r\n\t\t * @default null\r\n\t\t */\r\n\r\n\t\tthis.region = region;\r\n\r\n\t\t/**\r\n\t\t * Whether this iterator should respect the cull region.\r\n\t\t *\r\n\t\t * @type {Boolean}\r\n\t\t * @default false\r\n\t\t */\r\n\r\n\t\tthis.cull = (region !== null);\r\n\r\n\t\t/**\r\n\t\t * An iterator result.\r\n\t\t *\r\n\t\t * @type {IteratorResult}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.result = new IteratorResult();\r\n\r\n\t\t/**\r\n\t\t * An octant trace.\r\n\t\t *\r\n\t\t * @type {Octant[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.trace = null;\r\n\r\n\t\t/**\r\n\t\t * Iteration indices.\r\n\t\t *\r\n\t\t * @type {Number[]}\r\n\t\t * @private\r\n\t\t */\r\n\r\n\t\tthis.indices = null;\r\n\r\n\t\tthis.reset();\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Resets this iterator.\r\n\t *\r\n\t * @return {OctreeIterator} This iterator.\r\n\t */\r\n\r\n\treset() {\r\n\r\n\t\tconst root = this.octree.root;\r\n\r\n\t\tthis.trace = [];\r\n\t\tthis.indices = [];\r\n\r\n\t\tif(root !== null) {\r\n\r\n\t\t\tb.min = root.min;\r\n\t\t\tb.max = root.max;\r\n\r\n\t\t\tif(!this.cull || this.region.intersectsBox(b)) {\r\n\r\n\t\t\t\tthis.trace.push(root);\r\n\t\t\t\tthis.indices.push(0);\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.reset();\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Iterates over the leaf octants.\r\n\t *\r\n\t * @return {IteratorResult} The next leaf octant.\r\n\t */\r\n\r\n\tnext() {\r\n\r\n\t\tconst cull = this.cull;\r\n\t\tconst region = this.region;\r\n\t\tconst indices = this.indices;\r\n\t\tconst trace = this.trace;\r\n\r\n\t\tlet octant = null;\r\n\t\tlet depth = trace.length - 1;\r\n\r\n\t\tlet index, children, child;\r\n\r\n\t\twhile(octant === null && depth >= 0) {\r\n\r\n\t\t\tindex = indices[depth];\r\n\t\t\tchildren = trace[depth].children;\r\n\r\n\t\t\t++indices[depth];\r\n\r\n\t\t\tif(index < 8) {\r\n\r\n\t\t\t\tif(children !== null) {\r\n\r\n\t\t\t\t\tchild = children[index];\r\n\r\n\t\t\t\t\tif(cull) {\r\n\r\n\t\t\t\t\t\tb.min = child.min;\r\n\t\t\t\t\t\tb.max = child.max;\r\n\r\n\t\t\t\t\t\tif(!region.intersectsBox(b)) {\r\n\r\n\t\t\t\t\t\t\t// Cull this octant.\r\n\t\t\t\t\t\t\tcontinue;\r\n\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\ttrace.push(child);\r\n\t\t\t\t\tindices.push(0);\r\n\r\n\t\t\t\t\t++depth;\r\n\r\n\t\t\t\t} else {\r\n\r\n\t\t\t\t\toctant = trace.pop();\r\n\t\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t}\r\n\r\n\t\t\t} else {\r\n\r\n\t\t\t\ttrace.pop();\r\n\t\t\t\tindices.pop();\r\n\r\n\t\t\t\t--depth;\r\n\r\n\t\t\t}\r\n\r\n\t\t}\r\n\r\n\t\tthis.result.value = octant;\r\n\t\tthis.result.done = (octant === null);\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Called when this iterator will no longer be run to completion.\r\n\t *\r\n\t * @param {Object} value - An interator result value.\r\n\t * @return {IteratorResult} - A premature completion result.\r\n\t */\r\n\r\n\treturn(value) {\r\n\r\n\t\tthis.result.value = value;\r\n\t\tthis.result.done = true;\r\n\r\n\t\treturn this.result;\r\n\r\n\t}\r\n\r\n\t/**\r\n\t * Returns this iterator.\r\n\t *\r\n\t * @return {VoxelIterator} An iterator.\r\n\t */\r\n\r\n\t[Symbol.iterator]() {\r\n\r\n\t\treturn this;\r\n\r\n\t}\r\n\r\n}\r\n"
-  },
-  {
-    "__docId__": 44,
-    "kind": "variable",
-    "static": true,
-    "variation": null,
-    "name": "b",
-    "memberof": "src/core/OctreeIterator.js",
-    "longname": "src/core/OctreeIterator.js~b",
-    "access": "private",
-    "export": false,
-    "importPath": "sparse-octree/src/core/OctreeIterator.js",
-    "importStyle": null,
-    "description": "A 3D box.",
-    "lineNumber": 11,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Box3"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 45,
-    "kind": "class",
-    "static": true,
-    "variation": null,
-    "name": "OctreeIterator",
-    "memberof": "src/core/OctreeIterator.js",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator",
-    "access": null,
-    "export": true,
-    "importPath": "sparse-octree/src/core/OctreeIterator.js",
-    "importStyle": "{OctreeIterator}",
-    "description": "An octree iterator.",
-    "lineNumber": 19,
-    "interface": false,
-    "implements": [
-      "Iterator"
-    ]
-  },
-  {
-    "__docId__": 46,
-    "kind": "constructor",
-    "static": false,
-    "variation": null,
-    "name": "constructor",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#constructor",
-    "access": null,
-    "description": "Constructs a new octree iterator.",
-    "lineNumber": 28,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "Octree"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "octree",
-        "description": "An octree."
-      },
-      {
-        "nullable": null,
-        "types": [
-          "Frustum",
-          "Box3"
-        ],
-        "spread": false,
-        "optional": true,
-        "defaultValue": "null",
-        "defaultRaw": null,
-        "name": "region",
-        "description": "A cull region."
-      }
-    ],
-    "generator": false
-  },
-  {
-    "__docId__": 47,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "octree",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#octree",
-    "access": "private",
-    "description": "The octree.",
-    "lineNumber": 37,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Octree"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 48,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "region",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#region",
-    "access": null,
-    "description": "A region used for octree culling.",
-    "lineNumber": 46,
-    "unknown": [
-      {
-        "tagName": "@default",
-        "tagValue": "null"
-      }
-    ],
-    "type": {
-      "nullable": null,
-      "types": [
-        "Frustum",
-        "Box3"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 49,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "cull",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#cull",
-    "access": null,
-    "description": "Whether this iterator should respect the cull region.",
-    "lineNumber": 55,
-    "unknown": [
-      {
-        "tagName": "@default",
-        "tagValue": "false"
-      }
-    ],
-    "type": {
-      "nullable": null,
-      "types": [
-        "Boolean"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 50,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "result",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#result",
-    "access": "private",
-    "description": "An iterator result.",
-    "lineNumber": 64,
-    "type": {
-      "nullable": null,
-      "types": [
-        "IteratorResult"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 51,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "trace",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#trace",
-    "access": "private",
-    "description": "An octant trace.",
-    "lineNumber": 73,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Octant[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 52,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "indices",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#indices",
-    "access": "private",
-    "description": "Iteration indices.",
-    "lineNumber": 82,
-    "type": {
-      "nullable": null,
-      "types": [
-        "Number[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 53,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "reset",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#reset",
-    "access": null,
-    "description": "Resets this iterator.",
-    "lineNumber": 94,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "OctreeIterator"
-      ],
-      "spread": false,
-      "description": "This iterator."
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 54,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "trace",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#trace",
-    "access": null,
-    "description": null,
-    "lineNumber": 98,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 55,
-    "kind": "member",
-    "static": false,
-    "variation": null,
-    "name": "indices",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#indices",
-    "access": null,
-    "description": null,
-    "lineNumber": 99,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 56,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "next",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#next",
-    "access": null,
-    "description": "Iterates over the leaf octants.",
-    "lineNumber": 127,
-    "params": [],
-    "return": {
-      "nullable": null,
-      "types": [
-        "IteratorResult"
-      ],
-      "spread": false,
-      "description": "The next leaf octant."
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 57,
-    "kind": "method",
-    "static": false,
-    "variation": null,
-    "name": "return",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#return",
-    "access": null,
-    "description": "Called when this iterator will no longer be run to completion.",
-    "lineNumber": 203,
-    "params": [
-      {
-        "nullable": null,
-        "types": [
-          "Object"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "value",
-        "description": "An interator result value."
-      }
-    ],
-    "return": {
-      "nullable": null,
-      "types": [
-        "IteratorResult"
-      ],
-      "spread": false,
-      "description": "A premature completion result."
     },
     "generator": false
   },
@@ -1466,11 +1467,11 @@
     "static": false,
     "variation": null,
     "name": "[Symbol.iterator]",
-    "memberof": "src/core/OctreeIterator.js~OctreeIterator",
-    "longname": "src/core/OctreeIterator.js~OctreeIterator#[Symbol.iterator]",
+    "memberof": "src/core/Octree.js~Octree",
+    "longname": "src/core/Octree.js~Octree#[Symbol.iterator]",
     "access": null,
     "description": null,
-    "lineNumber": 218,
+    "lineNumber": 273,
     "undocument": true,
     "params": [],
     "return": {
@@ -2032,7 +2033,7 @@
     "access": null,
     "description": null,
     "lineNumber": 7,
-    "content": "/**\r\n * Exposure of the library components.\r\n *\r\n * @module sparse-octree\r\n */\r\n\r\nexport {\r\n\tCubicOctant,\r\n\tedges,\r\n\tOctant,\r\n\tOctree,\r\n\tOctreeIterator,\r\n\tOctreeRaycaster,\r\n\tpattern\r\n} from \"./core\";\r\n\r\nexport {\r\n\tPointOctant,\r\n\tPointOctree,\r\n\tRayPointIntersection\r\n} from \"./points\";\r\n\r\nexport {\r\n\tOctreeUtils\r\n} from \"./utils\";\r\n"
+    "content": "/**\r\n * Exposure of the library components.\r\n *\r\n * @module sparse-octree\r\n */\r\n\r\nexport {\r\n\tCubicOctant,\r\n\tedges,\r\n\tOctant,\r\n\tOctree,\r\n\tOctantIterator,\r\n\tOctreeRaycaster,\r\n\tpattern\r\n} from \"./core\";\r\n\r\nexport {\r\n\tPointOctant,\r\n\tPointOctree,\r\n\tRayPointIntersection\r\n} from \"./points\";\r\n\r\nexport {\r\n\tOctreeUtils\r\n} from \"./utils\";\r\n"
   },
   {
     "__docId__": 75,

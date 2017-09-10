@@ -13,18 +13,18 @@
       "actualCount": 10,
       "undocumentLines": []
     },
+    "src/core/OctantIterator.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        219
+      ]
+    },
     "src/core/Octree.js": {
       "expectCount": 14,
       "actualCount": 13,
       "undocumentLines": [
         273
-      ]
-    },
-    "src/core/OctreeIterator.js": {
-      "expectCount": 8,
-      "actualCount": 7,
-      "undocumentLines": [
-        218
       ]
     },
     "src/core/OctreeRaycaster.js": {
