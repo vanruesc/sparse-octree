@@ -60,7 +60,7 @@ export class Octant {
 
 	getCenter(target = new Vector3()) {
 
-		return target.copy(this.min).add(this.max).multiplyScalar(0.5);
+		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
 
 	}
 
@@ -73,7 +73,7 @@ export class Octant {
 
 	getDimensions(target = new Vector3()) {
 
-		return target.copy(this.max).sub(this.min);
+		return target.subVectors(this.max, this.min);
 
 	}
 
