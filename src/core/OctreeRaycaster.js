@@ -34,8 +34,8 @@ const octantTable = [
 /**
  * Finds the entry plane of the first octant that a ray travels through.
  *
- * Determining the first octant requires knowing which of the t0's is the
- * largest. The tm's of the other axes must also be compared against that
+ * Determining the first octant requires knowing which of the t0s is the
+ * largest. The tms of the other axes must also be compared against that
  * largest t0.
  *
  * @private
@@ -56,20 +56,20 @@ function findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {
 	if(tx0 > ty0 && tx0 > tz0) {
 
 		// YZ-plane.
-		if(tym < tx0) { entry = entry | 2; }
-		if(tzm < tx0) { entry = entry | 1; }
+		if(tym < tx0) { entry |= 2; }
+		if(tzm < tx0) { entry |= 1; }
 
 	} else if(ty0 > tz0) {
 
 		// XZ-plane.
-		if(txm < ty0) { entry = entry | 4; }
-		if(tzm < ty0) { entry = entry | 1; }
+		if(txm < ty0) { entry |= 4; }
+		if(tzm < ty0) { entry |= 1; }
 
 	} else {
 
 		// XY-plane.
-		if(txm < tz0) { entry = entry | 4; }
-		if(tym < tz0) { entry = entry | 2; }
+		if(txm < tz0) { entry |= 4; }
+		if(tym < tz0) { entry |= 2; }
 
 	}
 
