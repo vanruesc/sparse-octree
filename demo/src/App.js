@@ -175,7 +175,7 @@ export class App {
 			demo.load(activateDemo);
 
 			// Update the url.
-			window.location.hash = app.effect;
+			window.location.hash = app.key;
 
 		}
 
