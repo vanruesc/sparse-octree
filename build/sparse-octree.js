@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.0.2 build Sep 14 2017
+ * sparse-octree v4.0.2 build Oct 03 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
@@ -4941,24 +4941,24 @@
 
   	if (tx0 > ty0 && tx0 > tz0) {
   		if (tym < tx0) {
-  			entry = entry | 2;
+  			entry |= 2;
   		}
   		if (tzm < tx0) {
-  			entry = entry | 1;
+  			entry |= 1;
   		}
   	} else if (ty0 > tz0) {
   		if (txm < ty0) {
-  			entry = entry | 4;
+  			entry |= 4;
   		}
   		if (tzm < ty0) {
-  			entry = entry | 1;
+  			entry |= 1;
   		}
   	} else {
   		if (txm < tz0) {
-  			entry = entry | 4;
+  			entry |= 4;
   		}
   		if (tym < tz0) {
-  			entry = entry | 2;
+  			entry |= 2;
   		}
   	}
 
