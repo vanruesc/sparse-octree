@@ -1,14 +1,38 @@
-import { Vector3 } from "math-ds";
+import { Box3, Ray, Vector3 } from "math-ds";
 
 /**
- * Contains bytes used for bitwise operations. The last byte is used to store
- * raycasting flags.
+ * A list of vectors.
  *
- * @type Uint8Array
+ * @type {Vector3[]}
  * @private
+ * @final
  */
 
-const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
+const v = [
+	new Vector3(),
+	new Vector3(),
+	new Vector3()
+];
+
+/**
+ * A box.
+ *
+ * @type {Box3}
+ * @private
+ * @final
+ */
+
+const b = new Box3();
+
+/**
+ * A ray.
+ *
+ * @type {Ray}
+ * @private
+ * @final
+ */
+
+const r = new Ray();
 
 /**
  * A lookup-table containing octant ids. Used to determine the exit plane from
@@ -16,6 +40,7 @@ const flags = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 0]);
  *
  * @type {Uint8Array[]}
  * @private
+ * @final
  */
 
 const octantTable = [
@@ -30,6 +55,15 @@ const octantTable = [
 	new Uint8Array([8, 8, 8])
 
 ];
+
+/**
+ * A byte that stores raycasting flags.
+ *
+ * @type {Number}
+ * @private
+ */
+
+let flags = 0;
 
 /**
  * Finds the entry plane of the first octant that a ray travels through.
@@ -166,42 +200,42 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 				switch(currentOctant) {
 
 					case 0:
-						raycastOctant(children[flags[8]], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
+						raycastOctant(children[flags], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
 						break;
 
 					case 1:
-						raycastOctant(children[flags[8] ^ flags[1]], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
+						raycastOctant(children[flags ^ 1], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
 						break;
 
 					case 2:
-						raycastOctant(children[flags[8] ^ flags[2]], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
+						raycastOctant(children[flags ^ 2], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
 						break;
 
 					case 3:
-						raycastOctant(children[flags[8] ^ flags[3]], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
+						raycastOctant(children[flags ^ 3], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
 						break;
 
 					case 4:
-						raycastOctant(children[flags[8] ^ flags[4]], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
+						raycastOctant(children[flags ^ 4], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
 						break;
 
 					case 5:
-						raycastOctant(children[flags[8] ^ flags[5]], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
+						raycastOctant(children[flags ^ 5], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
 						break;
 
 					case 6:
-						raycastOctant(children[flags[8] ^ flags[6]], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
+						raycastOctant(children[flags ^ 6], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
 						break;
 
 					case 7:
-						raycastOctant(children[flags[8] ^ flags[7]], txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);
+						raycastOctant(children[flags ^ 7], txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);
 						// Far top right octant. No other octants can be reached from here.
 						currentOctant = 8;
 						break;
@@ -215,69 +249,6 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 	}
 
 }
-
-/**
- * The dimensions of an octree.
- *
- * @type {Vector3}
- * @private
- */
-
-const dimensions = new Vector3();
-
-/**
- * The half dimensions of an octree.
- *
- * @type {Vector3}
- * @private
- */
-
-const halfDimensions = new Vector3();
-
-/**
- * The center of an octree.
- *
- * @type {Vector3}
- * @private
- */
-
-const center = new Vector3();
-
-/**
- * The lower bounds of an octree.
- *
- * @type {Vector3}
- * @private
- */
-
-const min = new Vector3();
-
-/**
- * The upper bounds of an octree.
- *
- * @type {Vector3}
- * @private
- */
-
-const max = new Vector3();
-
-/**
- * A ray direction.
- *
- * @type {Vector3}
- * @private
- */
-
-const direction = new Vector3();
-
-/**
- * A ray origin.
- *
- * @type {Vector3}
- * @private
- */
-
-const origin = new Vector3();
 
 /**
  * An octree raycaster.
@@ -300,31 +271,31 @@ export class OctreeRaycaster {
 
 	static intersectOctree(octree, raycaster, intersects) {
 
+		// Translate the octree extents to the scene origin.
+		const min = b.min.set(0, 0, 0);
+		const max = b.max.subVectors(octree.max, octree.min);
+
+		const dimensions = octree.getDimensions(v[0]);
+		const halfDimensions = v[1].copy(dimensions).multiplyScalar(0.5);
+
+		const origin = r.origin.copy(raycaster.ray.origin);
+		const direction = r.direction.copy(raycaster.ray.direction);
+
 		let invDirX, invDirY, invDirZ;
 		let tx0, tx1, ty0, ty1, tz0, tz1;
 
-		octree.getDimensions(dimensions);
-		halfDimensions.copy(dimensions).multiplyScalar(0.5);
-
-		// Translate the octree extents to the center of the octree.
-		min.copy(octree.min).sub(octree.min);
-		max.copy(octree.max).sub(octree.min);
-
-		direction.copy(raycaster.ray.direction);
-		origin.copy(raycaster.ray.origin);
-
 		// Translate the ray to the center of the octree.
-		origin.sub(octree.getCenter(center)).add(halfDimensions);
+		origin.sub(octree.getCenter(v[2])).add(halfDimensions);
 
 		// Reset all flags.
-		flags[8] = flags[0];
+		flags = 0;
 
 		// Handle rays with negative directions.
 		if(direction.x < 0.0) {
 
 			origin.x = dimensions.x - origin.x;
 			direction.x = -direction.x;
-			flags[8] |= flags[4];
+			flags |= 4;
 
 		}
 
@@ -332,7 +303,7 @@ export class OctreeRaycaster {
 
 			origin.y = dimensions.y - origin.y;
 			direction.y = -direction.y;
-			flags[8] |= flags[2];
+			flags |= 2;
 
 		}
 
@@ -340,7 +311,7 @@ export class OctreeRaycaster {
 
 			origin.z = dimensions.z - origin.z;
 			direction.z = -direction.z;
-			flags[8] |= flags[1];
+			flags |= 1;
 
 		}
 
