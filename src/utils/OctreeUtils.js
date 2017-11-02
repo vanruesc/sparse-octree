@@ -1,5 +1,45 @@
-import { Vector3 } from "math-ds";
+import { Box3, Vector3 } from "math-ds";
 import { pattern } from "../core/Octant.js";
+
+/**
+ * A box.
+ *
+ * @type {Box3}
+ * @private
+ * @final
+ */
+
+const b = new Box3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const c = new Vector3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const u = new Vector3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const v = new Vector3();
 
 /**
  * A collection of octree utility functions.
@@ -16,13 +56,9 @@ export class OctreeUtils {
 
 	static recycleOctants(octant, octants) {
 
-		const a = new Vector3();
-		const b = new Vector3();
-		const c = new Vector3();
-
 		const min = octant.min;
-		const mid = octant.getCenter();
-		const halfDimensions = octant.getDimensions().multiplyScalar(0.5);
+		const mid = octant.getCenter(u);
+		const halfDimensions = octant.getDimensions(v).multiplyScalar(0.5);
 
 		const children = octant.children;
 		const l = octants.length;
@@ -34,15 +70,15 @@ export class OctreeUtils {
 
 			combination = pattern[i];
 
-			b.addVectors(min, a.fromArray(combination).multiply(halfDimensions));
-			c.addVectors(mid, a.fromArray(combination).multiply(halfDimensions));
+			b.min.addVectors(min, c.fromArray(combination).multiply(halfDimensions));
+			b.max.addVectors(mid, c.fromArray(combination).multiply(halfDimensions));
 
 			// Find an octant that matches the current combination.
 			for(j = 0; j < l; ++j) {
 
 				candidate = octants[j];
 
-				if(candidate !== null && b.equals(candidate.min) && c.equals(candidate.max)) {
+				if(candidate !== null && b.min.equals(candidate.min) && b.max.equals(candidate.max)) {
 
 					children[i] = candidate;
 					octants[j] = null;
