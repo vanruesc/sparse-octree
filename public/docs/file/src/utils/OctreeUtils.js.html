@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/utils/OctreeUtils.js | API Document</title>
+  <title data-ice="title">src/utils/OctreeUtils.js | sparse-octree</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
   <script src="script/manual.js"></script>
-</head>
+<meta name="description" content="A sparse octree data structure."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="sparse-octree"><meta property="twitter:description" content="A sparse octree data structure."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -19,7 +17,6 @@
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
-  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -27,29 +24,69 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-</header>
+<a style="position:relative; top:3px;" href="https://github.com/vanruesc/sparse-octree.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/utils/OctreeUtils.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Box3, Vector3 } from &quot;math-ds&quot;;
 import { pattern } from &quot;../core/Octant.js&quot;;
+
+/**
+ * A box.
+ *
+ * @type {Box3}
+ * @private
+ * @final
+ */
+
+const b = new Box3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const c = new Vector3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const u = new Vector3();
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ * @final
+ */
+
+const v = new Vector3();
 
 /**
  * A collection of octree utility functions.
@@ -66,13 +103,9 @@ export class OctreeUtils {
 
 	static recycleOctants(octant, octants) {
 
-		const a = new Vector3();
-		const b = new Vector3();
-		const c = new Vector3();
-
 		const min = octant.min;
-		const mid = octant.getCenter();
-		const halfDimensions = octant.getDimensions().multiplyScalar(0.5);
+		const mid = octant.getCenter(u);
+		const halfDimensions = octant.getDimensions(v).multiplyScalar(0.5);
 
 		const children = octant.children;
 		const l = octants.length;
@@ -84,15 +117,15 @@ export class OctreeUtils {
 
 			combination = pattern[i];
 
-			b.addVectors(min, a.fromArray(combination).multiply(halfDimensions));
-			c.addVectors(mid, a.fromArray(combination).multiply(halfDimensions));
+			b.min.addVectors(min, c.fromArray(combination).multiply(halfDimensions));
+			b.max.addVectors(mid, c.fromArray(combination).multiply(halfDimensions));
 
 			// Find an octant that matches the current combination.
 			for(j = 0; j &lt; l; ++j) {
 
 				candidate = octants[j];
 
-				if(candidate !== null &amp;&amp; b.equals(candidate.min) &amp;&amp; c.equals(candidate.max)) {
+				if(candidate !== null &amp;&amp; b.min.equals(candidate.min) &amp;&amp; b.max.equals(candidate.max)) {
 
 					children[i] = candidate;
 					octants[j] = null;
@@ -113,7 +146,7 @@ export class OctreeUtils {
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>

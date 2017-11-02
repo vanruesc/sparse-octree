@@ -1,63 +1,141 @@
 {
-  "type": "Program",
-  "body": [
-    {
-      "type": "ExportNamedDeclaration",
-      "declaration": {
-        "type": "ClassDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "RayPointIntersection",
-          "range": [
-            74,
-            94
-          ],
+  "type": "File",
+  "start": 0,
+  "end": 974,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 54,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 974,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 54,
+        "column": 0
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 61,
+        "end": 972,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 53,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "ClassDeclaration",
+          "start": 68,
+          "end": 972,
           "loc": {
             "start": {
               "line": 5,
-              "column": 13
+              "column": 7
             },
             "end": {
-              "line": 5,
-              "column": 33
+              "line": 53,
+              "column": 1
             }
-          }
-        },
-        "superClass": null,
-        "body": {
-          "type": "ClassBody",
-          "body": [
-            {
-              "type": "MethodDefinition",
-              "key": {
-                "type": "Identifier",
-                "name": "constructor",
-                "range": [
-                  428,
-                  439
-                ],
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 74,
+            "end": 94,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 13
+              },
+              "end": {
+                "line": 5,
+                "column": 33
+              },
+              "identifierName": "RayPointIntersection"
+            },
+            "name": "RayPointIntersection",
+            "leadingComments": null
+          },
+          "superClass": null,
+          "body": {
+            "type": "ClassBody",
+            "start": 95,
+            "end": 972,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 34
+              },
+              "end": {
+                "line": 53,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ClassMethod",
+                "start": 428,
+                "end": 967,
                 "loc": {
                   "start": {
                     "line": 16,
                     "column": 1
                   },
                   "end": {
-                    "line": 16,
-                    "column": 12
+                    "line": 51,
+                    "column": 2
                   }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
+                },
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 428,
+                  "end": 439,
+                  "loc": {
+                    "start": {
+                      "line": 16,
+                      "column": 1
+                    },
+                    "end": {
+                      "line": 16,
+                      "column": 12
+                    },
+                    "identifierName": "constructor"
+                  },
+                  "name": "constructor",
+                  "leadingComments": null
+                },
+                "static": false,
+                "kind": "constructor",
                 "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
                 "params": [
                   {
                     "type": "Identifier",
-                    "name": "distance",
-                    "range": [
-                      440,
-                      448
-                    ],
+                    "start": 440,
+                    "end": 448,
                     "loc": {
                       "start": {
                         "line": 16,
@@ -66,16 +144,15 @@
                       "end": {
                         "line": 16,
                         "column": 21
-                      }
-                    }
+                      },
+                      "identifierName": "distance"
+                    },
+                    "name": "distance"
                   },
                   {
                     "type": "Identifier",
-                    "name": "distanceToRay",
-                    "range": [
-                      450,
-                      463
-                    ],
+                    "start": 450,
+                    "end": 463,
                     "loc": {
                       "start": {
                         "line": 16,
@@ -84,16 +161,15 @@
                       "end": {
                         "line": 16,
                         "column": 36
-                      }
-                    }
+                      },
+                      "identifierName": "distanceToRay"
+                    },
+                    "name": "distanceToRay"
                   },
                   {
                     "type": "Identifier",
-                    "name": "point",
-                    "range": [
-                      465,
-                      470
-                    ],
+                    "start": 465,
+                    "end": 470,
                     "loc": {
                       "start": {
                         "line": 16,
@@ -102,18 +178,29 @@
                       "end": {
                         "line": 16,
                         "column": 43
-                      }
-                    }
+                      },
+                      "identifierName": "point"
+                    },
+                    "name": "point"
                   },
                   {
                     "type": "AssignmentPattern",
+                    "start": 472,
+                    "end": 485,
+                    "loc": {
+                      "start": {
+                        "line": 16,
+                        "column": 45
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 58
+                      }
+                    },
                     "left": {
                       "type": "Identifier",
-                      "name": "object",
-                      "range": [
-                        472,
-                        478
-                      ],
+                      "start": 472,
+                      "end": 478,
                       "loc": {
                         "start": {
                           "line": 16,
@@ -122,17 +209,15 @@
                         "end": {
                           "line": 16,
                           "column": 51
-                        }
-                      }
+                        },
+                        "identifierName": "object"
+                      },
+                      "name": "object"
                     },
                     "right": {
-                      "type": "Literal",
-                      "value": null,
-                      "raw": "null",
-                      "range": [
-                        481,
-                        485
-                      ],
+                      "type": "NullLiteral",
+                      "start": 481,
+                      "end": 485,
                       "loc": {
                         "start": {
                           "line": 16,
@@ -143,121 +228,28 @@
                           "column": 58
                         }
                       }
-                    },
-                    "range": [
-                      472,
-                      485
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 16,
-                        "column": 45
-                      },
-                      "end": {
-                        "line": 16,
-                        "column": 58
-                      }
                     }
                   }
                 ],
                 "body": {
                   "type": "BlockStatement",
+                  "start": 487,
+                  "end": 967,
+                  "loc": {
+                    "start": {
+                      "line": 16,
+                      "column": 60
+                    },
+                    "end": {
+                      "line": 51,
+                      "column": 2
+                    }
+                  },
                   "body": [
                     {
                       "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              597,
-                              601
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 24,
-                                "column": 2
-                              },
-                              "end": {
-                                "line": 24,
-                                "column": 6
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "distance",
-                            "range": [
-                              602,
-                              610
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 24,
-                                "column": 7
-                              },
-                              "end": {
-                                "line": 24,
-                                "column": 15
-                              }
-                            }
-                          },
-                          "range": [
-                            597,
-                            610
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 24,
-                              "column": 2
-                            },
-                            "end": {
-                              "line": 24,
-                              "column": 15
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Identifier",
-                          "name": "distance",
-                          "range": [
-                            613,
-                            621
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 24,
-                              "column": 18
-                            },
-                            "end": {
-                              "line": 24,
-                              "column": 26
-                            }
-                          }
-                        },
-                        "range": [
-                          597,
-                          621
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 24,
-                            "column": 2
-                          },
-                          "end": {
-                            "line": 24,
-                            "column": 26
-                          }
-                        }
-                      },
-                      "range": [
-                        597,
-                        622
-                      ],
+                      "start": 597,
+                      "end": 622,
                       "loc": {
                         "start": {
                           "line": 24,
@@ -268,14 +260,96 @@
                           "column": 27
                         }
                       },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 597,
+                        "end": 621,
+                        "loc": {
+                          "start": {
+                            "line": 24,
+                            "column": 2
+                          },
+                          "end": {
+                            "line": 24,
+                            "column": 26
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 597,
+                          "end": 610,
+                          "loc": {
+                            "start": {
+                              "line": 24,
+                              "column": 2
+                            },
+                            "end": {
+                              "line": 24,
+                              "column": 15
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 597,
+                            "end": 601,
+                            "loc": {
+                              "start": {
+                                "line": 24,
+                                "column": 2
+                              },
+                              "end": {
+                                "line": 24,
+                                "column": 6
+                              }
+                            },
+                            "leadingComments": null
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 602,
+                            "end": 610,
+                            "loc": {
+                              "start": {
+                                "line": 24,
+                                "column": 7
+                              },
+                              "end": {
+                                "line": 24,
+                                "column": 15
+                              },
+                              "identifierName": "distance"
+                            },
+                            "name": "distance"
+                          },
+                          "computed": false,
+                          "leadingComments": null
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 613,
+                          "end": 621,
+                          "loc": {
+                            "start": {
+                              "line": 24,
+                              "column": 18
+                            },
+                            "end": {
+                              "line": 24,
+                              "column": 26
+                            },
+                            "identifierName": "distance"
+                          },
+                          "name": "distance"
+                        },
+                        "leadingComments": null
+                      },
                       "leadingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The distance from the origin of the ray to the point.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
-                          "range": [
-                            494,
-                            591
-                          ],
+                          "start": 494,
+                          "end": 591,
                           "loc": {
                             "start": {
                               "line": 18,
@@ -290,12 +364,10 @@
                       ],
                       "trailingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The shortest distance from the point to the ray.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
-                          "range": [
-                            628,
-                            720
-                          ],
+                          "start": 628,
+                          "end": 720,
                           "loc": {
                             "start": {
                               "line": 26,
@@ -311,99 +383,8 @@
                     },
                     {
                       "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              726,
-                              730
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 32,
-                                "column": 2
-                              },
-                              "end": {
-                                "line": 32,
-                                "column": 6
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "distanceToRay",
-                            "range": [
-                              731,
-                              744
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 32,
-                                "column": 7
-                              },
-                              "end": {
-                                "line": 32,
-                                "column": 20
-                              }
-                            }
-                          },
-                          "range": [
-                            726,
-                            744
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 32,
-                              "column": 2
-                            },
-                            "end": {
-                              "line": 32,
-                              "column": 20
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Identifier",
-                          "name": "distanceToRay",
-                          "range": [
-                            747,
-                            760
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 32,
-                              "column": 23
-                            },
-                            "end": {
-                              "line": 32,
-                              "column": 36
-                            }
-                          }
-                        },
-                        "range": [
-                          726,
-                          760
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 32,
-                            "column": 2
-                          },
-                          "end": {
-                            "line": 32,
-                            "column": 36
-                          }
-                        }
-                      },
-                      "range": [
-                        726,
-                        761
-                      ],
+                      "start": 726,
+                      "end": 761,
                       "loc": {
                         "start": {
                           "line": 32,
@@ -414,14 +395,96 @@
                           "column": 37
                         }
                       },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 726,
+                        "end": 760,
+                        "loc": {
+                          "start": {
+                            "line": 32,
+                            "column": 2
+                          },
+                          "end": {
+                            "line": 32,
+                            "column": 36
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 726,
+                          "end": 744,
+                          "loc": {
+                            "start": {
+                              "line": 32,
+                              "column": 2
+                            },
+                            "end": {
+                              "line": 32,
+                              "column": 20
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 726,
+                            "end": 730,
+                            "loc": {
+                              "start": {
+                                "line": 32,
+                                "column": 2
+                              },
+                              "end": {
+                                "line": 32,
+                                "column": 6
+                              }
+                            },
+                            "leadingComments": null
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 731,
+                            "end": 744,
+                            "loc": {
+                              "start": {
+                                "line": 32,
+                                "column": 7
+                              },
+                              "end": {
+                                "line": 32,
+                                "column": 20
+                              },
+                              "identifierName": "distanceToRay"
+                            },
+                            "name": "distanceToRay"
+                          },
+                          "computed": false,
+                          "leadingComments": null
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 747,
+                          "end": 760,
+                          "loc": {
+                            "start": {
+                              "line": 32,
+                              "column": 23
+                            },
+                            "end": {
+                              "line": 32,
+                              "column": 36
+                            },
+                            "identifierName": "distanceToRay"
+                          },
+                          "name": "distanceToRay"
+                        },
+                        "leadingComments": null
+                      },
                       "leadingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The shortest distance from the point to the ray.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
-                          "range": [
-                            628,
-                            720
-                          ],
+                          "start": 628,
+                          "end": 720,
                           "loc": {
                             "start": {
                               "line": 26,
@@ -436,12 +499,10 @@
                       ],
                       "trailingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The point.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t ",
-                          "range": [
-                            767,
-                            822
-                          ],
+                          "start": 767,
+                          "end": 822,
                           "loc": {
                             "start": {
                               "line": 34,
@@ -457,99 +518,8 @@
                     },
                     {
                       "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              828,
-                              832
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 40,
-                                "column": 2
-                              },
-                              "end": {
-                                "line": 40,
-                                "column": 6
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "point",
-                            "range": [
-                              833,
-                              838
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 40,
-                                "column": 7
-                              },
-                              "end": {
-                                "line": 40,
-                                "column": 12
-                              }
-                            }
-                          },
-                          "range": [
-                            828,
-                            838
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 40,
-                              "column": 2
-                            },
-                            "end": {
-                              "line": 40,
-                              "column": 12
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Identifier",
-                          "name": "point",
-                          "range": [
-                            841,
-                            846
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 40,
-                              "column": 15
-                            },
-                            "end": {
-                              "line": 40,
-                              "column": 20
-                            }
-                          }
-                        },
-                        "range": [
-                          828,
-                          846
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 40,
-                            "column": 2
-                          },
-                          "end": {
-                            "line": 40,
-                            "column": 20
-                          }
-                        }
-                      },
-                      "range": [
-                        828,
-                        847
-                      ],
+                      "start": 828,
+                      "end": 847,
                       "loc": {
                         "start": {
                           "line": 40,
@@ -560,14 +530,96 @@
                           "column": 21
                         }
                       },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 828,
+                        "end": 846,
+                        "loc": {
+                          "start": {
+                            "line": 40,
+                            "column": 2
+                          },
+                          "end": {
+                            "line": 40,
+                            "column": 20
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 828,
+                          "end": 838,
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 2
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 12
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 828,
+                            "end": 832,
+                            "loc": {
+                              "start": {
+                                "line": 40,
+                                "column": 2
+                              },
+                              "end": {
+                                "line": 40,
+                                "column": 6
+                              }
+                            },
+                            "leadingComments": null
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 833,
+                            "end": 838,
+                            "loc": {
+                              "start": {
+                                "line": 40,
+                                "column": 7
+                              },
+                              "end": {
+                                "line": 40,
+                                "column": 12
+                              },
+                              "identifierName": "point"
+                            },
+                            "name": "point"
+                          },
+                          "computed": false,
+                          "leadingComments": null
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 841,
+                          "end": 846,
+                          "loc": {
+                            "start": {
+                              "line": 40,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 20
+                            },
+                            "identifierName": "point"
+                          },
+                          "name": "point"
+                        },
+                        "leadingComments": null
+                      },
                       "leadingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The point.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t ",
-                          "range": [
-                            767,
-                            822
-                          ],
+                          "start": 767,
+                          "end": 822,
                           "loc": {
                             "start": {
                               "line": 34,
@@ -582,12 +634,10 @@
                       ],
                       "trailingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The point's data.\r\n\t\t *\r\n\t\t * @type {Object}\r\n\t\t * @default null\r\n\t\t ",
-                          "range": [
-                            853,
-                            934
-                          ],
+                          "start": 853,
+                          "end": 934,
                           "loc": {
                             "start": {
                               "line": 42,
@@ -603,99 +653,8 @@
                     },
                     {
                       "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "ThisExpression",
-                            "range": [
-                              940,
-                              944
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 49,
-                                "column": 2
-                              },
-                              "end": {
-                                "line": 49,
-                                "column": 6
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "object",
-                            "range": [
-                              945,
-                              951
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 49,
-                                "column": 7
-                              },
-                              "end": {
-                                "line": 49,
-                                "column": 13
-                              }
-                            }
-                          },
-                          "range": [
-                            940,
-                            951
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 49,
-                              "column": 2
-                            },
-                            "end": {
-                              "line": 49,
-                              "column": 13
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Identifier",
-                          "name": "object",
-                          "range": [
-                            954,
-                            960
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 49,
-                              "column": 16
-                            },
-                            "end": {
-                              "line": 49,
-                              "column": 22
-                            }
-                          }
-                        },
-                        "range": [
-                          940,
-                          960
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 49,
-                            "column": 2
-                          },
-                          "end": {
-                            "line": 49,
-                            "column": 22
-                          }
-                        }
-                      },
-                      "range": [
-                        940,
-                        961
-                      ],
+                      "start": 940,
+                      "end": 961,
                       "loc": {
                         "start": {
                           "line": 49,
@@ -706,14 +665,96 @@
                           "column": 23
                         }
                       },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 940,
+                        "end": 960,
+                        "loc": {
+                          "start": {
+                            "line": 49,
+                            "column": 2
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 22
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 940,
+                          "end": 951,
+                          "loc": {
+                            "start": {
+                              "line": 49,
+                              "column": 2
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 13
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 940,
+                            "end": 944,
+                            "loc": {
+                              "start": {
+                                "line": 49,
+                                "column": 2
+                              },
+                              "end": {
+                                "line": 49,
+                                "column": 6
+                              }
+                            },
+                            "leadingComments": null
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 945,
+                            "end": 951,
+                            "loc": {
+                              "start": {
+                                "line": 49,
+                                "column": 7
+                              },
+                              "end": {
+                                "line": 49,
+                                "column": 13
+                              },
+                              "identifierName": "object"
+                            },
+                            "name": "object"
+                          },
+                          "computed": false,
+                          "leadingComments": null
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 954,
+                          "end": 960,
+                          "loc": {
+                            "start": {
+                              "line": 49,
+                              "column": 16
+                            },
+                            "end": {
+                              "line": 49,
+                              "column": 22
+                            },
+                            "identifierName": "object"
+                          },
+                          "name": "object"
+                        },
+                        "leadingComments": null
+                      },
                       "leadingComments": [
                         {
-                          "type": "Block",
+                          "type": "CommentBlock",
                           "value": "*\r\n\t\t * The point's data.\r\n\t\t *\r\n\t\t * @type {Object}\r\n\t\t * @default null\r\n\t\t ",
-                          "range": [
-                            853,
-                            934
-                          ],
+                          "start": 853,
+                          "end": 934,
                           "loc": {
                             "start": {
                               "line": 42,
@@ -728,114 +769,55 @@
                       ]
                     }
                   ],
-                  "range": [
-                    487,
-                    967
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 16,
-                      "column": 60
-                    },
-                    "end": {
-                      "line": 51,
-                      "column": 2
+                  "directives": []
+                },
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n\t * Constructs new ray-point intersection data.\r\n\t *\r\n\t * @param {Number} distance - The distance from the origin of the ray to the point.\r\n\t * @param {Number} distanceToRay - The distance from the point to the ray.\r\n\t * @param {Vector3} point - The point.\r\n\t * @param {Object} [object=null] - The point's data.\r\n\t ",
+                    "start": 101,
+                    "end": 423,
+                    "loc": {
+                      "start": {
+                        "line": 7,
+                        "column": 1
+                      },
+                      "end": {
+                        "line": 14,
+                        "column": 4
+                      }
                     }
                   }
-                },
-                "generator": false,
-                "expression": false,
-                "range": [
-                  439,
-                  967
-                ],
-                "loc": {
-                  "start": {
-                    "line": 16,
-                    "column": 12
-                  },
-                  "end": {
-                    "line": 51,
-                    "column": 2
-                  }
-                }
-              },
-              "kind": "constructor",
-              "computed": false,
-              "range": [
-                428,
-                967
-              ],
+                ]
+              }
+            ]
+          },
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\r\n * A collection of ray-point intersection data.\r\n ",
+              "start": 0,
+              "end": 57,
               "loc": {
                 "start": {
-                  "line": 16,
-                  "column": 1
+                  "line": 1,
+                  "column": 0
                 },
                 "end": {
-                  "line": 51,
-                  "column": 2
+                  "line": 3,
+                  "column": 3
                 }
-              },
-              "leadingComments": [
-                {
-                  "type": "Block",
-                  "value": "*\r\n\t * Constructs new ray-point intersection data.\r\n\t *\r\n\t * @param {Number} distance - The distance from the origin of the ray to the point.\r\n\t * @param {Number} distanceToRay - The distance from the point to the ray.\r\n\t * @param {Vector3} point - The point.\r\n\t * @param {Object} [object=null] - The point's data.\r\n\t ",
-                  "range": [
-                    101,
-                    423
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 7,
-                      "column": 1
-                    },
-                    "end": {
-                      "line": 14,
-                      "column": 4
-                    }
-                  }
-                }
-              ],
-              "static": false
+              }
             }
           ],
-          "range": [
-            95,
-            972
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 34
-            },
-            "end": {
-              "line": 53,
-              "column": 1
-            }
-          }
-        },
-        "range": [
-          68,
-          972
-        ],
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 7
-          },
-          "end": {
-            "line": 53,
-            "column": 1
-          }
+          "trailingComments": []
         },
         "leadingComments": [
           {
-            "type": "Block",
+            "type": "CommentBlock",
             "value": "*\r\n * A collection of ray-point intersection data.\r\n ",
-            "range": [
-              0,
-              57
-            ],
+            "start": 0,
+            "end": 57,
             "loc": {
               "start": {
                 "line": 1,
@@ -847,70 +829,17 @@
               }
             }
           }
-        ],
-        "trailingComments": []
-      },
-      "specifiers": [],
-      "source": null,
-      "range": [
-        61,
-        972
-      ],
-      "loc": {
-        "start": {
-          "line": 5,
-          "column": 0
-        },
-        "end": {
-          "line": 53,
-          "column": 1
-        }
-      },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": "*\r\n * A collection of ray-point intersection data.\r\n ",
-          "range": [
-            0,
-            57
-          ],
-          "loc": {
-            "start": {
-              "line": 1,
-              "column": 0
-            },
-            "end": {
-              "line": 3,
-              "column": 3
-            }
-          }
-        }
-      ]
-    }
-  ],
-  "sourceType": "module",
-  "range": [
-    61,
-    972
-  ],
-  "loc": {
-    "start": {
-      "line": 5,
-      "column": 0
-    },
-    "end": {
-      "line": 53,
-      "column": 1
-    }
+        ]
+      }
+    ],
+    "directives": []
   },
   "comments": [
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n * A collection of ray-point intersection data.\r\n ",
-      "range": [
-        0,
-        57
-      ],
+      "start": 0,
+      "end": 57,
       "loc": {
         "start": {
           "line": 1,
@@ -923,12 +852,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n\t * Constructs new ray-point intersection data.\r\n\t *\r\n\t * @param {Number} distance - The distance from the origin of the ray to the point.\r\n\t * @param {Number} distanceToRay - The distance from the point to the ray.\r\n\t * @param {Vector3} point - The point.\r\n\t * @param {Object} [object=null] - The point's data.\r\n\t ",
-      "range": [
-        101,
-        423
-      ],
+      "start": 101,
+      "end": 423,
       "loc": {
         "start": {
           "line": 7,
@@ -941,12 +868,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n\t\t * The distance from the origin of the ray to the point.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
-      "range": [
-        494,
-        591
-      ],
+      "start": 494,
+      "end": 591,
       "loc": {
         "start": {
           "line": 18,
@@ -959,12 +884,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n\t\t * The shortest distance from the point to the ray.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
-      "range": [
-        628,
-        720
-      ],
+      "start": 628,
+      "end": 720,
       "loc": {
         "start": {
           "line": 26,
@@ -977,12 +900,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n\t\t * The point.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t ",
-      "range": [
-        767,
-        822
-      ],
+      "start": 767,
+      "end": 822,
       "loc": {
         "start": {
           "line": 34,
@@ -995,12 +916,10 @@
       }
     },
     {
-      "type": "Block",
+      "type": "CommentBlock",
       "value": "*\r\n\t\t * The point's data.\r\n\t\t *\r\n\t\t * @type {Object}\r\n\t\t * @default null\r\n\t\t ",
-      "range": [
-        853,
-        934
-      ],
+      "start": 853,
+      "end": 934,
       "loc": {
         "start": {
           "line": 42,
@@ -1009,6 +928,1261 @@
         "end": {
           "line": 47,
           "column": 5
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n * A collection of ray-point intersection data.\r\n ",
+      "start": 0,
+      "end": 57,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 61,
+      "end": 67,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "class",
+        "keyword": "class",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "class",
+      "start": 68,
+      "end": 73,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "RayPointIntersection",
+      "start": 74,
+      "end": 94,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 13
+        },
+        "end": {
+          "line": 5,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 95,
+      "end": 96,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 34
+        },
+        "end": {
+          "line": 5,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n\t * Constructs new ray-point intersection data.\r\n\t *\r\n\t * @param {Number} distance - The distance from the origin of the ray to the point.\r\n\t * @param {Number} distanceToRay - The distance from the point to the ray.\r\n\t * @param {Vector3} point - The point.\r\n\t * @param {Object} [object=null] - The point's data.\r\n\t ",
+      "start": 101,
+      "end": 423,
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 1
+        },
+        "end": {
+          "line": 14,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "constructor",
+      "start": 428,
+      "end": 439,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 1
+        },
+        "end": {
+          "line": 16,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 439,
+      "end": 440,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 12
+        },
+        "end": {
+          "line": 16,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distance",
+      "start": 440,
+      "end": 448,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 13
+        },
+        "end": {
+          "line": 16,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 448,
+      "end": 449,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 21
+        },
+        "end": {
+          "line": 16,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distanceToRay",
+      "start": 450,
+      "end": 463,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 23
+        },
+        "end": {
+          "line": 16,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 463,
+      "end": 464,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 36
+        },
+        "end": {
+          "line": 16,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "point",
+      "start": 465,
+      "end": 470,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 38
+        },
+        "end": {
+          "line": 16,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 470,
+      "end": 471,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 43
+        },
+        "end": {
+          "line": 16,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "object",
+      "start": 472,
+      "end": 478,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 45
+        },
+        "end": {
+          "line": 16,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 479,
+      "end": 480,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 52
+        },
+        "end": {
+          "line": 16,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "null",
+        "keyword": "null",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "null",
+      "start": 481,
+      "end": 485,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 54
+        },
+        "end": {
+          "line": 16,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 485,
+      "end": 486,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 58
+        },
+        "end": {
+          "line": 16,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 487,
+      "end": 488,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 60
+        },
+        "end": {
+          "line": 16,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n\t\t * The distance from the origin of the ray to the point.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
+      "start": 494,
+      "end": 591,
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 2
+        },
+        "end": {
+          "line": 22,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 597,
+      "end": 601,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 2
+        },
+        "end": {
+          "line": 24,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 601,
+      "end": 602,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 6
+        },
+        "end": {
+          "line": 24,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distance",
+      "start": 602,
+      "end": 610,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 7
+        },
+        "end": {
+          "line": 24,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 611,
+      "end": 612,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 16
+        },
+        "end": {
+          "line": 24,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distance",
+      "start": 613,
+      "end": 621,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 18
+        },
+        "end": {
+          "line": 24,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 621,
+      "end": 622,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 26
+        },
+        "end": {
+          "line": 24,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n\t\t * The shortest distance from the point to the ray.\r\n\t\t *\r\n\t\t * @type {Number}\r\n\t\t ",
+      "start": 628,
+      "end": 720,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 726,
+      "end": 730,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 2
+        },
+        "end": {
+          "line": 32,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 730,
+      "end": 731,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 6
+        },
+        "end": {
+          "line": 32,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distanceToRay",
+      "start": 731,
+      "end": 744,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 7
+        },
+        "end": {
+          "line": 32,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 745,
+      "end": 746,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 21
+        },
+        "end": {
+          "line": 32,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "distanceToRay",
+      "start": 747,
+      "end": 760,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 23
+        },
+        "end": {
+          "line": 32,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 760,
+      "end": 761,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 36
+        },
+        "end": {
+          "line": 32,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n\t\t * The point.\r\n\t\t *\r\n\t\t * @type {Vector3}\r\n\t\t ",
+      "start": 767,
+      "end": 822,
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 2
+        },
+        "end": {
+          "line": 38,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 828,
+      "end": 832,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 2
+        },
+        "end": {
+          "line": 40,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 832,
+      "end": 833,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 6
+        },
+        "end": {
+          "line": 40,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "point",
+      "start": 833,
+      "end": 838,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 7
+        },
+        "end": {
+          "line": 40,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 839,
+      "end": 840,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 13
+        },
+        "end": {
+          "line": 40,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "point",
+      "start": 841,
+      "end": 846,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 15
+        },
+        "end": {
+          "line": 40,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 846,
+      "end": 847,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 20
+        },
+        "end": {
+          "line": 40,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n\t\t * The point's data.\r\n\t\t *\r\n\t\t * @type {Object}\r\n\t\t * @default null\r\n\t\t ",
+      "start": 853,
+      "end": 934,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 2
+        },
+        "end": {
+          "line": 47,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 940,
+      "end": 944,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 2
+        },
+        "end": {
+          "line": 49,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 944,
+      "end": 945,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 6
+        },
+        "end": {
+          "line": 49,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "object",
+      "start": 945,
+      "end": 951,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 7
+        },
+        "end": {
+          "line": 49,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 952,
+      "end": 953,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 14
+        },
+        "end": {
+          "line": 49,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "object",
+      "start": 954,
+      "end": 960,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 16
+        },
+        "end": {
+          "line": 49,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 960,
+      "end": 961,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 22
+        },
+        "end": {
+          "line": 49,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 966,
+      "end": 967,
+      "loc": {
+        "start": {
+          "line": 51,
+          "column": 1
+        },
+        "end": {
+          "line": 51,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 971,
+      "end": 972,
+      "loc": {
+        "start": {
+          "line": 53,
+          "column": 0
+        },
+        "end": {
+          "line": 53,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 974,
+      "end": 974,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 0
+        },
+        "end": {
+          "line": 54,
+          "column": 0
         }
       }
     }

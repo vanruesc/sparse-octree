@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">Octant | API Document</title>
+  <title data-ice="title">Octant | sparse-octree</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
   <script src="script/manual.js"></script>
-</head>
+<meta name="description" content="A sparse octree data structure."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="sparse-octree"><meta property="twitter:description" content="A sparse octree data structure."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -19,7 +17,6 @@
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
-  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -27,22 +24,22 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-</header>
+<a style="position:relative; top:3px;" href="https://github.com/vanruesc/sparse-octree.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -76,6 +73,7 @@
   
   <div class="description" data-ice="description"><p>An octant.</p>
 </div>
+  
 
   
 
@@ -103,7 +101,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(min: <span>Vector3</span>, max: <span>Vector3</span>)</span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(min: <span>Vector3</span>, max: <span>Vector3</span>)</span>
         </p>
       </div>
       <div>
@@ -136,7 +137,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-children">children</a></span></span><span data-ice="signature">: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-children">children</a></span></span><span class="code" data-ice="signature">: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
@@ -162,7 +166,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-max">max</a></span></span><span data-ice="signature">: <span>Vector3</span></span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-max">max</a></span></span><span class="code" data-ice="signature">: <span>Vector3</span></span>
         </p>
       </div>
       <div>
@@ -188,7 +195,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-min">min</a></span></span><span data-ice="signature">: <span>Vector3</span></span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-member-min">min</a></span></span><span class="code" data-ice="signature">: <span>Vector3</span></span>
         </p>
       </div>
       <div>
@@ -221,7 +231,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-getCenter">getCenter</a></span></span><span data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-getCenter">getCenter</a></span></span><span class="code" data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
         </p>
       </div>
       <div>
@@ -247,7 +260,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-getDimensions">getDimensions</a></span></span><span data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-getDimensions">getDimensions</a></span></span><span class="code" data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
         </p>
       </div>
       <div>
@@ -273,7 +289,10 @@
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-split">split</a></span></span><span data-ice="signature">()</span>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html#instance-method-split">split</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
       <div>
@@ -305,7 +324,8 @@
     
     
     
-    <span data-ice="name">constructor</span><span data-ice="signature">(min: <span>Vector3</span>, max: <span>Vector3</span>)</span>
+    
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(min: <span>Vector3</span>, max: <span>Vector3</span>)</span>
     <span class="right-info">
       
       
@@ -330,15 +350,15 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">min</td>
-      <td data-ice="type"><span>Vector3</span></td>
+      <td data-ice="name" class="code" data-depth="0">min</td>
+      <td data-ice="type" class="code"><span>Vector3</span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>The lower bounds.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">max</td>
-      <td data-ice="type"><span>Vector3</span></td>
+      <td data-ice="name" class="code" data-depth="0">max</td>
+      <td data-ice="type" class="code"><span>Vector3</span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>The upper bounds.</p>
 </td>
@@ -347,6 +367,8 @@
   </table>
 </div>
 </div>
+
+  
 
   
 
@@ -373,7 +395,8 @@
     
     
     
-    <span data-ice="name">children</span><span data-ice="signature">: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
+    
+    <span class="code" data-ice="name">children</span><span class="code" data-ice="signature">: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
@@ -405,6 +428,8 @@
   
 
   
+
+  
   
 </div>
 <div class="detail" data-ice="detail">
@@ -414,7 +439,8 @@
     
     
     
-    <span data-ice="name">max</span><span data-ice="signature">: <span>Vector3</span></span>
+    
+    <span class="code" data-ice="name">max</span><span class="code" data-ice="signature">: <span>Vector3</span></span>
     <span class="right-info">
       
       
@@ -446,6 +472,8 @@
   
 
   
+
+  
   
 </div>
 <div class="detail" data-ice="detail">
@@ -455,7 +483,8 @@
     
     
     
-    <span data-ice="name">min</span><span data-ice="signature">: <span>Vector3</span></span>
+    
+    <span class="code" data-ice="name">min</span><span class="code" data-ice="signature">: <span>Vector3</span></span>
     <span class="right-info">
       
       
@@ -487,6 +516,8 @@
   
 
   
+
+  
   
 </div>
 </div>
@@ -499,7 +530,8 @@
     
     
     
-    <span data-ice="name">getCenter</span><span data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
+    
+    <span class="code" data-ice="name">getCenter</span><span class="code" data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
     <span class="right-info">
       
       
@@ -524,8 +556,8 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">target</td>
-      <td data-ice="type"><span>Vector3</span></td>
+      <td data-ice="name" class="code" data-depth="0">target</td>
+      <td data-ice="type" class="code"><span>Vector3</span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>A target vector. If none is provided, a new one will be created.</p>
 </td>
@@ -538,15 +570,19 @@
   <div class="return-params" data-ice="returnParams">
     <h4>Return:</h4>
     <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span>Vector3</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the center of this octant.</p>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Vector3</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the center of this octant.</p>
 </td>
-      </tr>
+        </tr>
+      </tbody>
     </table>
     <div data-ice="returnProperties">
 </div>
   </div>
+
+  
 
   
 
@@ -568,7 +604,8 @@
     
     
     
-    <span data-ice="name">getDimensions</span><span data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
+    
+    <span class="code" data-ice="name">getDimensions</span><span class="code" data-ice="signature">(target: <span>Vector3</span>): <span>Vector3</span></span>
     <span class="right-info">
       
       
@@ -593,8 +630,8 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">target</td>
-      <td data-ice="type"><span>Vector3</span></td>
+      <td data-ice="name" class="code" data-depth="0">target</td>
+      <td data-ice="type" class="code"><span>Vector3</span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>A target vector. If none is provided, a new one will be created.</p>
 </td>
@@ -607,15 +644,19 @@
   <div class="return-params" data-ice="returnParams">
     <h4>Return:</h4>
     <table>
-      <tr>
-        <td class="return-type" data-ice="returnType"><span>Vector3</span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the size of this octant.</p>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>Vector3</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the size of this octant.</p>
 </td>
-      </tr>
+        </tr>
+      </tbody>
     </table>
     <div data-ice="returnProperties">
 </div>
   </div>
+
+  
 
   
 
@@ -637,7 +678,8 @@
     
     
     
-    <span data-ice="name">split</span><span data-ice="signature">()</span>
+    
+    <span class="code" data-ice="name">split</span><span class="code" data-ice="signature">()</span>
     <span class="right-info">
       
       
@@ -669,13 +711,15 @@
   
 
   
+
+  
   
 </div>
 </div>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>

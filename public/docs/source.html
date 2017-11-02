@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="">
-  <title data-ice="title">Source | API Document</title>
+  <title data-ice="title">Source | sparse-octree</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
-  
-  
   <script src="script/manual.js"></script>
-</head>
+<meta name="description" content="A sparse octree data structure."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="sparse-octree"><meta property="twitter:description" content="A sparse octree data structure."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -19,7 +17,6 @@
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
-  <a data-ice="repoURL" href="https://github.com/vanruesc/sparse-octree.git" class="repo-url-github">Repository</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -27,27 +24,27 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-</header>
+<a style="position:relative; top:3px;" href="https://github.com/vanruesc/sparse-octree.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">core</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">points</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">71/74</span></h1>
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">108/109</span></h1>
 
 <table class="files-summary" data-ice="files" data-use-coverage="true">
   <thead>
@@ -65,7 +62,7 @@
   <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/core/CubicOctant.js.html">src/core/CubicOctant.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
       <td style="display: none;" data-ice="size">2292 byte</td>
       <td style="display: none;" data-ice="lines">132</td>
       <td style="display: none;" data-ice="updated">2017-08-02 15:11:41 (UTC)</td>
@@ -75,23 +72,23 @@
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span>
 <span><a href="variable/index.html#static-variable-edges">edges</a></span>
 <span><a href="variable/index.html#static-variable-pattern">pattern</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">11/11</span></td>
       <td style="display: none;" data-ice="size">3165 byte</td>
       <td style="display: none;" data-ice="lines">182</td>
       <td style="display: none;" data-ice="updated">2017-09-06 20:26:28 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/core/OctantIterator.js.html#errorLines=219">src/core/OctantIterator.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/core/OctantIterator.js.html">src/core/OctantIterator.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></td>
-      <td class="coverage"><span data-ice="coverage">87 %</span><span data-ice="coverageCount" class="coverage-count">7/8</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
       <td style="display: none;" data-ice="size">3233 byte</td>
       <td style="display: none;" data-ice="lines">225</td>
       <td style="display: none;" data-ice="updated">2017-09-07 23:58:40 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/core/Octree.js.html#errorLines=273">src/core/Octree.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/core/Octree.js.html">src/core/Octree.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></td>
-      <td class="coverage"><span data-ice="coverage">92 %</span><span data-ice="coverageCount" class="coverage-count">13/14</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">18/18</span></td>
       <td style="display: none;" data-ice="size">5456 byte</td>
       <td style="display: none;" data-ice="lines">279</td>
       <td style="display: none;" data-ice="updated">2017-09-06 12:08:31 (UTC)</td>
@@ -99,10 +96,10 @@
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/core/OctreeRaycaster.js.html">src/core/OctreeRaycaster.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">2/2</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
       <td style="display: none;" data-ice="size">8482 byte</td>
       <td style="display: none;" data-ice="lines">341</td>
-      <td style="display: none;" data-ice="updated">2017-10-03 15:45:11 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2017-10-06 13:48:16 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/core/index.js.html">src/core/index.js</a></span></td>
@@ -123,7 +120,7 @@
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/points/PointOctant.js.html#errorLines=193">src/points/PointOctant.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></td>
-      <td class="coverage"><span data-ice="coverage">90 %</span><span data-ice="coverageCount" class="coverage-count">9/10</span></td>
+      <td class="coverage"><span data-ice="coverage">90 %</span><span data-ice="coverageCount" class="coverage-count">10/11</span></td>
       <td style="display: none;" data-ice="size">3450 byte</td>
       <td style="display: none;" data-ice="lines">199</td>
       <td style="display: none;" data-ice="updated">2017-09-05 14:41:50 (UTC)</td>
@@ -131,7 +128,7 @@
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/points/PointOctree.js.html">src/points/PointOctree.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">13/13</span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">24/24</span></td>
       <td style="display: none;" data-ice="size">15802 byte</td>
       <td style="display: none;" data-ice="lines">744</td>
       <td style="display: none;" data-ice="updated">2017-08-01 11:54:24 (UTC)</td>
@@ -155,10 +152,10 @@
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/utils/OctreeUtils.js.html">src/utils/OctreeUtils.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></td>
-      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">2/2</span></td>
-      <td style="display: none;" data-ice="size">1287 byte</td>
-      <td style="display: none;" data-ice="lines">60</td>
-      <td style="display: none;" data-ice="updated">2017-08-05 23:31:26 (UTC)</td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">1624 byte</td>
+      <td style="display: none;" data-ice="lines">96</td>
+      <td style="display: none;" data-ice="updated">2017-11-05 20:31:37 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/utils/index.js.html">src/utils/index.js</a></span></td>
@@ -173,7 +170,7 @@
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>
