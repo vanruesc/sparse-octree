@@ -238,8 +238,8 @@
     }
   };
 
-  var OctreeHelper = function (_Object3D) {
-  		inherits(OctreeHelper, _Object3D);
+  var OctreeHelper = function (_Group) {
+  		inherits(OctreeHelper, _Group);
 
   		function OctreeHelper() {
   				var octree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -261,7 +261,7 @@
   				value: function createLineSegments(octants, octantCount) {
 
   						var maxOctants = Math.pow(2, 16) / 8 - 1;
-  						var group = new three.Object3D();
+  						var group = new three.Group();
 
   						var material = new three.LineBasicMaterial({
   								color: 0xffffff * Math.random()
@@ -390,7 +390,7 @@
   				}
   		}]);
   		return OctreeHelper;
-  }(three.Object3D);
+  }(three.Group);
 
   var corners = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
 
@@ -6480,54 +6480,58 @@
   	return PointOctree;
   }(Octree);
 
+  var b$6 = new Box3$1();
+
+  var c$3 = new Vector3$1();
+
+  var u = new Vector3$1();
+
+  var v$5 = new Vector3$1();
+
   var OctreeUtils = function () {
-  		function OctreeUtils() {
-  				classCallCheck(this, OctreeUtils);
-  		}
+  	function OctreeUtils() {
+  		classCallCheck(this, OctreeUtils);
+  	}
 
-  		createClass(OctreeUtils, null, [{
-  				key: "recycleOctants",
-  				value: function recycleOctants(octant, octants) {
+  	createClass(OctreeUtils, null, [{
+  		key: "recycleOctants",
+  		value: function recycleOctants(octant, octants) {
 
-  						var a = new Vector3$1();
-  						var b = new Vector3$1();
-  						var c = new Vector3$1();
+  			var min = octant.min;
+  			var mid = octant.getCenter(u);
+  			var halfDimensions = octant.getDimensions(v$5).multiplyScalar(0.5);
 
-  						var min = octant.min;
-  						var mid = octant.getCenter();
-  						var halfDimensions = octant.getDimensions().multiplyScalar(0.5);
+  			var children = octant.children;
+  			var l = octants.length;
 
-  						var children = octant.children;
-  						var l = octants.length;
+  			var i = void 0,
+  			    j = void 0;
+  			var combination = void 0,
+  			    candidate = void 0;
 
-  						var i = void 0,
-  						    j = void 0;
-  						var combination = void 0,
-  						    candidate = void 0;
+  			for (i = 0; i < 8; ++i) {
 
-  						for (i = 0; i < 8; ++i) {
+  				combination = pattern[i];
 
-  								combination = pattern[i];
+  				b$6.min.addVectors(min, c$3.fromArray(combination).multiply(halfDimensions));
+  				b$6.max.addVectors(mid, c$3.fromArray(combination).multiply(halfDimensions));
 
-  								b.addVectors(min, a.fromArray(combination).multiply(halfDimensions));
-  								c.addVectors(mid, a.fromArray(combination).multiply(halfDimensions));
+  				for (j = 0; j < l; ++j) {
 
-  								for (j = 0; j < l; ++j) {
+  					candidate = octants[j];
 
-  										candidate = octants[j];
+  					if (candidate !== null && b$6.min.equals(candidate.min) && b$6.max.equals(candidate.max)) {
 
-  										if (candidate !== null && b.equals(candidate.min) && c.equals(candidate.max)) {
+  						children[i] = candidate;
+  						octants[j] = null;
 
-  												children[i] = candidate;
-  												octants[j] = null;
-
-  												break;
-  										}
-  								}
-  						}
+  						break;
+  					}
   				}
-  		}]);
-  		return OctreeUtils;
+  			}
+  		}
+  	}]);
+  	return OctreeUtils;
   }();
 
   var Demo = function () {
