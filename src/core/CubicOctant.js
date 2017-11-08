@@ -60,7 +60,11 @@ export class CubicOctant {
 	 * @type {Vector3}
 	 */
 
-	get max() { return this.min.clone().addScalar(this.size); }
+	get max() {
+
+		return this.min.clone().addScalar(this.size);
+
+	}
 
 	/**
 	 * Computes the center of this octant.

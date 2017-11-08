@@ -153,7 +153,11 @@ export class Octree {
 	 * @type {Vector3}
 	 */
 
-	get min() { return this.root.min; }
+	get min() {
+
+		return this.root.min;
+
+	}
 
 	/**
 	 * The upper bounds of the root octant.
@@ -161,7 +165,11 @@ export class Octree {
 	 * @type {Vector3}
 	 */
 
-	get max() { return this.root.max; }
+	get max() {
+
+		return this.root.max;
+
+	}
 
 	/**
 	 * The children of the root octant.
@@ -169,7 +177,11 @@ export class Octree {
 	 * @type {Octant[]}
 	 */
 
-	get children() { return this.root.children; }
+	get children() {
+
+		return this.root.children;
+
+	}
 
 	/**
 	 * Calculates the center of this octree.
@@ -178,7 +190,11 @@ export class Octree {
 	 * @return {Vector3} A vector that describes the center of this octree.
 	 */
 
-	getCenter(target) { return this.root.getCenter(target); }
+	getCenter(target) {
+
+		return this.root.getCenter(target);
+
+	}
 
 	/**
 	 * Calculates the size of this octree.
@@ -187,7 +203,11 @@ export class Octree {
 	 * @return {Vector3} A vector that describes the size of this octree.
 	 */
 
-	getDimensions(target) { return this.root.getDimensions(target); }
+	getDimensions(target) {
+
+		return this.root.getDimensions(target);
+
+	}
 
 	/**
 	 * Calculates the current depth of this octree.
@@ -195,7 +215,11 @@ export class Octree {
 	 * @return {Number} The depth.
 	 */
 
-	getDepth() { return getDepth(this.root); }
+	getDepth() {
+
+		return getDepth(this.root);
+
+	}
 
 	/**
 	 * Recursively collects octants that intersect with the specified region.

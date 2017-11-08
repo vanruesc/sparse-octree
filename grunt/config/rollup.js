@@ -7,11 +7,13 @@ module.exports = function(grunt) {
 
 		options: {
 			plugins() {
+
 				return [
 					resolve({
 						jsnext: true
 					})
 				].concat(grunt.option("production") ? [babel()] : []);
+
 			}
 		},
 

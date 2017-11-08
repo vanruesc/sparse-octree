@@ -225,9 +225,23 @@ export class FrustumCuller {
 
 		const subFolder = folder.addFolder("Camera Adjustment");
 
-		subFolder.add(this.s, "radius").min(0.1).max(10.0).step(0.1).onChange(() => { this.cull(); });
-		subFolder.add(this.s, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(() => { this.cull(); });
-		subFolder.add(this.s, "theta").min(0.0).max(Math.PI * 2.0).onChange(() => { this.cull(); });
+		subFolder.add(this.s, "radius").min(0.1).max(10.0).step(0.1).onChange(() => {
+
+			this.cull();
+
+		});
+
+		subFolder.add(this.s, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(() => {
+
+			this.cull();
+
+		});
+
+		subFolder.add(this.s, "theta").min(0.0).max(Math.PI * 2.0).onChange(() => {
+
+			this.cull();
+
+		});
 
 	}
 
