@@ -9,13 +9,9 @@ module.exports = function(grunt) {
 			plugins() {
 
 				return [
-					resolve({
-						jsnext: true
-					})
-				].concat(!grunt.option("production") ? [] :
-					[babel({
-						exclude: "node_modules/**"
-					})]
+					resolve()
+				].concat(
+					grunt.option("production") ? [babel()] : []
 				);
 
 			}
