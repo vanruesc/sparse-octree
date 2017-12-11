@@ -12,7 +12,11 @@ module.exports = function(grunt) {
 					resolve({
 						jsnext: true
 					})
-				].concat(grunt.option("production") ? [babel()] : []);
+				].concat(!grunt.option("production") ? [] :
+					[babel({
+						exclude: "node_modules/**"
+					})]
+				);
 
 			}
 		},
