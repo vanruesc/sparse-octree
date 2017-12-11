@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.1.1 build Nov 02 2017
+ * sparse-octree v4.1.1 build Dec 11 2017
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2017 Raoul van Rüschen, Zlib
  */
@@ -9,123 +9,6 @@
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (factory((global.SPARSEOCTREE = {})));
 }(this, (function (exports) { 'use strict';
-
-  var asyncGenerator = function () {
-    function AwaitValue(value) {
-      this.value = value;
-    }
-
-    function AsyncGenerator(gen) {
-      var front, back;
-
-      function send(key, arg) {
-        return new Promise(function (resolve, reject) {
-          var request = {
-            key: key,
-            arg: arg,
-            resolve: resolve,
-            reject: reject,
-            next: null
-          };
-
-          if (back) {
-            back = back.next = request;
-          } else {
-            front = back = request;
-            resume(key, arg);
-          }
-        });
-      }
-
-      function resume(key, arg) {
-        try {
-          var result = gen[key](arg);
-          var value = result.value;
-
-          if (value instanceof AwaitValue) {
-            Promise.resolve(value.value).then(function (arg) {
-              resume("next", arg);
-            }, function (arg) {
-              resume("throw", arg);
-            });
-          } else {
-            settle(result.done ? "return" : "normal", result.value);
-          }
-        } catch (err) {
-          settle("throw", err);
-        }
-      }
-
-      function settle(type, value) {
-        switch (type) {
-          case "return":
-            front.resolve({
-              value: value,
-              done: true
-            });
-            break;
-
-          case "throw":
-            front.reject(value);
-            break;
-
-          default:
-            front.resolve({
-              value: value,
-              done: false
-            });
-            break;
-        }
-
-        front = front.next;
-
-        if (front) {
-          resume(front.key, front.arg);
-        } else {
-          back = null;
-        }
-      }
-
-      this._invoke = send;
-
-      if (typeof gen.return !== "function") {
-        this.return = undefined;
-      }
-    }
-
-    if (typeof Symbol === "function" && Symbol.asyncIterator) {
-      AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-        return this;
-      };
-    }
-
-    AsyncGenerator.prototype.next = function (arg) {
-      return this._invoke("next", arg);
-    };
-
-    AsyncGenerator.prototype.throw = function (arg) {
-      return this._invoke("throw", arg);
-    };
-
-    AsyncGenerator.prototype.return = function (arg) {
-      return this._invoke("return", arg);
-    };
-
-    return {
-      wrap: function (fn) {
-        return function () {
-          return new AsyncGenerator(fn.apply(this, arguments));
-        };
-      },
-      await: function (value) {
-        return new AwaitValue(value);
-      }
-    };
-  }();
-
-
-
-
 
   var classCallCheck = function (instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -485,20 +368,6 @@
   			return this;
   		}
   	}, {
-  		key: "cross",
-  		value: function cross(v) {
-
-  			var x = this.x,
-  			    y = this.y,
-  			    z = this.z;
-
-  			this.x = y * v.z - z * v.y;
-  			this.y = z * v.x - x * v.z;
-  			this.z = x * v.y - y * v.x;
-
-  			return this;
-  		}
-  	}, {
   		key: "crossVectors",
   		value: function crossVectors(a, b) {
 
@@ -514,6 +383,12 @@
   			this.z = ax * by - ay * bx;
 
   			return this;
+  		}
+  	}, {
+  		key: "cross",
+  		value: function cross(v) {
+
+  			return this.crossVectors(this, v);
   		}
   	}, {
   		key: "transformDirection",
@@ -930,6 +805,7 @@
   			this.max.min(b.max);
 
   			if (this.isEmpty()) {
+
   				this.makeEmpty();
   			}
 
@@ -1471,6 +1347,7 @@
   			var angle = Math.atan2(this.y, this.x);
 
   			if (angle < 0) {
+
   				angle += 2 * Math.PI;
   			}
 
@@ -1515,17 +1392,21 @@
   	}, {
   		key: "width",
   		get: function get$$1() {
+
   			return this.x;
   		},
   		set: function set$$1(value) {
+
   			return this.x = value;
   		}
   	}, {
   		key: "height",
   		get: function get$$1() {
+
   			return this.y;
   		},
   		set: function set$$1(value) {
+
   			return this.y = value;
   		}
   	}]);
@@ -1701,6 +1582,7 @@
   			this.max.min(b.max);
 
   			if (this.isEmpty()) {
+
   				this.makeEmpty();
   			}
 
@@ -2864,6 +2746,7 @@
   	}], [{
   		key: "defaultOrder",
   		get: function get$$1() {
+
   			return RotationOrder.XYZ;
   		}
   	}]);
@@ -2873,6 +2756,354 @@
   var a = new Vector3();
 
   var b = new Vector3();
+
+  var Plane = function () {
+  	function Plane() {
+  		var normal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(1, 0, 0);
+  		var constant = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  		classCallCheck(this, Plane);
+
+
+  		this.normal = normal;
+
+  		this.constant = constant;
+  	}
+
+  	createClass(Plane, [{
+  		key: "set",
+  		value: function set$$1(normal, constant) {
+
+  			this.normal.copy(normal);
+  			this.constant = constant;
+
+  			return this;
+  		}
+  	}, {
+  		key: "setComponents",
+  		value: function setComponents(x, y, z, w) {
+
+  			this.normal.set(x, y, z);
+  			this.constant = w;
+
+  			return this;
+  		}
+  	}, {
+  		key: "copy",
+  		value: function copy(p) {
+
+  			this.normal.copy(p.normal);
+  			this.constant = p.constant;
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}, {
+  		key: "setFromNormalAndCoplanarPoint",
+  		value: function setFromNormalAndCoplanarPoint(n, p) {
+
+  			this.normal.copy(n);
+  			this.constant = -p.dot(this.normal);
+
+  			return this;
+  		}
+  	}, {
+  		key: "setFromCoplanarPoints",
+  		value: function setFromCoplanarPoints(p0, p1, p2) {
+
+  			var normal = a.subVectors(p2, p1).cross(b.subVectors(p0, p1)).normalize();
+
+  			this.setFromNormalAndCoplanarPoint(normal, a);
+
+  			return this;
+  		}
+  	}, {
+  		key: "normalize",
+  		value: function normalize() {
+
+  			var inverseNormalLength = 1.0 / this.normal.length();
+
+  			this.normal.multiplyScalar(inverseNormalLength);
+  			this.constant *= inverseNormalLength;
+
+  			return this;
+  		}
+  	}, {
+  		key: "negate",
+  		value: function negate() {
+
+  			this.normal.negate();
+  			this.constant = -this.constant;
+
+  			return this;
+  		}
+  	}, {
+  		key: "distanceToPoint",
+  		value: function distanceToPoint(p) {
+
+  			return this.normal.dot(p) + this.constant;
+  		}
+  	}, {
+  		key: "distanceToSphere",
+  		value: function distanceToSphere(s) {
+
+  			return this.distanceToPoint(s.center) - s.radius;
+  		}
+  	}, {
+  		key: "projectPoint",
+  		value: function projectPoint(p, target) {
+
+  			return target.copy(this.normal).multiplyScalar(-this.distanceToPoint(p)).add(p);
+  		}
+  	}, {
+  		key: "coplanarPoint",
+  		value: function coplanarPoint(target) {
+
+  			return target.copy(this.normal).multiplyScalar(-this.constant);
+  		}
+  	}, {
+  		key: "translate",
+  		value: function translate(offset) {
+
+  			this.constant -= offset.dot(this.normal);
+
+  			return this;
+  		}
+  	}, {
+  		key: "intersectLine",
+  		value: function intersectLine(l, target) {
+
+  			var direction = l.delta(a);
+  			var denominator = this.normal.dot(direction);
+
+  			if (denominator === 0) {
+  				if (this.distanceToPoint(l.start) === 0) {
+
+  					target.copy(l.start);
+  				}
+  			} else {
+
+  				var t = -(l.start.dot(this.normal) + this.constant) / denominator;
+
+  				if (t >= 0 && t <= 1) {
+
+  					target.copy(direction).multiplyScalar(t).add(l.start);
+  				}
+  			}
+
+  			return target;
+  		}
+  	}, {
+  		key: "intersectsLine",
+  		value: function intersectsLine(l) {
+
+  			var startSign = this.distanceToPoint(l.start);
+  			var endSign = this.distanceToPoint(l.end);
+
+  			return startSign < 0 && endSign > 0 || endSign < 0 && startSign > 0;
+  		}
+  	}, {
+  		key: "intersectsBox",
+  		value: function intersectsBox(b) {
+
+  			return b.intersectsPlane(this);
+  		}
+  	}, {
+  		key: "intersectsSphere",
+  		value: function intersectsSphere(s) {
+
+  			return s.intersectsPlane(this);
+  		}
+  	}, {
+  		key: "equals",
+  		value: function equals(p) {
+
+  			return p.normal.equals(this.normal) && p.constant === this.constant;
+  		}
+  	}]);
+  	return Plane;
+  }();
+
+  var v0 = new Vector3();
+
+  var v1 = new Vector3();
+
+  var Frustum = function () {
+  	function Frustum() {
+  		var p0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Plane();
+  		var p1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Plane();
+  		var p2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Plane();
+  		var p3 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Plane();
+  		var p4 = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new Plane();
+  		var p5 = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new Plane();
+  		classCallCheck(this, Frustum);
+
+
+  		this.planes = [p0, p1, p2, p3, p4, p5];
+  	}
+
+  	createClass(Frustum, [{
+  		key: "set",
+  		value: function set$$1(p0, p1, p2, p3, p4, p5) {
+
+  			var planes = this.planes;
+
+  			planes[0].copy(p0);
+  			planes[1].copy(p1);
+  			planes[2].copy(p2);
+  			planes[3].copy(p3);
+  			planes[4].copy(p4);
+  			planes[5].copy(p5);
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}, {
+  		key: "copy",
+  		value: function copy(frustum) {
+
+  			var planes = this.planes;
+
+  			var i = void 0;
+
+  			for (i = 0; i < 6; ++i) {
+
+  				planes[i].copy(frustum.planes[i]);
+  			}
+
+  			return this;
+  		}
+  	}, {
+  		key: "setFromMatrix",
+  		value: function setFromMatrix(m) {
+
+  			var planes = this.planes;
+
+  			var me = m.elements;
+  			var me0 = me[0],
+  			    me1 = me[1],
+  			    me2 = me[2],
+  			    me3 = me[3];
+  			var me4 = me[4],
+  			    me5 = me[5],
+  			    me6 = me[6],
+  			    me7 = me[7];
+  			var me8 = me[8],
+  			    me9 = me[9],
+  			    me10 = me[10],
+  			    me11 = me[11];
+  			var me12 = me[12],
+  			    me13 = me[13],
+  			    me14 = me[14],
+  			    me15 = me[15];
+
+  			planes[0].setComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
+  			planes[1].setComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
+  			planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
+  			planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
+  			planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
+  			planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+
+  			return this;
+  		}
+  	}, {
+  		key: "intersectsSphere",
+  		value: function intersectsSphere(sphere) {
+
+  			var planes = this.planes;
+  			var center = sphere.center;
+  			var negativeRadius = -sphere.radius;
+
+  			var result = true;
+  			var i = void 0,
+  			    d = void 0;
+
+  			for (i = 0; i < 6; ++i) {
+
+  				d = planes[i].distanceToPoint(center);
+
+  				if (d < negativeRadius) {
+
+  					result = false;
+  					break;
+  				}
+  			}
+
+  			return result;
+  		}
+  	}, {
+  		key: "intersectsBox",
+  		value: function intersectsBox(box) {
+
+  			var planes = this.planes;
+  			var min = box.min;
+  			var max = box.max;
+
+  			var result = true;
+  			var i = void 0,
+  			    d0 = void 0,
+  			    d1 = void 0;
+  			var plane = void 0;
+
+  			for (i = 0; i < 6; ++i) {
+
+  				plane = planes[i];
+
+  				v0.x = plane.normal.x > 0 ? min.x : max.x;
+  				v1.x = plane.normal.x > 0 ? max.x : min.x;
+  				v0.y = plane.normal.y > 0 ? min.y : max.y;
+  				v1.y = plane.normal.y > 0 ? max.y : min.y;
+  				v0.z = plane.normal.z > 0 ? min.z : max.z;
+  				v1.z = plane.normal.z > 0 ? max.z : min.z;
+
+  				d0 = plane.distanceToPoint(v0);
+  				d1 = plane.distanceToPoint(v1);
+
+  				if (d0 < 0 && d1 < 0) {
+
+  					result = false;
+  					break;
+  				}
+  			}
+
+  			return result;
+  		}
+  	}, {
+  		key: "containsPoint",
+  		value: function containsPoint(point) {
+
+  			var planes = this.planes;
+
+  			var result = true;
+  			var i = void 0;
+
+  			for (i = 0; i < 6; ++i) {
+
+  				if (planes[i].distanceToPoint(point) < 0) {
+
+  					result = false;
+  					break;
+  				}
+  			}
+
+  			return result;
+  		}
+  	}]);
+  	return Frustum;
+  }();
+
+  var a$1 = new Vector3();
+
+  var b$1 = new Vector3();
 
   var Line3 = function () {
   	function Line3() {
@@ -2948,11 +3179,11 @@
   		key: "closestPointToPointParameter",
   		value: function closestPointToPointParameter(p, clampToLine) {
 
-  			a.subVectors(p, this.start);
-  			b.subVectors(this.end, this.start);
+  			a$1.subVectors(p, this.start);
+  			b$1.subVectors(this.end, this.start);
 
-  			var bb = b.dot(b);
-  			var ba = b.dot(a);
+  			var bb = b$1.dot(b$1);
+  			var ba = b$1.dot(a$1);
 
   			var t = clampToLine ? Math.min(Math.max(ba / bb, 0), 1) : ba / bb;
 
@@ -2979,9 +3210,9 @@
   	return Line3;
   }();
 
-  var a$1 = new Vector3();
+  var a$2 = new Vector3();
 
-  var b$1 = new Vector3();
+  var b$2 = new Vector3();
 
   var c$1 = new Vector3();
 
@@ -3131,9 +3362,9 @@
   						var te = this.elements;
   						var me = m.elements;
 
-  						var scaleX = 1.0 / a$1.setFromMatrixColumn(m, 0).length();
-  						var scaleY = 1.0 / a$1.setFromMatrixColumn(m, 1).length();
-  						var scaleZ = 1.0 / a$1.setFromMatrixColumn(m, 2).length();
+  						var scaleX = 1.0 / a$2.setFromMatrixColumn(m, 0).length();
+  						var scaleY = 1.0 / a$2.setFromMatrixColumn(m, 1).length();
+  						var scaleZ = 1.0 / a$2.setFromMatrixColumn(m, 2).length();
 
   						te[0] = me[0] * scaleX;
   						te[1] = me[1] * scaleX;
@@ -3365,8 +3596,8 @@
   				value: function lookAt(eye, target, up) {
 
   						var te = this.elements;
-  						var x = a$1,
-  						    y = b$1,
+  						var x = a$2,
+  						    y = b$2,
   						    z = c$1;
 
   						z.subVectors(eye, target);
@@ -3727,9 +3958,9 @@
 
   						var det = this.determinant();
 
-  						var sx = a$1.set(n00, n10, n20).length() * (det < 0 ? -1 : 1);
-  						var sy = a$1.set(n01, n11, n21).length();
-  						var sz = a$1.set(n02, n12, n22).length();
+  						var sx = a$2.set(n00, n10, n20).length() * (det < 0 ? -1 : 1);
+  						var sy = a$2.set(n01, n11, n21).length();
+  						var sz = a$2.set(n02, n12, n22).length();
 
   						var invSX = 1.0 / sx;
   						var invSY = 1.0 / sy;
@@ -3817,181 +4048,6 @@
   				}
   		}]);
   		return Matrix4;
-  }();
-
-  var a$2 = new Vector3();
-
-  var b$2 = new Vector3();
-
-  var Plane = function () {
-  	function Plane() {
-  		var normal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(1, 0, 0);
-  		var constant = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  		classCallCheck(this, Plane);
-
-
-  		this.normal = normal;
-
-  		this.constant = constant;
-  	}
-
-  	createClass(Plane, [{
-  		key: "set",
-  		value: function set$$1(normal, constant) {
-
-  			this.normal.copy(normal);
-  			this.constant = constant;
-
-  			return this;
-  		}
-  	}, {
-  		key: "setComponents",
-  		value: function setComponents(x, y, z, w) {
-
-  			this.normal.set(x, y, z);
-  			this.constant = w;
-
-  			return this;
-  		}
-  	}, {
-  		key: "copy",
-  		value: function copy(p) {
-
-  			this.normal.copy(p.normal);
-  			this.constant = p.constant;
-
-  			return this;
-  		}
-  	}, {
-  		key: "clone",
-  		value: function clone() {
-
-  			return new this.constructor().copy(this);
-  		}
-  	}, {
-  		key: "setFromNormalAndCoplanarPoint",
-  		value: function setFromNormalAndCoplanarPoint(n, p) {
-
-  			this.normal.copy(n);
-  			this.constant = -p.dot(this.normal);
-
-  			return this;
-  		}
-  	}, {
-  		key: "setFromCoplanarPoints",
-  		value: function setFromCoplanarPoints(p0, p1, p2) {
-
-  			var normal = a$2.subVectors(p2, p1).cross(b$2.subVectors(p0, p1)).normalize();
-
-  			this.setFromNormalAndCoplanarPoint(normal, a$2);
-
-  			return this;
-  		}
-  	}, {
-  		key: "normalize",
-  		value: function normalize() {
-
-  			var inverseNormalLength = 1.0 / this.normal.length();
-
-  			this.normal.multiplyScalar(inverseNormalLength);
-  			this.constant *= inverseNormalLength;
-
-  			return this;
-  		}
-  	}, {
-  		key: "negate",
-  		value: function negate() {
-
-  			this.normal.negate();
-  			this.constant = -this.constant;
-
-  			return this;
-  		}
-  	}, {
-  		key: "distanceToPoint",
-  		value: function distanceToPoint(p) {
-
-  			return this.normal.dot(p) + this.constant;
-  		}
-  	}, {
-  		key: "distanceToSphere",
-  		value: function distanceToSphere(s) {
-
-  			return this.distanceToPoint(s.center) - s.radius;
-  		}
-  	}, {
-  		key: "projectPoint",
-  		value: function projectPoint(p, target) {
-
-  			return target.copy(this.normal).multiplyScalar(-this.distanceToPoint(p)).add(p);
-  		}
-  	}, {
-  		key: "coplanarPoint",
-  		value: function coplanarPoint(target) {
-
-  			return target.copy(this.normal).multiplyScalar(-this.constant);
-  		}
-  	}, {
-  		key: "translate",
-  		value: function translate(offset) {
-
-  			this.constant -= offset.dot(this.normal);
-
-  			return this;
-  		}
-  	}, {
-  		key: "intersectLine",
-  		value: function intersectLine(l, target) {
-
-  			var direction = l.delta(a$2);
-  			var denominator = this.normal.dot(direction);
-
-  			if (denominator === 0) {
-  				if (this.distanceToPoint(l.start) === 0) {
-
-  					target.copy(l.start);
-  				}
-  			} else {
-
-  				var t = -(l.start.dot(this.normal) + this.constant) / denominator;
-
-  				if (t >= 0 && t <= 1) {
-
-  					target.copy(direction).multiplyScalar(t).add(l.start);
-  				}
-  			}
-
-  			return target;
-  		}
-  	}, {
-  		key: "intersectsLine",
-  		value: function intersectsLine(l) {
-
-  			var startSign = this.distanceToPoint(l.start);
-  			var endSign = this.distanceToPoint(l.end);
-
-  			return startSign < 0 && endSign > 0 || endSign < 0 && startSign > 0;
-  		}
-  	}, {
-  		key: "intersectsBox",
-  		value: function intersectsBox(b) {
-
-  			return b.intersectsPlane(this);
-  		}
-  	}, {
-  		key: "intersectsSphere",
-  		value: function intersectsSphere(s) {
-
-  			return s.intersectsPlane(this);
-  		}
-  	}, {
-  		key: "equals",
-  		value: function equals(p) {
-
-  			return p.normal.equals(this.normal) && p.constant === this.constant;
-  		}
-  	}]);
-  	return Plane;
   }();
 
   var v$3 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
@@ -4269,9 +4325,12 @@
 
   			if (tmin <= tymax && tymin <= tmax) {
   				if (tymin > tmin || tmin !== tmin) {
+
   					tmin = tymin;
   				}
+
   				if (tymax < tmax || tmax !== tmax) {
+
   					tmax = tymax;
   				}
 
@@ -4288,9 +4347,12 @@
   				if (tmin <= tzmax && tzmin <= tmax) {
 
   					if (tzmin > tmin || tmin !== tmin) {
+
   						tmin = tzmin;
   					}
+
   					if (tzmax < tmax || tmax !== tmax) {
+
   						tmax = tzmax;
   					}
 
@@ -4765,6 +4827,7 @@
   				s = Math.sqrt((m21 - m12) * (m21 - m12) + (m02 - m20) * (m02 - m20) + (m10 - m01) * (m10 - m01));
 
   				if (Math.abs(s) < 0.001) {
+
   					s = 1;
   				}
 
@@ -5203,6 +5266,7 @@
   	}, {
   		key: "max",
   		get: function get$$1() {
+
   			return this.min.clone().addScalar(this.size);
   		}
   	}]);
@@ -5377,23 +5441,32 @@
 
   	if (tx0 > ty0 && tx0 > tz0) {
   		if (tym < tx0) {
+
   			entry |= 2;
   		}
+
   		if (tzm < tx0) {
+
   			entry |= 1;
   		}
   	} else if (ty0 > tz0) {
   		if (txm < ty0) {
+
   			entry |= 4;
   		}
+
   		if (tzm < ty0) {
+
   			entry |= 1;
   		}
   	} else {
   		if (txm < tz0) {
+
   			entry |= 4;
   		}
+
   		if (tym < tz0) {
+
   			entry |= 2;
   		}
   	}
@@ -5650,16 +5723,19 @@
   	createClass(Octree, [{
   		key: "getCenter",
   		value: function getCenter(target) {
+
   			return this.root.getCenter(target);
   		}
   	}, {
   		key: "getDimensions",
   		value: function getDimensions(target) {
+
   			return this.root.getDimensions(target);
   		}
   	}, {
   		key: "getDepth",
   		value: function getDepth() {
+
   			return _getDepth(this.root);
   		}
   	}, {
@@ -5707,16 +5783,19 @@
   	}, {
   		key: "min",
   		get: function get$$1() {
+
   			return this.root.min;
   		}
   	}, {
   		key: "max",
   		get: function get$$1() {
+
   			return this.root.max;
   		}
   	}, {
   		key: "children",
   		get: function get$$1() {
+
   			return this.root.children;
   		}
   	}]);
