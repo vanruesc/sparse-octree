@@ -5,15 +5,15 @@ import {
 	FogExp2,
 	Object3D,
 	OrbitControls,
+	PerspectiveCamera,
 	Points,
 	PointsMaterial,
 	Vector3
 } from "three";
 
 import OctreeHelper from "octree-helper";
-
+import { Demo } from "three-demo";
 import { PointOctree } from "../../../src";
-import { Demo } from "./Demo.js";
 import { OctreeRaycaster } from "./OctreeRaycaster.js";
 import { FrustumCuller } from "./FrustumCuller.js";
 
@@ -25,13 +25,11 @@ export class PointOctreeDemo extends Demo {
 
 	/**
 	 * Constructs a new demo.
-	 *
-	 * @param {WebGLRenderer} renderer - A renderer.
 	 */
 
-	constructor(renderer) {
+	constructor() {
 
-		super(renderer);
+		super("point-octree");
 
 		/**
 		 * A point cloud.
@@ -75,27 +73,30 @@ export class PointOctreeDemo extends Demo {
 	 * Creates the scene.
 	 */
 
-	initialise() {
+	initialize() {
 
 		const scene = this.scene;
-		const camera = this.camera;
-		const renderer = this.renderer;
+		const composer = this.composer;
+		const renderer = composer.renderer;
+
+		// Camera.
+
+		const camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 200);
+		camera.position.set(10, 6, 10);
+		this.camera = camera;
+
+		// Controls.
+
+		const controls = new OrbitControls(camera, renderer.domElement);
+		controls.maxDistance = 60;
+		this.controls = controls;
+
+		camera.lookAt(controls.target);
 
 		// Fog.
 
 		scene.fog = new FogExp2(0x0d0d0d, 0.025);
-
-		// Controls.
-
-		this.controls = new OrbitControls(camera, renderer.domElement);
-		this.controls.maxDistance = 60;
-
-		// Camera.
-
-		camera.near = 0.1;
-		camera.far = 200;
-		camera.position.set(10, 6, 10);
-		camera.lookAt(this.controls.target);
+		renderer.setClearColor(scene.fog.color);
 
 		// Points.
 
@@ -232,40 +233,28 @@ export class PointOctreeDemo extends Demo {
 	}
 
 	/**
-	 * Renders this demo.
-	 *
-	 * @param {Number} delta - The time since the last frame in seconds.
-	 */
-
-	render(delta) {
-
-		this.renderer.render(this.scene, this.camera);
-
-	}
-
-	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} gui - A GUI.
+	 * @param {GUI} menu - A menu.
 	 */
 
-	configure(gui) {
+	registerOptions(menu) {
 
 		const points = this.points;
 		const octreeHelper = this.octreeHelper;
 
-		this.raycaster.configure(gui);
-		this.frustumCuller.configure(gui);
+		this.raycaster.registerOptions(menu);
+		this.frustumCuller.registerOptions(menu);
 
 		const params = {
 			"level mask": octreeHelper.children.length
 		};
 
-		let folder = gui.addFolder("Points");
+		let folder = menu.addFolder("Points");
 		folder.add(points, "visible");
 		folder.open();
 
-		folder = gui.addFolder("Octree Helper");
+		folder = menu.addFolder("Octree Helper");
 		folder.add(octreeHelper, "visible");
 
 		folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function() {

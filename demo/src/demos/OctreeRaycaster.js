@@ -197,12 +197,12 @@ export class OctreeRaycaster extends Raycaster {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} gui - A GUI.
+	 * @param {GUI} menu - A menu.
 	 */
 
-	configure(gui) {
+	registerOptions(menu) {
 
-		const folder = gui.addFolder("Raycasting");
+		const folder = menu.addFolder("Raycasting");
 
 		folder.add(this, "enabled");
 		folder.add(this, "delta").listen();

@@ -64,7 +64,6 @@ export class FrustumCuller {
 		 * Indicates whether the frustum culling is active.
 		 *
 		 * @type {Boolean}
-		 * @default false
 		 */
 
 		this.enabled = false;
@@ -206,12 +205,12 @@ export class FrustumCuller {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} gui - A GUI.
+	 * @param {GUI} menu - A menu.
 	 */
 
-	configure(gui) {
+	registerOptions(menu) {
 
-		const folder = gui.addFolder("Frustum Culling");
+		const folder = menu.addFolder("Frustum Culling");
 
 		folder.add(this, "enabled").onChange(() => {
 
