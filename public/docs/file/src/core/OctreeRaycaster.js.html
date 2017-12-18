@@ -137,20 +137,47 @@ function findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {
 	if(tx0 &gt; ty0 &amp;&amp; tx0 &gt; tz0) {
 
 		// YZ-plane.
-		if(tym &lt; tx0) { entry |= 2; }
-		if(tzm &lt; tx0) { entry |= 1; }
+		if(tym &lt; tx0) {
+
+			entry |= 2;
+
+		}
+
+		if(tzm &lt; tx0) {
+
+			entry |= 1;
+
+		}
 
 	} else if(ty0 &gt; tz0) {
 
 		// XZ-plane.
-		if(txm &lt; ty0) { entry |= 4; }
-		if(tzm &lt; ty0) { entry |= 1; }
+		if(txm &lt; ty0) {
+
+			entry |= 4;
+
+		}
+
+		if(tzm &lt; ty0) {
+
+			entry |= 1;
+
+		}
 
 	} else {
 
 		// XY-plane.
-		if(txm &lt; tz0) { entry |= 4; }
-		if(tym &lt; tz0) { entry |= 2; }
+		if(txm &lt; tz0) {
+
+			entry |= 4;
+
+		}
+
+		if(tym &lt; tz0) {
+
+			entry |= 2;
+
+		}
 
 	}
 
