@@ -73,7 +73,6 @@
 		"rollup-plugin-babel": "3.x.x",
 		"rollup-plugin-node-resolve": "3.x.x",
 		"time-grunt": "1.x.x",
-		"stats.js": "0.17.x",
 		"three-demo": "0.x.x",
 		"three": "0.88.x"
 	}
