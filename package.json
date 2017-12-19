@@ -74,6 +74,6 @@
 		"rollup-plugin-node-resolve": "3.x.x",
 		"time-grunt": "1.x.x",
 		"three-demo": "0.x.x",
-		"three": "0.88.x"
+		"three": "0.89.x"
 	}
 }
