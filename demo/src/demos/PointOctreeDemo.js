@@ -91,7 +91,7 @@ export class PointOctreeDemo extends Demo {
 		controls.settings.pointer.lock = false;
 		controls.settings.zoom.maxDistance = 60.0;
 		controls.settings.sensitivity.translation = 10.0;
-		controls.settings.sensitivity.zoom = 0.1;
+		controls.settings.sensitivity.zoom = 1.0;
 		controls.lookAt(scene.position);
 		this.controls = controls;
 
