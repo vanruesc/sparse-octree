@@ -4,13 +4,13 @@ import {
 	Box3,
 	FogExp2,
 	Object3D,
-	OrbitControls,
 	PerspectiveCamera,
 	Points,
 	PointsMaterial,
 	Vector3
 } from "three";
 
+import { DeltaControls } from "delta-controls";
 import OctreeHelper from "octree-helper";
 import { Demo } from "three-demo";
 import { PointOctree } from "../../../src";
@@ -87,11 +87,13 @@ export class PointOctreeDemo extends Demo {
 
 		// Controls.
 
-		const controls = new OrbitControls(camera, renderer.domElement);
-		controls.maxDistance = 60;
+		const controls = new DeltaControls(camera.position, camera.quaternion, renderer.domElement);
+		controls.settings.pointer.lock = false;
+		controls.settings.zoom.maxDistance = 60.0;
+		controls.settings.sensitivity.translation = 10.0;
+		controls.settings.sensitivity.zoom = 0.1;
+		controls.lookAt(scene.position);
 		this.controls = controls;
-
-		camera.lookAt(controls.target);
 
 		// Fog.
 
@@ -229,6 +231,18 @@ export class PointOctreeDemo extends Demo {
 		this.frustumCuller = new FrustumCuller(octree, scene);
 
 		scene.add(this.frustumCuller.cameraHelper);
+
+	}
+
+	/**
+	 * Updates this demo.
+	 *
+	 * @param {Number} delta - The time since the last frame in seconds.
+	 */
+
+	update(delta) {
+
+		this.controls.update(delta);
 
 	}
 

@@ -4463,163 +4463,18 @@
   		return DemoManager;
   }(EventTarget);
 
-  var OctreeHelper = function (_Group) {
-  		inherits(OctreeHelper, _Group);
+  var Action = {
 
-  		function OctreeHelper() {
-  				var octree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-  				classCallCheck(this, OctreeHelper);
+    MOVE_FORWARD: 0,
+    MOVE_LEFT: 1,
+    MOVE_BACKWARD: 2,
+    MOVE_RIGHT: 3,
+    MOVE_DOWN: 4,
+    MOVE_UP: 5,
+    ZOOM_OUT: 6,
+    ZOOM_IN: 7
 
-  				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
-
-  				_this.name = "OctreeHelper";
-
-  				_this.octree = octree;
-
-  				_this.update();
-
-  				return _this;
-  		}
-
-  		createClass(OctreeHelper, [{
-  				key: "createLineSegments",
-  				value: function createLineSegments(octants, octantCount) {
-
-  						var maxOctants = Math.pow(2, 16) / 8 - 1;
-  						var group = new three.Group();
-
-  						var material = new three.LineBasicMaterial({
-  								color: 0xffffff * Math.random()
-  						});
-
-  						var result = void 0;
-  						var vertexCount = void 0;
-  						var length = void 0;
-
-  						var indices = void 0,
-  						    positions = void 0;
-  						var octant = void 0,
-  						    min = void 0,
-  						    max = void 0;
-  						var geometry = void 0;
-
-  						var i = void 0,
-  						    j = void 0,
-  						    c = void 0,
-  						    d = void 0,
-  						    n = void 0;
-  						var corner = void 0,
-  						    edge = void 0;
-
-  						for (i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
-
-  								length += octantCount < maxOctants ? octantCount : maxOctants;
-  								octantCount -= maxOctants;
-
-  								vertexCount = length * 8;
-  								indices = new Uint16Array(vertexCount * 3);
-  								positions = new Float32Array(vertexCount * 3);
-
-  								for (c = 0, d = 0, result = octants.next(); !result.done && i < length;) {
-
-  										octant = result.value;
-  										min = octant.min;
-  										max = octant.max;
-
-  										for (j = 0; j < 12; ++j) {
-
-  												edge = edges$1[j];
-
-  												indices[d++] = c + edge[0];
-  												indices[d++] = c + edge[1];
-  										}
-
-  										for (j = 0; j < 8; ++j, ++c) {
-
-  												corner = corners[j];
-
-  												positions[c * 3] = corner[0] === 0 ? min.x : max.x;
-  												positions[c * 3 + 1] = corner[1] === 0 ? min.y : max.y;
-  												positions[c * 3 + 2] = corner[2] === 0 ? min.z : max.z;
-  										}
-
-  										if (++i < length) {
-
-  												result = octants.next();
-  										}
-  								}
-
-  								geometry = new three.BufferGeometry();
-  								geometry.setIndex(new three.BufferAttribute(indices, 1));
-  								geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
-
-  								group.add(new three.LineSegments(geometry, material));
-  						}
-
-  						this.add(group);
-  				}
-  		}, {
-  				key: "update",
-  				value: function update() {
-
-  						var depth = this.octree !== null ? this.octree.getDepth() : -1;
-
-  						var level = 0;
-  						var result = void 0;
-
-  						this.dispose();
-
-  						while (level <= depth) {
-
-  								result = this.octree.findOctantsByLevel(level);
-
-  								this.createLineSegments(result[Symbol.iterator](), typeof result.size === "number" ? result.size : result.length);
-
-  								++level;
-  						}
-  				}
-  		}, {
-  				key: "dispose",
-  				value: function dispose() {
-
-  						var groups = this.children;
-
-  						var group = void 0,
-  						    children = void 0;
-  						var i = void 0,
-  						    j = void 0,
-  						    il = void 0,
-  						    jl = void 0;
-
-  						for (i = 0, il = groups.length; i < il; ++i) {
-
-  								group = groups[i];
-  								children = group.children;
-
-  								for (j = 0, jl = children.length; j < jl; ++j) {
-
-  										children[j].geometry.dispose();
-  										children[j].material.dispose();
-  								}
-
-  								while (children.length > 0) {
-
-  										group.remove(children[0]);
-  								}
-  						}
-
-  						while (groups.length > 0) {
-
-  								this.remove(groups[0]);
-  						}
-  				}
-  		}]);
-  		return OctreeHelper;
-  }(three.Group);
-
-  var corners = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
-
-  var edges$1 = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
+  };
 
   var Vector3$1 = function () {
   	function Vector3$$1() {
@@ -5132,6 +4987,8 @@
 
   var v$2 = new Vector3$1();
 
+  var points = [new Vector3$1(), new Vector3$1(), new Vector3$1(), new Vector3$1(), new Vector3$1(), new Vector3$1(), new Vector3$1(), new Vector3$1()];
+
   var Box3$1 = function () {
   	function Box3$$1() {
   		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1(Infinity, Infinity, Infinity);
@@ -5281,6 +5138,29 @@
   			var clampedPoint = v$2.copy(p).clamp(this.min, this.max);
 
   			return clampedPoint.sub(p).length();
+  		}
+  	}, {
+  		key: "applyMatrix4",
+  		value: function applyMatrix4(m) {
+
+  			var min = this.min;
+  			var max = this.max;
+
+  			if (!this.isEmpty()) {
+
+  				points[0].set(min.x, min.y, min.z).applyMatrix4(m);
+  				points[1].set(min.x, min.y, max.z).applyMatrix4(m);
+  				points[2].set(min.x, max.y, min.z).applyMatrix4(m);
+  				points[3].set(min.x, max.y, max.z).applyMatrix4(m);
+  				points[4].set(max.x, min.y, min.z).applyMatrix4(m);
+  				points[5].set(max.x, min.y, max.z).applyMatrix4(m);
+  				points[6].set(max.x, max.y, min.z).applyMatrix4(m);
+  				points[7].set(max.x, max.y, max.z).applyMatrix4(m);
+
+  				this.setFromPoints(points);
+  			}
+
+  			return this;
   		}
   	}, {
   		key: "translate",
@@ -6490,12 +6370,12 @@
 
   var RotationOrder = {
 
-    XYZ: "XYZ",
-    YZX: "YZX",
-    ZXY: "ZXY",
-    XZY: "XZY",
-    YXZ: "YXZ",
-    ZYX: "ZYX"
+    XYZ: 0,
+    YZX: 1,
+    ZXY: 2,
+    XZY: 3,
+    YXZ: 4,
+    ZYX: 5
 
   };
 
@@ -6909,10 +6789,7 @@
   		}
   	}], [{
   		key: "slerp",
-  		value: function slerp(qa, qb) {
-  			var qr = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Quaternion();
-  			var t = arguments[3];
-
+  		value: function slerp(qa, qb, qr, t) {
 
   			return qr.copy(qa).slerp(qb, t);
   		}
@@ -7016,7 +6893,7 @@
   			this.x = x;
   			this.y = y;
   			this.z = z;
-  			this.order = z;
+  			this.order = order;
 
   			return this;
   		}
@@ -7708,7 +7585,7 @@
 
   var b$2 = new Vector3$1();
 
-  var c$1 = new Vector3$1();
+  var c = new Vector3$1();
 
   var Matrix4$1 = function () {
   		function Matrix4$$1() {
@@ -8092,7 +7969,7 @@
   						var te = this.elements;
   						var x = a$2,
   						    y = b$2,
-  						    z = c$1;
+  						    z = c;
 
   						z.subVectors(eye, target);
 
@@ -9645,6 +9522,1373 @@
   	return Vector4$$1;
   }();
 
+  var PointerButton = {
+
+    MAIN: 0,
+    AUXILIARY: 1,
+    SECONDARY: 2
+
+  };
+
+  var x = new Vector3$1(1, 0, 0);
+
+  var y = new Vector3$1(0, 1, 0);
+
+  var z = new Vector3$1(0, 0, 1);
+
+  var TWO_PI = Math.PI * 2;
+
+  var v$5 = new Vector3$1();
+
+  var m$1 = new Matrix4$1();
+
+  var RotationManager = function () {
+  		function RotationManager(position, quaternion, target, settings) {
+  				classCallCheck(this, RotationManager);
+
+
+  				this.position = position;
+
+  				this.quaternion = quaternion;
+
+  				this.target = target;
+
+  				this.settings = settings;
+
+  				this.up = new Vector3$1();
+  				this.up.copy(y);
+
+  				this.spherical = new Spherical$1();
+
+  				this.pivotOffset = new Vector3$1();
+  		}
+
+  		createClass(RotationManager, [{
+  				key: "updateQuaternion",
+  				value: function updateQuaternion() {
+
+  						if (this.settings.general.orbit) {
+
+  								m$1.lookAt(v$5.subVectors(this.position, this.target), this.pivotOffset, this.up);
+  						} else {
+
+  								m$1.lookAt(v$5.set(0, 0, 0), this.target.setFromSpherical(this.spherical), this.up);
+  						}
+
+  						this.quaternion.setFromRotationMatrix(m$1);
+
+  						return this;
+  				}
+  		}, {
+  				key: "adjustSpherical",
+  				value: function adjustSpherical(theta, phi) {
+
+  						var settings = this.settings;
+  						var orbit = settings.general.orbit;
+  						var rotation = settings.rotation;
+  						var s = this.spherical;
+
+  						s.theta = !rotation.invertX ? s.theta - theta : s.theta + theta;
+  						s.phi = (orbit || rotation.invertY) && !(orbit && rotation.invertY) ? s.phi - phi : s.phi + phi;
+
+  						s.theta = Math.min(Math.max(s.theta, rotation.minTheta), rotation.maxTheta);
+  						s.phi = Math.min(Math.max(s.phi, rotation.minPhi), rotation.maxPhi);
+  						s.theta %= TWO_PI;
+  						s.makeSafe();
+
+  						if (orbit) {
+  								this.position.setFromSpherical(s).add(this.target);
+  						}
+
+  						return this;
+  				}
+  		}, {
+  				key: "zoom",
+  				value: function zoom(sign) {
+
+  						var settings = this.settings;
+  						var general = settings.general;
+  						var sensitivity = settings.sensitivity;
+  						var zoom = settings.zoom;
+  						var s = this.spherical;
+
+  						var amount = void 0,
+  						    min = void 0,
+  						    max = void 0;
+
+  						if (general.orbit && zoom.enabled) {
+
+  								amount = sign * zoom.step * sensitivity.zoom;
+
+  								if (zoom.invert) {
+
+  										amount = -amount;
+  								}
+
+  								min = Math.max(zoom.minDistance, 1e-6);
+  								max = Math.min(zoom.maxDistance, Infinity);
+
+  								s.radius = Math.min(Math.max(s.radius + amount, min), max);
+  								this.position.setFromSpherical(s).add(this.target);
+  						}
+
+  						return this;
+  				}
+  		}, {
+  				key: "update",
+  				value: function update(delta) {}
+  		}, {
+  				key: "lookAt",
+  				value: function lookAt(point) {
+
+  						var spherical = this.spherical;
+  						var position = this.position;
+  						var target = this.target;
+
+  						target.copy(point);
+
+  						if (this.settings.general.orbit) {
+
+  								v$5.subVectors(position, target);
+  						} else {
+
+  								v$5.subVectors(target, position).normalize();
+  						}
+
+  						spherical.setFromVector3(v$5);
+  						spherical.radius = Math.max(spherical.radius, 1e-6);
+  						this.updateQuaternion();
+
+  						return this;
+  				}
+  		}, {
+  				key: "getViewDirection",
+  				value: function getViewDirection() {
+  						var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  						view.setFromSpherical(this.spherical).normalize();
+
+  						if (this.settings.general.orbit) {
+
+  								view.negate();
+  						}
+
+  						return view;
+  				}
+  		}]);
+  		return RotationManager;
+  }();
+
+  var MovementState = function () {
+  		function MovementState() {
+  				classCallCheck(this, MovementState);
+
+
+  				this.left = false;
+
+  				this.right = false;
+
+  				this.forward = false;
+
+  				this.backward = false;
+
+  				this.up = false;
+
+  				this.down = false;
+  		}
+
+  		createClass(MovementState, [{
+  				key: "reset",
+  				value: function reset() {
+
+  						this.left = false;
+  						this.right = false;
+  						this.forward = false;
+  						this.backward = false;
+  						this.up = false;
+  						this.down = false;
+
+  						return this;
+  				}
+  		}]);
+  		return MovementState;
+  }();
+
+  var v$6 = new Vector3$1();
+
+  var TranslationManager = function () {
+  		function TranslationManager(position, quaternion, target, settings) {
+  				classCallCheck(this, TranslationManager);
+
+
+  				this.position = position;
+
+  				this.quaternion = quaternion;
+
+  				this.target = target;
+
+  				this.settings = settings;
+
+  				this.movementState = new MovementState();
+  		}
+
+  		createClass(TranslationManager, [{
+  				key: "translateOnAxis",
+  				value: function translateOnAxis(axis, distance) {
+
+  						v$6.copy(axis).applyQuaternion(this.quaternion).multiplyScalar(distance);
+
+  						this.position.add(v$6);
+
+  						if (this.settings.general.orbit) {
+
+  								this.target.add(v$6);
+  						}
+  				}
+  		}, {
+  				key: "translate",
+  				value: function translate(delta) {
+
+  						var sensitivity = this.settings.sensitivity;
+  						var state = this.movementState;
+
+  						var step = delta * sensitivity.translation;
+
+  						if (state.backward) {
+
+  								this.translateOnAxis(z, step);
+  						} else if (state.forward) {
+
+  								this.translateOnAxis(z, -step);
+  						}
+
+  						if (state.right) {
+
+  								this.translateOnAxis(x, step);
+  						} else if (state.left) {
+
+  								this.translateOnAxis(x, -step);
+  						}
+
+  						if (state.up) {
+
+  								this.translateOnAxis(y, step);
+  						} else if (state.down) {
+
+  								this.translateOnAxis(y, -step);
+  						}
+  				}
+  		}, {
+  				key: "update",
+  				value: function update(delta) {
+
+  						if (this.settings.translation.enabled) {
+
+  								this.translate(delta);
+  						}
+  				}
+  		}, {
+  				key: "moveTo",
+  				value: function moveTo(position) {
+
+  						if (this.settings.general.orbit) {
+
+  								this.target.copy(position);
+  						} else {
+
+  								this.position.copy(position);
+  						}
+
+  						return this;
+  				}
+  		}]);
+  		return TranslationManager;
+  }();
+
+  var KeyCodeHandler = {
+    get: function get(target, name) {
+
+      return name in target ? target[name] : name.length === 1 ? name.toUpperCase().charCodeAt(0) : undefined;
+    }
+  };
+
+  var KeyCode = new Proxy({
+
+    BACKSPACE: 8,
+    TAB: 9,
+    ENTER: 13,
+
+    SHIFT: 16,
+    CTRL: 17,
+    ALT: 18,
+
+    PAUSE: 19,
+    CAPS_LOCK: 20,
+    ESCAPE: 27,
+
+    SPACE: 32,
+    PAGE_UP: 33,
+    PAGE_DOWN: 34,
+    END: 35,
+    HOME: 36,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+
+    INSERT: 45,
+    DELETE: 46,
+
+    META_LEFT: 91,
+    META_RIGHT: 92,
+    SELECT: 93,
+
+    NUMPAD_0: 96,
+    NUMPAD_1: 97,
+    NUMPAD_2: 98,
+    NUMPAD_3: 99,
+    NUMPAD_4: 100,
+    NUMPAD_5: 101,
+    NUMPAD_6: 102,
+    NUMPAD_7: 103,
+    NUMPAD_8: 104,
+    NUMPAD_9: 105,
+    MULTIPLY: 106,
+    ADD: 107,
+    SUBTRACT: 109,
+    DECIMAL_POINT: 110,
+    DIVIDE: 111,
+
+    F1: 112,
+    F2: 113,
+    F3: 114,
+    F4: 115,
+    F5: 116,
+    F6: 117,
+    F7: 118,
+    F8: 119,
+    F9: 120,
+    F10: 121,
+    F11: 122,
+    F12: 123,
+
+    NUM_LOCK: 144,
+    SCROLL_LOCK: 145,
+
+    SEMICOLON: 186,
+    EQUAL_SIGN: 187,
+    COMMA: 188,
+    DASH: 189,
+    PERIOD: 190,
+    FORWARD_SLASH: 191,
+    GRAVE_ACCENT: 192,
+
+    OPEN_BRACKET: 219,
+    BACK_SLASH: 220,
+    CLOSE_BRACKET: 221,
+    SINGLE_QUOTE: 222
+
+  }, KeyCodeHandler);
+
+  var GeneralSettings = function () {
+  	function GeneralSettings() {
+  		classCallCheck(this, GeneralSettings);
+
+
+  		this.orbit = true;
+  	}
+
+  	createClass(GeneralSettings, [{
+  		key: "copy",
+  		value: function copy(settings) {
+
+  			this.orbit = settings.orbit;
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}]);
+  	return GeneralSettings;
+  }();
+
+  var KeyBindings = function () {
+  	function KeyBindings() {
+  		classCallCheck(this, KeyBindings);
+
+
+  		this.defaultActions = new Map();
+
+  		this.actions = new Map();
+  	}
+
+  	createClass(KeyBindings, [{
+  		key: "reset",
+  		value: function reset() {
+
+  			this.actions = new Map(this.defaultActions);
+
+  			return this;
+  		}
+  	}, {
+  		key: "setDefault",
+  		value: function setDefault(actions) {
+
+  			this.defaultActions = actions;
+
+  			return this.reset();
+  		}
+  	}, {
+  		key: "copy",
+  		value: function copy(keyBindings) {
+
+  			this.defaultActions = new Map(keyBindings.defaultActions);
+  			this.actions = new Map(keyBindings.actions);
+
+  			return this;
+  		}
+  	}, {
+  		key: "clearDefault",
+  		value: function clearDefault() {
+
+  			this.defaultActions.clear();
+
+  			return this;
+  		}
+  	}, {
+  		key: "clear",
+  		value: function clear() {
+
+  			this.actions.clear();
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}, {
+  		key: "has",
+  		value: function has(keyCode) {
+
+  			return this.actions.has(keyCode);
+  		}
+  	}, {
+  		key: "get",
+  		value: function get$$1(keyCode) {
+
+  			return this.actions.get(keyCode);
+  		}
+  	}, {
+  		key: "set",
+  		value: function set$$1(keyCode, action) {
+
+  			this.actions.set(keyCode, action);
+
+  			return this;
+  		}
+  	}, {
+  		key: "delete",
+  		value: function _delete(keyCode) {
+
+  			return this.actions.delete(keyCode);
+  		}
+  	}, {
+  		key: "toJSON",
+  		value: function toJSON() {
+
+  			return {
+  				defaultActions: [].concat(toConsumableArray(this.defaultActions)),
+  				actions: [].concat(toConsumableArray(this.actions))
+  			};
+  		}
+  	}]);
+  	return KeyBindings;
+  }();
+
+  var PointerSettings = function () {
+  	function PointerSettings() {
+  		classCallCheck(this, PointerSettings);
+
+
+  		this.hold = false;
+
+  		this.lock = true;
+  	}
+
+  	createClass(PointerSettings, [{
+  		key: "copy",
+  		value: function copy(settings) {
+
+  			this.hold = settings.hold;
+  			this.lock = settings.lock;
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}]);
+  	return PointerSettings;
+  }();
+
+  var RotationSettings = function () {
+  		function RotationSettings() {
+  				classCallCheck(this, RotationSettings);
+
+
+  				this.minTheta = -Infinity;
+
+  				this.maxTheta = Infinity;
+
+  				this.minPhi = 0.0;
+
+  				this.maxPhi = Math.PI;
+
+  				this.invertX = false;
+
+  				this.invertY = false;
+  		}
+
+  		createClass(RotationSettings, [{
+  				key: "copy",
+  				value: function copy(settings) {
+
+  						this.minTheta = settings.minTheta !== null ? settings.minTheta : -Infinity;
+  						this.maxTheta = settings.maxTheta !== null ? settings.maxTheta : Infinity;
+
+  						this.minPhi = settings.minPhi;
+  						this.maxPhi = settings.maxPhi;
+
+  						this.invertX = settings.invertX;
+  						this.invertY = settings.invertY;
+
+  						return this;
+  				}
+  		}, {
+  				key: "clone",
+  				value: function clone() {
+
+  						return new this.constructor().copy(this);
+  				}
+  		}]);
+  		return RotationSettings;
+  }();
+
+  var SensitivitySettings = function () {
+  	function SensitivitySettings() {
+  		classCallCheck(this, SensitivitySettings);
+
+
+  		this.rotation = 0.0025;
+
+  		this.translation = 1.0;
+
+  		this.zoom = 0.01;
+  	}
+
+  	createClass(SensitivitySettings, [{
+  		key: "copy",
+  		value: function copy(settings) {
+
+  			this.rotation = settings.rotation;
+  			this.translation = settings.translation;
+  			this.zoom = settings.zoom;
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}]);
+  	return SensitivitySettings;
+  }();
+
+  var TranslationSettings = function () {
+  	function TranslationSettings() {
+  		classCallCheck(this, TranslationSettings);
+
+
+  		this.enabled = true;
+  	}
+
+  	createClass(TranslationSettings, [{
+  		key: "copy",
+  		value: function copy(settings) {
+
+  			this.enabled = settings.enabled;
+
+  			return this;
+  		}
+  	}, {
+  		key: "clone",
+  		value: function clone() {
+
+  			return new this.constructor().copy(this);
+  		}
+  	}]);
+  	return TranslationSettings;
+  }();
+
+  var ZoomSettings = function () {
+  		function ZoomSettings() {
+  				classCallCheck(this, ZoomSettings);
+
+
+  				this.enabled = true;
+
+  				this.invert = false;
+
+  				this.minDistance = 1e-6;
+
+  				this.maxDistance = Infinity;
+
+  				this.step = 10.0;
+  		}
+
+  		createClass(ZoomSettings, [{
+  				key: "copy",
+  				value: function copy(settings) {
+
+  						this.enabled = settings.enabled;
+  						this.invert = settings.invert;
+  						this.minDistance = settings.minDistance;
+  						this.maxDistance = settings.maxDistance;
+  						this.step = settings.step;
+
+  						return this;
+  				}
+  		}, {
+  				key: "clone",
+  				value: function clone() {
+
+  						return new this.constructor().copy(this);
+  				}
+  		}]);
+  		return ZoomSettings;
+  }();
+
+  var Settings = function () {
+  		function Settings() {
+  				classCallCheck(this, Settings);
+
+
+  				this.general = new GeneralSettings();
+
+  				this.keyBindings = new KeyBindings();
+  				this.keyBindings.setDefault(new Map([[KeyCode.W, Action.MOVE_FORWARD], [KeyCode.UP, Action.MOVE_FORWARD], [KeyCode.A, Action.MOVE_LEFT], [KeyCode.LEFT, Action.MOVE_LEFT], [KeyCode.S, Action.MOVE_BACKWARD], [KeyCode.DOWN, Action.MOVE_BACKWARD], [KeyCode.D, Action.MOVE_RIGHT], [KeyCode.RIGHT, Action.MOVE_RIGHT], [KeyCode.X, Action.MOVE_DOWN], [KeyCode.SPACE, Action.MOVE_UP], [KeyCode.PAGE_DOWN, Action.ZOOM_OUT], [KeyCode.PAGE_UP, Action.ZOOM_IN]]));
+
+  				this.pointer = new PointerSettings();
+
+  				this.rotation = new RotationSettings();
+
+  				this.sensitivity = new SensitivitySettings();
+
+  				this.translation = new TranslationSettings();
+
+  				this.zoom = new ZoomSettings();
+  		}
+
+  		createClass(Settings, [{
+  				key: "copy",
+  				value: function copy(settings) {
+
+  						this.general.copy(settings.general);
+  						this.keyBindings.copy(settings.keyBindings);
+  						this.pointer.copy(settings.pointer);
+  						this.rotation.copy(settings.rotation);
+  						this.sensitivity.copy(settings.sensitivity);
+  						this.translation.copy(settings.translation);
+  						this.zoom.copy(settings.zoom);
+
+  						return this;
+  				}
+  		}, {
+  				key: "clone",
+  				value: function clone() {
+
+  						return new this.constructor().copy(this);
+  				}
+  		}, {
+  				key: "toDataURL",
+  				value: function toDataURL() {
+
+  						return URL.createObjectURL(new Blob([JSON.stringify(this)], { type: "text/json" }));
+  				}
+  		}]);
+  		return Settings;
+  }();
+
+  var Strategy = function () {
+  	function Strategy() {
+  		classCallCheck(this, Strategy);
+  	}
+
+  	createClass(Strategy, [{
+  		key: "execute",
+  		value: function execute(flag) {
+
+  			throw new Error("Strategy#execute method not implemented!");
+  		}
+  	}]);
+  	return Strategy;
+  }();
+
+  var MovementStrategy = function (_Strategy) {
+  	inherits(MovementStrategy, _Strategy);
+
+  	function MovementStrategy(movementState, direction) {
+  		classCallCheck(this, MovementStrategy);
+
+  		var _this = possibleConstructorReturn(this, (MovementStrategy.__proto__ || Object.getPrototypeOf(MovementStrategy)).call(this));
+
+  		_this.movementState = movementState;
+
+  		_this.direction = direction;
+
+  		return _this;
+  	}
+
+  	createClass(MovementStrategy, [{
+  		key: "execute",
+  		value: function execute(flag) {
+
+  			var state = this.movementState;
+
+  			switch (this.direction) {
+
+  				case Direction.FORWARD:
+  					state.forward = flag;
+  					break;
+
+  				case Direction.LEFT:
+  					state.left = flag;
+  					break;
+
+  				case Direction.BACKWARD:
+  					state.backward = flag;
+  					break;
+
+  				case Direction.RIGHT:
+  					state.right = flag;
+  					break;
+
+  				case Direction.DOWN:
+  					state.down = flag;
+  					break;
+
+  				case Direction.UP:
+  					state.up = flag;
+  					break;
+
+  			}
+  		}
+  	}]);
+  	return MovementStrategy;
+  }(Strategy);
+
+
+  var Direction = {
+
+  	FORWARD: 0,
+  	LEFT: 1,
+  	BACKWARD: 2,
+  	RIGHT: 3,
+  	DOWN: 4,
+  	UP: 5
+
+  };
+
+  var ZoomStrategy = function (_Strategy) {
+  		inherits(ZoomStrategy, _Strategy);
+
+  		function ZoomStrategy(rotationManager, zoomIn) {
+  				classCallCheck(this, ZoomStrategy);
+
+  				var _this = possibleConstructorReturn(this, (ZoomStrategy.__proto__ || Object.getPrototypeOf(ZoomStrategy)).call(this));
+
+  				_this.rotationManager = rotationManager;
+
+  				_this.zoomIn = zoomIn;
+
+  				return _this;
+  		}
+
+  		createClass(ZoomStrategy, [{
+  				key: "execute",
+  				value: function execute(flag) {
+  						if (flag) {
+
+  								this.rotationManager.zoom(this.zoomIn ? -1 : 1);
+  						}
+  				}
+  		}]);
+  		return ZoomStrategy;
+  }(Strategy);
+
+  var DeltaControls = function () {
+  		function DeltaControls(position, quaternion) {
+  				var dom = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.body;
+  				classCallCheck(this, DeltaControls);
+
+
+  				this.dom = dom;
+
+  				this.position = position;
+
+  				this.quaternion = quaternion;
+
+  				this.target = new Vector3$1();
+
+  				this.settings = new Settings();
+
+  				this.rotationManager = new RotationManager(position, quaternion, this.target, this.settings);
+
+  				this.lookAt(this.target);
+
+  				this.translationManager = new TranslationManager(position, quaternion, this.target, this.settings);
+
+  				this.strategies = function (rotationManager, translationManager) {
+
+  						var state = translationManager.movementState;
+
+  						return new Map([[Action.MOVE_FORWARD, new MovementStrategy(state, Direction.FORWARD)], [Action.MOVE_LEFT, new MovementStrategy(state, Direction.LEFT)], [Action.MOVE_BACKWARD, new MovementStrategy(state, Direction.BACKWARD)], [Action.MOVE_RIGHT, new MovementStrategy(state, Direction.RIGHT)], [Action.MOVE_DOWN, new MovementStrategy(state, Direction.DOWN)], [Action.MOVE_UP, new MovementStrategy(state, Direction.UP)], [Action.ZOOM_OUT, new ZoomStrategy(rotationManager, false)], [Action.ZOOM_IN, new ZoomStrategy(rotationManager, true)]]);
+  				}(this.rotationManager, this.translationManager);
+
+  				this.lastScreenPosition = new Vector2$1();
+
+  				this.dragging = false;
+
+  				this.enabled = false;
+
+  				if (dom !== null) {
+
+  						this.setEnabled();
+  				}
+  		}
+
+  		createClass(DeltaControls, [{
+  				key: "handlePointerMoveEvent",
+  				value: function handlePointerMoveEvent(event) {
+
+  						var settings = this.settings;
+  						var pointer = settings.pointer;
+  						var sensitivity = settings.sensitivity;
+  						var rotationManager = this.rotationManager;
+  						var lastScreenPosition = this.lastScreenPosition;
+
+  						var movementX = void 0,
+  						    movementY = void 0;
+
+  						if (document.pointerLockElement === this.dom) {
+
+  								if (!pointer.hold || this.dragging) {
+
+  										rotationManager.adjustSpherical(event.movementX * sensitivity.rotation, event.movementY * sensitivity.rotation).updateQuaternion();
+  								}
+  						} else {
+  								movementX = event.screenX - lastScreenPosition.x;
+  								movementY = event.screenY - lastScreenPosition.y;
+
+  								lastScreenPosition.set(event.screenX, event.screenY);
+
+  								rotationManager.adjustSpherical(movementX * sensitivity.rotation, movementY * sensitivity.rotation).updateQuaternion();
+  						}
+  				}
+  		}, {
+  				key: "handleTouchMoveEvent",
+  				value: function handleTouchMoveEvent(event) {
+
+  						var sensitivity = this.settings.sensitivity;
+  						var rotationManager = this.rotationManager;
+  						var lastScreenPosition = this.lastScreenPosition;
+  						var touch = event.touches[0];
+
+  						var movementX = touch.screenX - lastScreenPosition.x;
+  						var movementY = touch.screenY - lastScreenPosition.y;
+
+  						lastScreenPosition.set(touch.screenX, touch.screenY);
+
+  						event.preventDefault();
+
+  						rotationManager.adjustSpherical(movementX * sensitivity.rotation, movementY * sensitivity.rotation).updateQuaternion();
+  				}
+  		}, {
+  				key: "handleMainPointerButton",
+  				value: function handleMainPointerButton(event, pressed) {
+
+  						this.dragging = pressed;
+
+  						if (this.settings.pointer.lock) {
+
+  								this.setPointerLocked();
+  						} else {
+
+  								if (pressed) {
+
+  										this.lastScreenPosition.set(event.screenX, event.screenY);
+  										this.dom.addEventListener("mousemove", this);
+  								} else {
+
+  										this.dom.removeEventListener("mousemove", this);
+  								}
+  						}
+  				}
+  		}, {
+  				key: "handleAuxiliaryPointerButton",
+  				value: function handleAuxiliaryPointerButton(event, pressed) {}
+  		}, {
+  				key: "handleSecondaryPointerButton",
+  				value: function handleSecondaryPointerButton(event, pressed) {}
+  		}, {
+  				key: "handlePointerButtonEvent",
+  				value: function handlePointerButtonEvent(event, pressed) {
+
+  						event.preventDefault();
+
+  						switch (event.button) {
+
+  								case PointerButton.MAIN:
+  										this.handleMainPointerButton(event, pressed);
+  										break;
+
+  								case PointerButton.AUXILIARY:
+  										this.handleAuxiliaryPointerButton(event, pressed);
+  										break;
+
+  								case PointerButton.SECONDARY:
+  										this.handleSecondaryPointerButton(event, pressed);
+  										break;
+
+  						}
+  				}
+  		}, {
+  				key: "handleTouchEvent",
+  				value: function handleTouchEvent(event, start) {
+
+  						var touch = event.touches[0];
+
+  						event.preventDefault();
+
+  						if (start) {
+
+  								this.lastScreenPosition.set(touch.screenX, touch.screenY);
+  								this.dom.addEventListener("touchmove", this);
+  						} else {
+
+  								this.dom.removeEventListener("touchmove", this);
+  						}
+  				}
+  		}, {
+  				key: "handleKeyboardEvent",
+  				value: function handleKeyboardEvent(event, pressed) {
+
+  						var keyBindings = this.settings.keyBindings;
+
+  						if (keyBindings.has(event.keyCode)) {
+
+  								event.preventDefault();
+
+  								this.strategies.get(keyBindings.get(event.keyCode)).execute(pressed);
+  						}
+  				}
+  		}, {
+  				key: "handleWheelEvent",
+  				value: function handleWheelEvent(event) {
+
+  						this.rotationManager.zoom(Math.sign(event.deltaY));
+  				}
+  		}, {
+  				key: "handlePointerLockEvent",
+  				value: function handlePointerLockEvent() {
+
+  						if (document.pointerLockElement === this.dom) {
+
+  								this.dom.addEventListener("mousemove", this);
+  						} else {
+
+  								this.dom.removeEventListener("mousemove", this);
+  						}
+  				}
+  		}, {
+  				key: "handleEvent",
+  				value: function handleEvent(event) {
+
+  						switch (event.type) {
+
+  								case "mousemove":
+  										this.handlePointerMoveEvent(event);
+  										break;
+
+  								case "touchmove":
+  										this.handleTouchMoveEvent(event);
+  										break;
+
+  								case "mousedown":
+  										this.handlePointerButtonEvent(event, true);
+  										break;
+
+  								case "mouseup":
+  										this.handlePointerButtonEvent(event, false);
+  										break;
+
+  								case "touchstart":
+  										this.handleTouchEvent(event, true);
+  										break;
+
+  								case "touchend":
+  										this.handleTouchEvent(event, false);
+  										break;
+
+  								case "keydown":
+  										this.handleKeyboardEvent(event, true);
+  										break;
+
+  								case "keyup":
+  										this.handleKeyboardEvent(event, false);
+  										break;
+
+  								case "wheel":
+  										this.handleWheelEvent(event);
+  										break;
+
+  								case "pointerlockchange":
+  										this.handlePointerLockEvent();
+  										break;
+
+  						}
+  				}
+  		}, {
+  				key: "update",
+  				value: function update(delta) {
+
+  						this.rotationManager.update(delta);
+  						this.translationManager.update(delta);
+  				}
+  		}, {
+  				key: "moveTo",
+  				value: function moveTo(position) {
+
+  						this.rotationManager.moveTo(position);
+
+  						return this;
+  				}
+  		}, {
+  				key: "lookAt",
+  				value: function lookAt(point) {
+
+  						this.rotationManager.lookAt(point);
+
+  						return this;
+  				}
+  		}, {
+  				key: "getViewDirection",
+  				value: function getViewDirection() {
+  						var view = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  						return this.rotationManager.getViewDirection(view);
+  				}
+  		}, {
+  				key: "getTarget",
+  				value: function getTarget() {
+  						var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3$1();
+
+
+  						target.copy(this.target);
+
+  						if (!this.settings.general.orbit) {
+  								target.add(this.position);
+  						}
+
+  						return target;
+  				}
+  		}, {
+  				key: "setTarget",
+  				value: function setTarget(target) {
+
+  						this.target = target;
+  						this.rotationManager.target = target;
+  						this.translationManager.target = target;
+
+  						return this.lookAt(this.target);
+  				}
+  		}, {
+  				key: "setPosition",
+  				value: function setPosition(position) {
+
+  						this.position = position;
+  						this.rotationManager.position = position;
+  						this.translationManager.position = position;
+
+  						return this.lookAt(this.target);
+  				}
+  		}, {
+  				key: "setQuaternion",
+  				value: function setQuaternion(quaternion) {
+
+  						this.quaternion = quaternion;
+  						this.rotationManager.quaternion = quaternion;
+  						this.translationManager.quaternion = quaternion;
+
+  						return this.lookAt(this.target);
+  				}
+  		}, {
+  				key: "setOrbit",
+  				value: function setOrbit(orbit) {
+
+  						var general = this.settings.general;
+
+  						if (general.orbit !== orbit) {
+
+  								this.getTarget(this.target);
+  								general.orbit = orbit;
+  								this.lookAt(this.target);
+  						}
+
+  						return this;
+  				}
+  		}, {
+  				key: "setPointerLocked",
+  				value: function setPointerLocked() {
+  						var locked = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+
+  						if (locked) {
+
+  								if (document.pointerLockElement !== this.dom && this.dom.requestPointerLock !== undefined) {
+
+  										this.dom.requestPointerLock();
+  								}
+  						} else if (document.exitPointerLock !== undefined) {
+
+  								document.exitPointerLock();
+  						}
+  				}
+  		}, {
+  				key: "setEnabled",
+  				value: function setEnabled() {
+  						var enabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+
+  						var dom = this.dom;
+
+  						this.translationManager.movementState.reset();
+
+  						if (enabled && !this.enabled) {
+
+  								document.addEventListener("pointerlockchange", this);
+  								document.body.addEventListener("keyup", this);
+  								document.body.addEventListener("keydown", this);
+  								dom.addEventListener("mousedown", this);
+  								dom.addEventListener("mouseup", this);
+  								dom.addEventListener("touchstart", this);
+  								dom.addEventListener("touchend", this);
+  								dom.addEventListener("wheel", this);
+  						} else if (!enabled && this.enabled) {
+
+  								document.removeEventListener("pointerlockchange", this);
+  								document.body.removeEventListener("keyup", this);
+  								document.body.removeEventListener("keydown", this);
+  								dom.removeEventListener("mousedown", this);
+  								dom.removeEventListener("mouseup", this);
+  								dom.removeEventListener("touchstart", this);
+  								dom.removeEventListener("touchend", this);
+  								dom.removeEventListener("wheel", this);
+  								dom.removeEventListener("mousemove", this);
+  								dom.removeEventListener("touchmove", this);
+  						}
+
+  						this.setPointerLocked(false);
+  						this.enabled = enabled;
+  				}
+  		}, {
+  				key: "dispose",
+  				value: function dispose() {
+
+  						this.setEnabled(false);
+  				}
+  		}, {
+  				key: "pivotOffset",
+  				get: function get$$1() {
+
+  						return this.rotationManager.pivotOffset;
+  				}
+  		}]);
+  		return DeltaControls;
+  }();
+
+  var OctreeHelper = function (_Group) {
+  		inherits(OctreeHelper, _Group);
+
+  		function OctreeHelper() {
+  				var octree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  				classCallCheck(this, OctreeHelper);
+
+  				var _this = possibleConstructorReturn(this, (OctreeHelper.__proto__ || Object.getPrototypeOf(OctreeHelper)).call(this));
+
+  				_this.name = "OctreeHelper";
+
+  				_this.octree = octree;
+
+  				_this.update();
+
+  				return _this;
+  		}
+
+  		createClass(OctreeHelper, [{
+  				key: "createLineSegments",
+  				value: function createLineSegments(octants, octantCount) {
+
+  						var maxOctants = Math.pow(2, 16) / 8 - 1;
+  						var group = new three.Group();
+
+  						var material = new three.LineBasicMaterial({
+  								color: 0xffffff * Math.random()
+  						});
+
+  						var result = void 0;
+  						var vertexCount = void 0;
+  						var length = void 0;
+
+  						var indices = void 0,
+  						    positions = void 0;
+  						var octant = void 0,
+  						    min = void 0,
+  						    max = void 0;
+  						var geometry = void 0;
+
+  						var i = void 0,
+  						    j = void 0,
+  						    c = void 0,
+  						    d = void 0,
+  						    n = void 0;
+  						var corner = void 0,
+  						    edge = void 0;
+
+  						for (i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
+
+  								length += octantCount < maxOctants ? octantCount : maxOctants;
+  								octantCount -= maxOctants;
+
+  								vertexCount = length * 8;
+  								indices = new Uint16Array(vertexCount * 3);
+  								positions = new Float32Array(vertexCount * 3);
+
+  								for (c = 0, d = 0, result = octants.next(); !result.done && i < length;) {
+
+  										octant = result.value;
+  										min = octant.min;
+  										max = octant.max;
+
+  										for (j = 0; j < 12; ++j) {
+
+  												edge = edges$1[j];
+
+  												indices[d++] = c + edge[0];
+  												indices[d++] = c + edge[1];
+  										}
+
+  										for (j = 0; j < 8; ++j, ++c) {
+
+  												corner = corners[j];
+
+  												positions[c * 3] = corner[0] === 0 ? min.x : max.x;
+  												positions[c * 3 + 1] = corner[1] === 0 ? min.y : max.y;
+  												positions[c * 3 + 2] = corner[2] === 0 ? min.z : max.z;
+  										}
+
+  										if (++i < length) {
+
+  												result = octants.next();
+  										}
+  								}
+
+  								geometry = new three.BufferGeometry();
+  								geometry.setIndex(new three.BufferAttribute(indices, 1));
+  								geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
+
+  								group.add(new three.LineSegments(geometry, material));
+  						}
+
+  						this.add(group);
+  				}
+  		}, {
+  				key: "update",
+  				value: function update() {
+
+  						var depth = this.octree !== null ? this.octree.getDepth() : -1;
+
+  						var level = 0;
+  						var result = void 0;
+
+  						this.dispose();
+
+  						while (level <= depth) {
+
+  								result = this.octree.findOctantsByLevel(level);
+
+  								this.createLineSegments(result[Symbol.iterator](), typeof result.size === "number" ? result.size : result.length);
+
+  								++level;
+  						}
+  				}
+  		}, {
+  				key: "dispose",
+  				value: function dispose() {
+
+  						var groups = this.children;
+
+  						var group = void 0,
+  						    children = void 0;
+  						var i = void 0,
+  						    j = void 0,
+  						    il = void 0,
+  						    jl = void 0;
+
+  						for (i = 0, il = groups.length; i < il; ++i) {
+
+  								group = groups[i];
+  								children = group.children;
+
+  								for (j = 0, jl = children.length; j < jl; ++j) {
+
+  										children[j].geometry.dispose();
+  										children[j].material.dispose();
+  								}
+
+  								while (children.length > 0) {
+
+  										group.remove(children[0]);
+  								}
+  						}
+
+  						while (groups.length > 0) {
+
+  								this.remove(groups[0]);
+  						}
+  				}
+  		}]);
+  		return OctreeHelper;
+  }(three.Group);
+
+  var corners = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+
+  var edges$1 = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
+
   var c$2 = new Vector3$1();
 
   var Octant = function () {
@@ -9703,7 +10947,7 @@
 
   var pattern = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
 
-  var c = new Vector3$1();
+  var c$1 = new Vector3$1();
 
   var CubicOctant = function () {
   	function CubicOctant() {
@@ -9740,7 +10984,7 @@
   		value: function split() {
 
   			var min = this.min;
-  			var mid = this.getCenter(c);
+  			var mid = this.getCenter(c$1);
   			var halfSize = this.size * 0.5;
 
   			var children = this.children = [null, null, null, null, null, null, null, null];
@@ -9917,7 +11161,7 @@
   		return OctantIterator;
   }();
 
-  var v$5 = [new Vector3$1(), new Vector3$1(), new Vector3$1()];
+  var v$7 = [new Vector3$1(), new Vector3$1(), new Vector3$1()];
 
   var b$5 = new Box3$1();
 
@@ -10071,8 +11315,8 @@
   			var min = b$5.min.set(0, 0, 0);
   			var max = b$5.max.subVectors(octree.max, octree.min);
 
-  			var dimensions = octree.getDimensions(v$5[0]);
-  			var halfDimensions = v$5[1].copy(dimensions).multiplyScalar(0.5);
+  			var dimensions = octree.getDimensions(v$7[0]);
+  			var halfDimensions = v$7[1].copy(dimensions).multiplyScalar(0.5);
 
   			var origin = r.origin.copy(raycaster.ray.origin);
   			var direction = r.direction.copy(raycaster.ray.direction);
@@ -10087,7 +11331,7 @@
   			    tz0 = void 0,
   			    tz1 = void 0;
 
-  			origin.sub(octree.getCenter(v$5[2])).add(halfDimensions);
+  			origin.sub(octree.getCenter(v$7[2])).add(halfDimensions);
 
   			flags = 0;
 
@@ -10907,7 +12151,7 @@
 
   var u = new Vector3$1();
 
-  var v$6 = new Vector3$1();
+  var v$8 = new Vector3$1();
 
   var OctreeUtils = function () {
   	function OctreeUtils() {
@@ -10920,7 +12164,7 @@
 
   			var min = octant.min;
   			var mid = octant.getCenter(u);
-  			var halfDimensions = octant.getDimensions(v$6).multiplyScalar(0.5);
+  			var halfDimensions = octant.getDimensions(v$8).multiplyScalar(0.5);
 
   			var children = octant.children;
   			var l = octants.length;
@@ -11234,11 +12478,13 @@
   						camera.position.set(10, 6, 10);
   						this.camera = camera;
 
-  						var controls = new three.OrbitControls(camera, renderer.domElement);
-  						controls.maxDistance = 60;
+  						var controls = new DeltaControls(camera.position, camera.quaternion, renderer.domElement);
+  						controls.settings.pointer.lock = false;
+  						controls.settings.zoom.maxDistance = 60.0;
+  						controls.settings.sensitivity.translation = 10.0;
+  						controls.settings.sensitivity.zoom = 0.1;
+  						controls.lookAt(scene.position);
   						this.controls = controls;
-
-  						camera.lookAt(controls.target);
 
   						scene.fog = new three.FogExp2(0x0d0d0d, 0.025);
   						renderer.setClearColor(scene.fog.color);
@@ -11363,6 +12609,12 @@
   						this.frustumCuller = new FrustumCuller(octree, scene);
 
   						scene.add(this.frustumCuller.cameraHelper);
+  				}
+  		}, {
+  				key: "update",
+  				value: function update(delta) {
+
+  						this.controls.update(delta);
   				}
   		}, {
   				key: "registerOptions",

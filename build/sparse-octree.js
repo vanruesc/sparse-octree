@@ -1,7 +1,7 @@
 /**
- * sparse-octree v4.2.0 build Dec 19 2017
+ * sparse-octree v4.2.0 build Jan 16 2018
  * https://github.com/vanruesc/sparse-octree
- * Copyright 2017 Raoul van Rüschen, Zlib
+ * Copyright 2018 Raoul van Rüschen, Zlib
  */
 
 (function (global, factory) {
@@ -638,6 +638,8 @@
 
   var v$1 = new Vector3();
 
+  var points = [new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()];
+
   var Box3 = function () {
   	function Box3() {
   		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(Infinity, Infinity, Infinity);
@@ -787,6 +789,29 @@
   			var clampedPoint = v$1.copy(p).clamp(this.min, this.max);
 
   			return clampedPoint.sub(p).length();
+  		}
+  	}, {
+  		key: "applyMatrix4",
+  		value: function applyMatrix4(m) {
+
+  			var min = this.min;
+  			var max = this.max;
+
+  			if (!this.isEmpty()) {
+
+  				points[0].set(min.x, min.y, min.z).applyMatrix4(m);
+  				points[1].set(min.x, min.y, max.z).applyMatrix4(m);
+  				points[2].set(min.x, max.y, min.z).applyMatrix4(m);
+  				points[3].set(min.x, max.y, max.z).applyMatrix4(m);
+  				points[4].set(max.x, min.y, min.z).applyMatrix4(m);
+  				points[5].set(max.x, min.y, max.z).applyMatrix4(m);
+  				points[6].set(max.x, max.y, min.z).applyMatrix4(m);
+  				points[7].set(max.x, max.y, max.z).applyMatrix4(m);
+
+  				this.setFromPoints(points);
+  			}
+
+  			return this;
   		}
   	}, {
   		key: "translate",
@@ -1996,12 +2021,12 @@
 
   var RotationOrder = {
 
-    XYZ: "XYZ",
-    YZX: "YZX",
-    ZXY: "ZXY",
-    XZY: "XZY",
-    YXZ: "YXZ",
-    ZYX: "ZYX"
+    XYZ: 0,
+    YZX: 1,
+    ZXY: 2,
+    XZY: 3,
+    YXZ: 4,
+    ZYX: 5
 
   };
 
@@ -2415,10 +2440,7 @@
   		}
   	}], [{
   		key: "slerp",
-  		value: function slerp(qa, qb) {
-  			var qr = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Quaternion();
-  			var t = arguments[3];
-
+  		value: function slerp(qa, qb, qr, t) {
 
   			return qr.copy(qa).slerp(qb, t);
   		}
@@ -2522,7 +2544,7 @@
   			this.x = x;
   			this.y = y;
   			this.z = z;
-  			this.order = z;
+  			this.order = order;
 
   			return this;
   		}
