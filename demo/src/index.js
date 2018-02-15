@@ -1,6 +1,5 @@
 import { DemoManager } from "three-demo";
 import { WebGLRenderer } from "three";
-import { EffectComposer } from "postprocessing";
 
 import { PointOctreeDemo } from "./demos/PointOctreeDemo.js";
 
@@ -80,10 +79,7 @@ window.addEventListener("load", function main(event) {
 	// Initialise the demo manager.
 	manager = new DemoManager(viewport, {
 		aside: document.getElementById("aside"),
-		composer: new EffectComposer(renderer, {
-			stencilBuffer: true,
-			depthTexture: true
-		})
+		renderer: renderer
 	});
 
 	// Setup demo switch and load event handlers.

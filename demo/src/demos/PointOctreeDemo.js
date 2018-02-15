@@ -76,8 +76,7 @@ export class PointOctreeDemo extends Demo {
 	initialize() {
 
 		const scene = this.scene;
-		const composer = this.composer;
-		const renderer = composer.renderer;
+		const renderer = this.renderer;
 
 		// Camera.
 
@@ -223,7 +222,7 @@ export class PointOctreeDemo extends Demo {
 
 		this.raycaster = new OctreeRaycaster(octree, camera, points);
 
-		renderer.domElement.parentNode.addEventListener("mousemove", this.raycaster);
+		renderer.domElement.addEventListener("mousemove", this.raycaster);
 		scene.add(this.raycaster.selectedPoint);
 
 		// Frustum culling.
@@ -235,14 +234,16 @@ export class PointOctreeDemo extends Demo {
 	}
 
 	/**
-	 * Updates this demo.
+	 * Renders this demo.
 	 *
 	 * @param {Number} delta - The time since the last frame in seconds.
 	 */
 
-	update(delta) {
+	render(delta) {
 
 		this.controls.update(delta);
+
+		super.render(delta);
 
 	}
 
@@ -284,6 +285,22 @@ export class PointOctreeDemo extends Demo {
 		});
 
 		folder.open();
+
+	}
+
+	/**
+	 * Resets this demo.
+	 *
+	 * @return {Demo} This demo.
+	 */
+
+	reset() {
+
+		super.reset();
+
+		this.composer.renderer.domElement.removeEventListener("mousemove", this.raycaster);
+
+		return this;
 
 	}
 

@@ -115,7 +115,7 @@ export class OctreeRaycaster extends Raycaster {
 	/**
 	 * Raycasts on mouse move events.
 	 *
-	 * @param {Event} event - A worker message event.
+	 * @param {Event} event - An event.
 	 */
 
 	handleEvent(event) {
