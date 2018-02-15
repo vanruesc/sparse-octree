@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.2.0 build Jan 16 2018
+ * sparse-octree v4.2.0 build Feb 15 2018
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2018 Raoul van Rüschen, Zlib
  */
@@ -636,7 +636,7 @@
   	return Vector3;
   }();
 
-  var v$1 = new Vector3();
+  var v = new Vector3();
 
   var points = [new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()];
 
@@ -715,7 +715,7 @@
 
   			this.getCenter(target.center);
 
-  			target.radius = this.getSize(v$1).length() * 0.5;
+  			target.radius = this.getSize(v).length() * 0.5;
 
   			return target;
   		}
@@ -767,7 +767,7 @@
   		key: "setFromCenterAndSize",
   		value: function setFromCenterAndSize(center, size) {
 
-  			var halfSize = v$1.copy(size).multiplyScalar(0.5);
+  			var halfSize = v.copy(size).multiplyScalar(0.5);
 
   			this.min.copy(center).sub(halfSize);
   			this.max.copy(center).add(halfSize);
@@ -786,7 +786,7 @@
   		key: "distanceToPoint",
   		value: function distanceToPoint(p) {
 
-  			var clampedPoint = v$1.copy(p).clamp(this.min, this.max);
+  			var clampedPoint = v.copy(p).clamp(this.min, this.max);
 
   			return clampedPoint.sub(p).length();
   		}
@@ -879,7 +879,7 @@
   	}, {
   		key: "intersectsSphere",
   		value: function intersectsSphere(s) {
-  			var closestPoint = this.clampPoint(s.center, v$1);
+  			var closestPoint = this.clampPoint(s.center, v);
 
   			return closestPoint.distanceToSquared(s.center) <= s.radius * s.radius;
   		}
@@ -1438,7 +1438,7 @@
   	return Vector2;
   }();
 
-  var v = new Vector2();
+  var v$1 = new Vector2();
 
   var Box2 = function () {
   	function Box2() {
@@ -1515,7 +1515,7 @@
 
   			this.getCenter(target.center);
 
-  			target.radius = this.getSize(v).length() * 0.5;
+  			target.radius = this.getSize(v$1).length() * 0.5;
 
   			return target;
   		}
@@ -1567,7 +1567,7 @@
   		key: "setFromCenterAndSize",
   		value: function setFromCenterAndSize(center, size) {
 
-  			var halfSize = v.copy(size).multiplyScalar(0.5);
+  			var halfSize = v$1.copy(size).multiplyScalar(0.5);
 
   			this.min.copy(center).sub(halfSize);
   			this.max.copy(center).add(halfSize);
@@ -1586,7 +1586,7 @@
   		key: "distanceToPoint",
   		value: function distanceToPoint(p) {
 
-  			var clampedPoint = v.copy(p).clamp(this.min, this.max);
+  			var clampedPoint = v$1.copy(p).clamp(this.min, this.max);
 
   			return clampedPoint.sub(p).length();
   		}
@@ -2021,12 +2021,12 @@
 
   var RotationOrder = {
 
-    XYZ: 0,
-    YZX: 1,
-    ZXY: 2,
-    XZY: 3,
-    YXZ: 4,
-    ZYX: 5
+    XYZ: "XYZ",
+    YZX: "YZX",
+    ZXY: "ZXY",
+    XZY: "XZY",
+    YXZ: "YXZ",
+    ZYX: "ZYX"
 
   };
 
@@ -2275,7 +2275,7 @@
   		key: "invert",
   		value: function invert() {
 
-  			return this.conjugate().normalize();
+  			return this.conjugate();
   		}
   	}, {
   		key: "conjugate",
@@ -3236,7 +3236,7 @@
 
   var b$2 = new Vector3();
 
-  var c$1 = new Vector3();
+  var c = new Vector3();
 
   var Matrix4 = function () {
   		function Matrix4() {
@@ -3620,7 +3620,7 @@
   						var te = this.elements;
   						var x = a$2,
   						    y = b$2,
-  						    z = c$1;
+  						    z = c;
 
   						z.subVectors(eye, target);
 
@@ -5173,7 +5173,7 @@
   	return Vector4;
   }();
 
-  var c$2 = new Vector3();
+  var c$1 = new Vector3();
 
   var Octant = function () {
   	function Octant() {
@@ -5211,7 +5211,7 @@
 
   			var min = this.min;
   			var max = this.max;
-  			var mid = this.getCenter(c$2);
+  			var mid = this.getCenter(c$1);
 
   			var children = this.children = [null, null, null, null, null, null, null, null];
 
@@ -5233,7 +5233,7 @@
 
   var edges = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
 
-  var c = new Vector3();
+  var c$2 = new Vector3();
 
   var CubicOctant = function () {
   	function CubicOctant() {
@@ -5270,7 +5270,7 @@
   		value: function split() {
 
   			var min = this.min;
-  			var mid = this.getCenter(c);
+  			var mid = this.getCenter(c$2);
   			var halfSize = this.size * 0.5;
 
   			var children = this.children = [null, null, null, null, null, null, null, null];
@@ -5318,7 +5318,7 @@
   	return IteratorResult;
   }();
 
-  var b$4 = new Box3();
+  var b$3 = new Box3();
 
   var OctantIterator = function () {
   		function OctantIterator(octree) {
@@ -5352,10 +5352,10 @@
 
   						if (root !== null) {
 
-  								b$4.min = root.min;
-  								b$4.max = root.max;
+  								b$3.min = root.min;
+  								b$3.max = root.max;
 
-  								if (!this.cull || this.region.intersectsBox(b$4)) {
+  								if (!this.cull || this.region.intersectsBox(b$3)) {
 
   										this.trace.push(root);
   										this.indices.push(0);
@@ -5397,10 +5397,10 @@
 
   												if (cull) {
 
-  														b$4.min = child.min;
-  														b$4.max = child.max;
+  														b$3.min = child.min;
+  														b$3.max = child.max;
 
-  														if (!region.intersectsBox(b$4)) {
+  														if (!region.intersectsBox(b$3)) {
   																continue;
   														}
   												}
@@ -5449,7 +5449,7 @@
 
   var v$4 = [new Vector3(), new Vector3(), new Vector3()];
 
-  var b$5 = new Box3();
+  var b$4 = new Box3();
 
   var r = new Ray();
 
@@ -5598,8 +5598,8 @@
   	createClass(OctreeRaycaster, null, [{
   		key: "intersectOctree",
   		value: function intersectOctree(octree, raycaster, intersects) {
-  			var min = b$5.min.set(0, 0, 0);
-  			var max = b$5.max.subVectors(octree.max, octree.min);
+  			var min = b$4.min.set(0, 0, 0);
+  			var max = b$4.max.subVectors(octree.max, octree.min);
 
   			var dimensions = octree.getDimensions(v$4[0]);
   			var halfDimensions = v$4[1].copy(dimensions).multiplyScalar(0.5);
@@ -5661,7 +5661,7 @@
   	return OctreeRaycaster;
   }();
 
-  var b$3 = new Box3();
+  var b$5 = new Box3();
 
   function _getDepth(octant) {
 
@@ -5695,10 +5695,10 @@
   	var i = void 0,
   	    l = void 0;
 
-  	b$3.min = octant.min;
-  	b$3.max = octant.max;
+  	b$5.min = octant.min;
+  	b$5.max = octant.max;
 
-  	if (region.intersectsBox(b$3)) {
+  	if (region.intersectsBox(b$5)) {
 
   		if (children !== null) {
 
