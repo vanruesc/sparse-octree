@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.2.0 build Feb 15 2018
+ * sparse-octree v4.2.1 build Mar 10 2018
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2018 Raoul van Rüschen, Zlib
  */
@@ -5886,7 +5886,7 @@
   			    point = void 0,
   			    entry = void 0;
 
-  			if (children !== null) {
+  			if (children !== null && points !== null) {
 
   				for (i = 0, il = points.length; i < il; ++i) {
 
@@ -6119,7 +6119,7 @@
 
   				result = _fetch(point, octree, children[i]);
   			}
-  		} else {
+  		} else if (octant.points !== null) {
 
   			points = octant.points;
 
@@ -6157,7 +6157,7 @@
 
   					result = _move(point, position, octree, children[i], octant, depth);
   				}
-  			} else {
+  			} else if (octant.points !== null) {
   				points = octant.points;
 
   				for (i = 0, l = points.length; i < l; ++i) {
