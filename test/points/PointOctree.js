@@ -67,6 +67,8 @@ module.exports = {
 
 			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
+			test.equal(octree.fetch(new Vector3(0, 0, 0)), null, "should return null if there is no point");
+
 			octree.put(new Vector3(0, 0, 0), data0);
 
 			test.equal(octree.fetch(new Vector3(0, 0, 0)), data0, "should find points and return their data");

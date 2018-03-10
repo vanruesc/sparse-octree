@@ -122,7 +122,7 @@ export class PointOctant extends Octant {
 		let i, j, il, jl;
 		let child, point, entry;
 
-		if(children !== null) {
+		if(children !== null && points !== null) {
 
 			for(i = 0, il = points.length; i < il; ++i) {
 

@@ -228,7 +228,7 @@ function fetch(point, octree, octant) {
 
 			}
 
-		} else {
+		} else if(octant.points !== null) {
 
 			points = octant.points;
 
@@ -286,7 +286,7 @@ function move(point, position, octree, octant, parent, depth) {
 
 				}
 
-			} else {
+			} else if(octant.points !== null) {
 
 				// No divergence - the point can be updated in place.
 				points = octant.points;
