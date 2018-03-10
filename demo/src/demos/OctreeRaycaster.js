@@ -68,10 +68,9 @@ export class OctreeRaycaster extends Raycaster {
 		this.object = object;
 
 		/**
-		 * Indicates whether the frustum culling is active.
+		 * Indicates whether the raycaster is active.
 		 *
 		 * @type {Boolean}
-		 * @default false
 		 */
 
 		this.enabled = true;
