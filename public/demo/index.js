@@ -7872,6 +7872,8 @@
   		this.object = object;
   };
 
+  var v$7 = new Vector3$1();
+
   var THRESHOLD = 1e-6;
 
   function _countPoints(octant) {
@@ -8320,7 +8322,7 @@
 
   						if (rayPointDistanceSq < thresholdSq) {
 
-  							intersectPoint = raycaster.ray.closestPointToPoint(point);
+  							intersectPoint = raycaster.ray.closestPointToPoint(point, v$7);
   							distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
   							if (distance >= raycaster.near && distance <= raycaster.far) {
@@ -8344,7 +8346,7 @@
 
   var u = new Vector3$1();
 
-  var v$7 = new Vector3$1();
+  var v$8 = new Vector3$1();
 
   var OctreeUtils = function () {
   	function OctreeUtils() {
@@ -8357,7 +8359,7 @@
 
   			var min = octant.min;
   			var mid = octant.getCenter(u);
-  			var halfDimensions = octant.getDimensions(v$7).multiplyScalar(0.5);
+  			var halfDimensions = octant.getDimensions(v$8).multiplyScalar(0.5);
 
   			var children = octant.children;
   			var l = octants.length;

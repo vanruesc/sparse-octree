@@ -45,9 +45,19 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/points/PointOctree.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Octree } from &quot;../core/Octree.js&quot;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
+import { Octree } from &quot;../core/Octree.js&quot;;
 import { PointOctant } from &quot;./PointOctant.js&quot;;
 import { RayPointIntersection } from &quot;./RayPointIntersection.js&quot;;
+
+/**
+ * A vector.
+ *
+ * @type {Vector3}
+ * @private
+ */
+
+const v = new Vector3();
 
 /**
  * A threshold for distance comparisons.
@@ -762,7 +772,7 @@ export class PointOctree extends Octree {
 
 					if(rayPointDistanceSq &lt; thresholdSq) {
 
-						intersectPoint = raycaster.ray.closestPointToPoint(point);
+						intersectPoint = raycaster.ray.closestPointToPoint(point, v);
 						distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
 						if(distance &gt;= raycaster.near &amp;&amp; distance &lt;= raycaster.far) {

@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.2.1 build Mar 10 2018
+ * sparse-octree v4.2.2 build Mar 16 2018
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2018 Raoul van Rüschen, Zlib
  */
@@ -5965,6 +5965,8 @@
   		this.object = object;
   };
 
+  var v$5 = new Vector3();
+
   var THRESHOLD = 1e-6;
 
   function _countPoints(octant) {
@@ -6413,7 +6415,7 @@
 
   						if (rayPointDistanceSq < thresholdSq) {
 
-  							intersectPoint = raycaster.ray.closestPointToPoint(point);
+  							intersectPoint = raycaster.ray.closestPointToPoint(point, v$5);
   							distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
   							if (distance >= raycaster.near && distance <= raycaster.far) {
@@ -6437,7 +6439,7 @@
 
   var u = new Vector3();
 
-  var v$5 = new Vector3();
+  var v$6 = new Vector3();
 
   var OctreeUtils = function () {
   	function OctreeUtils() {
@@ -6450,7 +6452,7 @@
 
   			var min = octant.min;
   			var mid = octant.getCenter(u);
-  			var halfDimensions = octant.getDimensions(v$5).multiplyScalar(0.5);
+  			var halfDimensions = octant.getDimensions(v$6).multiplyScalar(0.5);
 
   			var children = octant.children;
   			var l = octants.length;
