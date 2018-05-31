@@ -73,7 +73,7 @@
 		"octree-helper": "0.x.x",
 		"rollup-plugin-babel": "3.x.x",
 		"rollup-plugin-node-resolve": "3.x.x",
-		"three": "0.92.x",
+		"three": "0.93.x",
 		"three-demo": "1.x.x",
 		"time-grunt": "1.x.x"
 	}
