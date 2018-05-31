@@ -4086,6 +4086,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4105,7 +4106,6 @@
                   "name": "constructor",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -4535,6 +4535,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4553,7 +4554,6 @@
                   },
                   "name": "min"
                 },
-                "static": false,
                 "kind": "get",
                 "id": null,
                 "generator": false,
@@ -4726,6 +4726,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4744,7 +4745,6 @@
                   },
                   "name": "max"
                 },
-                "static": false,
                 "kind": "get",
                 "id": null,
                 "generator": false,
@@ -4917,6 +4917,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4935,7 +4936,6 @@
                   },
                   "name": "children"
                 },
-                "static": false,
                 "kind": "get",
                 "id": null,
                 "generator": false,
@@ -5108,6 +5108,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5127,7 +5128,6 @@
                   "name": "getCenter",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5352,6 +5352,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5371,7 +5372,6 @@
                   "name": "getDimensions",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5596,6 +5596,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5615,7 +5616,6 @@
                   "name": "getDepth",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -5789,6 +5789,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -5808,7 +5809,6 @@
                   "name": "cull",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -6132,6 +6132,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -6151,7 +6152,6 @@
                   "name": "findOctantsByLevel",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -6495,6 +6495,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -6514,7 +6515,6 @@
                   "name": "raycast",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -6820,6 +6820,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -6839,7 +6840,6 @@
                   "name": "leaves",
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -7015,6 +7015,7 @@
                     "column": 2
                   }
                 },
+                "static": false,
                 "computed": true,
                 "key": {
                   "type": "MemberExpression",
@@ -7068,7 +7069,6 @@
                   "computed": false,
                   "leadingComments": null
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -7516,7 +7516,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -7699,7 +7699,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -7882,7 +7882,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
@@ -8065,7 +8065,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,
