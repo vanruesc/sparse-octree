@@ -1,5 +1,5 @@
 /**
- * sparse-octree v4.2.2 build Mar 16 2018
+ * sparse-octree v4.3.0 build May 31 2018
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2018 Raoul van Rüschen, Zlib
  */
@@ -638,8 +638,6 @@
 
   var v = new Vector3();
 
-  var points = [new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()];
-
   var Box3 = function () {
   	function Box3() {
   		var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(Infinity, Infinity, Infinity);
@@ -792,23 +790,45 @@
   		}
   	}, {
   		key: "applyMatrix4",
-  		value: function applyMatrix4(m) {
+  		value: function applyMatrix4(matrix) {
 
   			var min = this.min;
   			var max = this.max;
 
   			if (!this.isEmpty()) {
 
-  				points[0].set(min.x, min.y, min.z).applyMatrix4(m);
-  				points[1].set(min.x, min.y, max.z).applyMatrix4(m);
-  				points[2].set(min.x, max.y, min.z).applyMatrix4(m);
-  				points[3].set(min.x, max.y, max.z).applyMatrix4(m);
-  				points[4].set(max.x, min.y, min.z).applyMatrix4(m);
-  				points[5].set(max.x, min.y, max.z).applyMatrix4(m);
-  				points[6].set(max.x, max.y, min.z).applyMatrix4(m);
-  				points[7].set(max.x, max.y, max.z).applyMatrix4(m);
+  				var me = matrix.elements;
 
-  				this.setFromPoints(points);
+  				var xax = me[0] * min.x;
+  				var xay = me[1] * min.x;
+  				var xaz = me[2] * min.x;
+
+  				var xbx = me[0] * max.x;
+  				var xby = me[1] * max.x;
+  				var xbz = me[2] * max.x;
+
+  				var yax = me[4] * min.y;
+  				var yay = me[5] * min.y;
+  				var yaz = me[6] * min.y;
+
+  				var ybx = me[4] * max.y;
+  				var yby = me[5] * max.y;
+  				var ybz = me[6] * max.y;
+
+  				var zax = me[8] * min.z;
+  				var zay = me[9] * min.z;
+  				var zaz = me[10] * min.z;
+
+  				var zbx = me[8] * max.z;
+  				var zby = me[9] * max.z;
+  				var zbz = me[10] * max.z;
+
+  				min.x = Math.min(xax, xbx) + Math.min(yax, ybx) + Math.min(zax, zbx) + me[12];
+  				min.y = Math.min(xay, xby) + Math.min(yay, yby) + Math.min(zay, zby) + me[13];
+  				min.z = Math.min(xaz, xbz) + Math.min(yaz, ybz) + Math.min(zaz, zbz) + me[14];
+  				max.x = Math.max(xax, xbx) + Math.max(yax, ybx) + Math.max(zax, zbx) + me[12];
+  				max.y = Math.max(xay, xby) + Math.max(yay, yby) + Math.max(zay, zby) + me[13];
+  				max.z = Math.max(xaz, xbz) + Math.max(yaz, ybz) + Math.max(zaz, zbz) + me[14];
   			}
 
   			return this;
@@ -2955,172 +2975,172 @@
   var v1 = new Vector3();
 
   var Frustum = function () {
-  	function Frustum() {
-  		var p0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Plane();
-  		var p1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Plane();
-  		var p2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Plane();
-  		var p3 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Plane();
-  		var p4 = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new Plane();
-  		var p5 = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new Plane();
-  		classCallCheck(this, Frustum);
+  		function Frustum() {
+  				var p0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Plane();
+  				var p1 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Plane();
+  				var p2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Plane();
+  				var p3 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Plane();
+  				var p4 = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : new Plane();
+  				var p5 = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : new Plane();
+  				classCallCheck(this, Frustum);
 
 
-  		this.planes = [p0, p1, p2, p3, p4, p5];
-  	}
-
-  	createClass(Frustum, [{
-  		key: "set",
-  		value: function set$$1(p0, p1, p2, p3, p4, p5) {
-
-  			var planes = this.planes;
-
-  			planes[0].copy(p0);
-  			planes[1].copy(p1);
-  			planes[2].copy(p2);
-  			planes[3].copy(p3);
-  			planes[4].copy(p4);
-  			planes[5].copy(p5);
-
-  			return this;
+  				this.planes = [p0, p1, p2, p3, p4, p5];
   		}
-  	}, {
-  		key: "clone",
-  		value: function clone() {
 
-  			return new this.constructor().copy(this);
-  		}
-  	}, {
-  		key: "copy",
-  		value: function copy(frustum) {
+  		createClass(Frustum, [{
+  				key: "set",
+  				value: function set$$1(p0, p1, p2, p3, p4, p5) {
 
-  			var planes = this.planes;
+  						var planes = this.planes;
 
-  			var i = void 0;
+  						planes[0].copy(p0);
+  						planes[1].copy(p1);
+  						planes[2].copy(p2);
+  						planes[3].copy(p3);
+  						planes[4].copy(p4);
+  						planes[5].copy(p5);
 
-  			for (i = 0; i < 6; ++i) {
-
-  				planes[i].copy(frustum.planes[i]);
-  			}
-
-  			return this;
-  		}
-  	}, {
-  		key: "setFromMatrix",
-  		value: function setFromMatrix(m) {
-
-  			var planes = this.planes;
-
-  			var me = m.elements;
-  			var me0 = me[0],
-  			    me1 = me[1],
-  			    me2 = me[2],
-  			    me3 = me[3];
-  			var me4 = me[4],
-  			    me5 = me[5],
-  			    me6 = me[6],
-  			    me7 = me[7];
-  			var me8 = me[8],
-  			    me9 = me[9],
-  			    me10 = me[10],
-  			    me11 = me[11];
-  			var me12 = me[12],
-  			    me13 = me[13],
-  			    me14 = me[14],
-  			    me15 = me[15];
-
-  			planes[0].setComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
-  			planes[1].setComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
-  			planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
-  			planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
-  			planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
-  			planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
-
-  			return this;
-  		}
-  	}, {
-  		key: "intersectsSphere",
-  		value: function intersectsSphere(sphere) {
-
-  			var planes = this.planes;
-  			var center = sphere.center;
-  			var negativeRadius = -sphere.radius;
-
-  			var result = true;
-  			var i = void 0,
-  			    d = void 0;
-
-  			for (i = 0; i < 6; ++i) {
-
-  				d = planes[i].distanceToPoint(center);
-
-  				if (d < negativeRadius) {
-
-  					result = false;
-  					break;
+  						return this;
   				}
-  			}
+  		}, {
+  				key: "clone",
+  				value: function clone() {
 
-  			return result;
-  		}
-  	}, {
-  		key: "intersectsBox",
-  		value: function intersectsBox(box) {
-
-  			var planes = this.planes;
-  			var min = box.min;
-  			var max = box.max;
-
-  			var result = true;
-  			var i = void 0,
-  			    d0 = void 0,
-  			    d1 = void 0;
-  			var plane = void 0;
-
-  			for (i = 0; i < 6; ++i) {
-
-  				plane = planes[i];
-
-  				v0.x = plane.normal.x > 0 ? min.x : max.x;
-  				v1.x = plane.normal.x > 0 ? max.x : min.x;
-  				v0.y = plane.normal.y > 0 ? min.y : max.y;
-  				v1.y = plane.normal.y > 0 ? max.y : min.y;
-  				v0.z = plane.normal.z > 0 ? min.z : max.z;
-  				v1.z = plane.normal.z > 0 ? max.z : min.z;
-
-  				d0 = plane.distanceToPoint(v0);
-  				d1 = plane.distanceToPoint(v1);
-
-  				if (d0 < 0 && d1 < 0) {
-
-  					result = false;
-  					break;
+  						return new this.constructor().copy(this);
   				}
-  			}
+  		}, {
+  				key: "copy",
+  				value: function copy(frustum) {
 
-  			return result;
-  		}
-  	}, {
-  		key: "containsPoint",
-  		value: function containsPoint(point) {
+  						var planes = this.planes;
 
-  			var planes = this.planes;
+  						var i = void 0;
 
-  			var result = true;
-  			var i = void 0;
+  						for (i = 0; i < 6; ++i) {
 
-  			for (i = 0; i < 6; ++i) {
+  								planes[i].copy(frustum.planes[i]);
+  						}
 
-  				if (planes[i].distanceToPoint(point) < 0) {
-
-  					result = false;
-  					break;
+  						return this;
   				}
-  			}
+  		}, {
+  				key: "setFromMatrix",
+  				value: function setFromMatrix(m) {
 
-  			return result;
-  		}
-  	}]);
-  	return Frustum;
+  						var planes = this.planes;
+
+  						var me = m.elements;
+  						var me0 = me[0],
+  						    me1 = me[1],
+  						    me2 = me[2],
+  						    me3 = me[3];
+  						var me4 = me[4],
+  						    me5 = me[5],
+  						    me6 = me[6],
+  						    me7 = me[7];
+  						var me8 = me[8],
+  						    me9 = me[9],
+  						    me10 = me[10],
+  						    me11 = me[11];
+  						var me12 = me[12],
+  						    me13 = me[13],
+  						    me14 = me[14],
+  						    me15 = me[15];
+
+  						planes[0].setComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
+  						planes[1].setComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
+  						planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
+  						planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
+  						planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
+  						planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+
+  						return this;
+  				}
+  		}, {
+  				key: "intersectsSphere",
+  				value: function intersectsSphere(sphere) {
+
+  						var planes = this.planes;
+  						var center = sphere.center;
+  						var negativeRadius = -sphere.radius;
+
+  						var result = true;
+  						var i = void 0,
+  						    d = void 0;
+
+  						for (i = 0; i < 6; ++i) {
+
+  								d = planes[i].distanceToPoint(center);
+
+  								if (d < negativeRadius) {
+
+  										result = false;
+  										break;
+  								}
+  						}
+
+  						return result;
+  				}
+  		}, {
+  				key: "intersectsBox",
+  				value: function intersectsBox(box) {
+
+  						var planes = this.planes;
+  						var min = box.min;
+  						var max = box.max;
+
+  						var result = true;
+  						var i = void 0,
+  						    d0 = void 0,
+  						    d1 = void 0;
+  						var plane = void 0;
+
+  						for (i = 0; i < 6; ++i) {
+
+  								plane = planes[i];
+
+  								v0.x = plane.normal.x > 0 ? min.x : max.x;
+  								v1.x = plane.normal.x > 0 ? max.x : min.x;
+  								v0.y = plane.normal.y > 0 ? min.y : max.y;
+  								v1.y = plane.normal.y > 0 ? max.y : min.y;
+  								v0.z = plane.normal.z > 0 ? min.z : max.z;
+  								v1.z = plane.normal.z > 0 ? max.z : min.z;
+
+  								d0 = plane.distanceToPoint(v0);
+  								d1 = plane.distanceToPoint(v1);
+
+  								if (d0 < 0 && d1 < 0) {
+
+  										result = false;
+  										break;
+  								}
+  						}
+
+  						return result;
+  				}
+  		}, {
+  				key: "containsPoint",
+  				value: function containsPoint(point) {
+
+  						var planes = this.planes;
+
+  						var result = true;
+  						var i = void 0;
+
+  						for (i = 0; i < 6; ++i) {
+
+  								if (planes[i].distanceToPoint(point) < 0) {
+
+  										result = false;
+  										break;
+  								}
+  						}
+
+  						return result;
+  				}
+  		}]);
+  		return Frustum;
   }();
 
   var a$1 = new Vector3();
@@ -3391,14 +3411,22 @@
   						te[0] = me[0] * scaleX;
   						te[1] = me[1] * scaleX;
   						te[2] = me[2] * scaleX;
+  						te[3] = 0;
 
   						te[4] = me[4] * scaleY;
   						te[5] = me[5] * scaleY;
   						te[6] = me[6] * scaleY;
+  						te[7] = 0;
 
   						te[8] = me[8] * scaleZ;
   						te[9] = me[9] * scaleZ;
   						te[10] = me[10] * scaleZ;
+  						te[11] = 0;
+
+  						te[12] = 0;
+  						te[13] = 0;
+  						te[14] = 0;
+  						te[15] = 1;
 
   						return this;
   				}
@@ -3571,47 +3599,7 @@
   				key: "makeRotationFromQuaternion",
   				value: function makeRotationFromQuaternion(q) {
 
-  						var te = this.elements;
-
-  						var x = q.x,
-  						    y = q.y,
-  						    z = q.z,
-  						    w = q.w;
-  						var x2 = x + x,
-  						    y2 = y + y,
-  						    z2 = z + z;
-  						var xx = x * x2,
-  						    xy = x * y2,
-  						    xz = x * z2;
-  						var yy = y * y2,
-  						    yz = y * z2,
-  						    zz = z * z2;
-  						var wx = w * x2,
-  						    wy = w * y2,
-  						    wz = w * z2;
-
-  						te[0] = 1 - (yy + zz);
-  						te[4] = xy - wz;
-  						te[8] = xz + wy;
-
-  						te[1] = xy + wz;
-  						te[5] = 1 - (xx + zz);
-  						te[9] = yz - wx;
-
-  						te[2] = xz - wy;
-  						te[6] = yz + wx;
-  						te[10] = 1 - (xx + yy);
-
-  						te[3] = 0;
-  						te[7] = 0;
-  						te[11] = 0;
-
-  						te[12] = 0;
-  						te[13] = 0;
-  						te[14] = 0;
-  						te[15] = 1;
-
-  						return this;
+  						return this.compose(a$2.set(0, 0, 0), q, b$2.set(1, 1, 1));
   				}
   		}, {
   				key: "lookAt",
@@ -3956,9 +3944,48 @@
   				key: "compose",
   				value: function compose(position, quaternion, scale) {
 
-  						this.makeRotationFromQuaternion(quaternion);
-  						this.scale(scale.x, scale.y, scale.z);
-  						this.setPosition(position);
+  						var te = this.elements;
+
+  						var x = quaternion.x,
+  						    y = quaternion.y,
+  						    z = quaternion.z,
+  						    w = quaternion.w;
+  						var x2 = x + x,
+  						    y2 = y + y,
+  						    z2 = z + z;
+  						var xx = x * x2,
+  						    xy = x * y2,
+  						    xz = x * z2;
+  						var yy = y * y2,
+  						    yz = y * z2,
+  						    zz = z * z2;
+  						var wx = w * x2,
+  						    wy = w * y2,
+  						    wz = w * z2;
+
+  						var sx = scale.x,
+  						    sy = scale.y,
+  						    sz = scale.z;
+
+  						te[0] = (1 - (yy + zz)) * sx;
+  						te[1] = (xy + wz) * sx;
+  						te[2] = (xz - wy) * sx;
+  						te[3] = 0;
+
+  						te[4] = (xy - wz) * sy;
+  						te[5] = (1 - (xx + zz)) * sy;
+  						te[6] = (yz + wx) * sy;
+  						te[7] = 0;
+
+  						te[8] = (xz + wy) * sz;
+  						te[9] = (yz - wx) * sz;
+  						te[10] = (1 - (xx + yy)) * sz;
+  						te[11] = 0;
+
+  						te[12] = position.x;
+  						te[13] = position.y;
+  						te[14] = position.z;
+  						te[15] = 1;
 
   						return this;
   				}
