@@ -137,10 +137,8 @@ export class OctantIterator {
 
 		while(octant === null && depth >= 0) {
 
-			index = indices[depth];
+			index = indices[depth]++;
 			children = trace[depth].children;
-
-			++indices[depth];
 
 			if(index < 8) {
 
