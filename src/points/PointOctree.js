@@ -523,7 +523,6 @@ export class PointOctree extends Octree {
 		 *
 		 * @type {Number}
 		 * @private
-		 * @default 0.0
 		 */
 
 		this.bias = Math.max(0.0, bias);
@@ -537,7 +536,6 @@ export class PointOctree extends Octree {
 		 *
 		 * @type {Number}
 		 * @private
-		 * @default 8
 		 */
 
 		this.maxPoints = Math.max(1, Math.round(maxPoints));
@@ -551,7 +549,6 @@ export class PointOctree extends Octree {
 		 *
 		 * @type {Number}
 		 * @private
-		 * @default 8
 		 */
 
 		this.maxDepth = Math.max(0, Math.round(maxDepth));

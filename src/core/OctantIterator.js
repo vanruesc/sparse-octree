@@ -41,7 +41,6 @@ export class OctantIterator {
 		 * A region used for octree culling.
 		 *
 		 * @type {Frustum|Box3}
-		 * @default null
 		 */
 
 		this.region = region;
@@ -50,7 +49,6 @@ export class OctantIterator {
 		 * Whether this iterator should respect the cull region.
 		 *
 		 * @type {Boolean}
-		 * @default false
 		 */
 
 		this.cull = (region !== null);

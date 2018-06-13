@@ -43,7 +43,6 @@ export class RayPointIntersection {
 		 * The point's data.
 		 *
 		 * @type {Object}
-		 * @default null
 		 */
 
 		this.object = object;
