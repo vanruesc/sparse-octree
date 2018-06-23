@@ -360,8 +360,8 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 	if(children !== null) {
 
-		// Sort the children.
-		sortedChildren = children.map(function(child) {
+		// Sort the children: smallest distance to the point first, ASC.
+		sortedChildren = children.map((child) => {
 
 			// Precompute distances.
 			return {
@@ -369,12 +369,7 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
 				distance: child.distanceToCenterSquared(point)
 			};
 
-		}).sort(function(a, b) {
-
-			// Smallest distance to the point first, ASC.
-			return a.distance - b.distance;
-
-		});
+		}).sort((a, b) => a.distance - b.distance);
 
 		// Traverse from closest to furthest.
 		for(i = 0, l = sortedChildren.length; i < l; ++i) {
