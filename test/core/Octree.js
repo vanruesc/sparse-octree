@@ -1,76 +1,59 @@
-"use strict";
-
-const three = require("three");
-const Octree = require("../../build/sparse-octree").Octree;
-
-const Box3 = three.Box3;
-const Vector3 = three.Vector3;
+import test from "ava";
+import { Box3, Vector3 } from "math-ds";
+import { Octree } from "../../build/sparse-octree.js";
 
 const box = new Box3(
 	new Vector3(-1, -1, -1),
 	new Vector3(1, 1, 1)
 );
 
-module.exports = {
+test("can be instantiated", t => {
 
-	"Octree": {
+	const object = new Octree();
 
-		"can be instantiated": function(test) {
+	t.truthy(object);
 
-			const octree = new Octree();
+});
 
-			test.ok(octree, "octree");
-			test.done();
+test("can compute its center", t => {
 
-		},
+	const octree = new Octree(box.min, box.max);
 
-		"can compute its center": function(test) {
+	t.true(octree.getCenter().equals(new Vector3(0, 0, 0)), "should be able to compute its center");
 
-			const octree = new Octree(box.min, box.max);
+});
 
-			test.ok(octree.getCenter().equals(new Vector3(0, 0, 0)), "should be able to compute its center");
-			test.done();
+test("can compute its dimensions", t => {
 
-		},
+	const octree = new Octree(box.min, box.max);
 
-		"can compute its dimensions": function(test) {
+	t.true(octree.getDimensions().equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
 
-			const octree = new Octree(box.min, box.max);
+});
 
-			test.ok(octree.getDimensions().equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
-			test.done();
+test("can compute its depth", t => {
 
-		},
+	const octree = new Octree(box.min, box.max);
 
-		"can compute its depth": function(test) {
+	octree.root.split();
+	octree.root.children[0].split();
+	octree.root.children[0].children[0].split();
 
-			const octree = new Octree(box.min, box.max);
+	t.is(octree.getDepth(), 3, "should be able to compute the current tree depth");
 
-			octree.root.split();
-			octree.root.children[0].split();
-			octree.root.children[0].children[0].split();
+});
 
-			test.equal(octree.getDepth(), 3, "should be able to compute the current tree depth");
-			test.done();
+test("finds octants by depth level", t => {
 
-		},
+	const octree = new Octree(box.min, box.max);
 
-		"finds octants by depth level": function(test) {
+	octree.root.split();
+	octree.root.children[0].split();
+	octree.root.children[7].split();
 
-			const octree = new Octree(box.min, box.max);
+	const octants = octree.findOctantsByLevel(2);
 
-			octree.root.split();
-			octree.root.children[0].split();
-			octree.root.children[7].split();
+	t.true(Array.isArray(octants), "should return a list");
+	t.is(octants.length, 16, "should find all octants");
 
-			const octants = octree.findOctantsByLevel(2);
-
-			test.ok(Array.isArray(octants), "should return a list");
-			test.equal(octants.length, 16, "should find all octants");
-			test.done();
-
-		}
-
-	}
-
-};
+});

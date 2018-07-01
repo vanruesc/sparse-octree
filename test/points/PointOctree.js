@@ -1,10 +1,6 @@
-"use strict";
-
-const three = require("three");
-const PointOctree = require("../../build/sparse-octree").PointOctree;
-
-const Box3 = three.Box3;
-const Vector3 = three.Vector3;
+import test from "ava";
+import { Box3, Vector3 } from "math-ds";
+import { PointOctree } from "../../build/sparse-octree.js";
 
 const box = new Box3(
 	new Vector3(-1, -1, -1),
@@ -15,157 +11,138 @@ const data0 = {};
 const data1 = {};
 const data2 = {};
 
-module.exports = {
+test("can be instantiated", t => {
 
-	"PointOctree": {
+	const object = new PointOctree();
 
-		"can be instantiated": function(test) {
+	t.truthy(object);
 
-			const octree = new PointOctree();
+});
 
-			test.ok(octree, "point octree");
-			test.done();
+test("can add a point", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"can add a point": function(test) {
+	t.true(octree.put(new Vector3(0, 0, 0), data0), "should succeed");
+	t.is(octree.pointCount, 1, "should be able to add a point");
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+});
 
-			test.ok(octree.put(new Vector3(0, 0, 0), data0), "should succeed");
-			test.equal(octree.pointCount, 1, "should be able to add a point");
-			test.done();
+test("overwrites duplicates", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"overwrites duplicates": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
+	octree.put(new Vector3(0, 0, 0), data1);
+	octree.put(new Vector3(1, 0, 0), data2);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	t.is(octree.pointCount, 2, "should overwrite duplicates");
 
-			octree.put(new Vector3(0, 0, 0), data0);
-			octree.put(new Vector3(0, 0, 0), data1);
-			octree.put(new Vector3(1, 0, 0), data2);
+});
 
-			test.equal(octree.pointCount, 2, "should overwrite duplicates");
-			test.done();
+test("can remove a point", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"can remove a point": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	t.is(octree.remove(new Vector3(0, 0, 0)), data0, "should return the data of the removed point");
+	t.is(octree.pointCount, 0, "should remove a point completely");
 
-			octree.put(new Vector3(0, 0, 0), data0);
+});
 
-			test.equal(octree.remove(new Vector3(0, 0, 0)), data0, "should return the data of the removed point");
-			test.equal(octree.pointCount, 0, "should remove a point completely");
-			test.done();
+test("can look a point up", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"can look a point up": function(test) {
+	t.is(octree.fetch(new Vector3(0, 0, 0)), null, "should return null if there is no point");
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	octree.put(new Vector3(0, 0, 0), data0);
 
-			test.equal(octree.fetch(new Vector3(0, 0, 0)), null, "should return null if there is no point");
+	t.is(octree.fetch(new Vector3(0, 0, 0)), data0, "should find points and return their data");
 
-			octree.put(new Vector3(0, 0, 0), data0);
+});
 
-			test.equal(octree.fetch(new Vector3(0, 0, 0)), data0, "should find points and return their data");
-			test.done();
+test("adds points to intersecting octants", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"adds points to intersecting octants": function(test) {
+	octree.put(new Vector3(2, 0, 0), data0);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	t.is(octree.pointCount, 0, "should not add if the point lies outside");
 
-			octree.put(new Vector3(2, 0, 0), data0);
+});
 
-			test.equal(octree.pointCount, 0, "should not add if the point lies outside");
-			test.done();
+test("splits octants that are at maximum capacity", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-		"splits octants that are at maximum capacity": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
+	octree.put(new Vector3(1, 0, 0), data1);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	t.is(octree.getDepth(), 1, "should split octants when necessary");
+	t.is(octree.pointCount, 2, "should not lose any points during a split");
 
-			octree.put(new Vector3(0, 0, 0), data0);
-			octree.put(new Vector3(1, 0, 0), data1);
+});
 
-			test.equal(octree.getDepth(), 1, "should split octants when necessary");
-			test.equal(octree.pointCount, 2, "should not lose any points during a split");
-			test.done();
+test("merges octants if possible", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
-		"merges octants if possible": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
+	octree.put(new Vector3(1, 0, 0), data1);
+	octree.put(new Vector3(0.9, 0, 0), data2);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
+	octree.remove(new Vector3(1, 0, 0));
 
-			octree.put(new Vector3(0, 0, 0), data0);
-			octree.put(new Vector3(1, 0, 0), data1);
-			octree.put(new Vector3(0.9, 0, 0), data2);
+	t.is(octree.getDepth(), 1, "should merge octants when possible");
 
-			octree.remove(new Vector3(1, 0, 0));
+});
 
-			test.equal(octree.getDepth(), 1, "should merge octants when possible");
-			test.done();
+test("can move points", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
-		"can move points": function(test) {
+	octree.put(new Vector3(0.5, 0.5, 0.5), data0);
+	octree.put(new Vector3(-0.5, -0.5, -0.5), data1);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
+	const result0 = octree.move(new Vector3(0.5, 0.5, 0.5), new Vector3(0.5, 0.6, 0.5));
+	const result1 = octree.move(new Vector3(-0.5, -0.5, -0.5), new Vector3(1, -0.5, 1));
 
-			octree.put(new Vector3(0.5, 0.5, 0.5), data0);
-			octree.put(new Vector3(-0.5, -0.5, -0.5), data1);
+	t.is(octree.pointCount, 2, "should correctly relocate points");
+	t.is(result0, data0, "should return the data of the updated point");
+	t.is(result1, data1, "should return the data of the updated point");
+	t.is(octree.fetch(new Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
+	t.is(octree.fetch(new Vector3(1, -0.5, 1)), data1, "should correctly update points");
 
-			const result0 = octree.move(new Vector3(0.5, 0.5, 0.5), new Vector3(0.5, 0.6, 0.5));
-			const result1 = octree.move(new Vector3(-0.5, -0.5, -0.5), new Vector3(1, -0.5, 1));
+});
 
-			test.equal(octree.pointCount, 2, "should correctly relocate points");
-			test.equal(result0, data0, "should return the data of the updated point");
-			test.equal(result1, data1, "should return the data of the updated point");
-			test.equal(octree.fetch(new Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
-			test.equal(octree.fetch(new Vector3(1, -0.5, 1)), data1, "should correctly update points");
-			test.done();
+test("can find the nearest point", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
-		"can find the nearest point": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
+	octree.put(new Vector3(1, 0, 0), data0);
+	octree.put(new Vector3(0.9, 0, 0), data0);
+	octree.put(new Vector3(0.9, 0, 0.00125), data1);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
+	t.is(octree.findNearestPoint(new Vector3(0.9, 0, 0.001)).data, data1, "should find the nearest point");
+	t.is(octree.findNearestPoint(new Vector3(0.9, 0, 0), Infinity, true).data, data1, "should be able to skip itself");
 
-			octree.put(new Vector3(0, 0, 0), data0);
-			octree.put(new Vector3(1, 0, 0), data0);
-			octree.put(new Vector3(0.9, 0, 0), data0);
-			octree.put(new Vector3(0.9, 0, 0.00125), data1);
+});
 
-			test.equal(octree.findNearestPoint(new Vector3(0.9, 0, 0.001)).data, data1, "should find the nearest point");
-			test.equal(octree.findNearestPoint(new Vector3(0.9, 0, 0), Infinity, true).data, data1, "should be able to skip itself");
-			test.done();
+test("can find points inside a radius", t => {
 
-		},
+	const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
-		"can find points inside a radius": function(test) {
+	octree.put(new Vector3(0, 0, 0), data0);
+	octree.put(new Vector3(0, 0.1, 0.005), data0);
+	octree.put(new Vector3(-0.075, -0.1, 0.005), data1);
+	octree.put(new Vector3(1, 0, 0), data1);
+	octree.put(new Vector3(0.9, 0, 0), data2);
+	octree.put(new Vector3(0.9, 0, 0.00125), data2);
 
-			const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
+	t.is(octree.findPoints(new Vector3(0, 0, 0), 0.15).length, 3, "should find points inside a radius");
+	t.is(octree.findPoints(new Vector3(0, 0, 0), 0.15, true).length, 2, "should be able to skip itself");
 
-			octree.put(new Vector3(0, 0, 0), data0);
-			octree.put(new Vector3(0, 0.1, 0.005), data0);
-			octree.put(new Vector3(-0.075, -0.1, 0.005), data1);
-			octree.put(new Vector3(1, 0, 0), data1);
-			octree.put(new Vector3(0.9, 0, 0), data2);
-			octree.put(new Vector3(0.9, 0, 0.00125), data2);
-
-			test.equal(octree.findPoints(new Vector3(0, 0, 0), 0.15).length, 3, "should find points inside a radius");
-			test.equal(octree.findPoints(new Vector3(0, 0, 0), 0.15, true).length, 2, "should be able to skip itself");
-			test.done();
-
-		}
-
-	}
-
-};
+});

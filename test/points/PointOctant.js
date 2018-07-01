@@ -1,63 +1,44 @@
-"use strict";
-
-const three = require("three");
-const PointOctant = require("../../build/sparse-octree").PointOctant;
-
-const Box3 = three.Box3;
-const Vector3 = three.Vector3;
+import test from "ava";
+import { Box3, Vector3 } from "math-ds";
+import { PointOctant } from "../../build/sparse-octree.js";
 
 const box = new Box3(
 	new Vector3(-1, -1, -1),
 	new Vector3(1, 1, 1)
 );
 
-module.exports = {
+test("can be instantiated", t => {
 
-	"PointOctant": {
+	const object = new PointOctant();
 
-		"can be instantiated": function(test) {
+	t.truthy(object);
 
-			const octant = new PointOctant();
+});
 
-			test.ok(octant, "point octant");
-			test.done();
+test("correctly computes the distance to a point", t => {
 
-		},
+	const octant = new PointOctant(box.min, box.max);
+	const point = new Vector3(1, 2, 3);
 
-		"correctly computes the distance to a point": function(test) {
+	t.is(octant.distanceToSquared(point), box.max.distanceToSquared(point), "should calculate the squared distance");
 
-			const octant = new PointOctant(box.min, box.max);
+});
 
-			const point = new Vector3(1, 2, 3);
+test("correctly computes the distance from its center to a point", t => {
 
-			test.equal(octant.distanceToSquared(point), box.max.distanceToSquared(point), "should calculate the squared distance");
-			test.done();
+	const octant = new PointOctant(box.min, box.max);
+	const point = new Vector3(1, 2, 3);
 
-		},
+	t.is(octant.distanceToCenterSquared(point), octant.getCenter().distanceToSquared(point), "should calculate the squared distance");
 
-		"correctly computes the distance from its center to a point": function(test) {
+});
 
-			const octant = new PointOctant(box.min, box.max);
+test("can determine whether a point lies inside it", t => {
 
-			const point = new Vector3(1, 2, 3);
+	const octant = new PointOctant(box.min, box.max);
+	const point = new Vector3();
 
-			test.equal(octant.distanceToCenterSquared(point), octant.getCenter().distanceToSquared(point), "should calculate the squared distance");
-			test.done();
+	t.true(octant.contains(point.set(0, 0, 0), 0), "should determine that it contains the point");
+	t.false(octant.contains(point.set(2, 0, 0), 0), "should determine that the point lies outside");
 
-		},
-
-		"can determine whether a point lies inside it": function(test) {
-
-			const octant = new PointOctant(box.min, box.max);
-
-			const point = new Vector3();
-
-			test.equal(octant.contains(point.set(0, 0, 0), 0), true, "should determine that it contains the point");
-			test.equal(octant.contains(point.set(2, 0, 0), 0), false, "should determine that the point lies outside");
-			test.done();
-
-		}
-
-	}
-
-};
+});

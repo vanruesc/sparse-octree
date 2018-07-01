@@ -1,12 +1,6 @@
-"use strict";
-
-const three = require("three");
-const lib = require("../../build/sparse-octree");
-
-const Box3 = three.Box3;
-const Vector3 = three.Vector3;
-const OctantIterator = lib.OctantIterator;
-const Octree = lib.Octree;
+import test from "ava";
+import { Box3, Vector3 } from "math-ds";
+import { OctantIterator, Octree } from "../../build/sparse-octree.js";
 
 const box = new Box3(
 	new Vector3(-1, -1, -1),
@@ -18,59 +12,48 @@ const region = new Box3(
 	new Vector3(0.2, 0.2, 0.2)
 );
 
-module.exports = {
+test("can be instantiated", t => {
 
-	"OctantIterator": {
+	const object = new OctantIterator(new Octree());
 
-		"can be instantiated": function(test) {
+	t.truthy(object);
 
-			const iterator = new OctantIterator(new Octree());
+});
 
-			test.ok(iterator, "iterator");
-			test.done();
+test("iterates over all leaf octants", t => {
 
-		},
+	const octree = new Octree(box.min, box.max);
+	const iterator = octree.leaves();
 
-		"iterates over all leaf octants": function(test) {
+	let i = 0;
 
-			const octree = new Octree(box.min, box.max);
-			const iterator = octree.leaves();
+	octree.root.split();
 
-			let i = 0;
+	while(!iterator.next().done) {
 
-			octree.root.split();
-
-			while(!iterator.next().done) {
-
-				++i;
-
-			}
-
-			test.equal(i, 8, "should return eight leaf octants");
-			test.done();
-
-		},
-
-		"can cull leaf octants": function(test) {
-
-			const octree = new Octree(box.min, box.max);
-			const iterator = octree.leaves(region);
-
-			let i = 0;
-
-			octree.root.split();
-
-			while(!iterator.next().done) {
-
-				++i;
-
-			}
-
-			test.equal(i, 1, "should return one leaf octant");
-			test.done();
-
-		}
+		++i;
 
 	}
 
-};
+	t.is(i, 8, "should return eight leaf octants");
+
+});
+
+test("can cull leaf octants", t => {
+
+	const octree = new Octree(box.min, box.max);
+	const iterator = octree.leaves(region);
+
+	let i = 0;
+
+	octree.root.split();
+
+	while(!iterator.next().done) {
+
+		++i;
+
+	}
+
+	t.is(i, 1, "should return one leaf octant");
+
+});
