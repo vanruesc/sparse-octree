@@ -4,15 +4,6 @@ import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
- * A vector.
- *
- * @type {Vector3}
- * @private
- */
-
-const v = new Vector3();
-
-/**
  * A threshold for distance comparisons.
  *
  * @type {Number}
@@ -718,7 +709,7 @@ export class PointOctree extends Octree {
 
 					if(rayPointDistanceSq < thresholdSq) {
 
-						intersectPoint = raycaster.ray.closestPointToPoint(point, v);
+						intersectPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
 						distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
 						if(distance >= raycaster.near && distance <= raycaster.far) {
