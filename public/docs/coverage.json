@@ -1,7 +1,7 @@
 {
-  "coverage": "99.09%",
-  "expectCount": 110,
-  "actualCount": 109,
+  "coverage": "99.08%",
+  "expectCount": 109,
+  "actualCount": 108,
   "files": {
     "src/core/CubicOctant.js": {
       "expectCount": 10,
@@ -36,8 +36,8 @@
       ]
     },
     "src/points/PointOctree.js": {
-      "expectCount": 25,
-      "actualCount": 25,
+      "expectCount": 24,
+      "actualCount": 24,
       "undocumentLines": []
     },
     "src/points/RayPointIntersection.js": {

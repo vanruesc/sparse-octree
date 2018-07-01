@@ -50,7 +50,8 @@
 <p>A sparse octree data structure.</p>
 <p><em><a href="https://vanruesc.github.io/sparse-octree/public/demo">Extensive Demo</a> &#x2234;
 <a href="https://vanruesc.github.io/sparse-octree/public/docs">API Reference</a></em></p>
-<h2 id="installation">Installation</h2><pre><code class="lang-sh"><code class="source-code prettyprint">npm install sparse-octree</code>
+<h2 id="installation">Installation</h2><p>This library requires the peer dependencies <a href="https://github.com/vanruesc/iterator-result">iterator-result</a> and <a href="https://github.com/vanruesc/math-ds">math-ds</a>.</p>
+<pre><code class="lang-sh"><code class="source-code prettyprint">npm install iterator-result math-ds sparse-octree</code>
 </code></pre>
 <h2 id="usage">Usage</h2><h5 id="custom-octrees">Custom Octrees</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Octree, CubicOctant } from &quot;sparse-octree&quot;;
 
@@ -64,7 +65,7 @@ export class CubicOctree extends Octree {
 
 }</code>
 </code></pre>
-<h5 id="points">Points</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Vector3 } from &quot;three&quot;;
+<h5 id="points">Points</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Vector3 } from &quot;math-ds&quot;;
 import { PointOctree } from &quot;sparse-octree&quot;;
 
 const min = new Vector3(-1, -1, -1);
