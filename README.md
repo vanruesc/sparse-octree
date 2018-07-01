@@ -12,8 +12,10 @@ A sparse octree data structure.
 
 ## Installation
 
+This library requires the peer dependencies [iterator-result](https://github.com/vanruesc/iterator-result) and [math-ds](https://github.com/vanruesc/math-ds).
+
 ```sh
-npm install sparse-octree
+npm install iterator-result math-ds sparse-octree
 ``` 
 
 
@@ -38,7 +40,7 @@ export class CubicOctree extends Octree {
 ##### Points
 
 ```javascript
-import { Vector3 } from "three";
+import { Vector3 } from "math-ds";
 import { PointOctree } from "sparse-octree";
 
 const min = new Vector3(-1, -1, -1);
