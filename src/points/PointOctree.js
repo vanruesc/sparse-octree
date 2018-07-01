@@ -269,6 +269,7 @@ function fetch(point, octree, octant) {
  * @param {Octree} octree - The octree.
  * @param {Octant} octant - The current octant.
  * @param {Octant} parent - The parent of the current octant.
+ * @param {Number} depth - The current depth.
  * @return {Object} The data entry of the updated point or null if it didn't exist.
  */
 
