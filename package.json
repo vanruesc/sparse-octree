@@ -63,9 +63,9 @@
 		"extends": "delta"
 	},
 
-	"dependencies": {
+	"peerDependencies": {
 		"iterator-result": "0.x.x",
-		"math-ds": "0.x.x"
+		"math-ds": "1.x.x"
 	},
 
 	"devDependencies": {
