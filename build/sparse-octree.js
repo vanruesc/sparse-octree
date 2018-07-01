@@ -1,9 +1,8 @@
 /**
- * sparse-octree v4.3.0 build May 31 2018
+ * sparse-octree v5.0.0 build Mon Jul 02 2018
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2018 Raoul van Rüschen, Zlib
  */
-
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -33,12 +32,6 @@
       return Constructor;
     };
   }();
-
-
-
-
-
-
 
   var get = function get(object, property, receiver) {
     if (object === null) object = Function.prototype;
@@ -81,16 +74,6 @@
     if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   };
 
-
-
-
-
-
-
-
-
-
-
   var possibleConstructorReturn = function (self, call) {
     if (!self) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -98,24 +81,6 @@
 
     return call && (typeof call === "object" || typeof call === "function") ? call : self;
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   var toConsumableArray = function (arr) {
     if (Array.isArray(arr)) {
@@ -477,8 +442,6 @@
   	}, {
   		key: "reflect",
   		value: function reflect(n) {
-  			var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-
 
   			var nx = n.x;
   			var ny = n.y;
@@ -706,16 +669,13 @@
   			return !this.isEmpty() ? target.subVectors(this.max, this.min) : target.set(0, 0, 0);
   		}
   	}, {
-  		key: "getBoundingSphere",
-  		value: function getBoundingSphere() {
-  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Sphere();
+  		key: "setFromSphere",
+  		value: function setFromSphere(sphere) {
 
+  			this.set(sphere.center, sphere.center);
+  			this.expandByScalar(sphere.radius);
 
-  			this.getCenter(target.center);
-
-  			target.radius = this.getSize(v).length() * 0.5;
-
-  			return target;
+  			return this;
   		}
   	}, {
   		key: "expandByPoint",
@@ -954,6 +914,8 @@
 
   var box = new Box3();
 
+  var v$1 = new Vector3();
+
   var Sphere = function () {
   	function Sphere() {
   		var center = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
@@ -1010,15 +972,13 @@
   			return this;
   		}
   	}, {
-  		key: "getBoundingBox",
-  		value: function getBoundingBox() {
-  			var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Box3();
+  		key: "setFromBox",
+  		value: function setFromBox(box) {
 
+  			box.getCenter(this.center);
+  			this.radius = box.getSize(v$1).length() * 0.5;
 
-  			target.set(this.center, this.center);
-  			target.expandByScalar(this.radius);
-
-  			return target;
+  			return this;
   		}
   	}, {
   		key: "isEmpty",
@@ -1458,7 +1418,7 @@
   	return Vector2;
   }();
 
-  var v$1 = new Vector2();
+  var v$2 = new Vector2();
 
   var Box2 = function () {
   	function Box2() {
@@ -1535,7 +1495,7 @@
 
   			this.getCenter(target.center);
 
-  			target.radius = this.getSize(v$1).length() * 0.5;
+  			target.radius = this.getSize(v$2).length() * 0.5;
 
   			return target;
   		}
@@ -1587,7 +1547,7 @@
   		key: "setFromCenterAndSize",
   		value: function setFromCenterAndSize(center, size) {
 
-  			var halfSize = v$1.copy(size).multiplyScalar(0.5);
+  			var halfSize = v$2.copy(size).multiplyScalar(0.5);
 
   			this.min.copy(center).sub(halfSize);
   			this.max.copy(center).add(halfSize);
@@ -1606,7 +1566,7 @@
   		key: "distanceToPoint",
   		value: function distanceToPoint(p) {
 
-  			var clampedPoint = v$1.copy(p).clamp(this.min, this.max);
+  			var clampedPoint = v$2.copy(p).clamp(this.min, this.max);
 
   			return clampedPoint.sub(p).length();
   		}
@@ -2017,10 +1977,10 @@
   				}
   		}, {
   				key: "equals",
-  				value: function equals(matrix) {
+  				value: function equals(m) {
 
   						var te = this.elements;
-  						var me = matrix.elements;
+  						var me = m.elements;
 
   						var result = true;
   						var i = void 0;
@@ -2050,7 +2010,7 @@
 
   };
 
-  var v$2 = new Vector3();
+  var v$3 = new Vector3();
 
   var Quaternion = function () {
   	function Quaternion() {
@@ -2274,19 +2234,19 @@
 
   				if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
 
-  					v$2.set(-vFrom.y, vFrom.x, 0);
+  					v$3.set(-vFrom.y, vFrom.x, 0);
   				} else {
 
-  					v$2.set(0, -vFrom.z, vFrom.y);
+  					v$3.set(0, -vFrom.z, vFrom.y);
   				}
   			} else {
 
-  				v$2.crossVectors(vFrom, vTo);
+  				v$3.crossVectors(vFrom, vTo);
   			}
 
-  			this.x = v$2.x;
-  			this.y = v$2.y;
-  			this.z = v$2.z;
+  			this.x = v$3.x;
+  			this.y = v$3.y;
+  			this.z = v$3.z;
   			this.w = r;
 
   			return this.normalize();
@@ -2393,8 +2353,10 @@
   			    w = this.w;
 
   			var cosHalfTheta = void 0,
-  			    sinHalfTheta = void 0;
-  			var halfTheta = void 0,
+  			    sinHalfThetaSquared = void 0,
+  			    sinHalfTheta = void 0,
+  			    halfTheta = void 0;
+  			var s = void 0,
   			    ratioA = void 0,
   			    ratioB = void 0;
 
@@ -2405,7 +2367,7 @@
 
   				cosHalfTheta = w * q.w + x * q.x + y * q.y + z * q.z;
 
-  				if (cosHalfTheta < 0) {
+  				if (cosHalfTheta < 0.0) {
 
   					this.w = -q.w;
   					this.x = -q.x;
@@ -2424,30 +2386,32 @@
   					this.x = x;
   					this.y = y;
   					this.z = z;
+  				} else {
 
-  					return this;
+  					sinHalfThetaSquared = 1.0 - cosHalfTheta * cosHalfTheta;
+  					s = 1.0 - t;
+
+  					if (sinHalfThetaSquared <= Number.EPSILON) {
+
+  						this.w = s * w + t * this.w;
+  						this.x = s * x + t * this.x;
+  						this.y = s * y + t * this.y;
+  						this.z = s * z + t * this.z;
+
+  						this.normalize();
+  					} else {
+
+  						sinHalfTheta = Math.sqrt(sinHalfThetaSquared);
+  						halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
+  						ratioA = Math.sin(s * halfTheta) / sinHalfTheta;
+  						ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+
+  						this.w = w * ratioA + this.w * ratioB;
+  						this.x = x * ratioA + this.x * ratioB;
+  						this.y = y * ratioA + this.y * ratioB;
+  						this.z = z * ratioA + this.z * ratioB;
+  					}
   				}
-
-  				sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
-
-  				if (Math.abs(sinHalfTheta) < 1e-3) {
-
-  					this.w = 0.5 * (w + this.w);
-  					this.x = 0.5 * (x + this.x);
-  					this.y = 0.5 * (y + this.y);
-  					this.z = 0.5 * (z + this.z);
-
-  					return this;
-  				}
-
-  				halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
-  				ratioA = Math.sin((1.0 - t) * halfTheta) / sinHalfTheta;
-  				ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
-
-  				this.w = w * ratioA + this.w * ratioB;
-  				this.x = x * ratioA + this.x * ratioB;
-  				this.y = y * ratioA + this.y * ratioB;
-  				this.z = z * ratioA + this.z * ratioB;
   			}
 
   			return this;
@@ -2970,9 +2934,7 @@
   	return Plane;
   }();
 
-  var v0 = new Vector3();
-
-  var v1 = new Vector3();
+  var v$4 = new Vector3();
 
   var Frustum = function () {
   		function Frustum() {
@@ -3087,37 +3049,27 @@
   				value: function intersectsBox(box) {
 
   						var planes = this.planes;
-  						var min = box.min;
-  						var max = box.max;
+  						var min = box.min,
+  						    max = box.max;
 
-  						var result = true;
   						var i = void 0,
-  						    d0 = void 0,
-  						    d1 = void 0;
-  						var plane = void 0;
+  						    plane = void 0;
 
   						for (i = 0; i < 6; ++i) {
 
   								plane = planes[i];
 
-  								v0.x = plane.normal.x > 0 ? min.x : max.x;
-  								v1.x = plane.normal.x > 0 ? max.x : min.x;
-  								v0.y = plane.normal.y > 0 ? min.y : max.y;
-  								v1.y = plane.normal.y > 0 ? max.y : min.y;
-  								v0.z = plane.normal.z > 0 ? min.z : max.z;
-  								v1.z = plane.normal.z > 0 ? max.z : min.z;
+  								v$4.x = plane.normal.x > 0.0 ? max.x : min.x;
+  								v$4.y = plane.normal.y > 0.0 ? max.y : min.y;
+  								v$4.z = plane.normal.z > 0.0 ? max.z : min.z;
 
-  								d0 = plane.distanceToPoint(v0);
-  								d1 = plane.distanceToPoint(v1);
+  								if (plane.distanceToPoint(v$4) < 0.0) {
 
-  								if (d0 < 0 && d1 < 0) {
-
-  										result = false;
-  										break;
+  										return false;
   								}
   						}
 
-  						return result;
+  						return true;
   				}
   		}, {
   				key: "containsPoint",
@@ -4077,10 +4029,10 @@
   				}
   		}, {
   				key: "equals",
-  				value: function equals(matrix) {
+  				value: function equals(m) {
 
   						var te = this.elements;
-  						var me = matrix.elements;
+  						var me = m.elements;
 
   						var result = true;
   						var i = void 0;
@@ -4099,7 +4051,7 @@
   		return Matrix4;
   }();
 
-  var v$3 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
+  var v$5 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
 
   var Ray = function () {
   	function Ray() {
@@ -4157,7 +4109,7 @@
   		key: "recast",
   		value: function recast(t) {
 
-  			this.origin.copy(this.at(t, v$3[0]));
+  			this.origin.copy(this.at(t, v$5[0]));
 
   			return this;
   		}
@@ -4175,9 +4127,9 @@
   		key: "distanceSquaredToPoint",
   		value: function distanceSquaredToPoint(p) {
 
-  			var directionDistance = v$3[0].subVectors(p, this.origin).dot(this.direction);
+  			var directionDistance = v$5[0].subVectors(p, this.origin).dot(this.direction);
 
-  			return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$3[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
+  			return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$5[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
   		}
   	}, {
   		key: "distanceToPoint",
@@ -4199,9 +4151,9 @@
   		key: "distanceSquaredToSegment",
   		value: function distanceSquaredToSegment(v0, v1, pointOnRay, pointOnSegment) {
 
-  			var segCenter = v$3[0].copy(v0).add(v1).multiplyScalar(0.5);
-  			var segDir = v$3[1].copy(v1).sub(v0).normalize();
-  			var diff = v$3[2].copy(this.origin).sub(segCenter);
+  			var segCenter = v$5[0].copy(v0).add(v1).multiplyScalar(0.5);
+  			var segDir = v$5[1].copy(v1).sub(v0).normalize();
+  			var diff = v$5[2].copy(this.origin).sub(segCenter);
 
   			var segExtent = v0.distanceTo(v1) * 0.5;
   			var a01 = -this.direction.dot(segDir);
@@ -4280,7 +4232,7 @@
   			var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
 
 
-  			var ab = v$3[0].subVectors(s.center, this.origin);
+  			var ab = v$5[0].subVectors(s.center, this.origin);
   			var tca = ab.dot(this.direction);
   			var d2 = ab.dot(ab) - tca * tca;
   			var radius2 = s.radius * s.radius;
@@ -4418,7 +4370,7 @@
   		key: "intersectsBox",
   		value: function intersectsBox(b) {
 
-  			return this.intersectBox(b, v$3[0]) !== null;
+  			return this.intersectBox(b, v$5[0]) !== null;
   		}
   	}, {
   		key: "intersectTriangle",
@@ -4426,10 +4378,10 @@
 
   			var direction = this.direction;
 
-  			var diff = v$3[0];
-  			var edge1 = v$3[1];
-  			var edge2 = v$3[2];
-  			var normal = v$3[3];
+  			var diff = v$5[0];
+  			var edge1 = v$5[1];
+  			var edge2 = v$5[2];
+  			var normal = v$5[3];
 
   			var result = null;
   			var DdN = void 0,
@@ -4666,10 +4618,10 @@
   		}
   	}, {
   		key: "equals",
-  		value: function equals(matrix) {
+  		value: function equals(m) {
 
   			var te = this.elements;
-  			var me = matrix.elements;
+  			var me = m.elements;
 
   			var result = true;
   			var i = void 0;
@@ -5411,10 +5363,8 @@
 
   						while (octant === null && depth >= 0) {
 
-  								index = indices[depth];
+  								index = indices[depth]++;
   								children = trace[depth].children;
-
-  								++indices[depth];
 
   								if (index < 8) {
 
@@ -5474,7 +5424,7 @@
   		return OctantIterator;
   }();
 
-  var v$4 = [new Vector3(), new Vector3(), new Vector3()];
+  var v$6 = [new Vector3(), new Vector3(), new Vector3()];
 
   var b$4 = new Box3();
 
@@ -5628,8 +5578,8 @@
   			var min = b$4.min.set(0, 0, 0);
   			var max = b$4.max.subVectors(octree.max, octree.min);
 
-  			var dimensions = octree.getDimensions(v$4[0]);
-  			var halfDimensions = v$4[1].copy(dimensions).multiplyScalar(0.5);
+  			var dimensions = octree.getDimensions(v$6[0]);
+  			var halfDimensions = v$6[1].copy(dimensions).multiplyScalar(0.5);
 
   			var origin = r.origin.copy(raycaster.ray.origin);
   			var direction = r.direction.copy(raycaster.ray.direction);
@@ -5644,7 +5594,7 @@
   			    tz0 = void 0,
   			    tz1 = void 0;
 
-  			origin.sub(octree.getCenter(v$4[2])).add(halfDimensions);
+  			origin.sub(octree.getCenter(v$6[2])).add(halfDimensions);
 
   			flags = 0;
 
@@ -5992,7 +5942,7 @@
   		this.object = object;
   };
 
-  var v$5 = new Vector3();
+  var v$7 = new Vector3();
 
   var THRESHOLD = 1e-6;
 
@@ -6442,7 +6392,7 @@
 
   						if (rayPointDistanceSq < thresholdSq) {
 
-  							intersectPoint = raycaster.ray.closestPointToPoint(point, v$5);
+  							intersectPoint = raycaster.ray.closestPointToPoint(point, v$7);
   							distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
   							if (distance >= raycaster.near && distance <= raycaster.far) {
@@ -6466,7 +6416,7 @@
 
   var u = new Vector3();
 
-  var v$6 = new Vector3();
+  var v$8 = new Vector3();
 
   var OctreeUtils = function () {
   	function OctreeUtils() {
@@ -6479,7 +6429,7 @@
 
   			var min = octant.min;
   			var mid = octant.getCenter(u);
-  			var halfDimensions = octant.getDimensions(v$6).multiplyScalar(0.5);
+  			var halfDimensions = octant.getDimensions(v$8).multiplyScalar(0.5);
 
   			var children = octant.children;
   			var l = octants.length;
