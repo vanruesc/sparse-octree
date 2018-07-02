@@ -59,6 +59,11 @@
 		"npm": ">=4.0.0"
 	},
 
+	"ava": {
+		"failFast": true,
+		"files": ["test/**/*.js"]
+	},
+
 	"eslintConfig": {
 		"extends": "delta"
 	},
