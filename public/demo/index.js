@@ -4102,6 +4102,12 @@
   			return this.x * v.x + this.y * v.y;
   		}
   	}, {
+  		key: "cross",
+  		value: function cross(v) {
+
+  			return this.x * v.y - this.y * v.x;
+  		}
+  	}, {
   		key: "manhattanLength",
   		value: function manhattanLength() {
 
@@ -5120,6 +5126,25 @@
   			this.w = r;
 
   			return this.normalize();
+  		}
+  	}, {
+  		key: "angleTo",
+  		value: function angleTo(q) {
+
+  			return 2.0 * Math.acos(Math.abs(Math.min(Math.max(this.dot(q), -1.0), 1.0)));
+  		}
+  	}, {
+  		key: "rotateTowards",
+  		value: function rotateTowards(q, step) {
+
+  			var angle = this.angleTo(q);
+
+  			if (angle !== 0.0) {
+
+  				this.slerp(q, Math.min(1.0, step / angle));
+  			}
+
+  			return this;
   		}
   	}, {
   		key: "invert",
