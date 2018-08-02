@@ -77,6 +77,7 @@
 		"babel-preset-env": "1.x.x",
 		"cpx": "1.x.x",
 		"cross-env": "5.x.x",
+		"dat.gui": "0.x.x",
 		"delta-controls": "2.x.x",
 		"esdoc": "1.x.x",
 		"esdoc-standard-plugin": "1.x.x",
@@ -91,7 +92,7 @@
 		"rollup-plugin-node-resolve": "3.x.x",
 		"rollup-plugin-string": "2.x.x",
 		"synthetic-event": "0.x.x",
-		"three": "0.94.x",
-		"three-demo": "2.x.x"
+		"three": "0.95.x",
+		"three-demo": "3.x.x"
 	}
 }
