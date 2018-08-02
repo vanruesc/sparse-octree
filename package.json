@@ -41,6 +41,7 @@
 	],
 
 	"scripts": {
+		"ava": "ava",
 		"lint": "npm run lint:lib && npm run lint:demo && npm run lint:test",
 		"lint:config": "eslint *.js",
 		"lint:lib": "eslint src",
@@ -50,13 +51,9 @@
 		"build:production": "cross-env NODE_ENV=production rollup -c",
 		"doc": "esdoc",
 		"deploy": "cpx demo/assets/** public/demo",
-		"test": "ava",
-		"prepack": "npm run lint && npm run build:production"
-	},
-
-	"engines": {
-		"node": ">=4.0.0",
-		"npm": ">=4.0.0"
+		"pretest": "npm run lint && npm run build:production",
+		"test": "npm run ava",
+		"prepack": "npm test"
 	},
 
 	"ava": {
