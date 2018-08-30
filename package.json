@@ -91,7 +91,7 @@
 		"rollup-plugin-node-resolve": "3.x.x",
 		"rollup-plugin-string": "2.x.x",
 		"synthetic-event": "0.x.x",
-		"three": "0.95.x",
+		"three": "0.96.x",
 		"three-demo": "3.x.x"
 	}
 }
