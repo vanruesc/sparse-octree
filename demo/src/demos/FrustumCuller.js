@@ -75,7 +75,6 @@ export class FrustumCuller {
 		 */
 
 		this.cullCamera = new PerspectiveCamera(20, 1.77, 0.5, 5);
-		this.cullCamera.matrixAutoUpdate = false;
 
 		/**
 		 * A spherical coordinate system.
@@ -133,9 +132,7 @@ export class FrustumCuller {
 
 		cullCamera.position.setFromSpherical(this.s);
 		cullCamera.lookAt(this.scene.position);
-
-		cullCamera.updateMatrix();
-		cullCamera.updateMatrixWorld();
+		cullCamera.updateMatrixWorld(true);
 
 		frustum.setFromMatrix(
 			matrix4.multiplyMatrices(
@@ -195,8 +192,6 @@ export class FrustumCuller {
 				this.scene.remove(culledOctants);
 
 			}
-
-			this.cameraHelper.update();
 
 		}
 
