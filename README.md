@@ -15,7 +15,11 @@ A sparse octree data structure.
 This library requires the peer dependencies [iterator-result](https://github.com/vanruesc/iterator-result) and [math-ds](https://github.com/vanruesc/math-ds).
 
 ```sh
-npm install iterator-result math-ds sparse-octree
+npm install iterator-result math-ds
+``` 
+
+```sh
+npm install sparse-octree
 ``` 
 
 
