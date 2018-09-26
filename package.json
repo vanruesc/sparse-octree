@@ -66,8 +66,8 @@
 	},
 
 	"peerDependencies": {
-		"iterator-result": "0.x.x",
-		"math-ds": "1.x.x"
+		"iterator-result": ">= 0.0.0 < 1.0.0",
+		"math-ds": ">= 1.0.0 < 2.0.0"
 	},
 
 	"devDependencies": {
