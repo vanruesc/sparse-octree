@@ -3396,18 +3396,28 @@
     }, {
       key: "setFromSpherical",
       value: function setFromSpherical(s) {
-        var sinPhiRadius = Math.sin(s.phi) * s.radius;
-        this.x = sinPhiRadius * Math.sin(s.theta);
-        this.y = Math.cos(s.phi) * s.radius;
-        this.z = sinPhiRadius * Math.cos(s.theta);
+        this.setFromSphericalCoords(s.radius, s.phi, s.theta);
+      }
+    }, {
+      key: "setFromSphericalCoords",
+      value: function setFromSphericalCoords(radius, phi, theta) {
+        var sinPhiRadius = Math.sin(phi) * radius;
+        this.x = sinPhiRadius * Math.sin(theta);
+        this.y = Math.cos(phi) * radius;
+        this.z = sinPhiRadius * Math.cos(theta);
         return this;
       }
     }, {
       key: "setFromCylindrical",
       value: function setFromCylindrical(c) {
-        this.x = c.radius * Math.sin(c.theta);
-        this.y = c.y;
-        this.z = c.radius * Math.cos(c.theta);
+        this.setFromCylindricalCoords(c.radius, c.theta, c.y);
+      }
+    }, {
+      key: "setFromCylindricalCoords",
+      value: function setFromCylindricalCoords(radius, theta, y) {
+        this.x = radius * Math.sin(theta);
+        this.y = y;
+        this.z = radius * Math.cos(theta);
         return this;
       }
     }, {
@@ -3749,6 +3759,7 @@
   }();
 
   var v = new Vector3();
+  var points = [new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()];
   var Box3 = function () {
     function Box3() {
       var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(Infinity, Infinity, Infinity);
@@ -3866,36 +3877,20 @@
       }
     }, {
       key: "applyMatrix4",
-      value: function applyMatrix4(matrix) {
+      value: function applyMatrix4(m) {
         var min = this.min;
         var max = this.max;
 
         if (!this.isEmpty()) {
-          var me = matrix.elements;
-          var xax = me[0] * min.x;
-          var xay = me[1] * min.x;
-          var xaz = me[2] * min.x;
-          var xbx = me[0] * max.x;
-          var xby = me[1] * max.x;
-          var xbz = me[2] * max.x;
-          var yax = me[4] * min.y;
-          var yay = me[5] * min.y;
-          var yaz = me[6] * min.y;
-          var ybx = me[4] * max.y;
-          var yby = me[5] * max.y;
-          var ybz = me[6] * max.y;
-          var zax = me[8] * min.z;
-          var zay = me[9] * min.z;
-          var zaz = me[10] * min.z;
-          var zbx = me[8] * max.z;
-          var zby = me[9] * max.z;
-          var zbz = me[10] * max.z;
-          min.x = Math.min(xax, xbx) + Math.min(yax, ybx) + Math.min(zax, zbx) + me[12];
-          min.y = Math.min(xay, xby) + Math.min(yay, yby) + Math.min(zay, zby) + me[13];
-          min.z = Math.min(xaz, xbz) + Math.min(yaz, ybz) + Math.min(zaz, zbz) + me[14];
-          max.x = Math.max(xax, xbx) + Math.max(yax, ybx) + Math.max(zax, zbx) + me[12];
-          max.y = Math.max(xay, xby) + Math.max(yay, yby) + Math.max(zay, zby) + me[13];
-          max.z = Math.max(xaz, xbz) + Math.max(yaz, ybz) + Math.max(zaz, zbz) + me[14];
+          points[0].set(min.x, min.y, min.z).applyMatrix4(m);
+          points[1].set(min.x, min.y, max.z).applyMatrix4(m);
+          points[2].set(min.x, max.y, min.z).applyMatrix4(m);
+          points[3].set(min.x, max.y, max.z).applyMatrix4(m);
+          points[4].set(max.x, min.y, min.z).applyMatrix4(m);
+          points[5].set(max.x, min.y, max.z).applyMatrix4(m);
+          points[6].set(max.x, max.y, min.z).applyMatrix4(m);
+          points[7].set(max.x, max.y, max.z).applyMatrix4(m);
+          this.setFromPoints(points);
         }
 
         return this;
@@ -3986,7 +3981,7 @@
           max += p.normal.z * this.min.z;
         }
 
-        return min <= p.constant && max >= p.constant;
+        return min <= -p.constant && max >= -p.constant;
       }
     }, {
       key: "equals",
@@ -4622,9 +4617,14 @@
     }, {
       key: "setFromVector3",
       value: function setFromVector3(v) {
-        this.radius = Math.sqrt(v.x * v.x + v.z * v.z);
-        this.theta = Math.atan2(v.x, v.z);
-        this.y = v.y;
+        return this.setFromCartesianCoords(v.x, v.y, v.z);
+      }
+    }, {
+      key: "setFromCartesianCoords",
+      value: function setFromCartesianCoords(x, y, z) {
+        this.radius = Math.sqrt(x * x + z * z);
+        this.theta = Math.atan2(x, z);
+        this.y = y;
         return this;
       }
     }]);
@@ -6827,7 +6827,7 @@
     }, {
       key: "intersectsSphere",
       value: function intersectsSphere(s) {
-        return this.distanceToPoint(s.center) <= s.radius;
+        return this.distanceSqToPoint(s.center) <= s.radius * s.radius;
       }
     }, {
       key: "intersectPlane",
@@ -7004,24 +7004,29 @@
         return new this.constructor().copy(this);
       }
     }, {
+      key: "makeSafe",
+      value: function makeSafe() {
+        this.phi = Math.max(1e-6, Math.min(Math.PI - 1e-6, this.phi));
+        return this;
+      }
+    }, {
       key: "setFromVector3",
       value: function setFromVector3(v) {
-        this.radius = v.length();
+        return this.setFromCartesianCoords(v.x, v.y, v.z);
+      }
+    }, {
+      key: "setFromCartesianCoords",
+      value: function setFromCartesianCoords(x, y, z) {
+        this.radius = Math.sqrt(x * x + y * y + z * z);
 
         if (this.radius === 0) {
           this.theta = 0;
           this.phi = 0;
         } else {
-          this.theta = Math.atan2(v.x, v.z);
-          this.phi = Math.acos(Math.min(Math.max(v.y / this.radius, -1), 1));
+          this.theta = Math.atan2(x, z);
+          this.phi = Math.acos(Math.min(Math.max(y / this.radius, -1), 1));
         }
 
-        return this.makeSafe();
-      }
-    }, {
-      key: "makeSafe",
-      value: function makeSafe() {
-        this.phi = Math.max(1e-6, Math.min(Math.PI - 1e-6, this.phi));
         return this;
       }
     }]);

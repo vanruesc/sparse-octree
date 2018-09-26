@@ -51,7 +51,9 @@
 <p><em><a href="https://vanruesc.github.io/sparse-octree/public/demo">Extensive Demo</a> &#x2234;
 <a href="https://vanruesc.github.io/sparse-octree/public/docs">API Reference</a></em></p>
 <h2 id="installation">Installation</h2><p>This library requires the peer dependencies <a href="https://github.com/vanruesc/iterator-result">iterator-result</a> and <a href="https://github.com/vanruesc/math-ds">math-ds</a>.</p>
-<pre><code class="lang-sh"><code class="source-code prettyprint">npm install iterator-result math-ds sparse-octree</code>
+<pre><code class="lang-sh"><code class="source-code prettyprint">npm install iterator-result math-ds</code>
+</code></pre>
+<pre><code class="lang-sh"><code class="source-code prettyprint">npm install sparse-octree</code>
 </code></pre>
 <h2 id="usage">Usage</h2><h5 id="custom-octrees">Custom Octrees</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Octree, CubicOctant } from &quot;sparse-octree&quot;;
 
@@ -77,7 +79,7 @@ const myData = {};
 octree.put(new Vector3(0, 0, 0), myData);
 octree.fetch(new Vector3(0, 0, 0)); // =&gt; myData</code>
 </code></pre>
-<p>A full point octree example can be found <a href="https://jsfiddle.net/6gt9fjmq/10/">here</a>.</p>
+<p>A full point octree example can be found <a href="https://jsfiddle.net/6gt9fjmq/14/">here</a>.</p>
 <h2 id="features">Features</h2><ul>
 <li>Base Functionality<ul>
 <li>Pointer-based structure<ul>
