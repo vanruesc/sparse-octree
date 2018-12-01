@@ -10182,7 +10182,13 @@
     });
     manager.addEventListener("change", onChange);
     manager.addEventListener("load", onLoad);
-    manager.addDemo(new PointOctreeDemo());
+    var demo = new PointOctreeDemo();
+
+    if (demo.id !== window.location.hash.slice(1)) {
+      window.location.hash = "";
+    }
+
+    manager.addDemo(demo);
     render();
   });
   window.addEventListener("resize", function () {
