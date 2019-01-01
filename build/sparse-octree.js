@@ -1,13 +1,13 @@
 /**
- * sparse-octree v5.0.2 build Sat Dec 01 2018
+ * sparse-octree v5.0.2 build Tue Jan 01 2019
  * https://github.com/vanruesc/sparse-octree
- * Copyright 2018 Raoul van Rüschen, Zlib
+ * Copyright 2019 Raoul van Rüschen, Zlib
  */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.SPARSEOCTREE = {})));
-}(this, (function (exports) { 'use strict';
+  (global = global || self, factory(global.SPARSEOCTREE = {}));
+}(this, function (exports) { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -5398,4 +5398,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
