@@ -10,7 +10,7 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
  * @private
  */
 
-var THRESHOLD;
+let THRESHOLD;
 
 /**
  * Recursively counts how many points are in the given octant.
@@ -492,7 +492,7 @@ export class PointOctree extends Octree {
 	 * @param {Number} [threshold=1E-6] - Threshold for equality in move and fetch
 	 */
 
-	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold= 1E-6) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1E-6) {
 
 		super();
 
