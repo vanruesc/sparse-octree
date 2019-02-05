@@ -10,7 +10,7 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
  * @private
  */
 
-const THRESHOLD = 1e-6;
+var THRESHOLD;
 
 /**
  * Recursively counts how many points are in the given octant.
@@ -489,9 +489,10 @@ export class PointOctree extends Octree {
 	 * @param {Number} [bias=0.0] - An octant boundary bias.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
+	 * @param {Number} [threshold=1E-6] - Threshold for equality in move and fetch
 	 */
 
-	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold= 1E-6) {
 
 		super();
 
@@ -547,6 +548,15 @@ export class PointOctree extends Octree {
 		 */
 
 		this.pointCount = 0;
+
+		/**
+		 * The amount of distanceSquared between points for equality match in move and fetch.
+		 * Default: 1E-6
+		 * 
+		 * @type {Number}
+		 */
+
+		THRESHOLD = threshold;
 
 	}
 
