@@ -1,5 +1,5 @@
 /**
- * sparse-octree v5.1.0 build Wed Feb 06 2019
+ * sparse-octree v5.1.1 build Wed Feb 06 2019
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2019 Raoul van Rüschen, Zlib
  */
@@ -5097,7 +5097,7 @@
         points = octant.points;
 
         for (i = 0, l = points.length; result === null && i < l; ++i) {
-          if (point.distanceToSquared(points[i]) <= octree.threshold) {
+          if (point.equals(points[i])) {
             result = octant.data[i];
           }
         }
@@ -5125,7 +5125,7 @@
           points = octant.points;
 
           for (i = 0, l = points.length; i < l; ++i) {
-            if (point.distanceToSquared(points[i]) <= octree.threshold) {
+            if (point.equals(points[i])) {
               points[i].copy(position);
               result = octant.data[i];
               break;
@@ -5236,7 +5236,6 @@
       var bias = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0;
       var maxPoints = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 8;
       var maxDepth = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 8;
-      var threshold = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1e-6;
 
       _classCallCheck(this, PointOctree);
 
@@ -5245,7 +5244,6 @@
       _this.bias = Math.max(0.0, bias);
       _this.maxPoints = Math.max(1, Math.round(maxPoints));
       _this.maxDepth = Math.max(0, Math.round(maxDepth));
-      _this.threshold = threshold;
       _this.pointCount = 0;
       return _this;
     }
