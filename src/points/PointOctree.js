@@ -226,7 +226,7 @@ function fetch(point, octree, octant) {
 
 			for(i = 0, l = points.length; result === null && i < l; ++i) {
 
-				if(point.distanceToSquared(points[i]) <= octree.threshold) {
+				if(point.equals(points[i])) {
 
 					result = octant.data[i];
 
@@ -286,7 +286,7 @@ function move(point, position, octree, octant, parent, depth) {
 
 				for(i = 0, l = points.length; i < l; ++i) {
 
-					if(point.distanceToSquared(points[i]) <= octree.threshold) {
+					if(point.equals(points[i])) {
 
 						// The point exists! Update its position.
 						points[i].copy(position);
@@ -480,10 +480,9 @@ export class PointOctree extends Octree {
 	 * @param {Number} [bias=0.0] - An octant boundary bias.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
-	 * @param {Number} [threshold=1e-6] - Threshold for equality in move and fetch
 	 */
 
-	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1e-6) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
 		super();
 
@@ -531,14 +530,6 @@ export class PointOctree extends Octree {
 		 */
 
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
-
-		/**
-		 * A threshold for distance comparisons.
-		 *
-		 * @type {Number}
-		 */
-
-		this.threshold = threshold;
 
 		/**
 		 * The amount of points that are currently in this octree.
