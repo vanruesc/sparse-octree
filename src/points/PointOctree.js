@@ -4,15 +4,6 @@ import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
- * A threshold for distance comparisons.
- *
- * @type {Number}
- * @private
- */
-
-let THRESHOLD;
-
-/**
  * Recursively counts how many points are in the given octant.
  *
  * @private
@@ -235,7 +226,7 @@ function fetch(point, octree, octant) {
 
 			for(i = 0, l = points.length; result === null && i < l; ++i) {
 
-				if(point.distanceToSquared(points[i]) <= THRESHOLD) {
+				if(point.distanceToSquared(points[i]) <= octree.threshold) {
 
 					result = octant.data[i];
 
@@ -295,7 +286,7 @@ function move(point, position, octree, octant, parent, depth) {
 
 				for(i = 0, l = points.length; i < l; ++i) {
 
-					if(point.distanceToSquared(points[i]) <= THRESHOLD) {
+					if(point.distanceToSquared(points[i]) <= octree.threshold) {
 
 						// The point exists! Update its position.
 						points[i].copy(position);
@@ -492,7 +483,7 @@ export class PointOctree extends Octree {
 	 * @param {Number} [threshold=1E-6] - Threshold for equality in move and fetch
 	 */
 
-	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1E-6) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1e-6) {
 
 		super();
 
@@ -551,12 +542,12 @@ export class PointOctree extends Octree {
 
 		/**
 		 * The amount of distanceSquared between points for equality match in move and fetch.
-		 * Default: 1E-6
+		 * Default: 1e-6
 		 * 
 		 * @type {Number}
 		 */
 
-		THRESHOLD = threshold;
+		this.threshold = threshold;
 
 	}
 
