@@ -480,7 +480,7 @@ export class PointOctree extends Octree {
 	 * @param {Number} [bias=0.0] - An octant boundary bias.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
-	 * @param {Number} [threshold=1E-6] - Threshold for equality in move and fetch
+	 * @param {Number} [threshold=1e-6] - Threshold for equality in move and fetch
 	 */
 
 	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1e-6) {
@@ -533,21 +533,20 @@ export class PointOctree extends Octree {
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
 
 		/**
+		 * A threshold for distance comparisons.
+		 *
+		 * @type {Number}
+		 */
+
+		this.threshold = threshold;
+
+		/**
 		 * The amount of points that are currently in this octree.
 		 *
 		 * @type {Number}
 		 */
 
 		this.pointCount = 0;
-
-		/**
-		 * The amount of distanceSquared between points for equality match in move and fetch.
-		 * Default: 1e-6
-		 * 
-		 * @type {Number}
-		 */
-
-		this.threshold = threshold;
 
 	}
 
