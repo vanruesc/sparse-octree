@@ -786,6 +786,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/points/pointoctree.js~pointoctree#threshold",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-member-threshold",
+    "src/points/PointOctree.js~PointOctree#threshold",
+    "member"
+  ],
+  [
     "src/points/raypointintersection.js",
     "file/src/points/RayPointIntersection.js.html",
     "src/points/RayPointIntersection.js",

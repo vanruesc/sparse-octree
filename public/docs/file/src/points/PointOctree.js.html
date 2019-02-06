@@ -51,15 +51,6 @@ import { PointOctant } from &quot;./PointOctant.js&quot;;
 import { RayPointIntersection } from &quot;./RayPointIntersection.js&quot;;
 
 /**
- * A threshold for distance comparisons.
- *
- * @type {Number}
- * @private
- */
-
-const THRESHOLD = 1e-6;
-
-/**
  * Recursively counts how many points are in the given octant.
  *
  * @private
@@ -282,7 +273,7 @@ function fetch(point, octree, octant) {
 
 			for(i = 0, l = points.length; result === null &amp;&amp; i &lt; l; ++i) {
 
-				if(point.distanceToSquared(points[i]) &lt;= THRESHOLD) {
+				if(point.distanceToSquared(points[i]) &lt;= octree.threshold) {
 
 					result = octant.data[i];
 
@@ -342,7 +333,7 @@ function move(point, position, octree, octant, parent, depth) {
 
 				for(i = 0, l = points.length; i &lt; l; ++i) {
 
-					if(point.distanceToSquared(points[i]) &lt;= THRESHOLD) {
+					if(point.distanceToSquared(points[i]) &lt;= octree.threshold) {
 
 						// The point exists! Update its position.
 						points[i].copy(position);
@@ -536,9 +527,10 @@ export class PointOctree extends Octree {
 	 * @param {Number} [bias=0.0] - An octant boundary bias.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
+	 * @param {Number} [threshold=1e-6] - Threshold for equality in move and fetch
 	 */
 
-	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
+	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8, threshold = 1e-6) {
 
 		super();
 
@@ -586,6 +578,14 @@ export class PointOctree extends Octree {
 		 */
 
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
+
+		/**
+		 * A threshold for distance comparisons.
+		 *
+		 * @type {Number}
+		 */
+
+		this.threshold = threshold;
 
 		/**
 		 * The amount of points that are currently in this octree.

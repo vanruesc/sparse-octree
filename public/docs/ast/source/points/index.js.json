@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 252,
+  "end": 165,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 10,
+      "line": 4,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 252,
+    "end": 165,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 10,
+        "line": 4,
         "column": 0
       }
     },
@@ -30,15 +30,15 @@
     "body": [
       {
         "type": "ExportNamedDeclaration",
-        "start": 87,
-        "end": 134,
+        "start": 0,
+        "end": 47,
         "loc": {
           "start": {
-            "line": 7,
+            "line": 1,
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 1,
             "column": 47
           }
         },
@@ -46,67 +46,65 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 96,
-            "end": 107,
+            "start": 9,
+            "end": 20,
             "loc": {
               "start": {
-                "line": 7,
+                "line": 1,
                 "column": 9
               },
               "end": {
-                "line": 7,
+                "line": 1,
                 "column": 20
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 96,
-              "end": 107,
+              "start": 9,
+              "end": 20,
               "loc": {
                 "start": {
-                  "line": 7,
+                  "line": 1,
                   "column": 9
                 },
                 "end": {
-                  "line": 7,
-                  "column": 20
-                },
-                "identifierName": "PointOctant"
-              },
-              "name": "PointOctant",
-              "leadingComments": null
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 96,
-              "end": 107,
-              "loc": {
-                "start": {
-                  "line": 7,
-                  "column": 9
-                },
-                "end": {
-                  "line": 7,
+                  "line": 1,
                   "column": 20
                 },
                 "identifierName": "PointOctant"
               },
               "name": "PointOctant"
             },
-            "leadingComments": null
+            "exported": {
+              "type": "Identifier",
+              "start": 9,
+              "end": 20,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 20
+                },
+                "identifierName": "PointOctant"
+              },
+              "name": "PointOctant"
+            }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 115,
-          "end": 133,
+          "start": 28,
+          "end": 46,
           "loc": {
             "start": {
-              "line": 7,
+              "line": 1,
               "column": 28
             },
             "end": {
-              "line": 7,
+              "line": 1,
               "column": 46
             }
           },
@@ -115,37 +113,19 @@
             "raw": "\"./PointOctant.js\""
           },
           "value": "./PointOctant.js"
-        },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\r\n * Point-oriented octree components.\r\n *\r\n * @module sparse-octree/points\r\n ",
-            "start": 0,
-            "end": 83,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 0
-              },
-              "end": {
-                "line": 5,
-                "column": 3
-              }
-            }
-          }
-        ]
+        }
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 136,
-        "end": 183,
+        "start": 49,
+        "end": 96,
         "loc": {
           "start": {
-            "line": 8,
+            "line": 2,
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 2,
             "column": 47
           }
         },
@@ -153,29 +133,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 145,
-            "end": 156,
+            "start": 58,
+            "end": 69,
             "loc": {
               "start": {
-                "line": 8,
+                "line": 2,
                 "column": 9
               },
               "end": {
-                "line": 8,
+                "line": 2,
                 "column": 20
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 145,
-              "end": 156,
+              "start": 58,
+              "end": 69,
               "loc": {
                 "start": {
-                  "line": 8,
+                  "line": 2,
                   "column": 9
                 },
                 "end": {
-                  "line": 8,
+                  "line": 2,
                   "column": 20
                 },
                 "identifierName": "PointOctree"
@@ -184,15 +164,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 145,
-              "end": 156,
+              "start": 58,
+              "end": 69,
               "loc": {
                 "start": {
-                  "line": 8,
+                  "line": 2,
                   "column": 9
                 },
                 "end": {
-                  "line": 8,
+                  "line": 2,
                   "column": 20
                 },
                 "identifierName": "PointOctree"
@@ -203,15 +183,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 164,
-          "end": 182,
+          "start": 77,
+          "end": 95,
           "loc": {
             "start": {
-              "line": 8,
+              "line": 2,
               "column": 28
             },
             "end": {
-              "line": 8,
+              "line": 2,
               "column": 46
             }
           },
@@ -224,15 +204,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 185,
-        "end": 250,
+        "start": 98,
+        "end": 163,
         "loc": {
           "start": {
-            "line": 9,
+            "line": 3,
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 3,
             "column": 65
           }
         },
@@ -240,29 +220,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 194,
-            "end": 214,
+            "start": 107,
+            "end": 127,
             "loc": {
               "start": {
-                "line": 9,
+                "line": 3,
                 "column": 9
               },
               "end": {
-                "line": 9,
+                "line": 3,
                 "column": 29
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 194,
-              "end": 214,
+              "start": 107,
+              "end": 127,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 9
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 29
                 },
                 "identifierName": "RayPointIntersection"
@@ -271,15 +251,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 194,
-              "end": 214,
+              "start": 107,
+              "end": 127,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 9
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 29
                 },
                 "identifierName": "RayPointIntersection"
@@ -290,15 +270,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 222,
-          "end": 249,
+          "start": 135,
+          "end": 162,
           "loc": {
             "start": {
-              "line": 9,
+              "line": 3,
               "column": 37
             },
             "end": {
-              "line": 9,
+              "line": 3,
               "column": 64
             }
           },
@@ -312,41 +292,8 @@
     ],
     "directives": []
   },
-  "comments": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Point-oriented octree components.\r\n *\r\n * @module sparse-octree/points\r\n ",
-      "start": 0,
-      "end": 83,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    }
-  ],
+  "comments": [],
   "tokens": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Point-oriented octree components.\r\n *\r\n * @module sparse-octree/points\r\n ",
-      "start": 0,
-      "end": 83,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    },
     {
       "type": {
         "label": "export",
@@ -362,15 +309,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 87,
-      "end": 93,
+      "start": 0,
+      "end": 6,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 6
         }
       }
@@ -387,15 +334,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 94,
-      "end": 95,
+      "start": 7,
+      "end": 8,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 7
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 8
         }
       }
@@ -413,15 +360,15 @@
         "binop": null
       },
       "value": "PointOctant",
-      "start": 96,
-      "end": 107,
+      "start": 9,
+      "end": 20,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 9
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 20
         }
       }
@@ -438,15 +385,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 108,
-      "end": 109,
+      "start": 21,
+      "end": 22,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 21
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 22
         }
       }
@@ -464,15 +411,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 110,
-      "end": 114,
+      "start": 23,
+      "end": 27,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 23
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 27
         }
       }
@@ -491,15 +438,15 @@
         "updateContext": null
       },
       "value": "./PointOctant.js",
-      "start": 115,
-      "end": 133,
+      "start": 28,
+      "end": 46,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 28
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 46
         }
       }
@@ -517,15 +464,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 133,
-      "end": 134,
+      "start": 46,
+      "end": 47,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 46
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 47
         }
       }
@@ -545,15 +492,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 136,
-      "end": 142,
+      "start": 49,
+      "end": 55,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 6
         }
       }
@@ -570,15 +517,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 143,
-      "end": 144,
+      "start": 56,
+      "end": 57,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 7
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 8
         }
       }
@@ -596,15 +543,15 @@
         "binop": null
       },
       "value": "PointOctree",
-      "start": 145,
-      "end": 156,
+      "start": 58,
+      "end": 69,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 9
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 20
         }
       }
@@ -621,15 +568,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 157,
-      "end": 158,
+      "start": 70,
+      "end": 71,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 21
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 22
         }
       }
@@ -647,15 +594,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 159,
-      "end": 163,
+      "start": 72,
+      "end": 76,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 23
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 27
         }
       }
@@ -674,15 +621,15 @@
         "updateContext": null
       },
       "value": "./PointOctree.js",
-      "start": 164,
-      "end": 182,
+      "start": 77,
+      "end": 95,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 28
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 46
         }
       }
@@ -700,15 +647,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 182,
-      "end": 183,
+      "start": 95,
+      "end": 96,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 46
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 47
         }
       }
@@ -728,15 +675,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 185,
-      "end": 191,
+      "start": 98,
+      "end": 104,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 6
         }
       }
@@ -753,15 +700,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 192,
-      "end": 193,
+      "start": 105,
+      "end": 106,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 7
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 8
         }
       }
@@ -779,15 +726,15 @@
         "binop": null
       },
       "value": "RayPointIntersection",
-      "start": 194,
-      "end": 214,
+      "start": 107,
+      "end": 127,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 9
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 29
         }
       }
@@ -804,15 +751,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 215,
-      "end": 216,
+      "start": 128,
+      "end": 129,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 30
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 31
         }
       }
@@ -830,15 +777,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 217,
-      "end": 221,
+      "start": 130,
+      "end": 134,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 32
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 36
         }
       }
@@ -857,15 +804,15 @@
         "updateContext": null
       },
       "value": "./RayPointIntersection.js",
-      "start": 222,
-      "end": 249,
+      "start": 135,
+      "end": 162,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 37
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 64
         }
       }
@@ -883,15 +830,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 249,
-      "end": 250,
+      "start": 162,
+      "end": 163,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 64
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 65
         }
       }
@@ -909,15 +856,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 252,
-      "end": 252,
+      "start": 165,
+      "end": 165,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 0
         }
       }

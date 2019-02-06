@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 323,
+  "end": 255,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 12,
+      "line": 6,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 323,
+    "end": 255,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 12,
+        "line": 6,
         "column": 0
       }
     },
@@ -30,15 +30,15 @@
     "body": [
       {
         "type": "ExportNamedDeclaration",
-        "start": 68,
-        "end": 115,
+        "start": 0,
+        "end": 47,
         "loc": {
           "start": {
-            "line": 7,
+            "line": 1,
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 1,
             "column": 47
           }
         },
@@ -46,67 +46,65 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 77,
-            "end": 88,
+            "start": 9,
+            "end": 20,
             "loc": {
               "start": {
-                "line": 7,
+                "line": 1,
                 "column": 9
               },
               "end": {
-                "line": 7,
+                "line": 1,
                 "column": 20
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 77,
-              "end": 88,
+              "start": 9,
+              "end": 20,
               "loc": {
                 "start": {
-                  "line": 7,
+                  "line": 1,
                   "column": 9
                 },
                 "end": {
-                  "line": 7,
-                  "column": 20
-                },
-                "identifierName": "CubicOctant"
-              },
-              "name": "CubicOctant",
-              "leadingComments": null
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 77,
-              "end": 88,
-              "loc": {
-                "start": {
-                  "line": 7,
-                  "column": 9
-                },
-                "end": {
-                  "line": 7,
+                  "line": 1,
                   "column": 20
                 },
                 "identifierName": "CubicOctant"
               },
               "name": "CubicOctant"
             },
-            "leadingComments": null
+            "exported": {
+              "type": "Identifier",
+              "start": 9,
+              "end": 20,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 20
+                },
+                "identifierName": "CubicOctant"
+              },
+              "name": "CubicOctant"
+            }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 96,
-          "end": 114,
+          "start": 28,
+          "end": 46,
           "loc": {
             "start": {
-              "line": 7,
+              "line": 1,
               "column": 28
             },
             "end": {
-              "line": 7,
+              "line": 1,
               "column": 46
             }
           },
@@ -115,37 +113,19 @@
             "raw": "\"./CubicOctant.js\""
           },
           "value": "./CubicOctant.js"
-        },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n ",
-            "start": 0,
-            "end": 64,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 0
-              },
-              "end": {
-                "line": 5,
-                "column": 3
-              }
-            }
-          }
-        ]
+        }
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 117,
-        "end": 154,
+        "start": 49,
+        "end": 86,
         "loc": {
           "start": {
-            "line": 8,
+            "line": 2,
             "column": 0
           },
           "end": {
-            "line": 8,
+            "line": 2,
             "column": 37
           }
         },
@@ -153,29 +133,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 126,
-            "end": 132,
+            "start": 58,
+            "end": 64,
             "loc": {
               "start": {
-                "line": 8,
+                "line": 2,
                 "column": 9
               },
               "end": {
-                "line": 8,
+                "line": 2,
                 "column": 15
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 126,
-              "end": 132,
+              "start": 58,
+              "end": 64,
               "loc": {
                 "start": {
-                  "line": 8,
+                  "line": 2,
                   "column": 9
                 },
                 "end": {
-                  "line": 8,
+                  "line": 2,
                   "column": 15
                 },
                 "identifierName": "Octree"
@@ -184,15 +164,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 126,
-              "end": 132,
+              "start": 58,
+              "end": 64,
               "loc": {
                 "start": {
-                  "line": 8,
+                  "line": 2,
                   "column": 9
                 },
                 "end": {
-                  "line": 8,
+                  "line": 2,
                   "column": 15
                 },
                 "identifierName": "Octree"
@@ -203,15 +183,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 140,
-          "end": 153,
+          "start": 72,
+          "end": 85,
           "loc": {
             "start": {
-              "line": 8,
+              "line": 2,
               "column": 23
             },
             "end": {
-              "line": 8,
+              "line": 2,
               "column": 36
             }
           },
@@ -224,15 +204,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 156,
-        "end": 209,
+        "start": 88,
+        "end": 141,
         "loc": {
           "start": {
-            "line": 9,
+            "line": 3,
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 3,
             "column": 53
           }
         },
@@ -240,29 +220,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 165,
-            "end": 171,
+            "start": 97,
+            "end": 103,
             "loc": {
               "start": {
-                "line": 9,
+                "line": 3,
                 "column": 9
               },
               "end": {
-                "line": 9,
+                "line": 3,
                 "column": 15
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 165,
-              "end": 171,
+              "start": 97,
+              "end": 103,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 9
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 15
                 },
                 "identifierName": "Octant"
@@ -271,15 +251,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 165,
-              "end": 171,
+              "start": 97,
+              "end": 103,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 9
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 15
                 },
                 "identifierName": "Octant"
@@ -289,29 +269,29 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 173,
-            "end": 180,
+            "start": 105,
+            "end": 112,
             "loc": {
               "start": {
-                "line": 9,
+                "line": 3,
                 "column": 17
               },
               "end": {
-                "line": 9,
+                "line": 3,
                 "column": 24
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 173,
-              "end": 180,
+              "start": 105,
+              "end": 112,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 17
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 24
                 },
                 "identifierName": "pattern"
@@ -320,15 +300,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 173,
-              "end": 180,
+              "start": 105,
+              "end": 112,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 17
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 24
                 },
                 "identifierName": "pattern"
@@ -338,29 +318,29 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 182,
-            "end": 187,
+            "start": 114,
+            "end": 119,
             "loc": {
               "start": {
-                "line": 9,
+                "line": 3,
                 "column": 26
               },
               "end": {
-                "line": 9,
+                "line": 3,
                 "column": 31
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 182,
-              "end": 187,
+              "start": 114,
+              "end": 119,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 26
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 31
                 },
                 "identifierName": "edges"
@@ -369,15 +349,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 182,
-              "end": 187,
+              "start": 114,
+              "end": 119,
               "loc": {
                 "start": {
-                  "line": 9,
+                  "line": 3,
                   "column": 26
                 },
                 "end": {
-                  "line": 9,
+                  "line": 3,
                   "column": 31
                 },
                 "identifierName": "edges"
@@ -388,15 +368,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 195,
-          "end": 208,
+          "start": 127,
+          "end": 140,
           "loc": {
             "start": {
-              "line": 9,
+              "line": 3,
               "column": 39
             },
             "end": {
-              "line": 9,
+              "line": 3,
               "column": 52
             }
           },
@@ -409,15 +389,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 211,
-        "end": 264,
+        "start": 143,
+        "end": 196,
         "loc": {
           "start": {
-            "line": 10,
+            "line": 4,
             "column": 0
           },
           "end": {
-            "line": 10,
+            "line": 4,
             "column": 53
           }
         },
@@ -425,29 +405,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 220,
-            "end": 234,
+            "start": 152,
+            "end": 166,
             "loc": {
               "start": {
-                "line": 10,
+                "line": 4,
                 "column": 9
               },
               "end": {
-                "line": 10,
+                "line": 4,
                 "column": 23
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 220,
-              "end": 234,
+              "start": 152,
+              "end": 166,
               "loc": {
                 "start": {
-                  "line": 10,
+                  "line": 4,
                   "column": 9
                 },
                 "end": {
-                  "line": 10,
+                  "line": 4,
                   "column": 23
                 },
                 "identifierName": "OctantIterator"
@@ -456,15 +436,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 220,
-              "end": 234,
+              "start": 152,
+              "end": 166,
               "loc": {
                 "start": {
-                  "line": 10,
+                  "line": 4,
                   "column": 9
                 },
                 "end": {
-                  "line": 10,
+                  "line": 4,
                   "column": 23
                 },
                 "identifierName": "OctantIterator"
@@ -475,15 +455,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 242,
-          "end": 263,
+          "start": 174,
+          "end": 195,
           "loc": {
             "start": {
-              "line": 10,
+              "line": 4,
               "column": 31
             },
             "end": {
-              "line": 10,
+              "line": 4,
               "column": 52
             }
           },
@@ -496,15 +476,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 266,
-        "end": 321,
+        "start": 198,
+        "end": 253,
         "loc": {
           "start": {
-            "line": 11,
+            "line": 5,
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 5,
             "column": 55
           }
         },
@@ -512,29 +492,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 275,
-            "end": 290,
+            "start": 207,
+            "end": 222,
             "loc": {
               "start": {
-                "line": 11,
+                "line": 5,
                 "column": 9
               },
               "end": {
-                "line": 11,
+                "line": 5,
                 "column": 24
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 275,
-              "end": 290,
+              "start": 207,
+              "end": 222,
               "loc": {
                 "start": {
-                  "line": 11,
+                  "line": 5,
                   "column": 9
                 },
                 "end": {
-                  "line": 11,
+                  "line": 5,
                   "column": 24
                 },
                 "identifierName": "OctreeRaycaster"
@@ -543,15 +523,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 275,
-              "end": 290,
+              "start": 207,
+              "end": 222,
               "loc": {
                 "start": {
-                  "line": 11,
+                  "line": 5,
                   "column": 9
                 },
                 "end": {
-                  "line": 11,
+                  "line": 5,
                   "column": 24
                 },
                 "identifierName": "OctreeRaycaster"
@@ -562,15 +542,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 298,
-          "end": 320,
+          "start": 230,
+          "end": 252,
           "loc": {
             "start": {
-              "line": 11,
+              "line": 5,
               "column": 32
             },
             "end": {
-              "line": 11,
+              "line": 5,
               "column": 54
             }
           },
@@ -584,41 +564,8 @@
     ],
     "directives": []
   },
-  "comments": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n ",
-      "start": 0,
-      "end": 64,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    }
-  ],
+  "comments": [],
   "tokens": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Core components.\r\n *\r\n * @module sparse-octree/core\r\n ",
-      "start": 0,
-      "end": 64,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    },
     {
       "type": {
         "label": "export",
@@ -634,15 +581,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 68,
-      "end": 74,
+      "start": 0,
+      "end": 6,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 6
         }
       }
@@ -659,15 +606,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 75,
-      "end": 76,
+      "start": 7,
+      "end": 8,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 7
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 8
         }
       }
@@ -685,15 +632,15 @@
         "binop": null
       },
       "value": "CubicOctant",
-      "start": 77,
-      "end": 88,
+      "start": 9,
+      "end": 20,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 9
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 20
         }
       }
@@ -710,15 +657,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 89,
-      "end": 90,
+      "start": 21,
+      "end": 22,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 21
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 22
         }
       }
@@ -736,15 +683,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 91,
-      "end": 95,
+      "start": 23,
+      "end": 27,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 23
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 27
         }
       }
@@ -763,15 +710,15 @@
         "updateContext": null
       },
       "value": "./CubicOctant.js",
-      "start": 96,
-      "end": 114,
+      "start": 28,
+      "end": 46,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 28
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 46
         }
       }
@@ -789,15 +736,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 114,
-      "end": 115,
+      "start": 46,
+      "end": 47,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 46
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 47
         }
       }
@@ -817,15 +764,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 117,
-      "end": 123,
+      "start": 49,
+      "end": 55,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 6
         }
       }
@@ -842,15 +789,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 124,
-      "end": 125,
+      "start": 56,
+      "end": 57,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 7
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 8
         }
       }
@@ -868,15 +815,15 @@
         "binop": null
       },
       "value": "Octree",
-      "start": 126,
-      "end": 132,
+      "start": 58,
+      "end": 64,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 9
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 15
         }
       }
@@ -893,15 +840,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 133,
-      "end": 134,
+      "start": 65,
+      "end": 66,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 16
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 17
         }
       }
@@ -919,15 +866,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 135,
-      "end": 139,
+      "start": 67,
+      "end": 71,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 18
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 22
         }
       }
@@ -946,15 +893,15 @@
         "updateContext": null
       },
       "value": "./Octree.js",
-      "start": 140,
-      "end": 153,
+      "start": 72,
+      "end": 85,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 23
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 36
         }
       }
@@ -972,15 +919,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 153,
-      "end": 154,
+      "start": 85,
+      "end": 86,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 36
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 37
         }
       }
@@ -1000,15 +947,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 156,
-      "end": 162,
+      "start": 88,
+      "end": 94,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 6
         }
       }
@@ -1025,15 +972,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 163,
-      "end": 164,
+      "start": 95,
+      "end": 96,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 7
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 8
         }
       }
@@ -1051,15 +998,15 @@
         "binop": null
       },
       "value": "Octant",
-      "start": 165,
-      "end": 171,
+      "start": 97,
+      "end": 103,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 9
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 15
         }
       }
@@ -1077,15 +1024,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 171,
-      "end": 172,
+      "start": 103,
+      "end": 104,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 15
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 16
         }
       }
@@ -1103,15 +1050,15 @@
         "binop": null
       },
       "value": "pattern",
-      "start": 173,
-      "end": 180,
+      "start": 105,
+      "end": 112,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 17
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 24
         }
       }
@@ -1129,15 +1076,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 180,
-      "end": 181,
+      "start": 112,
+      "end": 113,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 24
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 25
         }
       }
@@ -1155,15 +1102,15 @@
         "binop": null
       },
       "value": "edges",
-      "start": 182,
-      "end": 187,
+      "start": 114,
+      "end": 119,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 26
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 31
         }
       }
@@ -1180,15 +1127,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 188,
-      "end": 189,
+      "start": 120,
+      "end": 121,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 32
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 33
         }
       }
@@ -1206,15 +1153,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 190,
-      "end": 194,
+      "start": 122,
+      "end": 126,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 34
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 38
         }
       }
@@ -1233,15 +1180,15 @@
         "updateContext": null
       },
       "value": "./Octant.js",
-      "start": 195,
-      "end": 208,
+      "start": 127,
+      "end": 140,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 39
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 52
         }
       }
@@ -1259,15 +1206,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 208,
-      "end": 209,
+      "start": 140,
+      "end": 141,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 3,
           "column": 52
         },
         "end": {
-          "line": 9,
+          "line": 3,
           "column": 53
         }
       }
@@ -1287,15 +1234,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 211,
-      "end": 217,
+      "start": 143,
+      "end": 149,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 6
         }
       }
@@ -1312,15 +1259,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 218,
-      "end": 219,
+      "start": 150,
+      "end": 151,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 7
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 8
         }
       }
@@ -1338,15 +1285,15 @@
         "binop": null
       },
       "value": "OctantIterator",
-      "start": 220,
-      "end": 234,
+      "start": 152,
+      "end": 166,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 9
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 23
         }
       }
@@ -1363,15 +1310,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 235,
-      "end": 236,
+      "start": 167,
+      "end": 168,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 24
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 25
         }
       }
@@ -1389,15 +1336,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 237,
-      "end": 241,
+      "start": 169,
+      "end": 173,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 26
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 30
         }
       }
@@ -1416,15 +1363,15 @@
         "updateContext": null
       },
       "value": "./OctantIterator.js",
-      "start": 242,
-      "end": 263,
+      "start": 174,
+      "end": 195,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 31
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 52
         }
       }
@@ -1442,15 +1389,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 263,
-      "end": 264,
+      "start": 195,
+      "end": 196,
       "loc": {
         "start": {
-          "line": 10,
+          "line": 4,
           "column": 52
         },
         "end": {
-          "line": 10,
+          "line": 4,
           "column": 53
         }
       }
@@ -1470,15 +1417,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 266,
-      "end": 272,
+      "start": 198,
+      "end": 204,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 0
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 6
         }
       }
@@ -1495,15 +1442,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 273,
-      "end": 274,
+      "start": 205,
+      "end": 206,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 7
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 8
         }
       }
@@ -1521,15 +1468,15 @@
         "binop": null
       },
       "value": "OctreeRaycaster",
-      "start": 275,
-      "end": 290,
+      "start": 207,
+      "end": 222,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 9
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 24
         }
       }
@@ -1546,15 +1493,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 291,
-      "end": 292,
+      "start": 223,
+      "end": 224,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 25
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 26
         }
       }
@@ -1572,15 +1519,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 293,
-      "end": 297,
+      "start": 225,
+      "end": 229,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 27
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 31
         }
       }
@@ -1599,15 +1546,15 @@
         "updateContext": null
       },
       "value": "./OctreeRaycaster.js",
-      "start": 298,
-      "end": 320,
+      "start": 230,
+      "end": 252,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 32
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 54
         }
       }
@@ -1625,15 +1572,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 320,
-      "end": 321,
+      "start": 252,
+      "end": 253,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 5,
           "column": 54
         },
         "end": {
-          "line": 11,
+          "line": 5,
           "column": 55
         }
       }
@@ -1651,15 +1598,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 323,
-      "end": 323,
+      "start": 255,
+      "end": 255,
       "loc": {
         "start": {
-          "line": 12,
+          "line": 6,
           "column": 0
         },
         "end": {
-          "line": 12,
+          "line": 6,
           "column": 0
         }
       }

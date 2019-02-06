@@ -2355,7 +2355,7 @@
     });
 
     if (Common.isUndefined(params.parent)) {
-      params.closed = false;
+      this.closed = params.closed || false;
       dom.addClass(this.domElement, GUI.CLASS_MAIN);
       dom.makeSelectable(this.domElement, false);
 
@@ -2807,7 +2807,7 @@
         max: controller.__max,
         step: controller.__step
       });
-      Common.each(['updateDisplay', 'onChange', 'onFinishChange', 'step'], function (method) {
+      Common.each(['updateDisplay', 'onChange', 'onFinishChange', 'step', 'min', 'max'], function (method) {
         var pc = controller[method];
         var pb = box[method];
 
@@ -9398,8 +9398,6 @@
     this.object = object;
   };
 
-  var THRESHOLD = 1e-6;
-
   function _countPoints(octant) {
     var children = octant.children;
     var result = 0;
@@ -9517,7 +9515,7 @@
         points = octant.points;
 
         for (i = 0, l = points.length; result === null && i < l; ++i) {
-          if (point.distanceToSquared(points[i]) <= THRESHOLD) {
+          if (point.distanceToSquared(points[i]) <= octree.threshold) {
             result = octant.data[i];
           }
         }
@@ -9545,7 +9543,7 @@
           points = octant.points;
 
           for (i = 0, l = points.length; i < l; ++i) {
-            if (point.distanceToSquared(points[i]) <= THRESHOLD) {
+            if (point.distanceToSquared(points[i]) <= octree.threshold) {
               points[i].copy(position);
               result = octant.data[i];
               break;
@@ -9656,6 +9654,7 @@
       var bias = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0;
       var maxPoints = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 8;
       var maxDepth = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 8;
+      var threshold = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1e-6;
 
       _classCallCheck(this, PointOctree);
 
@@ -9664,6 +9663,7 @@
       _this.bias = Math.max(0.0, bias);
       _this.maxPoints = Math.max(1, Math.round(maxPoints));
       _this.maxDepth = Math.max(0, Math.round(maxDepth));
+      _this.threshold = threshold;
       _this.pointCount = 0;
       return _this;
     }

@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 119,
+  "end": 49,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 8,
+      "line": 2,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 119,
+    "end": 49,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 8,
+        "line": 2,
         "column": 0
       }
     },
@@ -30,15 +30,15 @@
     "body": [
       {
         "type": "ExportNamedDeclaration",
-        "start": 70,
-        "end": 117,
+        "start": 0,
+        "end": 47,
         "loc": {
           "start": {
-            "line": 7,
+            "line": 1,
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 1,
             "column": 47
           }
         },
@@ -46,67 +46,65 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 79,
-            "end": 90,
+            "start": 9,
+            "end": 20,
             "loc": {
               "start": {
-                "line": 7,
+                "line": 1,
                 "column": 9
               },
               "end": {
-                "line": 7,
+                "line": 1,
                 "column": 20
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 79,
-              "end": 90,
+              "start": 9,
+              "end": 20,
               "loc": {
                 "start": {
-                  "line": 7,
+                  "line": 1,
                   "column": 9
                 },
                 "end": {
-                  "line": 7,
-                  "column": 20
-                },
-                "identifierName": "OctreeUtils"
-              },
-              "name": "OctreeUtils",
-              "leadingComments": null
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 79,
-              "end": 90,
-              "loc": {
-                "start": {
-                  "line": 7,
-                  "column": 9
-                },
-                "end": {
-                  "line": 7,
+                  "line": 1,
                   "column": 20
                 },
                 "identifierName": "OctreeUtils"
               },
               "name": "OctreeUtils"
             },
-            "leadingComments": null
+            "exported": {
+              "type": "Identifier",
+              "start": 9,
+              "end": 20,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 9
+                },
+                "end": {
+                  "line": 1,
+                  "column": 20
+                },
+                "identifierName": "OctreeUtils"
+              },
+              "name": "OctreeUtils"
+            }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 98,
-          "end": 116,
+          "start": 28,
+          "end": 46,
           "loc": {
             "start": {
-              "line": 7,
+              "line": 1,
               "column": 28
             },
             "end": {
-              "line": 7,
+              "line": 1,
               "column": 46
             }
           },
@@ -115,64 +113,13 @@
             "raw": "\"./OctreeUtils.js\""
           },
           "value": "./OctreeUtils.js"
-        },
-        "leadingComments": [
-          {
-            "type": "CommentBlock",
-            "value": "*\r\n * Octree utilities.\r\n *\r\n * @module sparse-octree/utils\r\n ",
-            "start": 0,
-            "end": 66,
-            "loc": {
-              "start": {
-                "line": 1,
-                "column": 0
-              },
-              "end": {
-                "line": 5,
-                "column": 3
-              }
-            }
-          }
-        ]
+        }
       }
     ],
     "directives": []
   },
-  "comments": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Octree utilities.\r\n *\r\n * @module sparse-octree/utils\r\n ",
-      "start": 0,
-      "end": 66,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    }
-  ],
+  "comments": [],
   "tokens": [
-    {
-      "type": "CommentBlock",
-      "value": "*\r\n * Octree utilities.\r\n *\r\n * @module sparse-octree/utils\r\n ",
-      "start": 0,
-      "end": 66,
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 3
-        }
-      }
-    },
     {
       "type": {
         "label": "export",
@@ -188,15 +135,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 70,
-      "end": 76,
+      "start": 0,
+      "end": 6,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 6
         }
       }
@@ -213,15 +160,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 77,
-      "end": 78,
+      "start": 7,
+      "end": 8,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 7
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 8
         }
       }
@@ -239,15 +186,15 @@
         "binop": null
       },
       "value": "OctreeUtils",
-      "start": 79,
-      "end": 90,
+      "start": 9,
+      "end": 20,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 9
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 20
         }
       }
@@ -264,15 +211,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 91,
-      "end": 92,
+      "start": 21,
+      "end": 22,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 21
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 22
         }
       }
@@ -290,15 +237,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 93,
-      "end": 97,
+      "start": 23,
+      "end": 27,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 23
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 27
         }
       }
@@ -317,15 +264,15 @@
         "updateContext": null
       },
       "value": "./OctreeUtils.js",
-      "start": 98,
-      "end": 116,
+      "start": 28,
+      "end": 46,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 28
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 46
         }
       }
@@ -343,15 +290,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 116,
-      "end": 117,
+      "start": 46,
+      "end": 47,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 1,
           "column": 46
         },
         "end": {
-          "line": 7,
+          "line": 1,
           "column": 47
         }
       }
@@ -369,15 +316,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 119,
-      "end": 119,
+      "start": 49,
+      "end": 49,
       "loc": {
         "start": {
-          "line": 8,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 2,
           "column": 0
         }
       }
