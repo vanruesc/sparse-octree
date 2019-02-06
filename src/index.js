@@ -1,9 +1,3 @@
-/**
- * Exposure of the library components.
- *
- * @module sparse-octree
- */
-
 export {
 	CubicOctant,
 	edges,
