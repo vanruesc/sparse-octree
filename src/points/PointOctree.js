@@ -436,7 +436,9 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
  * @param {Number} radius - A radius.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param {Octant} octant - The current octant.
- * @param {Array} result - An array to be filled with objects, each containing a point and a data property.
+ * @param {Array<Object>} result - An array to be filled with objects.
+ * @property {Vector3} point - A point.
+ * @property {Object} data - The data that belongs to the point.
  */
 
 function findPoints(point, radius, skipSelf, octant, result) {
@@ -661,7 +663,9 @@ export class PointOctree extends Octree {
 	 * @param {Vector3} point - A position.
 	 * @param {Number} radius - A radius.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
-	 * @return {Array} An array of objects, each containing a point and a data property.
+	 * @return {Array<Object>} An array of objects.
+	 * @property {Vector3} point - A point.
+	 * @property {Object} data - The data that belongs to the point.
 	 */
 
 	findPoints(point, radius, skipSelf = false) {
