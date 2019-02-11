@@ -9561,17 +9561,12 @@
   }
 
   function _findNearestPoint(point, maxDistance, skipSelf, octant) {
-    var points = octant.points;
-    var children = octant.children;
     var result = null;
-    var bestDist = maxDistance;
+    var bestDistance = maxDistance;
     var i, l;
-    var p, distSq;
-    var sortedChildren;
-    var child, childResult;
 
-    if (children !== null) {
-      sortedChildren = children.map(function (child) {
+    if (octant.children !== null) {
+      var sortedChildren = octant.children.map(function (child) {
         return {
           octant: child,
           distance: child.distanceToCenterSquared(point)
@@ -9579,35 +9574,52 @@
       }).sort(function (a, b) {
         return a.distance - b.distance;
       });
+      var child, intermediateResult;
 
       for (i = 0, l = sortedChildren.length; i < l; ++i) {
         child = sortedChildren[i].octant;
 
-        if (child.contains(point, bestDist)) {
-          childResult = _findNearestPoint(point, bestDist, skipSelf, child);
+        if (child.contains(point, bestDistance)) {
+          intermediateResult = _findNearestPoint(point, bestDistance, skipSelf, child);
 
-          if (childResult !== null) {
-            distSq = childResult.point.distanceToSquared(point);
+          if (intermediateResult !== null) {
+            bestDistance = intermediateResult.distance;
+            result = intermediateResult;
 
-            if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
-              bestDist = distSq;
-              result = childResult;
+            if (bestDistance === 0.0) {
+              break;
             }
           }
         }
       }
-    } else if (points !== null) {
-      for (i = 0, l = points.length; i < l; ++i) {
-        p = points[i];
-        distSq = point.distanceToSquared(p);
+    } else if (octant.points !== null) {
+      var points = octant.points;
+      var index = -1;
+      var distance;
 
-        if ((!skipSelf || distSq > 0.0) && distSq < bestDist) {
-          bestDist = distSq;
-          result = {
-            point: p.clone(),
-            data: octant.data[i]
-          };
+      for (i = 0, l = points.length; i < l; ++i) {
+        if (points[i].equals(point)) {
+          if (!skipSelf) {
+            bestDistance = 0.0;
+            index = i;
+            break;
+          }
+        } else {
+          distance = point.distanceTo(points[i]);
+
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            index = i;
+          }
         }
+      }
+
+      if (index >= 0) {
+        result = {
+          point: points[index],
+          data: octant.data[index],
+          distance: bestDistance
+        };
       }
     }
 
@@ -9615,14 +9627,12 @@
   }
 
   function _findPoints(point, radius, skipSelf, octant, result) {
-    var points = octant.points;
     var children = octant.children;
-    var rSq = radius * radius;
     var i, l;
-    var p, distSq;
-    var child;
 
     if (children !== null) {
+      var child;
+
       for (i = 0, l = children.length; i < l; ++i) {
         child = children[i];
 
@@ -9630,12 +9640,22 @@
           _findPoints(point, radius, skipSelf, child, result);
         }
       }
-    } else if (points !== null) {
+    } else if (octant.points !== null) {
+      var points = octant.points;
+      var rSq = radius * radius;
+      var p;
+
       for (i = 0, l = points.length; i < l; ++i) {
         p = points[i];
-        distSq = point.distanceToSquared(p);
 
-        if ((!skipSelf || distSq > 0.0) && distSq <= rSq) {
+        if (p.equals(point)) {
+          if (!skipSelf) {
+            result.push({
+              point: p.clone(),
+              data: octant.data[i]
+            });
+          }
+        } else if (p.distanceToSquared(point) <= rSq) {
           result.push({
             point: p.clone(),
             data: octant.data[i]
@@ -9696,7 +9716,14 @@
       value: function findNearestPoint(point) {
         var maxDistance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Infinity;
         var skipSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-        return _findNearestPoint(point, maxDistance, skipSelf, this.root);
+
+        var result = _findNearestPoint(point, maxDistance, skipSelf, this.root);
+
+        if (result !== null) {
+          result.point = result.point.clone();
+        }
+
+        return result;
       }
     }, {
       key: "findPoints",
