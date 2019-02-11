@@ -324,27 +324,22 @@ function move(point, position, octree, octant, parent, depth) {
  * @param {Number} maxDistance - The maximum distance.
  * @param {Boolean} skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param {Octant} octant - The current octant.
- * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
+ * @return {Object} An object representing the nearest point or null if there is none.
+ * @property {Vector3} point - The nearest point.
+ * @property {Object} data - The data that belongs to the point.
+ * @property {Number} distance - The distance to the given point.
  */
 
 function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
-	const points = octant.points;
-	const children = octant.children;
-
 	let result = null;
-	let bestDist = maxDistance;
-
+	let bestDistance = maxDistance;
 	let i, l;
-	let p, distSq;
 
-	let sortedChildren;
-	let child, childResult;
-
-	if(children !== null) {
+	if(octant.children !== null) {
 
 		// Sort the children: smallest distance to the point first, ASC.
-		sortedChildren = children.map((child) => {
+		const sortedChildren = octant.children.map((child) => {
 
 			// Precompute distances.
 			return {
@@ -354,24 +349,25 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 		}).sort((a, b) => a.distance - b.distance);
 
+		let child, intermediateResult;
+
 		// Traverse from closest to furthest.
 		for(i = 0, l = sortedChildren.length; i < l; ++i) {
 
-			// Unpack octant.
 			child = sortedChildren[i].octant;
 
-			if(child.contains(point, bestDist)) {
+			if(child.contains(point, bestDistance)) {
 
-				childResult = findNearestPoint(point, bestDist, skipSelf, child);
+				intermediateResult = findNearestPoint(point, bestDistance, skipSelf, child);
 
-				if(childResult !== null) {
+				if(intermediateResult !== null) {
 
-					distSq = childResult.point.distanceToSquared(point);
+					bestDistance = intermediateResult.distance;
+					result = intermediateResult;
 
-					if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
+					if(bestDistance === 0.0) {
 
-						bestDist = distSq;
-						result = childResult;
+						break;
 
 					}
 
@@ -381,23 +377,47 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 		}
 
-	} else if(points !== null) {
+	} else if(octant.points !== null) {
+
+		const points = octant.points;
+
+		let index = -1;
+		let distance;
 
 		for(i = 0, l = points.length; i < l; ++i) {
 
-			p = points[i];
-			distSq = point.distanceToSquared(p);
+			if(points[i].equals(point)) {
 
-			if((!skipSelf || distSq > 0.0) && distSq < bestDist) {
+				if(!skipSelf) {
 
-				bestDist = distSq;
+					bestDistance = 0.0;
+					index = i;
+					break;
 
-				result = {
-					point: p.clone(),
-					data: octant.data[i]
-				};
+				}
+
+			} else {
+
+				distance = point.distanceTo(points[i]);
+
+				if(distance < bestDistance) {
+
+					bestDistance = distance;
+					index = i;
+
+				}
 
 			}
+
+		}
+
+		if(index >= 0) {
+
+			result = {
+				point: points[index],
+				data: octant.data[index],
+				distance: bestDistance
+			};
 
 		}
 
@@ -615,12 +635,23 @@ export class PointOctree extends Octree {
 	 * @param {Vector3} point - A point.
 	 * @param {Number} [maxDistance=Infinity] - An upper limit for the distance between the points.
 	 * @param {Boolean} [skipSelf=false] - Whether a point that is exactly at the given position should be skipped.
-	 * @return {Object} An object representing the nearest point or null if there is none. The object has a point and a data property.
+	 * @return {Object} An object representing the nearest point or null if there is none.
+	 * @property {Vector3} point - The nearest point.
+	 * @property {Object} data - The data that belongs to the point.
+	 * @property {Number} distance - The distance to the given point.
 	 */
 
 	findNearestPoint(point, maxDistance = Infinity, skipSelf = false) {
 
-		return findNearestPoint(point, maxDistance, skipSelf, this.root);
+		const result = findNearestPoint(point, maxDistance, skipSelf, this.root);
+
+		if(result !== null) {
+
+			result.point = result.point.clone();
+
+		}
+
+		return result;
 
 	}
 

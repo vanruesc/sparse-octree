@@ -121,13 +121,15 @@ test("can find the nearest point", t => {
 
 	const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
-	octree.put(new Vector3(0, 0, 0), data0);
-	octree.put(new Vector3(1, 0, 0), data0);
-	octree.put(new Vector3(0.9, 0, 0), data0);
-	octree.put(new Vector3(0.9, 0, 0.00125), data1);
+	octree.put(new Vector3(0, 0, 0), null);
+	octree.put(new Vector3(0.2, 0, 0), data1);
+	octree.put(new Vector3(0.3, 0, 0), data0);
+	octree.put(new Vector3(-0.75, -0.75, -0.75), data2);
+	octree.put(new Vector3(-1, -1, -1), data2);
 
-	t.is(octree.findNearestPoint(new Vector3(0.9, 0, 0.001)).data, data1, "should find the nearest point");
-	t.is(octree.findNearestPoint(new Vector3(0.9, 0, 0), Infinity, true).data, data1, "should be able to skip itself");
+	t.is(octree.findNearestPoint(new Vector3(0.2, 0, 0)).data, data1, "should find the nearest point");
+	t.is(octree.findNearestPoint(new Vector3(-0.9, -0.9, -0.9)).data, data2, "should find the nearest point");
+	t.is(octree.findNearestPoint(new Vector3(0.2, 0, 0), Infinity, true).data, data0, "should be able to skip itself");
 
 });
 
