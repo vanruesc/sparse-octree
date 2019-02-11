@@ -443,16 +443,13 @@ function findNearestPoint(point, maxDistance, skipSelf, octant) {
 
 function findPoints(point, radius, skipSelf, octant, result) {
 
-	const points = octant.points;
 	const children = octant.children;
-	const rSq = radius * radius;
 
 	let i, l;
 
-	let p, distSq;
-	let child;
-
 	if(children !== null) {
+
+		let child;
 
 		for(i = 0, l = children.length; i < l; ++i) {
 
@@ -466,14 +463,29 @@ function findPoints(point, radius, skipSelf, octant, result) {
 
 		}
 
-	} else if(points !== null) {
+	} else if(octant.points !== null) {
+
+		const points = octant.points;
+		const rSq = radius * radius;
+
+		let p;
 
 		for(i = 0, l = points.length; i < l; ++i) {
 
 			p = points[i];
-			distSq = point.distanceToSquared(p);
 
-			if((!skipSelf || distSq > 0.0) && distSq <= rSq) {
+			if(p.equals(point)) {
+
+				if(!skipSelf) {
+
+					result.push({
+						point: p.clone(),
+						data: octant.data[i]
+					});
+
+				}
+
+			} else if(p.distanceToSquared(point) <= rSq) {
 
 				result.push({
 					point: p.clone(),
