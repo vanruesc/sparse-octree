@@ -11,61 +11,102 @@ const banner = `/**
  * Copyright ${date.slice(-4)} ${pkg.author.name}, ${pkg.license}
  */`;
 
+const production = (process.env.NODE_ENV === "production");
+const globals = { three: "THREE" };
+const external = ["three"];
+
 const lib = {
 
-	input: pkg.module,
-	output: {
-		file: "build/" + pkg.name + ".js",
-		format: "umd",
-		name: pkg.name.replace(/-/g, "").toUpperCase(),
-		banner: banner,
-		globals: { three: "THREE" }
+	esm: {
+
+		input: "src/index.js",
+		plugins: [resolve()],
+		output: [{
+				file: pkg.main,
+				format: "esm"
+			}, {
+				file: pkg.main.replace(".js", ".min.js"),
+				format: "esm"
+			}
+		]
+
 	},
 
-	external: ["three"],
-	plugins: [resolve()].concat(process.env.NODE_ENV === "production" ? [babel()] : [])
+	umd: {
+
+		input: pkg.main,
+		plugins: [resolve()].concat(production ? [babel()] : []),
+		output: {
+			file: pkg.main,
+			format: "umd",
+			name: pkg.name.replace(/-/g, "").toUpperCase(),
+			banner: banner
+		}
+
+	}
 
 };
 
 const demo = {
 
-	input: "demo/src/index.js",
-	output: {
-		file: "public/demo/index.js",
-		format: "iife",
-		globals: { three: "THREE" }
+	esm: {
+
+		input: "demo/src/index.js",
+		external: external,
+		plugins: [resolve()],
+		output: [{
+				file: "public/demo/index.js",
+				format: "esm",
+				globals: globals
+			}, {
+				file: "public/demo/index.min.js",
+				format: "esm",
+				globals: globals
+			}
+		]
+
 	},
 
-	external: ["three"],
-	plugins: [resolve()].concat(process.env.NODE_ENV === "production" ? [babel()] : [])
+	iife: {
+
+		input: "public/demo/index.js",
+		external: external,
+		plugins: [resolve()].concat(production ? [babel()] : []),
+		output: {
+			file: "public/demo/index.js",
+			format: "iife",
+			globals: globals
+		}
+
+	}
 
 };
 
-export default [lib, demo].concat((process.env.NODE_ENV === "production") ? [
+export default [lib.esm, lib.umd, demo.esm, demo.iife].concat(production ? [{
 
-	Object.assign({}, lib, {
-
-		output: Object.assign({}, lib.output, {
-			file: "build/" + pkg.name + ".min.js"
-		}),
-
+		input: lib.esm.output[1].file,
+		external: external,
 		plugins: [resolve(), babel(), minify({
 			bannerNewLine: true,
 			comments: false
-		})]
+		})],
+		output: {
+			file: lib.esm.output[1].file,
+			format: "umd",
+			name: pkg.name.replace(/-/g, "").toUpperCase(),
+			banner: banner,
+			globals: globals
+		}
 
-	}),
+	}, {
 
-	Object.assign({}, demo, {
+		input: demo.esm.output[1].file,
+		external: external,
+		plugins: [resolve(), babel(), minify({ comments: false })],
+		output: {
+			file: demo.esm.output[1].file,
+			format: "iife",
+			globals: globals
+		}
 
-		output: Object.assign({}, demo.output, {
-			file: "public/demo/index.min.js"
-		}),
-
-		plugins: [resolve(), babel(), minify({
-			comments: false
-		})]
-
-	})
-
-] : []);
+}] : []);
