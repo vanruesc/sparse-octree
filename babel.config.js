@@ -5,9 +5,7 @@ module.exports = function(api) {
 	return {
 		comments: false,
 		presets: [
-			["@babel/preset-env", {
-				"modules": false
-			}]
+			["@babel/preset-env"]
 		]
 	};
 
