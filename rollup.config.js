@@ -35,7 +35,7 @@ const lib = {
 	umd: {
 
 		input: pkg.main,
-		plugins: [resolve()].concat(production ? [babel()] : []),
+		plugins: production ? [babel()] : [],
 		output: {
 			file: pkg.main,
 			format: "umd",
@@ -71,7 +71,7 @@ const demo = {
 
 		input: "public/demo/index.js",
 		external: external,
-		plugins: [resolve()].concat(production ? [babel()] : []),
+		plugins: production ? [babel()] : [],
 		output: {
 			file: "public/demo/index.js",
 			format: "iife",
@@ -86,7 +86,7 @@ export default [lib.esm, lib.umd, demo.esm, demo.iife].concat(production ? [{
 
 		input: lib.esm.output[1].file,
 		external: external,
-		plugins: [resolve(), babel(), minify({
+		plugins: [babel(), minify({
 			bannerNewLine: true,
 			comments: false
 		})],
@@ -102,7 +102,7 @@ export default [lib.esm, lib.umd, demo.esm, demo.iife].concat(production ? [{
 
 		input: demo.esm.output[1].file,
 		external: external,
-		plugins: [resolve(), babel(), minify({ comments: false })],
+		plugins: [babel(), minify({ comments: false })],
 		output: {
 			file: demo.esm.output[1].file,
 			format: "iife",
