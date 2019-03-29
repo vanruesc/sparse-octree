@@ -88,10 +88,10 @@
 		"octree-helper": "0.x.x",
 		"rollup": "1.x.x",
 		"rollup-plugin-babel": "4.x.x",
-		"rollup-plugin-babel-minify": "7.x.x",
+		"rollup-plugin-babel-minify": "8.x.x",
 		"rollup-plugin-node-resolve": "4.x.x",
 		"synthetic-event": "0.x.x",
-		"three": "0.102.x",
+		"three": "0.103.x",
 		"three-demo": "3.x.x"
 	}
 }
