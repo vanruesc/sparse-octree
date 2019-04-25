@@ -1,13 +1,12 @@
 # Sparse Octree
 
-[![Build status](https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master)](https://travis-ci.org/vanruesc/sparse-octree) 
-[![npm version](https://badge.fury.io/js/sparse-octree.svg)](http://badge.fury.io/js/sparse-octree) 
+[![Build status](https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master)](https://travis-ci.org/vanruesc/sparse-octree)
+[![npm version](https://badgen.net/npm/v/sparse-octree?color=green)](https://www.npmjs.com/package/sparse-octree)
 [![Peer dependencies](https://david-dm.org/vanruesc/sparse-octree/peer-status.svg)](https://david-dm.org/vanruesc/sparse-octree?type=peer)
 
 A sparse octree data structure.
 
-*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/demo) &there4;
-[API Reference](https://vanruesc.github.io/sparse-octree/public/docs)*
+*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[API Reference](https://vanruesc.github.io/sparse-octree/public/docs)*
 
 
 ## Installation
