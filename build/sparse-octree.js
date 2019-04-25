@@ -1,5 +1,5 @@
 /**
- * sparse-octree v5.2.1 build Mon Mar 11 2019
+ * sparse-octree v5.2.1 build Thu Apr 25 2019
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2019 Raoul van Rüschen, Zlib
  */
@@ -2160,16 +2160,16 @@
   }();
 
   exports.CubicOctant = CubicOctant;
-  exports.edges = edges;
   exports.Octant = Octant;
-  exports.Octree = Octree;
   exports.OctantIterator = OctantIterator;
+  exports.Octree = Octree;
   exports.OctreeRaycaster = OctreeRaycaster;
-  exports.pattern = pattern;
+  exports.OctreeUtils = OctreeUtils;
   exports.PointOctant = PointOctant;
   exports.PointOctree = PointOctree;
   exports.RayPointIntersection = RayPointIntersection;
-  exports.OctreeUtils = OctreeUtils;
+  exports.edges = edges;
+  exports.pattern = pattern;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

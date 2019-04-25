@@ -227,10 +227,10 @@
 
         if (m.has(type)) {
           listeners = m.get(type);
-          listeners.delete(listener);
+          listeners["delete"](listener);
 
           if (listeners.size === 0) {
-            m.delete(type);
+            m["delete"](type);
           }
         }
       }
@@ -260,8 +260,8 @@
             _iteratorError = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion && _iterator.return != null) {
-                _iterator.return();
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
               }
             } finally {
               if (_didIteratorError) {
@@ -287,8 +287,8 @@
             _iteratorError2 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                _iterator2.return();
+              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                _iterator2["return"]();
               }
             } finally {
               if (_didIteratorError2) {
@@ -2579,6 +2579,12 @@
     close: function close() {
       this.closed = true;
     },
+    hide: function hide() {
+      this.domElement.style.display = 'none';
+    },
+    show: function show() {
+      this.domElement.style.display = '';
+    },
     onResize: function onResize() {
       var root = this.getRoot();
 
@@ -3175,13 +3181,15 @@
     function DemoManager(viewport) {
       var _this4;
 
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _ref3 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref3$aside = _ref3.aside,
+          aside = _ref3$aside === void 0 ? viewport : _ref3$aside,
+          renderer = _ref3.renderer;
 
       _classCallCheck(this, DemoManager);
 
-      var aside = options.aside !== undefined ? options.aside : viewport;
       _this4 = _possibleConstructorReturn(this, _getPrototypeOf(DemoManager).call(this));
-      _this4.renderer = options.renderer !== undefined ? options.renderer : function () {
+      _this4.renderer = renderer !== undefined ? renderer : function () {
         var renderer = new three.WebGLRenderer();
         renderer.setSize(viewport.clientWidth, viewport.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -3255,7 +3263,7 @@
         renderer.clear();
         nextDemo.load().then(function () {
           return _this6.startDemo(nextDemo);
-        }).catch(console.error);
+        })["catch"](console.error);
       }
     }, {
       key: "addDemo",
@@ -3284,7 +3292,7 @@
         var firstEntry;
 
         if (demos.has(id)) {
-          demos.delete(id);
+          demos["delete"](id);
 
           if (this.demo === id && demos.size > 0) {
             firstEntry = demos.entries().next().value;
@@ -5857,7 +5865,7 @@
     }, {
       key: "delete",
       value: function _delete(keyCode) {
-        return this.actions.delete(keyCode);
+        return this.actions["delete"](keyCode);
       }
     }, {
       key: "toJSON",
