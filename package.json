@@ -80,7 +80,7 @@
 		"delta-controls": "2.x.x",
 		"esdoc": "1.x.x",
 		"esdoc-standard-plugin": "1.x.x",
-		"eslint": "5.x.x",
+		"eslint": "6.x.x",
 		"eslint-config-delta": "0.x.x",
 		"iterator-result": "0.x.x",
 		"math-ds": "1.x.x",
@@ -91,7 +91,7 @@
 		"rollup-plugin-babel-minify": "8.x.x",
 		"rollup-plugin-node-resolve": "5.x.x",
 		"synthetic-event": "0.x.x",
-		"three": "0.105.x",
+		"three": "0.106.x",
 		"three-demo": "3.x.x"
 	}
 }

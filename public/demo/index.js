@@ -4312,8 +4312,8 @@
     YXZ: "YXZ",
     ZYX: "ZYX"
   };
-  var a = new Vector3();
-  var b = new Vector3();
+  var a$2 = new Vector3();
+  var b$2 = new Vector3();
   var c = new Vector3();
 
   var Matrix4 = function () {
@@ -4453,9 +4453,9 @@
       value: function extractRotation(m) {
         var te = this.elements;
         var me = m.elements;
-        var scaleX = 1.0 / a.setFromMatrixColumn(m, 0).length();
-        var scaleY = 1.0 / a.setFromMatrixColumn(m, 1).length();
-        var scaleZ = 1.0 / a.setFromMatrixColumn(m, 2).length();
+        var scaleX = 1.0 / a$2.setFromMatrixColumn(m, 0).length();
+        var scaleY = 1.0 / a$2.setFromMatrixColumn(m, 1).length();
+        var scaleZ = 1.0 / a$2.setFromMatrixColumn(m, 2).length();
         te[0] = me[0] * scaleX;
         te[1] = me[1] * scaleX;
         te[2] = me[2] * scaleX;
@@ -4595,14 +4595,14 @@
     }, {
       key: "makeRotationFromQuaternion",
       value: function makeRotationFromQuaternion(q) {
-        return this.compose(a.set(0, 0, 0), q, b.set(1, 1, 1));
+        return this.compose(a$2.set(0, 0, 0), q, b$2.set(1, 1, 1));
       }
     }, {
       key: "lookAt",
       value: function lookAt(eye, target, up) {
         var te = this.elements;
-        var x = a,
-            y = b,
+        var x = a$2,
+            y = b$2,
             z = c;
         z.subVectors(eye, target);
 
@@ -4966,9 +4966,9 @@
             n12 = te[9],
             n22 = te[10];
         var det = this.determinant();
-        var sx = a.set(n00, n10, n20).length() * (det < 0 ? -1 : 1);
-        var sy = a.set(n01, n11, n21).length();
-        var sz = a.set(n02, n12, n22).length();
+        var sx = a$2.set(n00, n10, n20).length() * (det < 0 ? -1 : 1);
+        var sy = a$2.set(n01, n11, n21).length();
+        var sz = a$2.set(n02, n12, n22).length();
         var invSX = 1.0 / sx;
         var invSY = 1.0 / sy;
         var invSZ = 1.0 / sz;
@@ -5076,7 +5076,7 @@
     return Matrix4;
   }();
 
-  var v$1 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
+  var v$4 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
 
   var Ray = function () {
     function Ray() {
@@ -5123,7 +5123,7 @@
     }, {
       key: "recast",
       value: function recast(t) {
-        this.origin.copy(this.at(t, v$1[0]));
+        this.origin.copy(this.at(t, v$4[0]));
         return this;
       }
     }, {
@@ -5136,8 +5136,8 @@
     }, {
       key: "distanceSquaredToPoint",
       value: function distanceSquaredToPoint(p) {
-        var directionDistance = v$1[0].subVectors(p, this.origin).dot(this.direction);
-        return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$1[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
+        var directionDistance = v$4[0].subVectors(p, this.origin).dot(this.direction);
+        return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$4[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
       }
     }, {
       key: "distanceToPoint",
@@ -5154,9 +5154,9 @@
     }, {
       key: "distanceSquaredToSegment",
       value: function distanceSquaredToSegment(v0, v1, pointOnRay, pointOnSegment) {
-        var segCenter = v$1[0].copy(v0).add(v1).multiplyScalar(0.5);
-        var segDir = v$1[1].copy(v1).sub(v0).normalize();
-        var diff = v$1[2].copy(this.origin).sub(segCenter);
+        var segCenter = v$4[0].copy(v0).add(v1).multiplyScalar(0.5);
+        var segDir = v$4[1].copy(v1).sub(v0).normalize();
+        var diff = v$4[2].copy(this.origin).sub(segCenter);
         var segExtent = v0.distanceTo(v1) * 0.5;
         var a01 = -this.direction.dot(segDir);
         var b0 = diff.dot(this.direction);
@@ -5222,7 +5222,7 @@
       key: "intersectSphere",
       value: function intersectSphere(s) {
         var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var ab = v$1[0].subVectors(s.center, this.origin);
+        var ab = v$4[0].subVectors(s.center, this.origin);
         var tca = ab.dot(this.direction);
         var d2 = ab.dot(ab) - tca * tca;
         var radius2 = s.radius * s.radius;
@@ -5326,16 +5326,16 @@
     }, {
       key: "intersectsBox",
       value: function intersectsBox(b) {
-        return this.intersectBox(b, v$1[0]) !== null;
+        return this.intersectBox(b, v$4[0]) !== null;
       }
     }, {
       key: "intersectTriangle",
       value: function intersectTriangle(a, b, c, backfaceCulling, target) {
         var direction = this.direction;
-        var diff = v$1[0];
-        var edge1 = v$1[1];
-        var edge2 = v$1[2];
-        var normal = v$1[3];
+        var diff = v$4[0];
+        var edge1 = v$4[1];
+        var edge2 = v$4[2];
+        var normal = v$4[3];
         var result = null;
         var DdN, sign, DdQxE2, DdE1xQ, QdN;
         edge1.subVectors(b, a);
@@ -5457,7 +5457,7 @@
     SECONDARY: 2
   };
   var TWO_PI = Math.PI * 2;
-  var v$2 = new Vector3();
+  var v$1 = new Vector3();
   var m = new Matrix4();
 
   var RotationManager = function () {
@@ -5496,9 +5496,9 @@
         var rotation = settings.rotation;
 
         if (settings.general.orbit) {
-          m.lookAt(v$2.subVectors(this.position, this.target), rotation.pivotOffset, rotation.up);
+          m.lookAt(v$1.subVectors(this.position, this.target), rotation.pivotOffset, rotation.up);
         } else {
-          m.lookAt(v$2.set(0, 0, 0), this.target.setFromSpherical(this.spherical), rotation.up);
+          m.lookAt(v$1.set(0, 0, 0), this.target.setFromSpherical(this.spherical), rotation.up);
         }
 
         this.quaternion.setFromRotationMatrix(m);
@@ -5561,12 +5561,12 @@
         target.copy(point);
 
         if (this.settings.general.orbit) {
-          v$2.subVectors(position, target);
+          v$1.subVectors(position, target);
         } else {
-          v$2.subVectors(target, position).normalize();
+          v$1.subVectors(target, position).normalize();
         }
 
-        spherical.setFromVector3(v$2);
+        spherical.setFromVector3(v$1);
         spherical.radius = Math.max(spherical.radius, 1e-6);
         this.updateQuaternion();
         return this;
@@ -5619,7 +5619,7 @@
   var x = new Vector3(1, 0, 0);
   var y = new Vector3(0, 1, 0);
   var z = new Vector3(0, 0, 1);
-  var v$3 = new Vector3();
+  var v$2 = new Vector3();
 
   var TranslationManager = function () {
     function TranslationManager(position, quaternion, target, settings) {
@@ -5653,11 +5653,11 @@
     }, {
       key: "translateOnAxis",
       value: function translateOnAxis(axis, distance) {
-        v$3.copy(axis).applyQuaternion(this.quaternion).multiplyScalar(distance);
-        this.position.add(v$3);
+        v$2.copy(axis).applyQuaternion(this.quaternion).multiplyScalar(distance);
+        this.position.add(v$2);
 
         if (this.settings.general.orbit) {
-          this.target.add(v$3);
+          this.target.add(v$2);
         }
       }
     }, {
@@ -6722,7 +6722,7 @@
     return IteratorResult;
   }();
 
-  var b$1 = new Box3();
+  var b = new Box3();
 
   var OctantIterator = function () {
     function OctantIterator(octree) {
@@ -6747,10 +6747,10 @@
         this.indices = [];
 
         if (root !== null) {
-          b$1.min = root.min;
-          b$1.max = root.max;
+          b.min = root.min;
+          b.max = root.max;
 
-          if (!this.cull || this.region.intersectsBox(b$1)) {
+          if (!this.cull || this.region.intersectsBox(b)) {
             this.trace.push(root);
             this.indices.push(0);
           }
@@ -6779,10 +6779,10 @@
               child = children[index];
 
               if (cull) {
-                b$1.min = child.min;
-                b$1.max = child.max;
+                b.min = child.min;
+                b.max = child.max;
 
-                if (!region.intersectsBox(b$1)) {
+                if (!region.intersectsBox(b)) {
                   continue;
                 }
               }
@@ -6822,8 +6822,8 @@
     return OctantIterator;
   }();
 
-  var v$4 = [new Vector3(), new Vector3(), new Vector3()];
-  var b$2 = new Box3();
+  var v$3 = [new Vector3(), new Vector3(), new Vector3()];
+  var b$1 = new Box3();
   var r = new Ray();
   var octantTable = [new Uint8Array([4, 2, 1]), new Uint8Array([5, 3, 8]), new Uint8Array([6, 8, 3]), new Uint8Array([7, 8, 8]), new Uint8Array([8, 6, 5]), new Uint8Array([8, 7, 8]), new Uint8Array([8, 8, 7]), new Uint8Array([8, 8, 8])];
   var flags = 0;
@@ -6948,15 +6948,15 @@
     _createClass(OctreeRaycaster, null, [{
       key: "intersectOctree",
       value: function intersectOctree(octree, raycaster, intersects) {
-        var min = b$2.min.set(0, 0, 0);
-        var max = b$2.max.subVectors(octree.max, octree.min);
-        var dimensions = octree.getDimensions(v$4[0]);
-        var halfDimensions = v$4[1].copy(dimensions).multiplyScalar(0.5);
+        var min = b$1.min.set(0, 0, 0);
+        var max = b$1.max.subVectors(octree.max, octree.min);
+        var dimensions = octree.getDimensions(v$3[0]);
+        var halfDimensions = v$3[1].copy(dimensions).multiplyScalar(0.5);
         var origin = r.origin.copy(raycaster.ray.origin);
         var direction = r.direction.copy(raycaster.ray.direction);
         var invDirX, invDirY, invDirZ;
         var tx0, tx1, ty0, ty1, tz0, tz1;
-        origin.sub(octree.getCenter(v$4[2])).add(halfDimensions);
+        origin.sub(octree.getCenter(v$3[2])).add(halfDimensions);
         flags = 0;
 
         if (direction.x < 0.0) {

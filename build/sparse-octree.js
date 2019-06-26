@@ -1,5 +1,5 @@
 /**
- * sparse-octree v5.2.1 build Thu Apr 25 2019
+ * sparse-octree v5.2.1 build Wed Jun 26 2019
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2019 Raoul van Rüschen, Zlib
  */
@@ -782,7 +782,7 @@
     return Box3;
   }();
 
-  var v$1 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
+  var v$4 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
 
   var Ray = function () {
     function Ray() {
@@ -829,7 +829,7 @@
     }, {
       key: "recast",
       value: function recast(t) {
-        this.origin.copy(this.at(t, v$1[0]));
+        this.origin.copy(this.at(t, v$4[0]));
         return this;
       }
     }, {
@@ -842,8 +842,8 @@
     }, {
       key: "distanceSquaredToPoint",
       value: function distanceSquaredToPoint(p) {
-        var directionDistance = v$1[0].subVectors(p, this.origin).dot(this.direction);
-        return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$1[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
+        var directionDistance = v$4[0].subVectors(p, this.origin).dot(this.direction);
+        return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$4[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
       }
     }, {
       key: "distanceToPoint",
@@ -860,9 +860,9 @@
     }, {
       key: "distanceSquaredToSegment",
       value: function distanceSquaredToSegment(v0, v1, pointOnRay, pointOnSegment) {
-        var segCenter = v$1[0].copy(v0).add(v1).multiplyScalar(0.5);
-        var segDir = v$1[1].copy(v1).sub(v0).normalize();
-        var diff = v$1[2].copy(this.origin).sub(segCenter);
+        var segCenter = v$4[0].copy(v0).add(v1).multiplyScalar(0.5);
+        var segDir = v$4[1].copy(v1).sub(v0).normalize();
+        var diff = v$4[2].copy(this.origin).sub(segCenter);
         var segExtent = v0.distanceTo(v1) * 0.5;
         var a01 = -this.direction.dot(segDir);
         var b0 = diff.dot(this.direction);
@@ -928,7 +928,7 @@
       key: "intersectSphere",
       value: function intersectSphere(s) {
         var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var ab = v$1[0].subVectors(s.center, this.origin);
+        var ab = v$4[0].subVectors(s.center, this.origin);
         var tca = ab.dot(this.direction);
         var d2 = ab.dot(ab) - tca * tca;
         var radius2 = s.radius * s.radius;
@@ -1032,16 +1032,16 @@
     }, {
       key: "intersectsBox",
       value: function intersectsBox(b) {
-        return this.intersectBox(b, v$1[0]) !== null;
+        return this.intersectBox(b, v$4[0]) !== null;
       }
     }, {
       key: "intersectTriangle",
       value: function intersectTriangle(a, b, c, backfaceCulling, target) {
         var direction = this.direction;
-        var diff = v$1[0];
-        var edge1 = v$1[1];
-        var edge2 = v$1[2];
-        var normal = v$1[3];
+        var diff = v$4[0];
+        var edge1 = v$4[1];
+        var edge2 = v$4[2];
+        var normal = v$4[3];
         var result = null;
         var DdN, sign, DdQxE2, DdE1xQ, QdN;
         edge1.subVectors(b, a);
@@ -1311,7 +1311,7 @@
     return OctantIterator;
   }();
 
-  var v$2 = [new Vector3(), new Vector3(), new Vector3()];
+  var v$1 = [new Vector3(), new Vector3(), new Vector3()];
   var b$1 = new Box3();
   var r = new Ray();
   var octantTable = [new Uint8Array([4, 2, 1]), new Uint8Array([5, 3, 8]), new Uint8Array([6, 8, 3]), new Uint8Array([7, 8, 8]), new Uint8Array([8, 6, 5]), new Uint8Array([8, 7, 8]), new Uint8Array([8, 8, 7]), new Uint8Array([8, 8, 8])];
@@ -1439,13 +1439,13 @@
       value: function intersectOctree(octree, raycaster, intersects) {
         var min = b$1.min.set(0, 0, 0);
         var max = b$1.max.subVectors(octree.max, octree.min);
-        var dimensions = octree.getDimensions(v$2[0]);
-        var halfDimensions = v$2[1].copy(dimensions).multiplyScalar(0.5);
+        var dimensions = octree.getDimensions(v$1[0]);
+        var halfDimensions = v$1[1].copy(dimensions).multiplyScalar(0.5);
         var origin = r.origin.copy(raycaster.ray.origin);
         var direction = r.direction.copy(raycaster.ray.direction);
         var invDirX, invDirY, invDirZ;
         var tx0, tx1, ty0, ty1, tz0, tz1;
-        origin.sub(octree.getCenter(v$2[2])).add(halfDimensions);
+        origin.sub(octree.getCenter(v$1[2])).add(halfDimensions);
         flags = 0;
 
         if (direction.x < 0.0) {
@@ -2120,7 +2120,7 @@
   var b$3 = new Box3();
   var c$2 = new Vector3();
   var u = new Vector3();
-  var v$3 = new Vector3();
+  var v$2 = new Vector3();
 
   var OctreeUtils = function () {
     function OctreeUtils() {
@@ -2132,7 +2132,7 @@
       value: function recycleOctants(octant, octants) {
         var min = octant.min;
         var mid = octant.getCenter(u);
-        var halfDimensions = octant.getDimensions(v$3).multiplyScalar(0.5);
+        var halfDimensions = octant.getDimensions(v$2).multiplyScalar(0.5);
         var children = octant.children;
         var l = octants.length;
         var i, j;
