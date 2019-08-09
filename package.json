@@ -81,17 +81,17 @@
 		"esdoc": "1.x.x",
 		"esdoc-standard-plugin": "1.x.x",
 		"eslint": "6.x.x",
-		"eslint-config-delta": "0.x.x",
+		"eslint-config-delta": "1.x.x",
 		"iterator-result": "0.x.x",
 		"math-ds": "1.x.x",
 		"rimraf": "2.x.x",
 		"octree-helper": "0.x.x",
 		"rollup": "1.x.x",
 		"rollup-plugin-babel": "4.x.x",
-		"rollup-plugin-babel-minify": "8.x.x",
+		"rollup-plugin-babel-minify": "9.x.x",
 		"rollup-plugin-node-resolve": "5.x.x",
-		"synthetic-event": "0.x.x",
-		"three": "0.106.x",
+		"synthetic-event": "1.x.x",
+		"three": "0.107.x",
 		"three-demo": "3.x.x"
 	}
 }
