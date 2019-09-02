@@ -91,7 +91,7 @@
 		"rollup-plugin-babel-minify": "9.x.x",
 		"rollup-plugin-node-resolve": "5.x.x",
 		"synthetic-event": "1.x.x",
-		"three": "0.107.x",
+		"three": "0.x.x",
 		"three-demo": "3.x.x"
 	}
 }
