@@ -61,22 +61,15 @@ function onLoad(event) {
 
 window.addEventListener("load", function main(event) {
 
-	// Clean up.
-	this.removeEventListener("load", main);
-
 	const viewport = document.getElementById("viewport");
 
 	// Create a custom renderer.
-	const renderer = new WebGLRenderer({
-		logarithmicDepthBuffer: true,
-		antialias: true
-	});
-
+	const renderer = new WebGLRenderer({ antialias: true });
 	renderer.setSize(viewport.clientWidth, viewport.clientHeight);
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setClearColor(0x000000);
 
-	// Initialise the demo manager.
+	// Initialize the demo manager.
 	manager = new DemoManager(viewport, {
 		aside: document.getElementById("aside"),
 		renderer: renderer
