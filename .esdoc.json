@@ -4,7 +4,22 @@
 	"destination": "public/docs",
 
 	"plugins": [{
-		"name": "esdoc-standard-plugin"
+		"name": "esdoc-standard-plugin",
+		"option": {
+			"accessor": {
+				"access": ["public", "protected"],
+				"autoPrivate": true
+			}
+		}
+	}, {
+		"name": "esdoc-importpath-plugin",
+		"option": {
+			"stripPackageName": false,
+			"replaces": [{
+				"from": "^src/.*",
+				"to": ""
+			}]
+		}
 	}]
 
 }
