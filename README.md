@@ -4,9 +4,9 @@
 [![npm version](https://badgen.net/npm/v/sparse-octree?color=green)](https://www.npmjs.com/package/sparse-octree)
 [![Peer dependencies](https://david-dm.org/vanruesc/sparse-octree/peer-status.svg)](https://david-dm.org/vanruesc/sparse-octree?type=peer)
 
-A sparse octree data structure.
+A sparse, pointer-based octree data structure. For a linear implementation see [linear-octree](https://github.com/vanruesc/linear-octree).
 
-*[Extensive Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[API Reference](https://vanruesc.github.io/sparse-octree/public/docs)*
+*[Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/public/docs)*
 
 
 ## Installation
@@ -24,25 +24,9 @@ npm install sparse-octree
 
 ## Usage
 
-##### Custom Octrees
+##### Point Clouds
 
-```javascript
-import { Octree, CubicOctant } from "sparse-octree";
-
-export class CubicOctree extends Octree {
-
-	constructor(min, size) {
-
-		this.root = new CubicOctant(min, size);
-
-	}
-
-}
-```
-
-##### Points
-
-```javascript
+```js
 import { Vector3 } from "math-ds";
 import { PointOctree } from "sparse-octree";
 
@@ -58,24 +42,39 @@ octree.fetch(new Vector3(0, 0, 0)); // => myData
 
 A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/15/).
 
+##### Custom Octrees
+
+```js
+import { Octree, CubicOctant } from "sparse-octree";
+
+export class CubicOctree extends Octree {
+
+	constructor(min, size) {
+
+		this.root = new CubicOctant(min, size);
+
+	}
+
+}
+```
+
 
 ## Features
 
-- Base Functionality
-	- Pointer-based structure
+- Pointer-based standard structure
   - Handles octant splitting
-  - Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-pattern)
-  - Supports raycasting
-  - Supports culling
-  - Supports cubic octrees
-  - Can be extended to manage any data
-- Provides a point management implementation
+  - Supports cubic octrees for reduced memory usage
+  - Dynamic depth
+- Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-pattern)
+- Supports raycasting
+- Supports culling
+- Can be extended to manage any data
+- Provides a point cloud management implementation
 
 
 ## Octree Helper
 
-The [octree-helper](https://github.com/vanruesc/octree-helper) module provides
-an octree visualisation tool for [three.js](https://threejs.org/).
+The [octree-helper](https://github.com/vanruesc/octree-helper) module provides an octree visualisation tool for [three.js](https://threejs.org/).
 
 
 ## Contributing

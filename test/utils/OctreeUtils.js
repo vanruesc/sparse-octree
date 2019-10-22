@@ -1,17 +1,15 @@
 import test from "ava";
-import { Box3, Vector3 } from "math-ds";
+import { Vector3 } from "math-ds";
 import { CubicOctant, Octant, OctreeUtils } from "../../build/sparse-octree.js";
-
-const box = new Box3(
-	new Vector3(-1, -1, -1),
-	new Vector3(1, 1, 1)
-);
 
 test("can recycle child octants", t => {
 
-	const octant = new Octant(box.min, box.max);
+	const octant = new Octant(
+		new Vector3(-1, -1, -1),
+		new Vector3(1, 1, 1)
+	);
 
-	const mid = octant.getCenter();
+	const mid = octant.getCenter(new Vector3());
 
 	const octant011 = new Octant(
 		new Vector3(octant.min.x, mid.y, mid.z),
@@ -29,9 +27,12 @@ test("can recycle child octants", t => {
 
 test("can recycle cubic child octants", t => {
 
-	const octant = new CubicOctant(box.min, 2);
+	const octant = new CubicOctant(
+		new Vector3(-1, -1, -1),
+		2
+	);
 
-	const mid = octant.getCenter();
+	const mid = octant.getCenter(new Vector3());
 
 	const octant011 = new CubicOctant(
 		new Vector3(octant.min.x, mid.y, mid.z),

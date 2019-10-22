@@ -1,19 +1,23 @@
 export {
-	CubicOctant,
 	edges,
-	Octant,
-	Octree,
-	OctantIterator,
-	OctreeRaycaster,
-	pattern
+	layout
 } from "./core";
 
 export {
+	CubicOctant,
+	Octant,
+	Octree,
+	OctreeIterator,
+	OctreeRaycaster,
+	OctreeUtils,
 	PointOctant,
 	PointOctree,
 	RayPointIntersection
-} from "./points";
+} from "./pointer";
 
 export {
-	OctreeUtils
-} from "./utils";
+	Flags,
+	findEntryOctant,
+	findNextOctant,
+	intersectOctree
+} from "./raycasting";

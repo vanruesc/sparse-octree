@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { Octant } from "../core/Octant.js";
+import { Octant } from "../Octant.js";
 
 /**
  * A point.

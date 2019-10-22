@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { pattern } from "./Octant.js";
+import { layout } from "../core/layout.js";
 
 /**
  * A vector.
@@ -12,6 +12,8 @@ const c = new Vector3();
 
 /**
  * A cubic octant.
+ *
+ * @implements {Octant}
  */
 
 export class CubicOctant {
@@ -45,7 +47,6 @@ export class CubicOctant {
 		 * The children of this octant.
 		 *
 		 * @type {CubicOctant[]}
-		 * @default null
 		 */
 
 		this.children = null;
@@ -55,7 +56,7 @@ export class CubicOctant {
 	/**
 	 * The upper bounds of this octant.
 	 *
-	 * Accessing this property always creates a new vector.
+	 * Attention: Accessing this property creates a new vector!
 	 *
 	 * @type {Vector3}
 	 */
@@ -103,19 +104,15 @@ export class CubicOctant {
 		const halfSize = this.size * 0.5;
 
 		const children = this.children = [
-
-			null, null,
-			null, null,
-			null, null,
-			null, null
-
+			null, null, null, null,
+			null, null, null, null
 		];
 
 		let i, combination;
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = pattern[i];
+			combination = layout[i];
 
 			children[i] = new this.constructor(
 

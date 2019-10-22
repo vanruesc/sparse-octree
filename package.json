@@ -4,7 +4,7 @@
 	"description": "A sparse octree data structure.",
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "build/sparse-octree.js",
-	"module": "src/index.js",
+	"module": "build/sparse-octree.esm.js",
 	"sideEffects": false,
 	"license": "Zlib",
 
@@ -18,7 +18,8 @@
 		"voxel",
 		"points",
 		"frustum",
-		"culling"
+		"culling",
+		"pointer"
 	],
 
 	"author": {
@@ -35,10 +36,7 @@
 		"url": "https://github.com/vanruesc/sparse-octree/issues"
 	},
 
-	"files": [
-		"src",
-		"build"
-	],
+	"files": ["build"],
 
 	"scripts": {
 		"ava": "ava",
@@ -49,8 +47,8 @@
 		"lint:test": "eslint test",
 		"build": "rollup -c",
 		"build:production": "cross-env NODE_ENV=production npm run build",
+		"watch": "rollup -c --watch",
 		"doc": "rimraf public/docs && esdoc",
-		"deploy": "cpx demo/assets/** public/demo",
 		"pretest": "npm run lint && npm run build:production",
 		"test": "npm run ava",
 		"prepack": "npm test"
@@ -78,6 +76,7 @@
 		"dat.gui": "0.x.x",
 		"delta-controls": "2.x.x",
 		"esdoc": "1.x.x",
+		"esdoc-importpath-plugin": "1.x.x",
 		"esdoc-standard-plugin": "1.x.x",
 		"eslint": "6.x.x",
 		"eslint-config-delta": "1.x.x",

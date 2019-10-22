@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { Octree } from "../core/Octree.js";
+import { Octree } from "../Octree.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
@@ -518,15 +518,7 @@ export class PointOctree extends Octree {
 
 	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
-		super();
-
-		/**
-		 * The root octant.
-		 *
-		 * @type {PointOctant}
-		 */
-
-		this.root = new PointOctant(min, max);
+		super(new PointOctant(min, max));
 
 		/**
 		 * An octant boundary bias.

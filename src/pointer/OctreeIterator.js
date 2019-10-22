@@ -11,13 +11,13 @@ import IteratorResult from "iterator-result";
 const b = new Box3();
 
 /**
- * An octant iterator.
+ * An octree iterator.
  *
  * @implements {Iterator}
  * @implements {Iterable}
  */
 
-export class OctantIterator {
+export class OctreeIterator {
 
 	/**
 	 * Constructs a new octant iterator.
@@ -87,7 +87,7 @@ export class OctantIterator {
 	/**
 	 * Resets this iterator.
 	 *
-	 * @return {OctantIterator} This iterator.
+	 * @return {OctreeIterator} This iterator.
 	 */
 
 	reset() {
@@ -209,7 +209,7 @@ export class OctantIterator {
 	/**
 	 * Returns this iterator.
 	 *
-	 * @return {OctantIterator} An iterator.
+	 * @return {Iterator} An iterator.
 	 */
 
 	[Symbol.iterator]() {
