@@ -1,12 +1,11 @@
 import { Box3, Vector3 } from "math-ds";
-import { pattern } from "../core/Octant.js";
+import { layout } from "../../core";
 
 /**
  * A box.
  *
  * @type {Box3}
  * @private
- * @final
  */
 
 const b = new Box3();
@@ -16,7 +15,6 @@ const b = new Box3();
  *
  * @type {Vector3}
  * @private
- * @final
  */
 
 const c = new Vector3();
@@ -26,7 +24,6 @@ const c = new Vector3();
  *
  * @type {Vector3}
  * @private
- * @final
  */
 
 const u = new Vector3();
@@ -36,7 +33,6 @@ const u = new Vector3();
  *
  * @type {Vector3}
  * @private
- * @final
  */
 
 const v = new Vector3();
@@ -68,7 +64,7 @@ export class OctreeUtils {
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = pattern[i];
+			combination = layout[i];
 
 			b.min.addVectors(min, c.fromArray(combination).multiply(halfDimensions));
 			b.max.addVectors(mid, c.fromArray(combination).multiply(halfDimensions));

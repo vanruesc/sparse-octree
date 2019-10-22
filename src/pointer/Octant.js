@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { pattern } from "./Octant.js";
+import { layout } from "../core/layout.js";
 
 /**
  * A vector.
@@ -11,19 +11,21 @@ import { pattern } from "./Octant.js";
 const c = new Vector3();
 
 /**
- * A cubic octant.
+ * An octant.
+ *
+ * @implements {Octant}
  */
 
-export class CubicOctant {
+export class Octant {
 
 	/**
-	 * Constructs a new cubic octant.
+	 * Constructs a new octant.
 	 *
 	 * @param {Vector3} [min] - The lower bounds.
-	 * @param {Number} [size=0] - The size of the octant.
+	 * @param {Vector3} [max] - The upper bounds.
 	 */
 
-	constructor(min = new Vector3(), size = 0) {
+	constructor(min = new Vector3(), max = new Vector3()) {
 
 		/**
 		 * The lower bounds of this octant.
@@ -34,35 +36,20 @@ export class CubicOctant {
 		this.min = min;
 
 		/**
-		 * The size of this octant.
+		 * The upper bounds of the octant.
 		 *
-		 * @type {Number}
+		 * @type {Vector3}
 		 */
 
-		this.size = size;
+		this.max = max;
 
 		/**
 		 * The children of this octant.
 		 *
-		 * @type {CubicOctant[]}
-		 * @default null
+		 * @type {Octant[]}
 		 */
 
 		this.children = null;
-
-	}
-
-	/**
-	 * The upper bounds of this octant.
-	 *
-	 * Accessing this property always creates a new vector.
-	 *
-	 * @type {Vector3}
-	 */
-
-	get max() {
-
-		return this.min.clone().addScalar(this.size);
 
 	}
 
@@ -75,12 +62,12 @@ export class CubicOctant {
 
 	getCenter(target = new Vector3()) {
 
-		return target.copy(this.min).addScalar(this.size * 0.5);
+		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
 
 	}
 
 	/**
-	 * Returns the size of this octant as a vector.
+	 * Computes the size of this octant.
 	 *
 	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
 	 * @return {Vector3} A vector that describes the size of this octant.
@@ -88,7 +75,7 @@ export class CubicOctant {
 
 	getDimensions(target = new Vector3()) {
 
-		return target.set(this.size, this.size, this.size);
+		return target.subVectors(this.max, this.min);
 
 	}
 
@@ -99,23 +86,19 @@ export class CubicOctant {
 	split() {
 
 		const min = this.min;
+		const max = this.max;
 		const mid = this.getCenter(c);
-		const halfSize = this.size * 0.5;
 
 		const children = this.children = [
-
-			null, null,
-			null, null,
-			null, null,
-			null, null
-
+			null, null, null, null,
+			null, null, null, null
 		];
 
 		let i, combination;
 
 		for(i = 0; i < 8; ++i) {
 
-			combination = pattern[i];
+			combination = layout[i];
 
 			children[i] = new this.constructor(
 
@@ -125,7 +108,11 @@ export class CubicOctant {
 					(combination[2] === 0) ? min.z : mid.z
 				),
 
-				halfSize
+				new Vector3(
+					(combination[0] === 0) ? mid.x : max.x,
+					(combination[1] === 0) ? mid.y : max.y,
+					(combination[2] === 0) ? mid.z : max.z
+				)
 
 			);
 

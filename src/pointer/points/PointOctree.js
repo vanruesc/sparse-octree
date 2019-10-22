@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { Octree } from "../core/Octree.js";
+import { Octree } from "../Octree.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 

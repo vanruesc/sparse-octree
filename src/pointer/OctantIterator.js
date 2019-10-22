@@ -209,7 +209,7 @@ export class OctantIterator {
 	/**
 	 * Returns this iterator.
 	 *
-	 * @return {OctantIterator} An iterator.
+	 * @return {Iterator} An iterator.
 	 */
 
 	[Symbol.iterator]() {

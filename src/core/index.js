@@ -1,5 +1,5 @@
-export { CubicOctant } from "./CubicOctant.js";
+export { edges } from "./edges.js";
+export { layout } from "./layout.js";
+
 export { Octree } from "./Octree.js";
-export { Octant, pattern, edges } from "./Octant.js";
-export { OctantIterator } from "./OctantIterator.js";
-export { OctreeRaycaster } from "./OctreeRaycaster.js";
+export { Octant } from "./Octant.js";
