@@ -18,7 +18,8 @@
 		"voxel",
 		"points",
 		"frustum",
-		"culling"
+		"culling",
+		"pointer"
 	],
 
 	"author": {
