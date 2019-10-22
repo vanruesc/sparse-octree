@@ -35,10 +35,7 @@
 		"url": "https://github.com/vanruesc/sparse-octree/issues"
 	},
 
-	"files": [
-		"src",
-		"build"
-	],
+	"files": ["build"],
 
 	"scripts": {
 		"ava": "ava",
