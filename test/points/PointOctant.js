@@ -32,7 +32,7 @@ test("correctly computes the distance from its center to a point", t => {
 
 	const point = new Vector3(1, 2, 3);
 
-	t.is(octant.distanceToCenterSquared(point), octant.getCenter().distanceToSquared(point), "should calculate the squared distance");
+	t.is(octant.distanceToCenterSquared(point), octant.getCenter(new Vector3()).distanceToSquared(point), "should calculate the squared distance");
 
 });
 

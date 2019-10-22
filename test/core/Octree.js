@@ -19,7 +19,7 @@ test("can compute its center", t => {
 
 	const octree = new Octree(root);
 
-	t.true(octree.getCenter().equals(new Vector3(0, 0, 0)), "should be able to compute its center");
+	t.true(octree.getCenter(new Vector3()).equals(new Vector3(0, 0, 0)), "should be able to compute its center");
 
 });
 
@@ -27,7 +27,7 @@ test("can compute its dimensions", t => {
 
 	const octree = new Octree(root);
 
-	t.true(octree.getDimensions().equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
+	t.true(octree.getDimensions(new Vector3()).equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
 
 });
 

@@ -9,7 +9,7 @@ test("can recycle child octants", t => {
 		new Vector3(1, 1, 1)
 	);
 
-	const mid = octant.getCenter();
+	const mid = octant.getCenter(new Vector3());
 
 	const octant011 = new Octant(
 		new Vector3(octant.min.x, mid.y, mid.z),
@@ -32,7 +32,7 @@ test("can recycle cubic child octants", t => {
 		2
 	);
 
-	const mid = octant.getCenter();
+	const mid = octant.getCenter(new Vector3());
 
 	const octant011 = new CubicOctant(
 		new Vector3(octant.min.x, mid.y, mid.z),

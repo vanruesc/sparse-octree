@@ -19,7 +19,7 @@ test("can compute its center", t => {
 
 	const octant = new Octant(box.min, box.max);
 
-	t.true(octant.getCenter().equals(new Vector3(0, 0, 0)), "should be able to compute its center");
+	t.true(octant.getCenter(new Vector3()).equals(new Vector3(0, 0, 0)), "should be able to compute its center");
 
 });
 
@@ -27,7 +27,7 @@ test("can compute its dimensions", t => {
 
 	const octant = new Octant(box.min, box.max);
 
-	t.true(octant.getDimensions().equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
+	t.true(octant.getDimensions(new Vector3()).equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
 
 });
 
