@@ -264,7 +264,7 @@ export class Octree {
 
 	raycast(raycaster, intersects = []) {
 
-		OctreeRaycaster.intersectOctree(this, raycaster, intersects);
+		OctreeRaycaster.intersectOctree(this, raycaster.ray, intersects);
 
 		return intersects;
 

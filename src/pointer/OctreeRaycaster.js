@@ -24,11 +24,10 @@ const flags = new Flags();
  * @param {Number} tx1 - A ray projection parameter.
  * @param {Number} ty1 - A ray projection parameter.
  * @param {Number} tz1 - A ray projection parameter.
- * @param {Raycaster} raycaster - The raycaster.
  * @param {Array} intersects - An array to be filled with the intersecting octants.
  */
 
-function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersects) {
+function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, intersects) {
 
 	if(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {
 
@@ -46,7 +45,7 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 			const tym = 0.5 * (ty0 + ty1);
 			const tzm = 0.5 * (tz0 + tz1);
 
-			const flags = flags.value;
+			const f = flags.value;
 			let currentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);
 
 			/* The possibilities for the next node are passed in the same respective
@@ -59,42 +58,42 @@ function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, raycaster, intersec
 				switch(currentOctant) {
 
 					case 0:
-						raycastOctant(children[flags], tx0, ty0, tz0, txm, tym, tzm, raycaster, intersects);
+						raycastOctant(children[f], tx0, ty0, tz0, txm, tym, tzm, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
 						break;
 
 					case 1:
-						raycastOctant(children[flags ^ 1], tx0, ty0, tzm, txm, tym, tz1, raycaster, intersects);
+						raycastOctant(children[f ^ 1], tx0, ty0, tzm, txm, tym, tz1, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
 						break;
 
 					case 2:
-						raycastOctant(children[flags ^ 2], tx0, tym, tz0, txm, ty1, tzm, raycaster, intersects);
+						raycastOctant(children[f ^ 2], tx0, tym, tz0, txm, ty1, tzm, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
 						break;
 
 					case 3:
-						raycastOctant(children[flags ^ 3], tx0, tym, tzm, txm, ty1, tz1, raycaster, intersects);
+						raycastOctant(children[f ^ 3], tx0, tym, tzm, txm, ty1, tz1, intersects);
 						currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
 						break;
 
 					case 4:
-						raycastOctant(children[flags ^ 4], txm, ty0, tz0, tx1, tym, tzm, raycaster, intersects);
+						raycastOctant(children[f ^ 4], txm, ty0, tz0, tx1, tym, tzm, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
 						break;
 
 					case 5:
-						raycastOctant(children[flags ^ 5], txm, ty0, tzm, tx1, tym, tz1, raycaster, intersects);
+						raycastOctant(children[f ^ 5], txm, ty0, tzm, tx1, tym, tz1, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
 						break;
 
 					case 6:
-						raycastOctant(children[flags ^ 6], txm, tym, tz0, tx1, ty1, tzm, raycaster, intersects);
+						raycastOctant(children[f ^ 6], txm, tym, tz0, tx1, ty1, tzm, intersects);
 						currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
 						break;
 
 					case 7:
-						raycastOctant(children[flags ^ 7], txm, tym, tzm, tx1, ty1, tz1, raycaster, intersects);
+						raycastOctant(children[f ^ 7], txm, tym, tzm, tx1, ty1, tz1, intersects);
 						// Far top right octant. No other octants can be reached from here.
 						currentOctant = 8;
 						break;
@@ -134,7 +133,7 @@ export class OctreeRaycaster {
 
 		if(result !== null) {
 
-			raycastOctant(octree.root, ...result, ray, intersects);
+			raycastOctant(octree.root, ...result, intersects);
 
 		}
 
