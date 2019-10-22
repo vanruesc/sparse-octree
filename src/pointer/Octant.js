@@ -56,11 +56,11 @@ export class Octant {
 	/**
 	 * Computes the center of this octant.
 	 *
-	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
-	 * @return {Vector3} A vector that describes the center of this octant.
+	 * @param {Vector3} target - A target vector.
+	 * @return {Vector3} The center.
 	 */
 
-	getCenter(target = new Vector3()) {
+	getCenter(target) {
 
 		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
 
@@ -69,11 +69,11 @@ export class Octant {
 	/**
 	 * Computes the size of this octant.
 	 *
-	 * @param {Vector3} [target] - A target vector. If none is provided, a new one will be created.
-	 * @return {Vector3} A vector that describes the size of this octant.
+	 * @param {Vector3} target - A target vector.
+	 * @return {Vector3} The size.
 	 */
 
-	getDimensions(target = new Vector3()) {
+	getDimensions(target) {
 
 		return target.subVectors(this.max, this.min);
 
