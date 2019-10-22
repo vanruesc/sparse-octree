@@ -1,5 +1,5 @@
 import { Box3 } from "math-ds";
-import { OctantIterator } from "./OctantIterator.js";
+import { OctreeIterator } from "./OctreeIterator.js";
 import { OctreeRaycaster } from "./OctreeRaycaster.js";
 
 /**
@@ -282,7 +282,7 @@ export class Octree {
 
 	leaves(region) {
 
-		return new OctantIterator(this, region);
+		return new OctreeIterator(this, region);
 
 	}
 
@@ -294,7 +294,7 @@ export class Octree {
 
 	[Symbol.iterator]() {
 
-		return new OctantIterator(this);
+		return new OctreeIterator(this);
 
 	}
 

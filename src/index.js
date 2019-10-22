@@ -5,8 +5,9 @@ export {
 
 export {
 	CubicOctant,
-	Octree,
 	Octant,
+	Octree,
+	OctreeIterator,
 	OctreeRaycaster,
 	OctreeUtils,
 	PointOctant,
