@@ -1,8 +1,8 @@
 import test from "ava";
 import { Box3, Vector3 } from "math-ds";
-import { OctantIterator, Octree } from "../../build/sparse-octree.js";
+import { Octant, OctreeIterator, Octree } from "../../build/sparse-octree.js";
 
-const box = new Box3(
+const root = new Octant(
 	new Vector3(-1, -1, -1),
 	new Vector3(1, 1, 1)
 );
@@ -14,7 +14,7 @@ const region = new Box3(
 
 test("can be instantiated", t => {
 
-	const object = new OctantIterator(new Octree());
+	const object = new OctreeIterator(new Octree(root));
 
 	t.truthy(object);
 
@@ -22,7 +22,7 @@ test("can be instantiated", t => {
 
 test("iterates over all leaf octants", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 	const iterator = octree.leaves();
 
 	let i = 0;
@@ -41,7 +41,7 @@ test("iterates over all leaf octants", t => {
 
 test("can cull leaf octants", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 	const iterator = octree.leaves(region);
 
 	let i = 0;

@@ -1,15 +1,15 @@
 import test from "ava";
-import { Box3, Vector3 } from "math-ds";
-import { Octree } from "../../build/sparse-octree.js";
+import { Vector3 } from "math-ds";
+import { Octant, Octree } from "../../build/sparse-octree.js";
 
-const box = new Box3(
+const root = new Octant(
 	new Vector3(-1, -1, -1),
 	new Vector3(1, 1, 1)
 );
 
 test("can be instantiated", t => {
 
-	const object = new Octree();
+	const object = new Octree(root);
 
 	t.truthy(object);
 
@@ -17,7 +17,7 @@ test("can be instantiated", t => {
 
 test("can compute its center", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 
 	t.true(octree.getCenter().equals(new Vector3(0, 0, 0)), "should be able to compute its center");
 
@@ -25,7 +25,7 @@ test("can compute its center", t => {
 
 test("can compute its dimensions", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 
 	t.true(octree.getDimensions().equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
 
@@ -33,7 +33,7 @@ test("can compute its dimensions", t => {
 
 test("can compute its depth", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 
 	octree.root.split();
 	octree.root.children[0].split();
@@ -45,7 +45,7 @@ test("can compute its depth", t => {
 
 test("finds octants by depth level", t => {
 
-	const octree = new Octree(box.min, box.max);
+	const octree = new Octree(root);
 
 	octree.root.split();
 	octree.root.children[0].split();
