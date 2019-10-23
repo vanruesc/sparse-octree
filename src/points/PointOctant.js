@@ -155,10 +155,10 @@ export class PointOctant extends Octant {
 
 			}
 
-		}
+			this.points = null;
+			this.data = null;
 
-		this.points = null;
-		this.data = null;
+		}
 
 	}
 
