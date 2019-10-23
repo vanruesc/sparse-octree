@@ -61,11 +61,11 @@ export class CubicOctree extends Octree {
 
 ## Features
 
-- Pointer-based standard structure
+- Pointer-based structure
   - Handles octant splitting
   - Supports cubic octrees for reduced memory usage
   - Dynamic depth
-- Adheres to a [common octant layout](http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-pattern)
+- Adheres to a [common octant layout](https://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-layout)
 - Supports raycasting
 - Supports culling
 - Can be extended to manage any data
