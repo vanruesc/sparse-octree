@@ -11,7 +11,7 @@ import {
 } from "three";
 
 import { DeltaControls } from "delta-controls";
-// import { OctreeHelper } from "octree-helper";
+import { OctreeHelper } from "octree-helper";
 import { Demo } from "three-demo";
 import { PointOctree } from "../../../src";
 import { OctreeRaycaster } from "./OctreeRaycaster.js";
@@ -208,7 +208,7 @@ export class PointOctreeDemo extends Demo {
 
 		// Octree Helper.
 
-		/* const octreeHelper = (function createOctreeHelper(octree) {
+		const octreeHelper = (function createOctreeHelper(octree) {
 
 			const t0 = performance.now();
 			const octreeHelper = new OctreeHelper(octree);
@@ -221,7 +221,7 @@ export class PointOctreeDemo extends Demo {
 		}(octree));
 
 		this.octreeHelper = octreeHelper;
-		scene.add(octreeHelper); */
+		scene.add(octreeHelper);
 
 		// Raycasting.
 
@@ -266,14 +266,14 @@ export class PointOctreeDemo extends Demo {
 		this.frustumCuller.registerOptions(menu);
 
 		const params = {
-			// "level mask": octreeHelper.children.length
+			"level mask": octreeHelper.children.length
 		};
 
 		let folder = menu.addFolder("Points");
 		folder.add(points, "visible");
 		folder.open();
 
-		/* folder = menu.addFolder("Octree Helper");
+		folder = menu.addFolder("Octree Helper");
 		folder.add(octreeHelper, "visible");
 
 		folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(() => {
@@ -288,7 +288,7 @@ export class PointOctreeDemo extends Demo {
 
 		});
 
-		folder.open(); */
+		folder.open();
 
 	}
 
