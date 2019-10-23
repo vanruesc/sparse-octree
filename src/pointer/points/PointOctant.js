@@ -169,13 +169,12 @@ export class PointOctant extends Octant {
 
 		const children = this.children;
 
-		let i, l;
-		let child;
-
 		if(children !== null) {
 
-			this.points = [];
-			this.data = [];
+			let points = [];
+			let data = [];
+
+			let i, l, child;
 
 			for(i = 0, l = children.length; i < l; ++i) {
 
@@ -183,14 +182,16 @@ export class PointOctant extends Octant {
 
 				if(child.points !== null) {
 
-					this.points.push(...child.points);
-					this.data.push(...child.data);
+					points = points.concat(child.points);
+					data = data.concat(child.data);
 
 				}
 
 			}
 
 			this.children = null;
+			this.points = points;
+			this.data = data;
 
 		}
 
