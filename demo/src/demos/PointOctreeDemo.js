@@ -189,7 +189,7 @@ export class PointOctreeDemo extends Demo {
 
 				for(i = 0, l = array.length; i < l; i += 3) {
 
-					octree.put(v.fromArray(array, i), p);
+					octree.insert(v.fromArray(array, i), p);
 
 				}
 

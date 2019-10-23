@@ -37,7 +37,7 @@ function countPoints(octant) {
 }
 
 /**
- * Recursively places a point into the octree.
+ * Recursively inserts a point into the octree.
  *
  * @private
  * @param {Vector3} point - A point.
@@ -48,7 +48,7 @@ function countPoints(octant) {
  * @return {Boolean} Whether the operation was successful.
  */
 
-function put(point, data, octree, octant, depth) {
+function insert(point, data, octree, octant, depth) {
 
 	let children = octant.children;
 	let exists = false;
@@ -102,7 +102,7 @@ function put(point, data, octree, octant, depth) {
 
 			for(i = 0, l = children.length; !done && i < l; ++i) {
 
-				done = put(point, data, octree, children[i], depth);
+				done = insert(point, data, octree, children[i], depth);
 
 			}
 
@@ -306,7 +306,7 @@ function move(point, position, octree, octant, parent, depth) {
 			result = remove(point, octree, octant, parent);
 
 			// Go back to the parent octant and add the updated point.
-			put(position, result, octree, parent, depth - 1);
+			insert(position, result, octree, parent, depth - 1);
 
 		}
 
@@ -588,9 +588,9 @@ export class PointOctree extends Octree {
 	 * @return {Boolean} Whether the operation was successful.
 	 */
 
-	put(point, data) {
+	insert(point, data) {
 
-		return put(point, data, this, this.root, 0);
+		return insert(point, data, this, this.root, 0);
 
 	}
 
