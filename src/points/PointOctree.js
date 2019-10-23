@@ -1,5 +1,5 @@
-import { Octree } from "../core";
-import { testPoints } from "../raycasting";
+import { Octree } from "../core/Octree.js";
+import { testPoints } from "../raycasting/testPoints.js";
 import { PointOctant } from "./PointOctant.js";
 
 /**
@@ -200,7 +200,7 @@ function remove(point, octree, octant, parent) {
  * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
  */
 
-function fetch(point, octree, octant) {
+function get(point, octree, octant) {
 
 	const children = octant.children;
 
@@ -215,7 +215,7 @@ function fetch(point, octree, octant) {
 
 			for(i = 0, l = children.length; result === null && i < l; ++i) {
 
-				result = fetch(point, octree, children[i]);
+				result = get(point, octree, children[i]);
 
 			}
 
@@ -510,7 +510,7 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Vector3} [min] - The lower bounds of the tree.
 	 * @param {Vector3} [max] - The upper bounds of the tree.
-	 * @param {Number} [bias=0.0] - An octant boundary bias.
+	 * @param {Number} [bias=0.0] - An octant boundary bias. The octree is considered "loose" with a bias greater than 0.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
 	 */
@@ -522,8 +522,6 @@ export class PointOctree extends Octree {
 		/**
 		 * An octant boundary bias.
 		 *
-		 * The octree is considered "loose" with a bias greater than 0.
-		 *
 		 * @type {Number}
 		 * @private
 		 */
@@ -531,7 +529,7 @@ export class PointOctree extends Octree {
 		this.bias = Math.max(0.0, bias);
 
 		/**
-		 * Number of points per octant before a split occurs.
+		 * The number of points per octant before a split occurs.
 		 *
 		 * This value works together with the maximum depth as a secondary limiting
 		 * factor. Smaller values cause splits to occur earlier which results in a
@@ -613,9 +611,9 @@ export class PointOctree extends Octree {
 	 * @return {Object} The data entry that is associated with the given point or null if it doesn't exist.
 	 */
 
-	fetch(point) {
+	get(point) {
 
-		return fetch(point, this, this.root);
+		return get(point, this, this.root);
 
 	}
 

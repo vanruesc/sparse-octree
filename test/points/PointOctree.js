@@ -55,11 +55,11 @@ test("can look a point up", t => {
 
 	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
 
-	t.is(octree.fetch(new Vector3(0, 0, 0)), null, "should return null if there is no point");
+	t.is(octree.get(new Vector3(0, 0, 0)), null, "should return null if there is no point");
 
 	octree.insert(new Vector3(0, 0, 0), data0);
 
-	t.is(octree.fetch(new Vector3(0, 0, 0)), data0, "should find points and return their data");
+	t.is(octree.get(new Vector3(0, 0, 0)), data0, "should find points and return their data");
 
 });
 
@@ -112,8 +112,8 @@ test("can move points", t => {
 	t.is(octree.pointCount, 2, "should correctly relocate points");
 	t.is(result0, data0, "should return the data of the updated point");
 	t.is(result1, data1, "should return the data of the updated point");
-	t.is(octree.fetch(new Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
-	t.is(octree.fetch(new Vector3(1, -0.5, 1)), data1, "should correctly update points");
+	t.is(octree.get(new Vector3(0.5, 0.6, 0.5)), data0, "should correctly update points");
+	t.is(octree.get(new Vector3(1, -0.5, 1)), data1, "should correctly update points");
 
 });
 
