@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { layout } from "../core/layout.js";
+import { layout } from "./layout.js";
 
 /**
  * A vector.
@@ -11,21 +11,21 @@ import { layout } from "../core/layout.js";
 const c = new Vector3();
 
 /**
- * An octant.
+ * A cubic octant.
  *
  * @implements {Octant}
  */
 
-export class Octant {
+export class CubicOctant {
 
 	/**
-	 * Constructs a new octant.
+	 * Constructs a new cubic octant.
 	 *
 	 * @param {Vector3} [min] - The lower bounds.
-	 * @param {Vector3} [max] - The upper bounds.
+	 * @param {Number} [size=0] - The size of the octant.
 	 */
 
-	constructor(min = new Vector3(), max = new Vector3()) {
+	constructor(min = new Vector3(), size = 0) {
 
 		/**
 		 * The lower bounds of this octant.
@@ -36,20 +36,34 @@ export class Octant {
 		this.min = min;
 
 		/**
-		 * The upper bounds of the octant.
+		 * The size of this octant.
 		 *
-		 * @type {Vector3}
+		 * @type {Number}
 		 */
 
-		this.max = max;
+		this.size = size;
 
 		/**
 		 * The children of this octant.
 		 *
-		 * @type {Octant[]}
+		 * @type {CubicOctant[]}
 		 */
 
 		this.children = null;
+
+	}
+
+	/**
+	 * The upper bounds of this octant.
+	 *
+	 * Attention: Accessing this property creates a new vector!
+	 *
+	 * @type {Vector3}
+	 */
+
+	get max() {
+
+		return this.min.clone().addScalar(this.size);
 
 	}
 
@@ -62,12 +76,12 @@ export class Octant {
 
 	getCenter(target) {
 
-		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
+		return target.copy(this.min).addScalar(this.size * 0.5);
 
 	}
 
 	/**
-	 * Computes the size of this octant.
+	 * Returns the size of this octant as a vector.
 	 *
 	 * @param {Vector3} target - A target vector.
 	 * @return {Vector3} The size.
@@ -75,7 +89,7 @@ export class Octant {
 
 	getDimensions(target) {
 
-		return target.subVectors(this.max, this.min);
+		return target.set(this.size, this.size, this.size);
 
 	}
 
@@ -86,8 +100,8 @@ export class Octant {
 	split() {
 
 		const min = this.min;
-		const max = this.max;
 		const mid = this.getCenter(c);
+		const halfSize = this.size * 0.5;
 
 		const children = this.children = [
 			null, null, null, null,
@@ -108,11 +122,7 @@ export class Octant {
 					(combination[2] === 0) ? min.z : mid.z
 				),
 
-				new Vector3(
-					(combination[0] === 0) ? mid.x : max.x,
-					(combination[1] === 0) ? mid.y : max.y,
-					(combination[2] === 0) ? mid.z : max.z
-				)
+				halfSize
 
 			);
 
