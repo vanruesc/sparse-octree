@@ -51,7 +51,7 @@ test("finds octants by depth level", t => {
 	octree.root.children[0].split();
 	octree.root.children[7].split();
 
-	const octants = octree.findOctantsByLevel(2);
+	const octants = octree.findNodesByLevel(2);
 
 	t.true(Array.isArray(octants), "should return a list");
 	t.is(octants.length, 16, "should find all octants");
