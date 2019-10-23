@@ -1,9 +1,7 @@
-import {
-	Flags,
-	findEntryOctant,
-	findNextOctant,
-	intersectOctree
-} from "../raycasting";
+import { Flags } from "./Flags.js";
+import { findEntryOctant } from "./findEntryOctant.js";
+import { findNextOctant } from "./findNextOctant.js";
+import { intersectOctree } from "./intersectOctree.js";
 
 /**
  * Raycasting flags.
@@ -121,7 +119,7 @@ export class OctreeRaycaster {
 	/**
 	 * Finds (pseudo) leaf octants that intersect with the given ray.
 	 *
-	 * @param {PointerOctree} octree - An octree.
+	 * @param {Octree} octree - An octree.
 	 * @param {Ray} ray - A ray.
 	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
 	 * @return {Octant[]} The intersecting octants. Sorted by distance, closest first.
@@ -129,11 +127,11 @@ export class OctreeRaycaster {
 
 	static intersectOctree(octree, ray, intersects = []) {
 
-		const result = intersectOctree(octree, ray, flags);
+		const parameters = intersectOctree(octree, ray, flags);
 
-		if(result !== null) {
+		if(parameters !== null) {
 
-			raycastOctant(octree.root, ...result, intersects);
+			raycastOctant(octree.root, ...parameters, intersects);
 
 		}
 

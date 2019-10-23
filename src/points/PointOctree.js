@@ -1,6 +1,6 @@
-import { Octree } from "../Octree.js";
+import { Octree } from "../core";
+import { testPoints } from "../raycasting";
 import { PointOctant } from "./PointOctant.js";
-import { testPoints } from "./raycasting";
 
 /**
  * Recursively counts how many points are in the given octant.
