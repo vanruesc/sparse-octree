@@ -6,7 +6,7 @@
 
 A sparse, pointer-based octree data structure. For a linear implementation see [linear-octree](https://github.com/vanruesc/linear-octree).
 
-*[Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/public/docs)*
+*[Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/s/sparse-octree-3yn8o)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/public/docs)*
 
 
 ## Installation
@@ -39,8 +39,6 @@ const myData = {};
 octree.put(new Vector3(0, 0, 0), myData);
 octree.fetch(new Vector3(0, 0, 0)); // => myData
 ```
-
-A full point octree example can be found [here](https://jsfiddle.net/6gt9fjmq/15/).
 
 ##### Custom Octrees
 
