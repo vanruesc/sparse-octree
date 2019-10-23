@@ -79,7 +79,7 @@ export class CubicOctree extends Octree {
 
 ## Octree Helper
 
-The [octree-helper](https://github.com/vanruesc/octree-helper) module provides an octree visualisation tool for [three.js](https://threejs.org/).
+The [octree-helper](https://github.com/vanruesc/octree-helper) module provides an octree visualization tool for [three.js](https://threejs.org/).
 
 
 ## Contributing
