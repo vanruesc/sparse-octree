@@ -12,7 +12,8 @@ export {
 	OctreeUtils,
 	PointOctant,
 	PointOctree,
-	RayPointIntersection
+	RayPointIntersection,
+	testPoints
 } from "./pointer";
 
 export {

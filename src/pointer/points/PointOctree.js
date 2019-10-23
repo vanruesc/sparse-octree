@@ -1,7 +1,6 @@
-import { Vector3 } from "math-ds";
 import { Octree } from "../Octree.js";
 import { PointOctant } from "./PointOctant.js";
-import { RayPointIntersection } from "./RayPointIntersection.js";
+import { testPoints } from "./raycasting";
 
 /**
  * Recursively counts how many points are in the given octant.
@@ -696,72 +695,11 @@ export class PointOctree extends Octree {
 
 		if(octants.length > 0) {
 
-			// Collect intersecting points.
-			this.testPoints(octants, raycaster, intersects);
+			testPoints(octants, raycaster, intersects);
 
 		}
 
 		return intersects;
-
-	}
-
-	/**
-	 * Collects points that intersect with the given ray.
-	 *
-	 * @param {Octant[]} octants - An array containing octants that intersect with the ray.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with intersecting points.
-	 */
-
-	testPoints(octants, raycaster, intersects) {
-
-		const threshold = raycaster.params.Points.threshold;
-		const thresholdSq = threshold * threshold;
-
-		let intersectPoint;
-		let distance, distanceToRay;
-		let rayPointDistanceSq;
-
-		let i, j, il, jl;
-		let octant, points, point;
-
-		for(i = 0, il = octants.length; i < il; ++i) {
-
-			octant = octants[i];
-			points = octant.points;
-
-			if(points !== null) {
-
-				for(j = 0, jl = points.length; j < jl; ++j) {
-
-					point = points[j];
-					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
-
-					if(rayPointDistanceSq < thresholdSq) {
-
-						intersectPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
-						distance = raycaster.ray.origin.distanceTo(intersectPoint);
-
-						if(distance >= raycaster.near && distance <= raycaster.far) {
-
-							distanceToRay = Math.sqrt(rayPointDistanceSq);
-
-							intersects.push(new RayPointIntersection(
-								distance,
-								distanceToRay,
-								intersectPoint,
-								octant.data[j]
-							));
-
-						}
-
-					}
-
-				}
-
-			}
-
-		}
 
 	}
 
