@@ -15,7 +15,7 @@ const b = new Box3();
  * Recursively calculates the depth of the given octree.
  *
  * @private
- * @param {Octant} octant - An octant.
+ * @param {Node} octant - An octant.
  * @return {Number} The depth.
  */
 
@@ -50,9 +50,9 @@ function getDepth(octant) {
  * Recursively collects octants that lie inside the specified region.
  *
  * @private
- * @param {Octant} octant - An octant.
+ * @param {Node} octant - An octant.
  * @param {Frustum|Box3} region - A region.
- * @param {Octant[]} result - A list to be filled with octants that intersect with the region.
+ * @param {Node[]} result - A list to be filled with octants that intersect with the region.
  */
 
 function cull(octant, region, result) {
@@ -88,10 +88,10 @@ function cull(octant, region, result) {
  * Recursively fetches all octants with the specified depth level.
  *
  * @private
- * @param {Octant} octant - An octant.
+ * @param {Node} octant - An octant.
  * @param {Number} level - The target depth level.
  * @param {Number} depth - The current depth level.
- * @param {Octant[]} result - A list to be filled with the identified octants.
+ * @param {Node[]} result - A list to be filled with the identified octants.
  */
 
 function findNodesByLevel(octant, level, depth, result) {
@@ -122,6 +122,7 @@ function findNodesByLevel(octant, level, depth, result) {
  * A pointer-based octree that subdivides space for fast spatial searches.
  *
  * @implements {Iterable}
+ * @implements {Node}
  * @implements {Tree}
  */
 
@@ -130,7 +131,7 @@ export class Octree {
 	/**
 	 * Constructs a new octree.
 	 *
-	 * @param {Octant} root - The root octant. See {@link Octant} or {@link CubicOctant}.
+	 * @param {Node} root - The root node. See {@link Octant} or {@link CubicOctant}.
 	 */
 
 	constructor(root) {
@@ -138,7 +139,8 @@ export class Octree {
 		/**
 		 * The root octant.
 		 *
-		 * @type {Octant}
+		 * @type {Node}
+		 * @protected
 		 */
 
 		this.root = root;
@@ -170,9 +172,9 @@ export class Octree {
 	}
 
 	/**
-	 * The children of the root octant.
+	 * The children of the root node.
 	 *
-	 * @type {Octant[]}
+	 * @type {Node[]}
 	 */
 
 	get children() {
@@ -208,10 +210,10 @@ export class Octree {
 	}
 
 	/**
-	 * Recursively collects octants that intersect with the specified region.
+	 * Recursively collects nodes that intersect with the specified region.
 	 *
 	 * @param {Frustum|Box3} region - A region.
-	 * @return {Octant[]} The octants.
+	 * @return {Node[]} The nodes.
 	 */
 
 	cull(region) {
@@ -240,7 +242,7 @@ export class Octree {
 	 * Fetches all nodes of a specific depth level.
 	 *
 	 * @param {Number} level - The depth level.
-	 * @return {Node[]} The octants.
+	 * @return {Node[]} The nodes.
 	 */
 
 	findNodesByLevel(level) {
@@ -254,12 +256,12 @@ export class Octree {
 	}
 
 	/**
-	 * Finds the octants that intersect with the given ray. The intersecting
-	 * octants are sorted by distance, closest first.
+	 * Finds the nodes that intersect with the given ray. The intersecting
+	 * nodes are sorted by distance, closest first.
 	 *
 	 * @param {Raycaster} raycaster - A raycaster.
-	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
-	 * @return {Octant[]} The intersecting octants.
+	 * @param {Node[]} [intersects] - An optional target list to be filled with the intersecting nodes.
+	 * @return {Node[]} The intersecting nodes.
 	 */
 
 	raycast(raycaster, intersects = []) {

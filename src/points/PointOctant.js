@@ -1,5 +1,5 @@
 import { Vector3 } from "math-ds";
-import { Octant } from "../core";
+import { Octant } from "../core/Octant.js";
 
 /**
  * A point.
@@ -46,7 +46,7 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * Computes the distance squared from this octant to the given point.
+	 * Calculates the distance squared from this octant to the given point.
 	 *
 	 * @param {Vector3} point - A point.
 	 * @return {Number} The distance squared.
@@ -61,7 +61,7 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * Computes the distance squared from the center of this octant to the given
+	 * Calculates the distance squared from the center of this octant to the given
 	 * point.
 	 *
 	 * @param {Vector3} point - A point.
@@ -108,7 +108,9 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * Redistributes existing points to child octants.
+	 * Redistributes the points of this octant to its children.
+	 *
+	 * Has no effect if there are no points or if this octant has no children.
 	 *
 	 * @param {Number} bias - A proximity threshold.
 	 */
@@ -161,8 +163,7 @@ export class PointOctant extends Octant {
 	}
 
 	/**
-	 * Gathers all points from the children. The children are expected to be leaf
-	 * octants and will be dropped afterwards.
+	 * Deletes all child nodes and collects their points.
 	 */
 
 	merge() {
@@ -189,6 +190,7 @@ export class PointOctant extends Octant {
 
 			}
 
+			/** @ignore */
 			this.children = null;
 			this.points = points;
 			this.data = data;

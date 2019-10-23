@@ -13,7 +13,7 @@ const c = new Vector3();
 /**
  * A cubic octant.
  *
- * @implements {Octant}
+ * @implements {Node}
  */
 
 export class CubicOctant {

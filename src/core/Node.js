@@ -1,7 +1,7 @@
 /**
  * The Node contract.
  *
- * Implemented by objects that are stored in a tree structure.
+ * Implemented by objects that represent a node in a tree structure.
  *
  * @interface
  */
