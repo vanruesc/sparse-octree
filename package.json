@@ -83,7 +83,7 @@
 		"iterator-result": "0.x.x",
 		"math-ds": "1.x.x",
 		"rimraf": "3.x.x",
-		"octree-helper": "0.x.x",
+		"octree-helper": "1.x.x",
 		"rollup": "1.x.x",
 		"rollup-plugin-babel": "4.x.x",
 		"rollup-plugin-babel-minify": "9.x.x",
