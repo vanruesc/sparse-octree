@@ -80,19 +80,24 @@ export class PointOctreeDemo extends Demo {
 
 		// Camera.
 
-		const camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 200);
+		const camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.3, 2000);
 		camera.position.set(10, 6, 10);
 		this.camera = camera;
 
 		// Controls.
 
-		const controls = new DeltaControls(camera.position, camera.quaternion, renderer.domElement);
+		const controls = new DeltaControls(
+			camera.position, camera.quaternion, renderer.domElement
+		);
+
 		controls.settings.pointer.lock = false;
 		controls.settings.zoom.maxDistance = 60.0;
 		controls.settings.sensitivity.translation = 10.0;
 		controls.settings.sensitivity.zoom = 1.0;
 		controls.lookAt(scene.position);
 		this.controls = controls;
+
+		camera.updateMatrixWorld();
 
 		// Fog.
 
@@ -221,7 +226,6 @@ export class PointOctreeDemo extends Demo {
 		// Raycasting.
 
 		this.raycaster = new OctreeRaycaster(octree, camera, points);
-
 		renderer.domElement.addEventListener("mousemove", this.raycaster);
 		scene.add(this.raycaster.selectedPoint);
 
