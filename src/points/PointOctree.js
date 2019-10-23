@@ -1,5 +1,5 @@
 import { Octree } from "../core/Octree.js";
-import { testPoints } from "../raycasting/testPoints.js";
+import { testPoints } from "../raycasting/points/testPoints.js";
 import { PointOctant } from "./PointOctant.js";
 
 /**
