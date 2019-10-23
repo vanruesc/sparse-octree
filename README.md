@@ -24,7 +24,7 @@ npm install sparse-octree
 
 ## Usage
 
-##### Point Clouds
+##### Points
 
 ```js
 import { Vector3 } from "math-ds";
@@ -34,10 +34,17 @@ const min = new Vector3(-1, -1, -1);
 const max = new Vector3(1, 1, 1);
 
 const octree = new PointOctree(min, max);
-const myData = {};
 
-octree.put(new Vector3(0, 0, 0), myData);
-octree.fetch(new Vector3(0, 0, 0)); // => myData
+const myData = {};
+const p1 = new Vector3(0, 0, 0);
+const p2 = new Vector3(0, 0, 0.5);
+
+octree.insert(p1, myData);
+octree.move(p1, p2);
+octree.get(p2); // => myData
+
+octree.remove(p2);
+octree.get(p2); // => null
 ```
 
 ##### Custom Octrees
@@ -67,7 +74,7 @@ export class CubicOctree extends Octree {
 - Supports raycasting
 - Supports culling
 - Can be extended to manage any data
-- Provides a point cloud management implementation
+- Provides a point management implementation
 
 
 ## Octree Helper
