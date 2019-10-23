@@ -1,69 +1,105 @@
 window.esdocSearchIndex = [
   [
-    "sparse-octree/src/core/cubicoctant.js~cubicoctant",
+    "sparse-octree~cubicoctant",
     "class/src/core/CubicOctant.js~CubicOctant.html",
-    "<span>CubicOctant</span> <span class=\"search-result-import-path\">sparse-octree/src/core/CubicOctant.js</span>",
+    "<span>CubicOctant</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/core/octant.js~octant",
+    "sparse-octree~flags",
+    "class/src/raycasting/Flags.js~Flags.html",
+    "<span>Flags</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "class"
+  ],
+  [
+    "sparse-octree~node",
+    "class/src/core/Node.js~Node.html",
+    "<span>Node</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "class"
+  ],
+  [
+    "sparse-octree~octant",
     "class/src/core/Octant.js~Octant.html",
-    "<span>Octant</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
+    "<span>Octant</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/core/octantiterator.js~octantiterator",
-    "class/src/core/OctantIterator.js~OctantIterator.html",
-    "<span>OctantIterator</span> <span class=\"search-result-import-path\">sparse-octree/src/core/OctantIterator.js</span>",
-    "class"
-  ],
-  [
-    "sparse-octree/src/core/octree.js~octree",
+    "sparse-octree~octree",
     "class/src/core/Octree.js~Octree.html",
-    "<span>Octree</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octree.js</span>",
+    "<span>Octree</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/core/octreeraycaster.js~octreeraycaster",
-    "class/src/core/OctreeRaycaster.js~OctreeRaycaster.html",
-    "<span>OctreeRaycaster</span> <span class=\"search-result-import-path\">sparse-octree/src/core/OctreeRaycaster.js</span>",
+    "sparse-octree~octreeiterator",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html",
+    "<span>OctreeIterator</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/utils/octreeutils.js~octreeutils",
-    "class/src/utils/OctreeUtils.js~OctreeUtils.html",
-    "<span>OctreeUtils</span> <span class=\"search-result-import-path\">sparse-octree/src/utils/OctreeUtils.js</span>",
+    "sparse-octree~octreeraycaster",
+    "class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html",
+    "<span>OctreeRaycaster</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/points/pointoctant.js~pointoctant",
+    "sparse-octree~pointoctant",
     "class/src/points/PointOctant.js~PointOctant.html",
-    "<span>PointOctant</span> <span class=\"search-result-import-path\">sparse-octree/src/points/PointOctant.js</span>",
+    "<span>PointOctant</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/points/pointoctree.js~pointoctree",
+    "sparse-octree~pointoctree",
     "class/src/points/PointOctree.js~PointOctree.html",
-    "<span>PointOctree</span> <span class=\"search-result-import-path\">sparse-octree/src/points/PointOctree.js</span>",
+    "<span>PointOctree</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/points/raypointintersection.js~raypointintersection",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html",
-    "<span>RayPointIntersection</span> <span class=\"search-result-import-path\">sparse-octree/src/points/RayPointIntersection.js</span>",
+    "sparse-octree~raypointintersection",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html",
+    "<span>RayPointIntersection</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "class"
   ],
   [
-    "sparse-octree/src/core/octant.js~edges",
+    "sparse-octree~tree",
+    "class/src/core/Tree.js~Tree.html",
+    "<span>Tree</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "class"
+  ],
+  [
+    "sparse-octree~edges",
     "variable/index.html#static-variable-edges",
-    "<span>edges</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
+    "<span>edges</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "variable"
   ],
   [
-    "sparse-octree/src/core/octant.js~pattern",
-    "variable/index.html#static-variable-pattern",
-    "<span>pattern</span> <span class=\"search-result-import-path\">sparse-octree/src/core/Octant.js</span>",
+    "sparse-octree~findentryoctant",
+    "function/index.html#static-function-findEntryOctant",
+    "<span>findEntryOctant</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "function"
+  ],
+  [
+    "sparse-octree~findnextoctant",
+    "function/index.html#static-function-findNextOctant",
+    "<span>findNextOctant</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "function"
+  ],
+  [
+    "sparse-octree~intersectoctree",
+    "function/index.html#static-function-intersectOctree",
+    "<span>intersectOctree</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "function"
+  ],
+  [
+    "sparse-octree~layout",
+    "variable/index.html#static-variable-layout",
+    "<span>layout</span> <span class=\"search-result-import-path\">sparse-octree</span>",
     "variable"
+  ],
+  [
+    "sparse-octree~testpoints",
+    "function/index.html#static-function-testPoints",
+    "<span>testPoints</span> <span class=\"search-result-import-path\">sparse-octree</span>",
+    "function"
   ],
   [
     "src/.external-ecmascript.js~array",
@@ -402,6 +438,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/core/node.js",
+    "file/src/core/Node.js.html",
+    "src/core/Node.js",
+    "file"
+  ],
+  [
+    "src/core/node.js~node#max",
+    "class/src/core/Node.js~Node.html#instance-get-max",
+    "src/core/Node.js~Node#max",
+    "member"
+  ],
+  [
+    "src/core/node.js~node#min",
+    "class/src/core/Node.js~Node.html#instance-get-min",
+    "src/core/Node.js~Node#min",
+    "member"
+  ],
+  [
     "src/core/octant.js",
     "file/src/core/Octant.js.html",
     "src/core/Octant.js",
@@ -450,78 +504,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/core/octantiterator.js",
-    "file/src/core/OctantIterator.js.html",
-    "src/core/OctantIterator.js",
-    "file"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#[symbol.iterator]",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-[Symbol.iterator]",
-    "src/core/OctantIterator.js~OctantIterator#[Symbol.iterator]",
-    "method"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#constructor",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-constructor-constructor",
-    "src/core/OctantIterator.js~OctantIterator#constructor",
-    "method"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#cull",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-cull",
-    "src/core/OctantIterator.js~OctantIterator#cull",
-    "member"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#indices",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-indices",
-    "src/core/OctantIterator.js~OctantIterator#indices",
-    "member"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#next",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-next",
-    "src/core/OctantIterator.js~OctantIterator#next",
-    "method"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#octree",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-octree",
-    "src/core/OctantIterator.js~OctantIterator#octree",
-    "member"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#region",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-region",
-    "src/core/OctantIterator.js~OctantIterator#region",
-    "member"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#reset",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-reset",
-    "src/core/OctantIterator.js~OctantIterator#reset",
-    "method"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#result",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-result",
-    "src/core/OctantIterator.js~OctantIterator#result",
-    "member"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#return",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-method-return",
-    "src/core/OctantIterator.js~OctantIterator#return",
-    "method"
-  ],
-  [
-    "src/core/octantiterator.js~octantiterator#trace",
-    "class/src/core/OctantIterator.js~OctantIterator.html#instance-member-trace",
-    "src/core/OctantIterator.js~OctantIterator#trace",
-    "member"
-  ],
-  [
     "src/core/octree.js",
     "file/src/core/Octree.js.html",
     "src/core/Octree.js",
@@ -552,9 +534,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/core/octree.js~octree#findoctantsbylevel",
-    "class/src/core/Octree.js~Octree.html#instance-method-findOctantsByLevel",
-    "src/core/Octree.js~Octree#findOctantsByLevel",
+    "src/core/octree.js~octree#findnodesbylevel",
+    "class/src/core/Octree.js~Octree.html#instance-method-findNodesByLevel",
+    "src/core/Octree.js~Octree#findNodesByLevel",
     "method"
   ],
   [
@@ -606,21 +588,87 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/core/octreeraycaster.js",
-    "file/src/core/OctreeRaycaster.js.html",
-    "src/core/OctreeRaycaster.js",
+    "src/core/octreeiterator.js",
+    "file/src/core/OctreeIterator.js.html",
+    "src/core/OctreeIterator.js",
     "file"
   ],
   [
-    "src/core/octreeraycaster.js~octreeraycaster.intersectoctree",
-    "class/src/core/OctreeRaycaster.js~OctreeRaycaster.html#static-method-intersectOctree",
-    "src/core/OctreeRaycaster.js~OctreeRaycaster.intersectOctree",
+    "src/core/octreeiterator.js~octreeiterator#[symbol.iterator]",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-[Symbol.iterator]",
+    "src/core/OctreeIterator.js~OctreeIterator#[Symbol.iterator]",
     "method"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#constructor",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-constructor-constructor",
+    "src/core/OctreeIterator.js~OctreeIterator#constructor",
+    "method"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#cull",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-member-cull",
+    "src/core/OctreeIterator.js~OctreeIterator#cull",
+    "member"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#next",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-next",
+    "src/core/OctreeIterator.js~OctreeIterator#next",
+    "method"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#region",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-member-region",
+    "src/core/OctreeIterator.js~OctreeIterator#region",
+    "member"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#reset",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-reset",
+    "src/core/OctreeIterator.js~OctreeIterator#reset",
+    "method"
+  ],
+  [
+    "src/core/octreeiterator.js~octreeiterator#return",
+    "class/src/core/OctreeIterator.js~OctreeIterator.html#instance-method-return",
+    "src/core/OctreeIterator.js~OctreeIterator#return",
+    "method"
+  ],
+  [
+    "src/core/tree.js",
+    "file/src/core/Tree.js.html",
+    "src/core/Tree.js",
+    "file"
+  ],
+  [
+    "src/core/tree.js~tree#findnodesbylevel",
+    "class/src/core/Tree.js~Tree.html#instance-method-findNodesByLevel",
+    "src/core/Tree.js~Tree#findNodesByLevel",
+    "method"
+  ],
+  [
+    "src/core/tree.js~tree#getdepth",
+    "class/src/core/Tree.js~Tree.html#instance-method-getDepth",
+    "src/core/Tree.js~Tree#getDepth",
+    "method"
+  ],
+  [
+    "src/core/edges.js",
+    "file/src/core/edges.js.html",
+    "src/core/edges.js",
+    "file"
   ],
   [
     "src/core/index.js",
     "file/src/core/index.js.html",
     "src/core/index.js",
+    "file"
+  ],
+  [
+    "src/core/layout.js",
+    "file/src/core/layout.js.html",
+    "src/core/layout.js",
     "file"
   ],
   [
@@ -634,12 +682,6 @@ window.esdocSearchIndex = [
     "file/src/points/PointOctant.js.html",
     "src/points/PointOctant.js",
     "file"
-  ],
-  [
-    "src/points/pointoctant.js~pointoctant#children",
-    "class/src/points/PointOctant.js~PointOctant.html#instance-member-children",
-    "src/points/PointOctant.js~PointOctant#children",
-    "member"
   ],
   [
     "src/points/pointoctant.js~pointoctant#constructor",
@@ -696,12 +738,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/points/pointoctree.js~pointoctree#bias",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-member-bias",
-    "src/points/PointOctree.js~PointOctree#bias",
-    "member"
-  ],
-  [
     "src/points/pointoctree.js~pointoctree#constructor",
     "class/src/points/PointOctree.js~PointOctree.html#instance-constructor-constructor",
     "src/points/PointOctree.js~PointOctree#constructor",
@@ -711,12 +747,6 @@ window.esdocSearchIndex = [
     "src/points/pointoctree.js~pointoctree#countpoints",
     "class/src/points/PointOctree.js~PointOctree.html#instance-method-countPoints",
     "src/points/PointOctree.js~PointOctree#countPoints",
-    "method"
-  ],
-  [
-    "src/points/pointoctree.js~pointoctree#fetch",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-method-fetch",
-    "src/points/PointOctree.js~PointOctree#fetch",
     "method"
   ],
   [
@@ -732,16 +762,16 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/points/pointoctree.js~pointoctree#maxdepth",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-member-maxDepth",
-    "src/points/PointOctree.js~PointOctree#maxDepth",
-    "member"
+    "src/points/pointoctree.js~pointoctree#get",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-method-get",
+    "src/points/PointOctree.js~PointOctree#get",
+    "method"
   ],
   [
-    "src/points/pointoctree.js~pointoctree#maxpoints",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-member-maxPoints",
-    "src/points/PointOctree.js~PointOctree#maxPoints",
-    "member"
+    "src/points/pointoctree.js~pointoctree#insert",
+    "class/src/points/PointOctree.js~PointOctree.html#instance-method-insert",
+    "src/points/PointOctree.js~PointOctree#insert",
+    "method"
   ],
   [
     "src/points/pointoctree.js~pointoctree#move",
@@ -756,12 +786,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/points/pointoctree.js~pointoctree#put",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-method-put",
-    "src/points/PointOctree.js~PointOctree#put",
-    "method"
-  ],
-  [
     "src/points/pointoctree.js~pointoctree#raycast",
     "class/src/points/PointOctree.js~PointOctree.html#instance-method-raycast",
     "src/points/PointOctree.js~PointOctree#raycast",
@@ -774,75 +798,111 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/points/pointoctree.js~pointoctree#root",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-member-root",
-    "src/points/PointOctree.js~PointOctree#root",
-    "member"
-  ],
-  [
-    "src/points/pointoctree.js~pointoctree#testpoints",
-    "class/src/points/PointOctree.js~PointOctree.html#instance-method-testPoints",
-    "src/points/PointOctree.js~PointOctree#testPoints",
-    "method"
-  ],
-  [
-    "src/points/raypointintersection.js",
-    "file/src/points/RayPointIntersection.js.html",
-    "src/points/RayPointIntersection.js",
-    "file"
-  ],
-  [
-    "src/points/raypointintersection.js~raypointintersection#constructor",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-constructor-constructor",
-    "src/points/RayPointIntersection.js~RayPointIntersection#constructor",
-    "method"
-  ],
-  [
-    "src/points/raypointintersection.js~raypointintersection#distance",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distance",
-    "src/points/RayPointIntersection.js~RayPointIntersection#distance",
-    "member"
-  ],
-  [
-    "src/points/raypointintersection.js~raypointintersection#distancetoray",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distanceToRay",
-    "src/points/RayPointIntersection.js~RayPointIntersection#distanceToRay",
-    "member"
-  ],
-  [
-    "src/points/raypointintersection.js~raypointintersection#object",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-object",
-    "src/points/RayPointIntersection.js~RayPointIntersection#object",
-    "member"
-  ],
-  [
-    "src/points/raypointintersection.js~raypointintersection#point",
-    "class/src/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-point",
-    "src/points/RayPointIntersection.js~RayPointIntersection#point",
-    "member"
-  ],
-  [
     "src/points/index.js",
     "file/src/points/index.js.html",
     "src/points/index.js",
     "file"
   ],
   [
-    "src/utils/octreeutils.js",
-    "file/src/utils/OctreeUtils.js.html",
-    "src/utils/OctreeUtils.js",
+    "src/raycasting/flags.js",
+    "file/src/raycasting/Flags.js.html",
+    "src/raycasting/Flags.js",
     "file"
   ],
   [
-    "src/utils/octreeutils.js~octreeutils.recycleoctants",
-    "class/src/utils/OctreeUtils.js~OctreeUtils.html#static-method-recycleOctants",
-    "src/utils/OctreeUtils.js~OctreeUtils.recycleOctants",
+    "src/raycasting/flags.js~flags#constructor",
+    "class/src/raycasting/Flags.js~Flags.html#instance-constructor-constructor",
+    "src/raycasting/Flags.js~Flags#constructor",
     "method"
   ],
   [
-    "src/utils/index.js",
-    "file/src/utils/index.js.html",
-    "src/utils/index.js",
+    "src/raycasting/flags.js~flags#value",
+    "class/src/raycasting/Flags.js~Flags.html#instance-member-value",
+    "src/raycasting/Flags.js~Flags#value",
+    "member"
+  ],
+  [
+    "src/raycasting/octreeraycaster.js",
+    "file/src/raycasting/OctreeRaycaster.js.html",
+    "src/raycasting/OctreeRaycaster.js",
+    "file"
+  ],
+  [
+    "src/raycasting/octreeraycaster.js~octreeraycaster.intersectoctree",
+    "class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html#static-method-intersectOctree",
+    "src/raycasting/OctreeRaycaster.js~OctreeRaycaster.intersectOctree",
+    "method"
+  ],
+  [
+    "src/raycasting/findentryoctant.js",
+    "file/src/raycasting/findEntryOctant.js.html",
+    "src/raycasting/findEntryOctant.js",
+    "file"
+  ],
+  [
+    "src/raycasting/findnextoctant.js",
+    "file/src/raycasting/findNextOctant.js.html",
+    "src/raycasting/findNextOctant.js",
+    "file"
+  ],
+  [
+    "src/raycasting/index.js",
+    "file/src/raycasting/index.js.html",
+    "src/raycasting/index.js",
+    "file"
+  ],
+  [
+    "src/raycasting/intersectoctree.js",
+    "file/src/raycasting/intersectOctree.js.html",
+    "src/raycasting/intersectOctree.js",
+    "file"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js",
+    "file/src/raycasting/points/RayPointIntersection.js.html",
+    "src/raycasting/points/RayPointIntersection.js",
+    "file"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js~raypointintersection#constructor",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html#instance-constructor-constructor",
+    "src/raycasting/points/RayPointIntersection.js~RayPointIntersection#constructor",
+    "method"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js~raypointintersection#distance",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distance",
+    "src/raycasting/points/RayPointIntersection.js~RayPointIntersection#distance",
+    "member"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js~raypointintersection#distancetoray",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-distanceToRay",
+    "src/raycasting/points/RayPointIntersection.js~RayPointIntersection#distanceToRay",
+    "member"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js~raypointintersection#object",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-object",
+    "src/raycasting/points/RayPointIntersection.js~RayPointIntersection#object",
+    "member"
+  ],
+  [
+    "src/raycasting/points/raypointintersection.js~raypointintersection#point",
+    "class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html#instance-member-point",
+    "src/raycasting/points/RayPointIntersection.js~RayPointIntersection#point",
+    "member"
+  ],
+  [
+    "src/raycasting/points/index.js",
+    "file/src/raycasting/points/index.js.html",
+    "src/raycasting/points/index.js",
+    "file"
+  ],
+  [
+    "src/raycasting/points/testpoints.js",
+    "file/src/raycasting/points/testPoints.js.html",
+    "src/raycasting/points/testPoints.js",
     "file"
   ]
 ]

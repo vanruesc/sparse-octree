@@ -31,27 +31,33 @@
     
   <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Octant} from &apos;<span><a href="file/src/core/Octant.js.html#lineNumber16">sparse-octree/src/core/Octant.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Octant} from &apos;<span><a href="file/src/core/Octant.js.html#lineNumber19">sparse-octree</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/core/Octant.js.html#lineNumber16">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/core/Octant.js.html#lineNumber19">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -64,7 +70,7 @@
   
   <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></div></div>
   
-  
+  <div class="flat-list" data-ice="implements"><h4>Implements:</h4><ul><li><span><a href="class/src/core/Node.js~Node.html">Node</a></span></li></ul></div>
   
   
   
@@ -329,7 +335,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber25">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber28">source</a></span></span>
     </span>
   </h3>
 
@@ -400,7 +406,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber50">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -444,7 +450,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber41">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber44">source</a></span></span>
     </span>
   </h3>
 
@@ -488,7 +494,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber33">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber36">source</a></span></span>
     </span>
   </h3>
 
@@ -535,7 +541,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber63">source</a></span></span>
     </span>
   </h3>
 
@@ -558,8 +564,8 @@
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">target</td>
       <td data-ice="type" class="code"><span>Vector3</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A target vector. If none is provided, a new one will be created.</p>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>A target vector.</p>
 </td>
     </tr>
 </tbody>
@@ -573,7 +579,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>Vector3</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the center of this octant.</p>
+          <td class="return-desc" data-ice="returnDescription"><p>The center.</p>
 </td>
         </tr>
       </tbody>
@@ -609,7 +615,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber74">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -632,8 +638,8 @@
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">target</td>
       <td data-ice="type" class="code"><span>Vector3</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A target vector. If none is provided, a new one will be created.</p>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>A target vector.</p>
 </td>
     </tr>
 </tbody>
@@ -647,7 +653,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>Vector3</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A vector that describes the size of this octant.</p>
+          <td class="return-desc" data-ice="returnDescription"><p>The size.</p>
 </td>
         </tr>
       </tbody>
@@ -683,7 +689,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber84">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/core/Octant.js.html#lineNumber86">source</a></span></span>
     </span>
   </h3>
 

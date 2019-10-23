@@ -31,21 +31,27 @@
     
   <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {PointOctant} from &apos;<span><a href="file/src/points/PointOctant.js.html#lineNumber17">sparse-octree/src/points/PointOctant.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {PointOctant} from &apos;<span><a href="file/src/points/PointOctant.js.html#lineNumber17">sparse-octree</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
@@ -65,7 +71,7 @@
   
   
   
-  
+  <div class="flat-list" data-ice="indirectImplements"><h4>Indirect Implements:</h4><ul><li><span><a href="class/src/core/Node.js~Node.html">Node</a></span></li></ul></div>
   
   
 
@@ -127,34 +133,6 @@
   <tbody>
   
   <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html#instance-member-children">children</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       
@@ -270,7 +248,7 @@ providing a radius as bias.</p>
       <div>
         
         
-        <div data-ice="description"><p>Computes the distance squared from the center of this octant to the given
+        <div data-ice="description"><p>Calculates the distance squared from the center of this octant to the given
 point.</p>
 </div>
       </div>
@@ -300,7 +278,7 @@ point.</p>
       <div>
         
         
-        <div data-ice="description"><p>Computes the distance squared from this octant to the given point.</p>
+        <div data-ice="description"><p>Calculates the distance squared from this octant to the given point.</p>
 </div>
       </div>
     </td>
@@ -329,7 +307,7 @@ point.</p>
       <div>
         
         
-        <div data-ice="description"><p>Gathers all points from the children.</p>
+        <div data-ice="description"><p>Deletes all child nodes and collects their points.</p>
 </div>
       </div>
     </td>
@@ -358,7 +336,7 @@ point.</p>
       <div>
         
         
-        <div data-ice="description"><p>Redistributes existing points to child octants.</p>
+        <div data-ice="description"><p>Redistributes the points of this octant to its children.</p>
 </div>
       </div>
     </td>
@@ -629,50 +607,6 @@ point.</p>
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-children">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">children</span><span class="code" data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/points/PointOctant.js.html#lineNumber193">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>The children of this octant.</p>
-</div>
-
-  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/core/Octant.js~Octant.html#instance-member-children">Octant#children</a></span></div>
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-data">
     <span class="access" data-ice="access">public</span>
     
@@ -865,7 +799,7 @@ providing a radius as bias.</p>
   
   
   
-  <div data-ice="description"><p>Computes the distance squared from the center of this octant to the given
+  <div data-ice="description"><p>Calculates the distance squared from the center of this octant to the given
 point.</p>
 </div>
 
@@ -940,7 +874,7 @@ point.</p>
   
   
   
-  <div data-ice="description"><p>Computes the distance squared from this octant to the given point.</p>
+  <div data-ice="description"><p>Calculates the distance squared from this octant to the given point.</p>
 </div>
 
   
@@ -1007,15 +941,14 @@ point.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/points/PointOctant.js.html#lineNumber168">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/points/PointOctant.js.html#lineNumber169">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Gathers all points from the children. The children are expected to be leaf
-octants and will be dropped afterwards.</p>
+  <div data-ice="description"><p>Deletes all child nodes and collects their points.</p>
 </div>
 
   
@@ -1052,14 +985,15 @@ octants and will be dropped afterwards.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/points/PointOctant.js.html#lineNumber116">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/points/PointOctant.js.html#lineNumber118">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Redistributes existing points to child octants.</p>
+  <div data-ice="description"><p>Redistributes the points of this octant to its children.</p>
+<p>Has no effect if there are no points or if this octant has no children.</p>
 </div>
 
   

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/raycasting/findNextOctant.js | sparse-octree</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A sparse octree data structure."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="sparse-octree"><meta property="twitter:description" content="A sparse octree data structure."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/vanruesc/sparse-octree.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/raycasting/findNextOctant.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * A lookup-table containing octant ids. Used to determine the exit plane from
+ * an octant.
+ *
+ * @type {Uint8Array[]}
+ * @private
+ */
+
+const octantTable = [
+
+	new Uint8Array([4, 2, 1]),
+	new Uint8Array([5, 3, 8]),
+	new Uint8Array([6, 8, 3]),
+	new Uint8Array([7, 8, 8]),
+	new Uint8Array([8, 6, 5]),
+	new Uint8Array([8, 7, 8]),
+	new Uint8Array([8, 8, 7]),
+	new Uint8Array([8, 8, 8])
+
+];
+
+/**
+ * Finds the next octant that intersects with the ray based on the exit plane of
+ * the current one.
+ *
+ * @param {Number} currentOctant - The index of the current octant.
+ * @param {Number} tx1 - Ray projection parameter.
+ * @param {Number} ty1 - Ray projection parameter.
+ * @param {Number} tz1 - Ray projection parameter.
+ * @return {Number} The index of the next octant that the ray travels through.
+ */
+
+export function findNextOctant(currentOctant, tx1, ty1, tz1) {
+
+	let min;
+	let exit = 0;
+
+	// Find the exit plane.
+	if(tx1 &lt; ty1) {
+
+		min = tx1;
+		exit = 0; // YZ-plane.
+
+	} else {
+
+		min = ty1;
+		exit = 1; // XZ-plane.
+
+	}
+
+	if(tz1 &lt; min) {
+
+		exit = 2; // XY-plane.
+
+	}
+
+	return octantTable[currentOctant][exit];
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -31,15 +31,21 @@
     
   <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -47,14 +53,33 @@
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="sparse-octree">Sparse Octree</h1><p><a href="https://travis-ci.org/vanruesc/sparse-octree"><img src="https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master" alt="Build status"></a>
 <a href="https://www.npmjs.com/package/sparse-octree"><img src="https://badgen.net/npm/v/sparse-octree?color=green" alt="npm version"></a>
 <a href="https://david-dm.org/vanruesc/sparse-octree?type=peer"><img src="https://david-dm.org/vanruesc/sparse-octree/peer-status.svg" alt="Peer dependencies"></a></p>
-<p>A sparse octree data structure.</p>
-<p><em><a href="https://vanruesc.github.io/sparse-octree/public/demo">Extensive Demo</a>&#x2002;&#xB7;&#x2002;<a href="https://vanruesc.github.io/sparse-octree/public/docs">API Reference</a></em></p>
+<p>A sparse, pointer-based octree data structure. For a linear implementation see <a href="https://github.com/vanruesc/linear-octree">linear-octree</a>.</p>
+<p><em><a href="https://vanruesc.github.io/sparse-octree/public/demo">Demo</a>&#x2002;&#xB7;&#x2002;<a href="https://codesandbox.io/s/sparse-octree-3yn8o">Sandbox</a>&#x2002;&#xB7;&#x2002;<a href="https://vanruesc.github.io/sparse-octree/public/docs">Documentation</a></em></p>
 <h2 id="installation">Installation</h2><p>This library requires the peer dependencies <a href="https://github.com/vanruesc/iterator-result">iterator-result</a> and <a href="https://github.com/vanruesc/math-ds">math-ds</a>.</p>
 <pre><code class="lang-sh"><code class="source-code prettyprint">npm install iterator-result math-ds</code>
 </code></pre>
 <pre><code class="lang-sh"><code class="source-code prettyprint">npm install sparse-octree</code>
 </code></pre>
-<h2 id="usage">Usage</h2><h5 id="custom-octrees">Custom Octrees</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Octree, CubicOctant } from &quot;sparse-octree&quot;;
+<h2 id="usage">Usage</h2><h5 id="points">Points</h5><pre><code class="lang-js"><code class="source-code prettyprint">import { Vector3 } from &quot;math-ds&quot;;
+import { PointOctree } from &quot;sparse-octree&quot;;
+
+const min = new Vector3(-1, -1, -1);
+const max = new Vector3(1, 1, 1);
+
+const octree = new PointOctree(min, max);
+
+const myData = {};
+const p1 = new Vector3(0, 0, 0);
+const p2 = new Vector3(0, 0, 0.5);
+
+octree.insert(p1, myData);
+octree.move(p1, p2);
+octree.get(p2); // =&gt; myData
+
+octree.remove(p2);
+octree.get(p2); // =&gt; null</code>
+</code></pre>
+<h5 id="custom-octrees">Custom Octrees</h5><pre><code class="lang-js"><code class="source-code prettyprint">import { Octree, CubicOctant } from &quot;sparse-octree&quot;;
 
 export class CubicOctree extends Octree {
 
@@ -66,36 +91,20 @@ export class CubicOctree extends Octree {
 
 }</code>
 </code></pre>
-<h5 id="points">Points</h5><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Vector3 } from &quot;math-ds&quot;;
-import { PointOctree } from &quot;sparse-octree&quot;;
-
-const min = new Vector3(-1, -1, -1);
-const max = new Vector3(1, 1, 1);
-
-const octree = new PointOctree(min, max);
-const myData = {};
-
-octree.put(new Vector3(0, 0, 0), myData);
-octree.fetch(new Vector3(0, 0, 0)); // =&gt; myData</code>
-</code></pre>
-<p>A full point octree example can be found <a href="https://jsfiddle.net/6gt9fjmq/15/">here</a>.</p>
 <h2 id="features">Features</h2><ul>
-<li>Base Functionality<ul>
 <li>Pointer-based structure<ul>
 <li>Handles octant splitting</li>
-<li>Adheres to a <a href="http://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-pattern">common octant layout</a></li>
+<li>Supports cubic octrees for reduced memory usage</li>
+<li>Dynamic depth</li>
+</ul>
+</li>
+<li>Adheres to a <a href="https://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-layout">common octant layout</a></li>
 <li>Supports raycasting</li>
 <li>Supports culling</li>
-<li>Supports cubic octrees</li>
 <li>Can be extended to manage any data</li>
-</ul>
-</li>
-</ul>
-</li>
 <li>Provides a point management implementation</li>
 </ul>
-<h2 id="octree-helper">Octree Helper</h2><p>The <a href="https://github.com/vanruesc/octree-helper">octree-helper</a> module provides
-an octree visualisation tool for <a href="https://threejs.org/">three.js</a>.</p>
+<h2 id="octree-helper">Octree Helper</h2><p>The <a href="https://github.com/vanruesc/octree-helper">octree-helper</a> module provides an octree visualisation tool for <a href="https://threejs.org/">three.js</a>.</p>
 <h2 id="contributing">Contributing</h2><p>Maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.</p>
 </div>
 </div>

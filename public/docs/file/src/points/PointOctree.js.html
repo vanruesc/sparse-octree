@@ -31,24 +31,29 @@
     
   <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/points/PointOctree.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Vector3 } from &quot;math-ds&quot;;
-import { Octree } from &quot;../core/Octree.js&quot;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Octree } from &quot;../core/Octree.js&quot;;
+import { testPoints } from &quot;../raycasting/testPoints.js&quot;;
 import { PointOctant } from &quot;./PointOctant.js&quot;;
-import { RayPointIntersection } from &quot;./RayPointIntersection.js&quot;;
 
 /**
  * Recursively counts how many points are in the given octant.
@@ -84,7 +89,7 @@ function countPoints(octant) {
 }
 
 /**
- * Recursively places a point into the octree.
+ * Recursively inserts a point into the octree.
  *
  * @private
  * @param {Vector3} point - A point.
@@ -95,7 +100,7 @@ function countPoints(octant) {
  * @return {Boolean} Whether the operation was successful.
  */
 
-function put(point, data, octree, octant, depth) {
+function insert(point, data, octree, octant, depth) {
 
 	let children = octant.children;
 	let exists = false;
@@ -149,7 +154,7 @@ function put(point, data, octree, octant, depth) {
 
 			for(i = 0, l = children.length; !done &amp;&amp; i &lt; l; ++i) {
 
-				done = put(point, data, octree, children[i], depth);
+				done = insert(point, data, octree, children[i], depth);
 
 			}
 
@@ -248,7 +253,7 @@ function remove(point, octree, octant, parent) {
  * @return {Object} The data entry that is associated with the given point or null if it doesn&apos;t exist.
  */
 
-function fetch(point, octree, octant) {
+function get(point, octree, octant) {
 
 	const children = octant.children;
 
@@ -263,7 +268,7 @@ function fetch(point, octree, octant) {
 
 			for(i = 0, l = children.length; result === null &amp;&amp; i &lt; l; ++i) {
 
-				result = fetch(point, octree, children[i]);
+				result = get(point, octree, children[i]);
 
 			}
 
@@ -353,7 +358,7 @@ function move(point, position, octree, octant, parent, depth) {
 			result = remove(point, octree, octant, parent);
 
 			// Go back to the parent octant and add the updated point.
-			put(position, result, octree, parent, depth - 1);
+			insert(position, result, octree, parent, depth - 1);
 
 		}
 
@@ -558,27 +563,17 @@ export class PointOctree extends Octree {
 	 *
 	 * @param {Vector3} [min] - The lower bounds of the tree.
 	 * @param {Vector3} [max] - The upper bounds of the tree.
-	 * @param {Number} [bias=0.0] - An octant boundary bias.
+	 * @param {Number} [bias=0.0] - An octant boundary bias. The octree is considered &quot;loose&quot; with a bias greater than 0.
 	 * @param {Number} [maxPoints=8] - Number of distinct points per octant before it splits up.
 	 * @param {Number} [maxDepth=8] - The maximum tree depth level, starting at 0.
 	 */
 
 	constructor(min, max, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
-		super();
-
-		/**
-		 * The root octant.
-		 *
-		 * @type {PointOctant}
-		 */
-
-		this.root = new PointOctant(min, max);
+		super(new PointOctant(min, max));
 
 		/**
 		 * An octant boundary bias.
-		 *
-		 * The octree is considered &quot;loose&quot; with a bias greater than 0.
 		 *
 		 * @type {Number}
 		 * @private
@@ -587,7 +582,7 @@ export class PointOctree extends Octree {
 		this.bias = Math.max(0.0, bias);
 
 		/**
-		 * Number of points per octant before a split occurs.
+		 * The number of points per octant before a split occurs.
 		 *
 		 * This value works together with the maximum depth as a secondary limiting
 		 * factor. Smaller values cause splits to occur earlier which results in a
@@ -643,9 +638,9 @@ export class PointOctree extends Octree {
 	 * @return {Boolean} Whether the operation was successful.
 	 */
 
-	put(point, data) {
+	insert(point, data) {
 
-		return put(point, data, this, this.root, 0);
+		return insert(point, data, this, this.root, 0);
 
 	}
 
@@ -669,9 +664,9 @@ export class PointOctree extends Octree {
 	 * @return {Object} The data entry that is associated with the given point or null if it doesn&apos;t exist.
 	 */
 
-	fetch(point) {
+	get(point) {
 
-		return fetch(point, this, this.root);
+		return get(point, this, this.root);
 
 	}
 
@@ -751,72 +746,11 @@ export class PointOctree extends Octree {
 
 		if(octants.length &gt; 0) {
 
-			// Collect intersecting points.
-			this.testPoints(octants, raycaster, intersects);
+			testPoints(octants, raycaster, intersects);
 
 		}
 
 		return intersects;
-
-	}
-
-	/**
-	 * Collects points that intersect with the given ray.
-	 *
-	 * @param {Octant[]} octants - An array containing octants that intersect with the ray.
-	 * @param {Raycaster} raycaster - The raycaster.
-	 * @param {Array} intersects - An array to be filled with intersecting points.
-	 */
-
-	testPoints(octants, raycaster, intersects) {
-
-		const threshold = raycaster.params.Points.threshold;
-		const thresholdSq = threshold * threshold;
-
-		let intersectPoint;
-		let distance, distanceToRay;
-		let rayPointDistanceSq;
-
-		let i, j, il, jl;
-		let octant, points, point;
-
-		for(i = 0, il = octants.length; i &lt; il; ++i) {
-
-			octant = octants[i];
-			points = octant.points;
-
-			if(points !== null) {
-
-				for(j = 0, jl = points.length; j &lt; jl; ++j) {
-
-					point = points[j];
-					rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
-
-					if(rayPointDistanceSq &lt; thresholdSq) {
-
-						intersectPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
-						distance = raycaster.ray.origin.distanceTo(intersectPoint);
-
-						if(distance &gt;= raycaster.near &amp;&amp; distance &lt;= raycaster.far) {
-
-							distanceToRay = Math.sqrt(rayPointDistanceSq);
-
-							intersects.push(new RayPointIntersection(
-								distance,
-								distanceToRay,
-								intersectPoint,
-								octant.data[j]
-							));
-
-						}
-
-					}
-
-				}
-
-			}
-
-		}
 
 	}
 

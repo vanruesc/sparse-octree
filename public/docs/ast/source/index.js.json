@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 249,
+  "end": 294,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 20,
+      "line": 24,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 249,
+    "end": 294,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 20,
+        "line": 24,
         "column": 0
       }
     },
@@ -31,14 +31,14 @@
       {
         "type": "ExportNamedDeclaration",
         "start": 0,
-        "end": 117,
+        "end": 90,
         "loc": {
           "start": {
             "line": 1,
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 8,
             "column": 16
           }
         },
@@ -46,8 +46,8 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 11,
-            "end": 22,
+            "start": 10,
+            "end": 21,
             "loc": {
               "start": {
                 "line": 2,
@@ -60,8 +60,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 11,
-              "end": 22,
+              "start": 10,
+              "end": 21,
               "loc": {
                 "start": {
                   "line": 2,
@@ -77,8 +77,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 11,
-              "end": 22,
+              "start": 10,
+              "end": 21,
               "loc": {
                 "start": {
                   "line": 2,
@@ -95,8 +95,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 26,
-            "end": 31,
+            "start": 24,
+            "end": 29,
             "loc": {
               "start": {
                 "line": 3,
@@ -109,8 +109,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 26,
-              "end": 31,
+              "start": 24,
+              "end": 29,
               "loc": {
                 "start": {
                   "line": 3,
@@ -126,8 +126,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 26,
-              "end": 31,
+              "start": 24,
+              "end": 29,
               "loc": {
                 "start": {
                   "line": 3,
@@ -144,8 +144,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 35,
-            "end": 41,
+            "start": 32,
+            "end": 38,
             "loc": {
               "start": {
                 "line": 4,
@@ -158,8 +158,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 35,
-              "end": 41,
+              "start": 32,
+              "end": 38,
               "loc": {
                 "start": {
                   "line": 4,
@@ -169,14 +169,14 @@
                   "line": 4,
                   "column": 7
                 },
-                "identifierName": "Octant"
+                "identifierName": "layout"
               },
-              "name": "Octant"
+              "name": "layout"
             },
             "exported": {
               "type": "Identifier",
-              "start": 35,
-              "end": 41,
+              "start": 32,
+              "end": 38,
               "loc": {
                 "start": {
                   "line": 4,
@@ -186,15 +186,15 @@
                   "line": 4,
                   "column": 7
                 },
-                "identifierName": "Octant"
+                "identifierName": "layout"
               },
-              "name": "Octant"
+              "name": "layout"
             }
           },
           {
             "type": "ExportSpecifier",
-            "start": 45,
-            "end": 51,
+            "start": 41,
+            "end": 47,
             "loc": {
               "start": {
                 "line": 5,
@@ -207,8 +207,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 45,
-              "end": 51,
+              "start": 41,
+              "end": 47,
               "loc": {
                 "start": {
                   "line": 5,
@@ -218,14 +218,14 @@
                   "line": 5,
                   "column": 7
                 },
-                "identifierName": "Octree"
+                "identifierName": "Octant"
               },
-              "name": "Octree"
+              "name": "Octant"
             },
             "exported": {
               "type": "Identifier",
-              "start": 45,
-              "end": 51,
+              "start": 41,
+              "end": 47,
               "loc": {
                 "start": {
                   "line": 5,
@@ -233,6 +233,55 @@
                 },
                 "end": {
                   "line": 5,
+                  "column": 7
+                },
+                "identifierName": "Octant"
+              },
+              "name": "Octant"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 50,
+            "end": 56,
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 1
+              },
+              "end": {
+                "line": 6,
+                "column": 7
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 50,
+              "end": 56,
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 1
+                },
+                "end": {
+                  "line": 6,
+                  "column": 7
+                },
+                "identifierName": "Octree"
+              },
+              "name": "Octree"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 50,
+              "end": 56,
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 1
+                },
+                "end": {
+                  "line": 6,
                   "column": 7
                 },
                 "identifierName": "Octree"
@@ -242,163 +291,65 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 55,
-            "end": 69,
+            "start": 59,
+            "end": 73,
             "loc": {
               "start": {
-                "line": 6,
+                "line": 7,
                 "column": 1
               },
               "end": {
-                "line": 6,
+                "line": 7,
                 "column": 15
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 55,
-              "end": 69,
+              "start": 59,
+              "end": 73,
               "loc": {
                 "start": {
-                  "line": 6,
+                  "line": 7,
                   "column": 1
                 },
                 "end": {
-                  "line": 6,
+                  "line": 7,
                   "column": 15
                 },
-                "identifierName": "OctantIterator"
+                "identifierName": "OctreeIterator"
               },
-              "name": "OctantIterator"
+              "name": "OctreeIterator"
             },
             "exported": {
               "type": "Identifier",
-              "start": 55,
-              "end": 69,
+              "start": 59,
+              "end": 73,
               "loc": {
                 "start": {
-                  "line": 6,
+                  "line": 7,
                   "column": 1
                 },
                 "end": {
-                  "line": 6,
+                  "line": 7,
                   "column": 15
                 },
-                "identifierName": "OctantIterator"
+                "identifierName": "OctreeIterator"
               },
-              "name": "OctantIterator"
-            }
-          },
-          {
-            "type": "ExportSpecifier",
-            "start": 73,
-            "end": 88,
-            "loc": {
-              "start": {
-                "line": 7,
-                "column": 1
-              },
-              "end": {
-                "line": 7,
-                "column": 16
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 73,
-              "end": 88,
-              "loc": {
-                "start": {
-                  "line": 7,
-                  "column": 1
-                },
-                "end": {
-                  "line": 7,
-                  "column": 16
-                },
-                "identifierName": "OctreeRaycaster"
-              },
-              "name": "OctreeRaycaster"
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 73,
-              "end": 88,
-              "loc": {
-                "start": {
-                  "line": 7,
-                  "column": 1
-                },
-                "end": {
-                  "line": 7,
-                  "column": 16
-                },
-                "identifierName": "OctreeRaycaster"
-              },
-              "name": "OctreeRaycaster"
-            }
-          },
-          {
-            "type": "ExportSpecifier",
-            "start": 92,
-            "end": 99,
-            "loc": {
-              "start": {
-                "line": 8,
-                "column": 1
-              },
-              "end": {
-                "line": 8,
-                "column": 8
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 92,
-              "end": 99,
-              "loc": {
-                "start": {
-                  "line": 8,
-                  "column": 1
-                },
-                "end": {
-                  "line": 8,
-                  "column": 8
-                },
-                "identifierName": "pattern"
-              },
-              "name": "pattern"
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 92,
-              "end": 99,
-              "loc": {
-                "start": {
-                  "line": 8,
-                  "column": 1
-                },
-                "end": {
-                  "line": 8,
-                  "column": 8
-                },
-                "identifierName": "pattern"
-              },
-              "name": "pattern"
+              "name": "OctreeIterator"
             }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 108,
-          "end": 116,
+          "start": 81,
+          "end": 89,
           "loc": {
             "start": {
-              "line": 9,
+              "line": 8,
               "column": 7
             },
             "end": {
-              "line": 9,
+              "line": 8,
               "column": 15
             }
           },
@@ -411,15 +362,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 121,
-        "end": 202,
+        "start": 92,
+        "end": 146,
         "loc": {
           "start": {
-            "line": 11,
+            "line": 10,
             "column": 0
           },
           "end": {
-            "line": 15,
+            "line": 13,
             "column": 18
           }
         },
@@ -427,8 +378,57 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 132,
-            "end": 143,
+            "start": 102,
+            "end": 113,
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 1
+              },
+              "end": {
+                "line": 11,
+                "column": 12
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 102,
+              "end": 113,
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 1
+                },
+                "end": {
+                  "line": 11,
+                  "column": 12
+                },
+                "identifierName": "PointOctant"
+              },
+              "name": "PointOctant"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 102,
+              "end": 113,
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 1
+                },
+                "end": {
+                  "line": 11,
+                  "column": 12
+                },
+                "identifierName": "PointOctant"
+              },
+              "name": "PointOctant"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 116,
+            "end": 127,
             "loc": {
               "start": {
                 "line": 12,
@@ -441,8 +441,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 132,
-              "end": 143,
+              "start": 116,
+              "end": 127,
               "loc": {
                 "start": {
                   "line": 12,
@@ -450,55 +450,6 @@
                 },
                 "end": {
                   "line": 12,
-                  "column": 12
-                },
-                "identifierName": "PointOctant"
-              },
-              "name": "PointOctant"
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 132,
-              "end": 143,
-              "loc": {
-                "start": {
-                  "line": 12,
-                  "column": 1
-                },
-                "end": {
-                  "line": 12,
-                  "column": 12
-                },
-                "identifierName": "PointOctant"
-              },
-              "name": "PointOctant"
-            }
-          },
-          {
-            "type": "ExportSpecifier",
-            "start": 147,
-            "end": 158,
-            "loc": {
-              "start": {
-                "line": 13,
-                "column": 1
-              },
-              "end": {
-                "line": 13,
-                "column": 12
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 147,
-              "end": 158,
-              "loc": {
-                "start": {
-                  "line": 13,
-                  "column": 1
-                },
-                "end": {
-                  "line": 13,
                   "column": 12
                 },
                 "identifierName": "PointOctree"
@@ -507,83 +458,34 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 147,
-              "end": 158,
+              "start": 116,
+              "end": 127,
               "loc": {
                 "start": {
-                  "line": 13,
+                  "line": 12,
                   "column": 1
                 },
                 "end": {
-                  "line": 13,
+                  "line": 12,
                   "column": 12
                 },
                 "identifierName": "PointOctree"
               },
               "name": "PointOctree"
-            }
-          },
-          {
-            "type": "ExportSpecifier",
-            "start": 162,
-            "end": 182,
-            "loc": {
-              "start": {
-                "line": 14,
-                "column": 1
-              },
-              "end": {
-                "line": 14,
-                "column": 21
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 162,
-              "end": 182,
-              "loc": {
-                "start": {
-                  "line": 14,
-                  "column": 1
-                },
-                "end": {
-                  "line": 14,
-                  "column": 21
-                },
-                "identifierName": "RayPointIntersection"
-              },
-              "name": "RayPointIntersection"
-            },
-            "exported": {
-              "type": "Identifier",
-              "start": 162,
-              "end": 182,
-              "loc": {
-                "start": {
-                  "line": 14,
-                  "column": 1
-                },
-                "end": {
-                  "line": 14,
-                  "column": 21
-                },
-                "identifierName": "RayPointIntersection"
-              },
-              "name": "RayPointIntersection"
             }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 191,
-          "end": 201,
+          "start": 135,
+          "end": 145,
           "loc": {
             "start": {
-              "line": 15,
+              "line": 13,
               "column": 7
             },
             "end": {
-              "line": 15,
+              "line": 13,
               "column": 17
             }
           },
@@ -596,24 +498,122 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 206,
-        "end": 247,
+        "start": 148,
+        "end": 293,
         "loc": {
           "start": {
-            "line": 17,
+            "line": 15,
             "column": 0
           },
           "end": {
-            "line": 19,
-            "column": 17
+            "line": 23,
+            "column": 22
           }
         },
         "declaration": null,
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 217,
-            "end": 228,
+            "start": 158,
+            "end": 163,
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 1
+              },
+              "end": {
+                "line": 16,
+                "column": 6
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 158,
+              "end": 163,
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 1
+                },
+                "end": {
+                  "line": 16,
+                  "column": 6
+                },
+                "identifierName": "Flags"
+              },
+              "name": "Flags"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 158,
+              "end": 163,
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 1
+                },
+                "end": {
+                  "line": 16,
+                  "column": 6
+                },
+                "identifierName": "Flags"
+              },
+              "name": "Flags"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 166,
+            "end": 181,
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 1
+              },
+              "end": {
+                "line": 17,
+                "column": 16
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 166,
+              "end": 181,
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 1
+                },
+                "end": {
+                  "line": 17,
+                  "column": 16
+                },
+                "identifierName": "findEntryOctant"
+              },
+              "name": "findEntryOctant"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 166,
+              "end": 181,
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 1
+                },
+                "end": {
+                  "line": 17,
+                  "column": 16
+                },
+                "identifierName": "findEntryOctant"
+              },
+              "name": "findEntryOctant"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 184,
+            "end": 198,
             "loc": {
               "start": {
                 "line": 18,
@@ -621,13 +621,13 @@
               },
               "end": {
                 "line": 18,
-                "column": 12
+                "column": 15
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 217,
-              "end": 228,
+              "start": 184,
+              "end": 198,
               "loc": {
                 "start": {
                   "line": 18,
@@ -635,16 +635,16 @@
                 },
                 "end": {
                   "line": 18,
-                  "column": 12
+                  "column": 15
                 },
-                "identifierName": "OctreeUtils"
+                "identifierName": "findNextOctant"
               },
-              "name": "OctreeUtils"
+              "name": "findNextOctant"
             },
             "exported": {
               "type": "Identifier",
-              "start": 217,
-              "end": 228,
+              "start": 184,
+              "end": 198,
               "loc": {
                 "start": {
                   "line": 18,
@@ -652,33 +652,229 @@
                 },
                 "end": {
                   "line": 18,
-                  "column": 12
+                  "column": 15
                 },
-                "identifierName": "OctreeUtils"
+                "identifierName": "findNextOctant"
               },
-              "name": "OctreeUtils"
+              "name": "findNextOctant"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 201,
+            "end": 216,
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 1
+              },
+              "end": {
+                "line": 19,
+                "column": 16
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 201,
+              "end": 216,
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 1
+                },
+                "end": {
+                  "line": 19,
+                  "column": 16
+                },
+                "identifierName": "intersectOctree"
+              },
+              "name": "intersectOctree"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 201,
+              "end": 216,
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 1
+                },
+                "end": {
+                  "line": 19,
+                  "column": 16
+                },
+                "identifierName": "intersectOctree"
+              },
+              "name": "intersectOctree"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 219,
+            "end": 234,
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 1
+              },
+              "end": {
+                "line": 20,
+                "column": 16
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 219,
+              "end": 234,
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 1
+                },
+                "end": {
+                  "line": 20,
+                  "column": 16
+                },
+                "identifierName": "OctreeRaycaster"
+              },
+              "name": "OctreeRaycaster"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 219,
+              "end": 234,
+              "loc": {
+                "start": {
+                  "line": 20,
+                  "column": 1
+                },
+                "end": {
+                  "line": 20,
+                  "column": 16
+                },
+                "identifierName": "OctreeRaycaster"
+              },
+              "name": "OctreeRaycaster"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 237,
+            "end": 257,
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 21,
+                "column": 21
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 237,
+              "end": 257,
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 1
+                },
+                "end": {
+                  "line": 21,
+                  "column": 21
+                },
+                "identifierName": "RayPointIntersection"
+              },
+              "name": "RayPointIntersection"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 237,
+              "end": 257,
+              "loc": {
+                "start": {
+                  "line": 21,
+                  "column": 1
+                },
+                "end": {
+                  "line": 21,
+                  "column": 21
+                },
+                "identifierName": "RayPointIntersection"
+              },
+              "name": "RayPointIntersection"
+            }
+          },
+          {
+            "type": "ExportSpecifier",
+            "start": 260,
+            "end": 270,
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 1
+              },
+              "end": {
+                "line": 22,
+                "column": 11
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 260,
+              "end": 270,
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 1
+                },
+                "end": {
+                  "line": 22,
+                  "column": 11
+                },
+                "identifierName": "testPoints"
+              },
+              "name": "testPoints"
+            },
+            "exported": {
+              "type": "Identifier",
+              "start": 260,
+              "end": 270,
+              "loc": {
+                "start": {
+                  "line": 22,
+                  "column": 1
+                },
+                "end": {
+                  "line": 22,
+                  "column": 11
+                },
+                "identifierName": "testPoints"
+              },
+              "name": "testPoints"
             }
           }
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 237,
-          "end": 246,
+          "start": 278,
+          "end": 292,
           "loc": {
             "start": {
-              "line": 19,
+              "line": 23,
               "column": 7
             },
             "end": {
-              "line": 19,
-              "column": 16
+              "line": 23,
+              "column": 21
             }
           },
           "extra": {
-            "rawValue": "./utils",
-            "raw": "\"./utils\""
+            "rawValue": "./raycasting",
+            "raw": "\"./raycasting\""
           },
-          "value": "./utils"
+          "value": "./raycasting"
         }
       }
     ],
@@ -752,8 +948,8 @@
         "binop": null
       },
       "value": "CubicOctant",
-      "start": 11,
-      "end": 22,
+      "start": 10,
+      "end": 21,
       "loc": {
         "start": {
           "line": 2,
@@ -778,8 +974,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 22,
-      "end": 23,
+      "start": 21,
+      "end": 22,
       "loc": {
         "start": {
           "line": 2,
@@ -804,8 +1000,8 @@
         "binop": null
       },
       "value": "edges",
-      "start": 26,
-      "end": 31,
+      "start": 24,
+      "end": 29,
       "loc": {
         "start": {
           "line": 3,
@@ -830,8 +1026,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 31,
-      "end": 32,
+      "start": 29,
+      "end": 30,
       "loc": {
         "start": {
           "line": 3,
@@ -855,9 +1051,9 @@
         "postfix": false,
         "binop": null
       },
-      "value": "Octant",
-      "start": 35,
-      "end": 41,
+      "value": "layout",
+      "start": 32,
+      "end": 38,
       "loc": {
         "start": {
           "line": 4,
@@ -882,8 +1078,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 41,
-      "end": 42,
+      "start": 38,
+      "end": 39,
       "loc": {
         "start": {
           "line": 4,
@@ -891,6 +1087,58 @@
         },
         "end": {
           "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "Octant",
+      "start": 41,
+      "end": 47,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 1
+        },
+        "end": {
+          "line": 5,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 47,
+      "end": 48,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 7
+        },
+        "end": {
+          "line": 5,
           "column": 8
         }
       }
@@ -908,15 +1156,15 @@
         "binop": null
       },
       "value": "Octree",
-      "start": 45,
-      "end": 51,
+      "start": 50,
+      "end": 56,
       "loc": {
         "start": {
-          "line": 5,
+          "line": 6,
           "column": 1
         },
         "end": {
-          "line": 5,
+          "line": 6,
           "column": 7
         }
       }
@@ -934,15 +1182,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 51,
-      "end": 52,
+      "start": 56,
+      "end": 57,
       "loc": {
         "start": {
-          "line": 5,
+          "line": 6,
           "column": 7
         },
         "end": {
-          "line": 5,
+          "line": 6,
           "column": 8
         }
       }
@@ -959,121 +1207,17 @@
         "postfix": false,
         "binop": null
       },
-      "value": "OctantIterator",
-      "start": 55,
-      "end": 69,
+      "value": "OctreeIterator",
+      "start": 59,
+      "end": 73,
       "loc": {
         "start": {
-          "line": 6,
+          "line": 7,
           "column": 1
         },
         "end": {
-          "line": 6,
+          "line": 7,
           "column": 15
-        }
-      }
-    },
-    {
-      "type": {
-        "label": ",",
-        "beforeExpr": true,
-        "startsExpr": false,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null,
-        "updateContext": null
-      },
-      "start": 69,
-      "end": 70,
-      "loc": {
-        "start": {
-          "line": 6,
-          "column": 15
-        },
-        "end": {
-          "line": 6,
-          "column": 16
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "name",
-        "beforeExpr": false,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "value": "OctreeRaycaster",
-      "start": 73,
-      "end": 88,
-      "loc": {
-        "start": {
-          "line": 7,
-          "column": 1
-        },
-        "end": {
-          "line": 7,
-          "column": 16
-        }
-      }
-    },
-    {
-      "type": {
-        "label": ",",
-        "beforeExpr": true,
-        "startsExpr": false,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null,
-        "updateContext": null
-      },
-      "start": 88,
-      "end": 89,
-      "loc": {
-        "start": {
-          "line": 7,
-          "column": 16
-        },
-        "end": {
-          "line": 7,
-          "column": 17
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "name",
-        "beforeExpr": false,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "value": "pattern",
-      "start": 92,
-      "end": 99,
-      "loc": {
-        "start": {
-          "line": 8,
-          "column": 1
-        },
-        "end": {
-          "line": 8,
-          "column": 8
         }
       }
     },
@@ -1089,15 +1233,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 101,
-      "end": 102,
+      "start": 74,
+      "end": 75,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 8,
           "column": 0
         },
         "end": {
-          "line": 9,
+          "line": 8,
           "column": 1
         }
       }
@@ -1115,15 +1259,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 103,
-      "end": 107,
+      "start": 76,
+      "end": 80,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 8,
           "column": 2
         },
         "end": {
-          "line": 9,
+          "line": 8,
           "column": 6
         }
       }
@@ -1142,15 +1286,15 @@
         "updateContext": null
       },
       "value": "./core",
-      "start": 108,
-      "end": 116,
+      "start": 81,
+      "end": 89,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 8,
           "column": 7
         },
         "end": {
-          "line": 9,
+          "line": 8,
           "column": 15
         }
       }
@@ -1168,15 +1312,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 116,
-      "end": 117,
+      "start": 89,
+      "end": 90,
       "loc": {
         "start": {
-          "line": 9,
+          "line": 8,
           "column": 15
         },
         "end": {
-          "line": 9,
+          "line": 8,
           "column": 16
         }
       }
@@ -1196,15 +1340,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 121,
-      "end": 127,
+      "start": 92,
+      "end": 98,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 10,
           "column": 0
         },
         "end": {
-          "line": 11,
+          "line": 10,
           "column": 6
         }
       }
@@ -1221,15 +1365,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 128,
-      "end": 129,
+      "start": 99,
+      "end": 100,
       "loc": {
         "start": {
-          "line": 11,
+          "line": 10,
           "column": 7
         },
         "end": {
-          "line": 11,
+          "line": 10,
           "column": 8
         }
       }
@@ -1247,15 +1391,15 @@
         "binop": null
       },
       "value": "PointOctant",
-      "start": 132,
-      "end": 143,
+      "start": 102,
+      "end": 113,
       "loc": {
         "start": {
-          "line": 12,
+          "line": 11,
           "column": 1
         },
         "end": {
-          "line": 12,
+          "line": 11,
           "column": 12
         }
       }
@@ -1273,15 +1417,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 143,
-      "end": 144,
+      "start": 113,
+      "end": 114,
       "loc": {
         "start": {
-          "line": 12,
+          "line": 11,
           "column": 12
         },
         "end": {
-          "line": 12,
+          "line": 11,
           "column": 13
         }
       }
@@ -1299,68 +1443,16 @@
         "binop": null
       },
       "value": "PointOctree",
-      "start": 147,
-      "end": 158,
+      "start": 116,
+      "end": 127,
       "loc": {
         "start": {
-          "line": 13,
+          "line": 12,
           "column": 1
         },
         "end": {
-          "line": 13,
+          "line": 12,
           "column": 12
-        }
-      }
-    },
-    {
-      "type": {
-        "label": ",",
-        "beforeExpr": true,
-        "startsExpr": false,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null,
-        "updateContext": null
-      },
-      "start": 158,
-      "end": 159,
-      "loc": {
-        "start": {
-          "line": 13,
-          "column": 12
-        },
-        "end": {
-          "line": 13,
-          "column": 13
-        }
-      }
-    },
-    {
-      "type": {
-        "label": "name",
-        "beforeExpr": false,
-        "startsExpr": true,
-        "rightAssociative": false,
-        "isLoop": false,
-        "isAssign": false,
-        "prefix": false,
-        "postfix": false,
-        "binop": null
-      },
-      "value": "RayPointIntersection",
-      "start": 162,
-      "end": 182,
-      "loc": {
-        "start": {
-          "line": 14,
-          "column": 1
-        },
-        "end": {
-          "line": 14,
-          "column": 21
         }
       }
     },
@@ -1376,15 +1468,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 184,
-      "end": 185,
+      "start": 128,
+      "end": 129,
       "loc": {
         "start": {
-          "line": 15,
+          "line": 13,
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 13,
           "column": 1
         }
       }
@@ -1402,15 +1494,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 186,
-      "end": 190,
+      "start": 130,
+      "end": 134,
       "loc": {
         "start": {
-          "line": 15,
+          "line": 13,
           "column": 2
         },
         "end": {
-          "line": 15,
+          "line": 13,
           "column": 6
         }
       }
@@ -1429,15 +1521,15 @@
         "updateContext": null
       },
       "value": "./points",
-      "start": 191,
-      "end": 201,
+      "start": 135,
+      "end": 145,
       "loc": {
         "start": {
-          "line": 15,
+          "line": 13,
           "column": 7
         },
         "end": {
-          "line": 15,
+          "line": 13,
           "column": 17
         }
       }
@@ -1455,15 +1547,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 201,
-      "end": 202,
+      "start": 145,
+      "end": 146,
       "loc": {
         "start": {
-          "line": 15,
+          "line": 13,
           "column": 17
         },
         "end": {
-          "line": 15,
+          "line": 13,
           "column": 18
         }
       }
@@ -1483,15 +1575,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 206,
-      "end": 212,
+      "start": 148,
+      "end": 154,
       "loc": {
         "start": {
-          "line": 17,
+          "line": 15,
           "column": 0
         },
         "end": {
-          "line": 17,
+          "line": 15,
           "column": 6
         }
       }
@@ -1508,15 +1600,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 213,
-      "end": 214,
+      "start": 155,
+      "end": 156,
       "loc": {
         "start": {
-          "line": 17,
+          "line": 15,
           "column": 7
         },
         "end": {
-          "line": 17,
+          "line": 15,
           "column": 8
         }
       }
@@ -1533,9 +1625,113 @@
         "postfix": false,
         "binop": null
       },
-      "value": "OctreeUtils",
-      "start": 217,
-      "end": 228,
+      "value": "Flags",
+      "start": 158,
+      "end": 163,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 1
+        },
+        "end": {
+          "line": 16,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 163,
+      "end": 164,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 6
+        },
+        "end": {
+          "line": 16,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "findEntryOctant",
+      "start": 166,
+      "end": 181,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 1
+        },
+        "end": {
+          "line": 17,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 181,
+      "end": 182,
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 16
+        },
+        "end": {
+          "line": 17,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "findNextOctant",
+      "start": 184,
+      "end": 198,
       "loc": {
         "start": {
           "line": 18,
@@ -1543,7 +1739,215 @@
         },
         "end": {
           "line": 18,
-          "column": 12
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 198,
+      "end": 199,
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 15
+        },
+        "end": {
+          "line": 18,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "intersectOctree",
+      "start": 201,
+      "end": 216,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 1
+        },
+        "end": {
+          "line": 19,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 216,
+      "end": 217,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 16
+        },
+        "end": {
+          "line": 19,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "OctreeRaycaster",
+      "start": 219,
+      "end": 234,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 1
+        },
+        "end": {
+          "line": 20,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 234,
+      "end": 235,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 16
+        },
+        "end": {
+          "line": 20,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "RayPointIntersection",
+      "start": 237,
+      "end": 257,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 1
+        },
+        "end": {
+          "line": 21,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 257,
+      "end": 258,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 21
+        },
+        "end": {
+          "line": 21,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "testPoints",
+      "start": 260,
+      "end": 270,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 1
+        },
+        "end": {
+          "line": 22,
+          "column": 11
         }
       }
     },
@@ -1559,15 +1963,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 230,
-      "end": 231,
+      "start": 271,
+      "end": 272,
       "loc": {
         "start": {
-          "line": 19,
+          "line": 23,
           "column": 0
         },
         "end": {
-          "line": 19,
+          "line": 23,
           "column": 1
         }
       }
@@ -1585,15 +1989,15 @@
         "binop": null
       },
       "value": "from",
-      "start": 232,
-      "end": 236,
+      "start": 273,
+      "end": 277,
       "loc": {
         "start": {
-          "line": 19,
+          "line": 23,
           "column": 2
         },
         "end": {
-          "line": 19,
+          "line": 23,
           "column": 6
         }
       }
@@ -1611,17 +2015,17 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "./utils",
-      "start": 237,
-      "end": 246,
+      "value": "./raycasting",
+      "start": 278,
+      "end": 292,
       "loc": {
         "start": {
-          "line": 19,
+          "line": 23,
           "column": 7
         },
         "end": {
-          "line": 19,
-          "column": 16
+          "line": 23,
+          "column": 21
         }
       }
     },
@@ -1638,16 +2042,16 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 246,
-      "end": 247,
+      "start": 292,
+      "end": 293,
       "loc": {
         "start": {
-          "line": 19,
-          "column": 16
+          "line": 23,
+          "column": 21
         },
         "end": {
-          "line": 19,
-          "column": 17
+          "line": 23,
+          "column": 22
         }
       }
     },
@@ -1664,15 +2068,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 249,
-      "end": 249,
+      "start": 294,
+      "end": 294,
       "loc": {
         "start": {
-          "line": 20,
+          "line": 24,
           "column": 0
         },
         "end": {
-          "line": 20,
+          "line": 24,
           "column": 0
         }
       }

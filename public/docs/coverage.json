@@ -1,21 +1,31 @@
 {
-  "coverage": "99.07%",
-  "expectCount": 108,
-  "actualCount": 107,
+  "coverage": "100%",
+  "expectCount": 112,
+  "actualCount": 112,
   "files": {
     "src/core/CubicOctant.js": {
       "expectCount": 10,
       "actualCount": 10,
       "undocumentLines": []
     },
-    "src/core/Octant.js": {
-      "expectCount": 11,
-      "actualCount": 11,
+    "src/core/edges.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
-    "src/core/OctantIterator.js": {
-      "expectCount": 13,
-      "actualCount": 13,
+    "src/core/layout.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/core/Node.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/core/Octant.js": {
+      "expectCount": 9,
+      "actualCount": 9,
       "undocumentLines": []
     },
     "src/core/Octree.js": {
@@ -23,31 +33,59 @@
       "actualCount": 18,
       "undocumentLines": []
     },
-    "src/core/OctreeRaycaster.js": {
-      "expectCount": 10,
-      "actualCount": 10,
+    "src/core/OctreeIterator.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "src/core/Tree.js": {
+      "expectCount": 3,
+      "actualCount": 3,
       "undocumentLines": []
     },
     "src/points/PointOctant.js": {
       "expectCount": 11,
-      "actualCount": 10,
-      "undocumentLines": [
-        193
-      ]
+      "actualCount": 11,
+      "undocumentLines": []
     },
     "src/points/PointOctree.js": {
-      "expectCount": 23,
-      "actualCount": 23,
+      "expectCount": 21,
+      "actualCount": 21,
       "undocumentLines": []
     },
-    "src/points/RayPointIntersection.js": {
+    "src/raycasting/findEntryOctant.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/raycasting/findNextOctant.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/raycasting/Flags.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/raycasting/intersectOctree.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/raycasting/OctreeRaycaster.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/raycasting/points/RayPointIntersection.js": {
       "expectCount": 6,
       "actualCount": 6,
       "undocumentLines": []
     },
-    "src/utils/OctreeUtils.js": {
-      "expectCount": 6,
-      "actualCount": 6,
+    "src/raycasting/points/testPoints.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     }
   }

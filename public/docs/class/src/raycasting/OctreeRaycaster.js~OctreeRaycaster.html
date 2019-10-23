@@ -31,27 +31,33 @@
     
   <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctantIterator.js~OctantIterator.html">OctantIterator</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pattern">pattern</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/utils/OctreeUtils.js~OctreeUtils.html">OctreeUtils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {OctreeRaycaster} from &apos;<span><a href="file/src/core/OctreeRaycaster.js.html#lineNumber288">sparse-octree/src/core/OctreeRaycaster.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {OctreeRaycaster} from &apos;<span><a href="file/src/raycasting/OctreeRaycaster.js.html#lineNumber117">sparse-octree</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/core/OctreeRaycaster.js.html#lineNumber288">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/raycasting/OctreeRaycaster.js.html#lineNumber117">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -71,10 +77,10 @@
 
   
   
-  <div class="description" data-ice="description"><p>An octree raycaster.</p>
-<p>Based on:
+  <div class="description" data-ice="description"><p>A raycaster for pointer-based octrees.</p>
+<p>Reference:
  &quot;An Efficient Parametric Algorithm for Octree Traversal&quot;
- by J. Revelles et al. (2000).</p>
+ by J. Revelles et al. (2000)</p>
 </div>
   
 
@@ -106,13 +112,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/core/OctreeRaycaster.js~OctreeRaycaster.html#static-method-intersectOctree">intersectOctree</a></span></span><span class="code" data-ice="signature">(octree: <span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span>, raycaster: <span>Raycaster</span>, intersects: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html#static-method-intersectOctree">intersectOctree</a></span></span><span class="code" data-ice="signature">(octree: <span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span>, ray: <span>Ray</span>, intersects: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span>): <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Finds the octants that intersect with the given ray.</p>
+        <div data-ice="description"><p>Finds (pseudo) leaf octants that intersect with the given ray.</p>
 </div>
       </div>
     </td>
@@ -141,19 +147,18 @@
     
     
     
-    <span class="code" data-ice="name">intersectOctree</span><span class="code" data-ice="signature">(octree: <span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span>, raycaster: <span>Raycaster</span>, intersects: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>)</span>
+    <span class="code" data-ice="name">intersectOctree</span><span class="code" data-ice="signature">(octree: <span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span>, ray: <span>Ray</span>, intersects: <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span>): <span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/core/OctreeRaycaster.js.html#lineNumber299">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/raycasting/OctreeRaycaster.js.html#lineNumber128">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Finds the octants that intersect with the given ray. The intersecting
-octants are sorted by distance, closest first.</p>
+  <div data-ice="description"><p>Finds (pseudo) leaf octants that intersect with the given ray.</p>
 </div>
 
   
@@ -174,17 +179,17 @@ octants are sorted by distance, closest first.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">raycaster</td>
-      <td data-ice="type" class="code"><span>Raycaster</span></td>
+      <td data-ice="name" class="code" data-depth="0">ray</td>
+      <td data-ice="type" class="code"><span>Ray</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>A raycaster.</p>
+      <td data-ice="description"><p>A ray.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">intersects</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>A list to be filled with intersecting octants.</p>
+      <td data-ice="type" class="code"><span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>An optional target list to be filled with the intersecting octants.</p>
 </td>
     </tr>
 </tbody>
@@ -192,7 +197,20 @@ octants are sorted by distance, closest first.</p>
 </div>
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span><span>[]</span></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>The intersecting octants. Sorted by distance, closest first.</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 

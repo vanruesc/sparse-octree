@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/raycasting/OctreeRaycaster.js | sparse-octree</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A sparse octree data structure."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="sparse-octree"><meta property="twitter:description" content="A sparse octree data structure."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/vanruesc/sparse-octree.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#core">core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/CubicOctant.js~CubicOctant.html">CubicOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octant.js~Octant.html">Octant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/Octree.js~Octree.html">Octree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/core/OctreeIterator.js~OctreeIterator.html">OctreeIterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Node.js~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/core/Tree.js~Tree.html">Tree</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-edges">edges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-layout">layout</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#points">points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctant.js~PointOctant.html">PointOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/points/PointOctree.js~PointOctree.html">PointOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting">raycasting</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/Flags.js~Flags.html">Flags</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/OctreeRaycaster.js~OctreeRaycaster.html">OctreeRaycaster</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findEntryOctant">findEntryOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findNextOctant">findNextOctant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-intersectOctree">intersectOctree</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#raycasting-points">raycasting/points</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/raycasting/points/RayPointIntersection.js~RayPointIntersection.html">RayPointIntersection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-testPoints">testPoints</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/raycasting/OctreeRaycaster.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Flags } from &quot;./Flags.js&quot;;
+import { findEntryOctant } from &quot;./findEntryOctant.js&quot;;
+import { findNextOctant } from &quot;./findNextOctant.js&quot;;
+import { intersectOctree } from &quot;./intersectOctree.js&quot;;
+
+/**
+ * Raycasting flags.
+ *
+ * @type {Flags}
+ */
+
+const flags = new Flags();
+
+/**
+ * Finds all octants that intersect with the given ray.
+ *
+ * @private
+ * @param {Octant} octant - The current octant.
+ * @param {Number} tx0 - A ray projection parameter.
+ * @param {Number} ty0 - A ray projection parameter.
+ * @param {Number} tz0 - A ray projection parameter.
+ * @param {Number} tx1 - A ray projection parameter.
+ * @param {Number} ty1 - A ray projection parameter.
+ * @param {Number} tz1 - A ray projection parameter.
+ * @param {Array} intersects - An array to be filled with the intersecting octants.
+ */
+
+function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, intersects) {
+
+	if(tx1 &gt;= 0.0 &amp;&amp; ty1 &gt;= 0.0 &amp;&amp; tz1 &gt;= 0.0) {
+
+		const children = octant.children;
+
+		if(children === null) {
+
+			// Leaf.
+			intersects.push(octant);
+
+		} else {
+
+			// Compute means.
+			const txm = 0.5 * (tx0 + tx1);
+			const tym = 0.5 * (ty0 + ty1);
+			const tzm = 0.5 * (tz0 + tz1);
+
+			const f = flags.value;
+			let currentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);
+
+			/* The possibilities for the next node are passed in the same respective
+			order as the t-values. Hence, if the first value is found to be the
+			greatest, the fourth one will be returned. If the second value is the
+			greatest, the fifth one will be returned, etc. */
+
+			do {
+
+				switch(currentOctant) {
+
+					case 0:
+						raycastOctant(children[f], tx0, ty0, tz0, txm, tym, tzm, intersects);
+						currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
+						break;
+
+					case 1:
+						raycastOctant(children[f ^ 1], tx0, ty0, tzm, txm, tym, tz1, intersects);
+						currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
+						break;
+
+					case 2:
+						raycastOctant(children[f ^ 2], tx0, tym, tz0, txm, ty1, tzm, intersects);
+						currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
+						break;
+
+					case 3:
+						raycastOctant(children[f ^ 3], tx0, tym, tzm, txm, ty1, tz1, intersects);
+						currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
+						break;
+
+					case 4:
+						raycastOctant(children[f ^ 4], txm, ty0, tz0, tx1, tym, tzm, intersects);
+						currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
+						break;
+
+					case 5:
+						raycastOctant(children[f ^ 5], txm, ty0, tzm, tx1, tym, tz1, intersects);
+						currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
+						break;
+
+					case 6:
+						raycastOctant(children[f ^ 6], txm, tym, tz0, tx1, ty1, tzm, intersects);
+						currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
+						break;
+
+					case 7:
+						raycastOctant(children[f ^ 7], txm, tym, tzm, tx1, ty1, tz1, intersects);
+						// Far top right octant. No other octants can be reached from here.
+						currentOctant = 8;
+						break;
+
+				}
+
+			} while(currentOctant &lt; 8);
+
+		}
+
+	}
+
+}
+
+/**
+ * A raycaster for pointer-based octrees.
+ *
+ * Reference:
+ *  &quot;An Efficient Parametric Algorithm for Octree Traversal&quot;
+ *  by J. Revelles et al. (2000)
+ */
+
+export class OctreeRaycaster {
+
+	/**
+	 * Finds (pseudo) leaf octants that intersect with the given ray.
+	 *
+	 * @param {Octree} octree - An octree.
+	 * @param {Ray} ray - A ray.
+	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
+	 * @return {Octant[]} The intersecting octants. Sorted by distance, closest first.
+	 */
+
+	static intersectOctree(octree, ray, intersects = []) {
+
+		const parameters = intersectOctree(octree, ray, flags);
+
+		if(parameters !== null) {
+
+			raycastOctant(octree.root, ...parameters, intersects);
+
+		}
+
+	}
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
