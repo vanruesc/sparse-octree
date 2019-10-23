@@ -6531,7 +6531,128 @@
     return DeltaControls;
   }();
 
+  var edges = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
   var layout = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
+
+  var OctreeHelper = function (_Group) {
+    _inherits(OctreeHelper, _Group);
+
+    function OctreeHelper() {
+      var _this9;
+
+      var octree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      _classCallCheck(this, OctreeHelper);
+
+      _this9 = _possibleConstructorReturn(this, _getPrototypeOf(OctreeHelper).call(this));
+      _this9.name = "OctreeHelper";
+      _this9.octree = octree;
+
+      _this9.update();
+
+      return _this9;
+    }
+
+    _createClass(OctreeHelper, [{
+      key: "createLineSegments",
+      value: function createLineSegments(octants, octantCount) {
+        var maxOctants = Math.pow(2, 16) / 8 - 1;
+        var group = new three.Group();
+        var material = new three.LineBasicMaterial({
+          color: 0xffffff * Math.random()
+        });
+        var result;
+        var vertexCount;
+        var length;
+        var indices, positions;
+        var octant, min, max;
+        var geometry;
+        var i, j, c, d, n;
+        var corner, edge;
+
+        for (i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
+          length += octantCount < maxOctants ? octantCount : maxOctants;
+          octantCount -= maxOctants;
+          vertexCount = length * 8;
+          indices = new Uint16Array(vertexCount * 3);
+          positions = new Float32Array(vertexCount * 3);
+
+          for (c = 0, d = 0, result = octants.next(); !result.done && i < length;) {
+            octant = result.value;
+            min = octant.min;
+            max = octant.max;
+
+            for (j = 0; j < 12; ++j) {
+              edge = edges[j];
+              indices[d++] = c + edge[0];
+              indices[d++] = c + edge[1];
+            }
+
+            for (j = 0; j < 8; ++j, ++c) {
+              corner = layout[j];
+              positions[c * 3] = corner[0] === 0 ? min.x : max.x;
+              positions[c * 3 + 1] = corner[1] === 0 ? min.y : max.y;
+              positions[c * 3 + 2] = corner[2] === 0 ? min.z : max.z;
+            }
+
+            if (++i < length) {
+              result = octants.next();
+            }
+          }
+
+          geometry = new three.BufferGeometry();
+          geometry.setIndex(new three.BufferAttribute(indices, 1));
+          geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
+          group.add(new three.LineSegments(geometry, material));
+        }
+
+        this.add(group);
+      }
+    }, {
+      key: "update",
+      value: function update() {
+        var depth = this.octree !== null ? this.octree.getDepth() : -1;
+        var level = 0;
+        var result;
+        this.dispose();
+
+        while (level <= depth) {
+          result = this.octree.findNodesByLevel(level);
+          this.createLineSegments(result[Symbol.iterator](), typeof result.size === "number" ? result.size : result.length);
+          ++level;
+        }
+      }
+    }, {
+      key: "dispose",
+      value: function dispose() {
+        var groups = this.children;
+        var group, children;
+        var i, j, il, jl;
+
+        for (i = 0, il = groups.length; i < il; ++i) {
+          group = groups[i];
+          children = group.children;
+
+          for (j = 0, jl = children.length; j < jl; ++j) {
+            children[j].geometry.dispose();
+            children[j].material.dispose();
+          }
+
+          while (children.length > 0) {
+            group.remove(children[0]);
+          }
+        }
+
+        while (groups.length > 0) {
+          this.remove(groups[0]);
+        }
+      }
+    }]);
+
+    return OctreeHelper;
+  }(three.Group);
+
+  var layout$1 = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
   var c$1 = new Vector3();
 
   var Octant = function () {
@@ -6566,7 +6687,7 @@
         var i, combination;
 
         for (i = 0; i < 8; ++i) {
-          combination = layout[i];
+          combination = layout$1[i];
           children[i] = new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z));
         }
       }
@@ -7064,14 +7185,14 @@
     _inherits(PointOctant, _Octant);
 
     function PointOctant(min, max) {
-      var _this9;
+      var _this10;
 
       _classCallCheck(this, PointOctant);
 
-      _this9 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctant).call(this, min, max));
-      _this9.points = null;
-      _this9.data = null;
-      return _this9;
+      _this10 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctant).call(this, min, max));
+      _this10.points = null;
+      _this10.data = null;
+      return _this10;
     }
 
     _createClass(PointOctant, [{
@@ -7431,7 +7552,7 @@
     _inherits(PointOctree, _Octree);
 
     function PointOctree(min, max) {
-      var _this10;
+      var _this11;
 
       var bias = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.0;
       var maxPoints = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 8;
@@ -7439,12 +7560,12 @@
 
       _classCallCheck(this, PointOctree);
 
-      _this10 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctree).call(this, new PointOctant(min, max)));
-      _this10.bias = Math.max(0.0, bias);
-      _this10.maxPoints = Math.max(1, Math.round(maxPoints));
-      _this10.maxDepth = Math.max(0, Math.round(maxDepth));
-      _this10.pointCount = 0;
-      return _this10;
+      _this11 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctree).call(this, new PointOctant(min, max)));
+      _this11.bias = Math.max(0.0, bias);
+      _this11.maxPoints = Math.max(1, Math.round(maxPoints));
+      _this11.maxDepth = Math.max(0, Math.round(maxDepth));
+      _this11.pointCount = 0;
+      return _this11;
     }
 
     _createClass(PointOctree, [{
@@ -7520,25 +7641,25 @@
     _inherits(OctreeRaycaster$1, _Raycaster);
 
     function OctreeRaycaster$1(octree, camera, object) {
-      var _this11;
+      var _this12;
 
       _classCallCheck(this, OctreeRaycaster$1);
 
-      _this11 = _possibleConstructorReturn(this, _getPrototypeOf(OctreeRaycaster$1).call(this));
-      _this11.params.Points.threshold = 1e-1;
-      _this11.octree = octree;
-      _this11.camera = camera;
-      _this11.object = object;
-      _this11.enabled = true;
-      _this11.delta = "";
-      _this11.selectedObject = null;
-      _this11.selectedPoint = new three.Mesh(new three.SphereBufferGeometry(0.2, 16, 16), new three.MeshBasicMaterial({
+      _this12 = _possibleConstructorReturn(this, _getPrototypeOf(OctreeRaycaster$1).call(this));
+      _this12.params.Points.threshold = 1e-1;
+      _this12.octree = octree;
+      _this12.camera = camera;
+      _this12.object = object;
+      _this12.enabled = true;
+      _this12.delta = "";
+      _this12.selectedObject = null;
+      _this12.selectedPoint = new three.Mesh(new three.SphereBufferGeometry(0.2, 16, 16), new three.MeshBasicMaterial({
         transparent: true,
         color: 0x00ccff,
         opacity: 0.75
       }));
-      _this11.selectedPoint.visible = false;
-      return _this11;
+      _this12.selectedPoint.visible = false;
+      return _this12;
     }
 
     _createClass(OctreeRaycaster$1, [{
@@ -7675,25 +7796,25 @@
     }, {
       key: "registerOptions",
       value: function registerOptions(menu) {
-        var _this12 = this;
+        var _this13 = this;
 
         var folder = menu.addFolder("Frustum Culling");
         folder.add(this, "enabled").onChange(function () {
-          _this12.cameraHelper.visible = _this12.culledOctants.visible = _this12.enabled;
+          _this13.cameraHelper.visible = _this13.culledOctants.visible = _this13.enabled;
 
-          _this12.cull();
+          _this13.cull();
         });
         folder.add(this, "delta").listen();
         folder.open();
         var subFolder = folder.addFolder("Camera Adjustment");
         subFolder.add(this.s, "radius").min(0.1).max(10.0).step(0.1).onChange(function () {
-          _this12.cull();
+          _this13.cull();
         });
         subFolder.add(this.s, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(function () {
-          _this12.cull();
+          _this13.cull();
         });
         subFolder.add(this.s, "theta").min(0.0).max(Math.PI * 2.0).onChange(function () {
-          _this12.cull();
+          _this13.cull();
         });
       }
     }]);
@@ -7705,16 +7826,16 @@
     _inherits(PointOctreeDemo, _Demo);
 
     function PointOctreeDemo() {
-      var _this13;
+      var _this14;
 
       _classCallCheck(this, PointOctreeDemo);
 
-      _this13 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctreeDemo).call(this, "point-octree"));
-      _this13.points = null;
-      _this13.octreeHelper = null;
-      _this13.octreeRaycaster = null;
-      _this13.frustumCuller = null;
-      return _this13;
+      _this14 = _possibleConstructorReturn(this, _getPrototypeOf(PointOctreeDemo).call(this, "point-octree"));
+      _this14.points = null;
+      _this14.octreeHelper = null;
+      _this14.octreeRaycaster = null;
+      _this14.frustumCuller = null;
+      return _this14;
     }
 
     _createClass(PointOctreeDemo, [{
@@ -7806,6 +7927,16 @@
           return octree;
         }(points);
 
+        var octreeHelper = function createOctreeHelper(octree) {
+          var t0 = performance.now();
+          var octreeHelper = new OctreeHelper(octree);
+          octreeHelper.visible = false;
+          console.log("OctreeHelper:", octreeHelper, "created in", (performance.now() - t0).toFixed(2) + " ms");
+          return octreeHelper;
+        }(octree);
+
+        this.octreeHelper = octreeHelper;
+        scene.add(octreeHelper);
         this.raycaster = new OctreeRaycaster$1(octree, camera, points);
         renderer.domElement.addEventListener("mousemove", this.raycaster);
         scene.add(this.raycaster.selectedPoint);
@@ -7826,8 +7957,21 @@
         var octreeHelper = this.octreeHelper;
         this.raycaster.registerOptions(menu);
         this.frustumCuller.registerOptions(menu);
+        var params = {
+          "level mask": octreeHelper.children.length
+        };
         var folder = menu.addFolder("Points");
         folder.add(points, "visible");
+        folder.open();
+        folder = menu.addFolder("Octree Helper");
+        folder.add(octreeHelper, "visible");
+        folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(function () {
+          var i, l;
+
+          for (i = 0, l = octreeHelper.children.length; i < l; ++i) {
+            octreeHelper.children[i].visible = params["level mask"] === octreeHelper.children.length || i === params["level mask"];
+          }
+        });
         folder.open();
       }
     }, {
