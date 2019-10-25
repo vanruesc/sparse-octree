@@ -302,7 +302,7 @@ export class PointOctreeDemo extends Demo {
 
 		super.reset();
 
-		this.composer.renderer.domElement.removeEventListener("mousemove", this.raycaster);
+		this.renderer.domElement.removeEventListener("mousemove", this.raycaster);
 
 		return this;
 
