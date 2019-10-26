@@ -7979,7 +7979,7 @@
       value: function reset() {
         _get(_getPrototypeOf(PointOctreeDemo.prototype), "reset", this).call(this);
 
-        this.composer.renderer.domElement.removeEventListener("mousemove", this.raycaster);
+        this.renderer.domElement.removeEventListener("mousemove", this.raycaster);
         return this;
       }
     }]);

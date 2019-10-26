@@ -1,13 +1,15 @@
 /**
- * sparse-octree v6.0.0 build Wed Oct 23 2019
+ * sparse-octree v6.0.1 build Sat Oct 26 2019
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2019 Raoul van Rüschen, Zlib
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.SPARSEOCTREE = {}));
-}(this, (function (exports) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('math-ds'), require('iterator-result')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'math-ds', 'iterator-result'], factory) :
+  (global = global || self, factory(global.SPARSEOCTREE = {}, global.MATHDS, global.ITERATORRESULT));
+}(this, (function (exports, mathDs, IteratorResult) { 'use strict';
+
+  IteratorResult = IteratorResult && IteratorResult.hasOwnProperty('default') ? IteratorResult['default'] : IteratorResult;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -130,976 +132,11 @@
 
   var edges = [new Uint8Array([0, 4]), new Uint8Array([1, 5]), new Uint8Array([2, 6]), new Uint8Array([3, 7]), new Uint8Array([0, 2]), new Uint8Array([1, 3]), new Uint8Array([4, 6]), new Uint8Array([5, 7]), new Uint8Array([0, 1]), new Uint8Array([2, 3]), new Uint8Array([4, 5]), new Uint8Array([6, 7])];
   var layout = [new Uint8Array([0, 0, 0]), new Uint8Array([0, 0, 1]), new Uint8Array([0, 1, 0]), new Uint8Array([0, 1, 1]), new Uint8Array([1, 0, 0]), new Uint8Array([1, 0, 1]), new Uint8Array([1, 1, 0]), new Uint8Array([1, 1, 1])];
-
-  var Vector3 = function () {
-    function Vector3() {
-      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var z = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-      _classCallCheck(this, Vector3);
-
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
-
-    _createClass(Vector3, [{
-      key: "set",
-      value: function set(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        return this;
-      }
-    }, {
-      key: "copy",
-      value: function copy(v) {
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
-        return this;
-      }
-    }, {
-      key: "clone",
-      value: function clone() {
-        return new this.constructor(this.x, this.y, this.z);
-      }
-    }, {
-      key: "fromArray",
-      value: function fromArray(array) {
-        var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        this.x = array[offset];
-        this.y = array[offset + 1];
-        this.z = array[offset + 2];
-        return this;
-      }
-    }, {
-      key: "toArray",
-      value: function toArray() {
-        var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        array[offset] = this.x;
-        array[offset + 1] = this.y;
-        array[offset + 2] = this.z;
-        return array;
-      }
-    }, {
-      key: "setFromSpherical",
-      value: function setFromSpherical(s) {
-        this.setFromSphericalCoords(s.radius, s.phi, s.theta);
-      }
-    }, {
-      key: "setFromSphericalCoords",
-      value: function setFromSphericalCoords(radius, phi, theta) {
-        var sinPhiRadius = Math.sin(phi) * radius;
-        this.x = sinPhiRadius * Math.sin(theta);
-        this.y = Math.cos(phi) * radius;
-        this.z = sinPhiRadius * Math.cos(theta);
-        return this;
-      }
-    }, {
-      key: "setFromCylindrical",
-      value: function setFromCylindrical(c) {
-        this.setFromCylindricalCoords(c.radius, c.theta, c.y);
-      }
-    }, {
-      key: "setFromCylindricalCoords",
-      value: function setFromCylindricalCoords(radius, theta, y) {
-        this.x = radius * Math.sin(theta);
-        this.y = y;
-        this.z = radius * Math.cos(theta);
-        return this;
-      }
-    }, {
-      key: "setFromMatrixColumn",
-      value: function setFromMatrixColumn(m, index) {
-        return this.fromArray(m.elements, index * 4);
-      }
-    }, {
-      key: "setFromMatrixPosition",
-      value: function setFromMatrixPosition(m) {
-        var me = m.elements;
-        this.x = me[12];
-        this.y = me[13];
-        this.z = me[14];
-        return this;
-      }
-    }, {
-      key: "setFromMatrixScale",
-      value: function setFromMatrixScale(m) {
-        var sx = this.setFromMatrixColumn(m, 0).length();
-        var sy = this.setFromMatrixColumn(m, 1).length();
-        var sz = this.setFromMatrixColumn(m, 2).length();
-        this.x = sx;
-        this.y = sy;
-        this.z = sz;
-        return this;
-      }
-    }, {
-      key: "add",
-      value: function add(v) {
-        this.x += v.x;
-        this.y += v.y;
-        this.z += v.z;
-        return this;
-      }
-    }, {
-      key: "addScalar",
-      value: function addScalar(s) {
-        this.x += s;
-        this.y += s;
-        this.z += s;
-        return this;
-      }
-    }, {
-      key: "addVectors",
-      value: function addVectors(a, b) {
-        this.x = a.x + b.x;
-        this.y = a.y + b.y;
-        this.z = a.z + b.z;
-        return this;
-      }
-    }, {
-      key: "addScaledVector",
-      value: function addScaledVector(v, s) {
-        this.x += v.x * s;
-        this.y += v.y * s;
-        this.z += v.z * s;
-        return this;
-      }
-    }, {
-      key: "sub",
-      value: function sub(v) {
-        this.x -= v.x;
-        this.y -= v.y;
-        this.z -= v.z;
-        return this;
-      }
-    }, {
-      key: "subScalar",
-      value: function subScalar(s) {
-        this.x -= s;
-        this.y -= s;
-        this.z -= s;
-        return this;
-      }
-    }, {
-      key: "subVectors",
-      value: function subVectors(a, b) {
-        this.x = a.x - b.x;
-        this.y = a.y - b.y;
-        this.z = a.z - b.z;
-        return this;
-      }
-    }, {
-      key: "multiply",
-      value: function multiply(v) {
-        this.x *= v.x;
-        this.y *= v.y;
-        this.z *= v.z;
-        return this;
-      }
-    }, {
-      key: "multiplyScalar",
-      value: function multiplyScalar(s) {
-        this.x *= s;
-        this.y *= s;
-        this.z *= s;
-        return this;
-      }
-    }, {
-      key: "multiplyVectors",
-      value: function multiplyVectors(a, b) {
-        this.x = a.x * b.x;
-        this.y = a.y * b.y;
-        this.z = a.z * b.z;
-        return this;
-      }
-    }, {
-      key: "divide",
-      value: function divide(v) {
-        this.x /= v.x;
-        this.y /= v.y;
-        this.z /= v.z;
-        return this;
-      }
-    }, {
-      key: "divideScalar",
-      value: function divideScalar(s) {
-        this.x /= s;
-        this.y /= s;
-        this.z /= s;
-        return this;
-      }
-    }, {
-      key: "crossVectors",
-      value: function crossVectors(a, b) {
-        var ax = a.x,
-            ay = a.y,
-            az = a.z;
-        var bx = b.x,
-            by = b.y,
-            bz = b.z;
-        this.x = ay * bz - az * by;
-        this.y = az * bx - ax * bz;
-        this.z = ax * by - ay * bx;
-        return this;
-      }
-    }, {
-      key: "cross",
-      value: function cross(v) {
-        return this.crossVectors(this, v);
-      }
-    }, {
-      key: "transformDirection",
-      value: function transformDirection(m) {
-        var x = this.x,
-            y = this.y,
-            z = this.z;
-        var e = m.elements;
-        this.x = e[0] * x + e[4] * y + e[8] * z;
-        this.y = e[1] * x + e[5] * y + e[9] * z;
-        this.z = e[2] * x + e[6] * y + e[10] * z;
-        return this.normalize();
-      }
-    }, {
-      key: "applyMatrix3",
-      value: function applyMatrix3(m) {
-        var x = this.x,
-            y = this.y,
-            z = this.z;
-        var e = m.elements;
-        this.x = e[0] * x + e[3] * y + e[6] * z;
-        this.y = e[1] * x + e[4] * y + e[7] * z;
-        this.z = e[2] * x + e[5] * y + e[8] * z;
-        return this;
-      }
-    }, {
-      key: "applyMatrix4",
-      value: function applyMatrix4(m) {
-        var x = this.x,
-            y = this.y,
-            z = this.z;
-        var e = m.elements;
-        this.x = e[0] * x + e[4] * y + e[8] * z + e[12];
-        this.y = e[1] * x + e[5] * y + e[9] * z + e[13];
-        this.z = e[2] * x + e[6] * y + e[10] * z + e[14];
-        return this;
-      }
-    }, {
-      key: "applyQuaternion",
-      value: function applyQuaternion(q) {
-        var x = this.x,
-            y = this.y,
-            z = this.z;
-        var qx = q.x,
-            qy = q.y,
-            qz = q.z,
-            qw = q.w;
-        var ix = qw * x + qy * z - qz * y;
-        var iy = qw * y + qz * x - qx * z;
-        var iz = qw * z + qx * y - qy * x;
-        var iw = -qx * x - qy * y - qz * z;
-        this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-        this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-        this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
-        return this;
-      }
-    }, {
-      key: "negate",
-      value: function negate() {
-        this.x = -this.x;
-        this.y = -this.y;
-        this.z = -this.z;
-        return this;
-      }
-    }, {
-      key: "dot",
-      value: function dot(v) {
-        return this.x * v.x + this.y * v.y + this.z * v.z;
-      }
-    }, {
-      key: "reflect",
-      value: function reflect(n) {
-        var nx = n.x;
-        var ny = n.y;
-        var nz = n.z;
-        this.sub(n.multiplyScalar(2 * this.dot(n)));
-        n.set(nx, ny, nz);
-        return this;
-      }
-    }, {
-      key: "angleTo",
-      value: function angleTo(v) {
-        var theta = this.dot(v) / Math.sqrt(this.lengthSquared() * v.lengthSquared());
-        return Math.acos(Math.min(Math.max(theta, -1), 1));
-      }
-    }, {
-      key: "manhattanLength",
-      value: function manhattanLength() {
-        return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z);
-      }
-    }, {
-      key: "lengthSquared",
-      value: function lengthSquared() {
-        return this.x * this.x + this.y * this.y + this.z * this.z;
-      }
-    }, {
-      key: "length",
-      value: function length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-      }
-    }, {
-      key: "manhattanDistanceTo",
-      value: function manhattanDistanceTo(v) {
-        return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
-      }
-    }, {
-      key: "distanceToSquared",
-      value: function distanceToSquared(v) {
-        var dx = this.x - v.x;
-        var dy = this.y - v.y;
-        var dz = this.z - v.z;
-        return dx * dx + dy * dy + dz * dz;
-      }
-    }, {
-      key: "distanceTo",
-      value: function distanceTo(v) {
-        return Math.sqrt(this.distanceToSquared(v));
-      }
-    }, {
-      key: "normalize",
-      value: function normalize() {
-        return this.divideScalar(this.length());
-      }
-    }, {
-      key: "setLength",
-      value: function setLength(length) {
-        return this.normalize().multiplyScalar(length);
-      }
-    }, {
-      key: "min",
-      value: function min(v) {
-        this.x = Math.min(this.x, v.x);
-        this.y = Math.min(this.y, v.y);
-        this.z = Math.min(this.z, v.z);
-        return this;
-      }
-    }, {
-      key: "max",
-      value: function max(v) {
-        this.x = Math.max(this.x, v.x);
-        this.y = Math.max(this.y, v.y);
-        this.z = Math.max(this.z, v.z);
-        return this;
-      }
-    }, {
-      key: "clamp",
-      value: function clamp(min, max) {
-        this.x = Math.max(min.x, Math.min(max.x, this.x));
-        this.y = Math.max(min.y, Math.min(max.y, this.y));
-        this.z = Math.max(min.z, Math.min(max.z, this.z));
-        return this;
-      }
-    }, {
-      key: "floor",
-      value: function floor() {
-        this.x = Math.floor(this.x);
-        this.y = Math.floor(this.y);
-        this.z = Math.floor(this.z);
-        return this;
-      }
-    }, {
-      key: "ceil",
-      value: function ceil() {
-        this.x = Math.ceil(this.x);
-        this.y = Math.ceil(this.y);
-        this.z = Math.ceil(this.z);
-        return this;
-      }
-    }, {
-      key: "round",
-      value: function round() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        this.z = Math.round(this.z);
-        return this;
-      }
-    }, {
-      key: "lerp",
-      value: function lerp(v, alpha) {
-        this.x += (v.x - this.x) * alpha;
-        this.y += (v.y - this.y) * alpha;
-        this.z += (v.z - this.z) * alpha;
-        return this;
-      }
-    }, {
-      key: "lerpVectors",
-      value: function lerpVectors(v1, v2, alpha) {
-        return this.subVectors(v2, v1).multiplyScalar(alpha).add(v1);
-      }
-    }, {
-      key: "equals",
-      value: function equals(v) {
-        return v.x === this.x && v.y === this.y && v.z === this.z;
-      }
-    }]);
-
-    return Vector3;
-  }();
-
-  var v = new Vector3();
-  var points = [new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()];
-
-  var Box3 = function () {
-    function Box3() {
-      var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3(Infinity, Infinity, Infinity);
-      var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3(-Infinity, -Infinity, -Infinity);
-
-      _classCallCheck(this, Box3);
-
-      this.min = min;
-      this.max = max;
-    }
-
-    _createClass(Box3, [{
-      key: "set",
-      value: function set(min, max) {
-        this.min.copy(min);
-        this.max.copy(max);
-        return this;
-      }
-    }, {
-      key: "copy",
-      value: function copy(b) {
-        this.min.copy(b.min);
-        this.max.copy(b.max);
-        return this;
-      }
-    }, {
-      key: "clone",
-      value: function clone() {
-        return new this.constructor().copy(this);
-      }
-    }, {
-      key: "makeEmpty",
-      value: function makeEmpty() {
-        this.min.x = this.min.y = this.min.z = Infinity;
-        this.max.x = this.max.y = this.max.z = -Infinity;
-        return this;
-      }
-    }, {
-      key: "isEmpty",
-      value: function isEmpty() {
-        return this.max.x < this.min.x || this.max.y < this.min.y || this.max.z < this.min.z;
-      }
-    }, {
-      key: "getCenter",
-      value: function getCenter() {
-        var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
-        return !this.isEmpty() ? target.addVectors(this.min, this.max).multiplyScalar(0.5) : target.set(0, 0, 0);
-      }
-    }, {
-      key: "getSize",
-      value: function getSize() {
-        var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
-        return !this.isEmpty() ? target.subVectors(this.max, this.min) : target.set(0, 0, 0);
-      }
-    }, {
-      key: "setFromSphere",
-      value: function setFromSphere(sphere) {
-        this.set(sphere.center, sphere.center);
-        this.expandByScalar(sphere.radius);
-        return this;
-      }
-    }, {
-      key: "expandByPoint",
-      value: function expandByPoint(p) {
-        this.min.min(p);
-        this.max.max(p);
-        return this;
-      }
-    }, {
-      key: "expandByVector",
-      value: function expandByVector(v) {
-        this.min.sub(v);
-        this.max.add(v);
-        return this;
-      }
-    }, {
-      key: "expandByScalar",
-      value: function expandByScalar(s) {
-        this.min.addScalar(-s);
-        this.max.addScalar(s);
-        return this;
-      }
-    }, {
-      key: "setFromPoints",
-      value: function setFromPoints(points) {
-        var i, l;
-        this.min.set(0, 0, 0);
-        this.max.set(0, 0, 0);
-
-        for (i = 0, l = points.length; i < l; ++i) {
-          this.expandByPoint(points[i]);
-        }
-
-        return this;
-      }
-    }, {
-      key: "setFromCenterAndSize",
-      value: function setFromCenterAndSize(center, size) {
-        var halfSize = v.copy(size).multiplyScalar(0.5);
-        this.min.copy(center).sub(halfSize);
-        this.max.copy(center).add(halfSize);
-        return this;
-      }
-    }, {
-      key: "clampPoint",
-      value: function clampPoint(point) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        return target.copy(point).clamp(this.min, this.max);
-      }
-    }, {
-      key: "distanceToPoint",
-      value: function distanceToPoint(p) {
-        var clampedPoint = v.copy(p).clamp(this.min, this.max);
-        return clampedPoint.sub(p).length();
-      }
-    }, {
-      key: "applyMatrix4",
-      value: function applyMatrix4(m) {
-        var min = this.min;
-        var max = this.max;
-
-        if (!this.isEmpty()) {
-          points[0].set(min.x, min.y, min.z).applyMatrix4(m);
-          points[1].set(min.x, min.y, max.z).applyMatrix4(m);
-          points[2].set(min.x, max.y, min.z).applyMatrix4(m);
-          points[3].set(min.x, max.y, max.z).applyMatrix4(m);
-          points[4].set(max.x, min.y, min.z).applyMatrix4(m);
-          points[5].set(max.x, min.y, max.z).applyMatrix4(m);
-          points[6].set(max.x, max.y, min.z).applyMatrix4(m);
-          points[7].set(max.x, max.y, max.z).applyMatrix4(m);
-          this.setFromPoints(points);
-        }
-
-        return this;
-      }
-    }, {
-      key: "translate",
-      value: function translate(offset) {
-        this.min.add(offset);
-        this.max.add(offset);
-        return this;
-      }
-    }, {
-      key: "intersect",
-      value: function intersect(b) {
-        this.min.max(b.min);
-        this.max.min(b.max);
-
-        if (this.isEmpty()) {
-          this.makeEmpty();
-        }
-
-        return this;
-      }
-    }, {
-      key: "union",
-      value: function union(b) {
-        this.min.min(b.min);
-        this.max.max(b.max);
-        return this;
-      }
-    }, {
-      key: "containsPoint",
-      value: function containsPoint(p) {
-        var min = this.min;
-        var max = this.max;
-        return p.x >= min.x && p.y >= min.y && p.z >= min.z && p.x <= max.x && p.y <= max.y && p.z <= max.z;
-      }
-    }, {
-      key: "containsBox",
-      value: function containsBox(b) {
-        var tMin = this.min;
-        var tMax = this.max;
-        var bMin = b.min;
-        var bMax = b.max;
-        return tMin.x <= bMin.x && bMax.x <= tMax.x && tMin.y <= bMin.y && bMax.y <= tMax.y && tMin.z <= bMin.z && bMax.z <= tMax.z;
-      }
-    }, {
-      key: "intersectsBox",
-      value: function intersectsBox(b) {
-        var tMin = this.min;
-        var tMax = this.max;
-        var bMin = b.min;
-        var bMax = b.max;
-        return bMax.x >= tMin.x && bMax.y >= tMin.y && bMax.z >= tMin.z && bMin.x <= tMax.x && bMin.y <= tMax.y && bMin.z <= tMax.z;
-      }
-    }, {
-      key: "intersectsSphere",
-      value: function intersectsSphere(s) {
-        var closestPoint = this.clampPoint(s.center, v);
-        return closestPoint.distanceToSquared(s.center) <= s.radius * s.radius;
-      }
-    }, {
-      key: "intersectsPlane",
-      value: function intersectsPlane(p) {
-        var min, max;
-
-        if (p.normal.x > 0) {
-          min = p.normal.x * this.min.x;
-          max = p.normal.x * this.max.x;
-        } else {
-          min = p.normal.x * this.max.x;
-          max = p.normal.x * this.min.x;
-        }
-
-        if (p.normal.y > 0) {
-          min += p.normal.y * this.min.y;
-          max += p.normal.y * this.max.y;
-        } else {
-          min += p.normal.y * this.max.y;
-          max += p.normal.y * this.min.y;
-        }
-
-        if (p.normal.z > 0) {
-          min += p.normal.z * this.min.z;
-          max += p.normal.z * this.max.z;
-        } else {
-          min += p.normal.z * this.max.z;
-          max += p.normal.z * this.min.z;
-        }
-
-        return min <= -p.constant && max >= -p.constant;
-      }
-    }, {
-      key: "equals",
-      value: function equals(b) {
-        return b.min.equals(this.min) && b.max.equals(this.max);
-      }
-    }]);
-
-    return Box3;
-  }();
-
-  var v$4 = [new Vector3(), new Vector3(), new Vector3(), new Vector3()];
-
-  var Ray = function () {
-    function Ray() {
-      var origin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
-      var direction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-
-      _classCallCheck(this, Ray);
-
-      this.origin = origin;
-      this.direction = direction;
-    }
-
-    _createClass(Ray, [{
-      key: "set",
-      value: function set(origin, direction) {
-        this.origin.copy(origin);
-        this.direction.copy(direction);
-        return this;
-      }
-    }, {
-      key: "copy",
-      value: function copy(r) {
-        this.origin.copy(r.origin);
-        this.direction.copy(r.direction);
-        return this;
-      }
-    }, {
-      key: "clone",
-      value: function clone() {
-        return new this.constructor().copy(this);
-      }
-    }, {
-      key: "at",
-      value: function at(t) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        return target.copy(this.direction).multiplyScalar(t).add(this.origin);
-      }
-    }, {
-      key: "lookAt",
-      value: function lookAt(target) {
-        this.direction.copy(target).sub(this.origin).normalize();
-        return this;
-      }
-    }, {
-      key: "recast",
-      value: function recast(t) {
-        this.origin.copy(this.at(t, v$4[0]));
-        return this;
-      }
-    }, {
-      key: "closestPointToPoint",
-      value: function closestPointToPoint(p) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var directionDistance = target.subVectors(p, this.origin).dot(this.direction);
-        return directionDistance >= 0.0 ? target.copy(this.direction).multiplyScalar(directionDistance).add(this.origin) : target.copy(this.origin);
-      }
-    }, {
-      key: "distanceSquaredToPoint",
-      value: function distanceSquaredToPoint(p) {
-        var directionDistance = v$4[0].subVectors(p, this.origin).dot(this.direction);
-        return directionDistance < 0.0 ? this.origin.distanceToSquared(p) : v$4[0].copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(p);
-      }
-    }, {
-      key: "distanceToPoint",
-      value: function distanceToPoint(p) {
-        return Math.sqrt(this.distanceSquaredToPoint(p));
-      }
-    }, {
-      key: "distanceToPlane",
-      value: function distanceToPlane(p) {
-        var denominator = p.normal.dot(this.direction);
-        var t = denominator !== 0.0 ? -(this.origin.dot(p.normal) + p.constant) / denominator : p.distanceToPoint(this.origin) === 0.0 ? 0.0 : -1.0;
-        return t >= 0.0 ? t : null;
-      }
-    }, {
-      key: "distanceSquaredToSegment",
-      value: function distanceSquaredToSegment(v0, v1, pointOnRay, pointOnSegment) {
-        var segCenter = v$4[0].copy(v0).add(v1).multiplyScalar(0.5);
-        var segDir = v$4[1].copy(v1).sub(v0).normalize();
-        var diff = v$4[2].copy(this.origin).sub(segCenter);
-        var segExtent = v0.distanceTo(v1) * 0.5;
-        var a01 = -this.direction.dot(segDir);
-        var b0 = diff.dot(this.direction);
-        var b1 = -diff.dot(segDir);
-        var c = diff.lengthSq();
-        var det = Math.abs(1.0 - a01 * a01);
-        var s0, s1, extDet, invDet, sqrDist;
-
-        if (det > 0.0) {
-          s0 = a01 * b1 - b0;
-          s1 = a01 * b0 - b1;
-          extDet = segExtent * det;
-
-          if (s0 >= 0.0) {
-            if (s1 >= -extDet) {
-              if (s1 <= extDet) {
-                invDet = 1.0 / det;
-                s0 *= invDet;
-                s1 *= invDet;
-                sqrDist = s0 * (s0 + a01 * s1 + 2.0 * b0) + s1 * (a01 * s0 + s1 + 2.0 * b1) + c;
-              } else {
-                s1 = segExtent;
-                s0 = Math.max(0.0, -(a01 * s1 + b0));
-                sqrDist = -s0 * s0 + s1 * (s1 + 2.0 * b1) + c;
-              }
-            } else {
-              s1 = -segExtent;
-              s0 = Math.max(0.0, -(a01 * s1 + b0));
-              sqrDist = -s0 * s0 + s1 * (s1 + 2.0 * b1) + c;
-            }
-          } else {
-            if (s1 <= -extDet) {
-              s0 = Math.max(0.0, -(-a01 * segExtent + b0));
-              s1 = s0 > 0.0 ? -segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
-              sqrDist = -s0 * s0 + s1 * (s1 + 2.0 * b1) + c;
-            } else if (s1 <= extDet) {
-              s0 = 0.0;
-              s1 = Math.min(Math.max(-segExtent, -b1), segExtent);
-              sqrDist = s1 * (s1 + 2.0 * b1) + c;
-            } else {
-              s0 = Math.max(0.0, -(a01 * segExtent + b0));
-              s1 = s0 > 0.0 ? segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
-              sqrDist = -s0 * s0 + s1 * (s1 + 2.0 * b1) + c;
-            }
-          }
-        } else {
-          s1 = a01 > 0.0 ? -segExtent : segExtent;
-          s0 = Math.max(0.0, -(a01 * s1 + b0));
-          sqrDist = -s0 * s0 + s1 * (s1 + 2.0 * b1) + c;
-        }
-
-        if (pointOnRay !== undefined) {
-          pointOnRay.copy(this.direction).multiplyScalar(s0).add(this.origin);
-        }
-
-        if (pointOnSegment !== undefined) {
-          pointOnSegment.copy(segDir).multiplyScalar(s1).add(segCenter);
-        }
-
-        return sqrDist;
-      }
-    }, {
-      key: "intersectSphere",
-      value: function intersectSphere(s) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var ab = v$4[0].subVectors(s.center, this.origin);
-        var tca = ab.dot(this.direction);
-        var d2 = ab.dot(ab) - tca * tca;
-        var radius2 = s.radius * s.radius;
-        var result = null;
-        var thc, t0, t1;
-
-        if (d2 <= radius2) {
-          thc = Math.sqrt(radius2 - d2);
-          t0 = tca - thc;
-          t1 = tca + thc;
-
-          if (t0 >= 0.0 || t1 >= 0.0) {
-            result = t0 < 0.0 ? this.at(t1, target) : this.at(t0, target);
-          }
-        }
-
-        return result;
-      }
-    }, {
-      key: "intersectsSphere",
-      value: function intersectsSphere(s) {
-        return this.distanceSqToPoint(s.center) <= s.radius * s.radius;
-      }
-    }, {
-      key: "intersectPlane",
-      value: function intersectPlane(p) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var t = this.distanceToPlane(p);
-        return t === null ? null : this.at(t, target);
-      }
-    }, {
-      key: "intersectsPlane",
-      value: function intersectsPlane(p) {
-        var distanceToPoint = p.distanceToPoint(this.origin);
-        return distanceToPoint === 0.0 || p.normal.dot(this.direction) * distanceToPoint < 0.0;
-      }
-    }, {
-      key: "intersectBox",
-      value: function intersectBox(b) {
-        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
-        var origin = this.origin;
-        var direction = this.direction;
-        var min = b.min;
-        var max = b.max;
-        var invDirX = 1.0 / direction.x;
-        var invDirY = 1.0 / direction.y;
-        var invDirZ = 1.0 / direction.z;
-        var result = null;
-        var tmin, tmax, tymin, tymax, tzmin, tzmax;
-
-        if (invDirX >= 0.0) {
-          tmin = (min.x - origin.x) * invDirX;
-          tmax = (max.x - origin.x) * invDirX;
-        } else {
-          tmin = (max.x - origin.x) * invDirX;
-          tmax = (min.x - origin.x) * invDirX;
-        }
-
-        if (invDirY >= 0.0) {
-          tymin = (min.y - origin.y) * invDirY;
-          tymax = (max.y - origin.y) * invDirY;
-        } else {
-          tymin = (max.y - origin.y) * invDirY;
-          tymax = (min.y - origin.y) * invDirY;
-        }
-
-        if (tmin <= tymax && tymin <= tmax) {
-          if (tymin > tmin || tmin !== tmin) {
-            tmin = tymin;
-          }
-
-          if (tymax < tmax || tmax !== tmax) {
-            tmax = tymax;
-          }
-
-          if (invDirZ >= 0.0) {
-            tzmin = (min.z - origin.z) * invDirZ;
-            tzmax = (max.z - origin.z) * invDirZ;
-          } else {
-            tzmin = (max.z - origin.z) * invDirZ;
-            tzmax = (min.z - origin.z) * invDirZ;
-          }
-
-          if (tmin <= tzmax && tzmin <= tmax) {
-            if (tzmin > tmin || tmin !== tmin) {
-              tmin = tzmin;
-            }
-
-            if (tzmax < tmax || tmax !== tmax) {
-              tmax = tzmax;
-            }
-
-            if (tmax >= 0.0) {
-              result = this.at(tmin >= 0.0 ? tmin : tmax, target);
-            }
-          }
-        }
-
-        return result;
-      }
-    }, {
-      key: "intersectsBox",
-      value: function intersectsBox(b) {
-        return this.intersectBox(b, v$4[0]) !== null;
-      }
-    }, {
-      key: "intersectTriangle",
-      value: function intersectTriangle(a, b, c, backfaceCulling, target) {
-        var direction = this.direction;
-        var diff = v$4[0];
-        var edge1 = v$4[1];
-        var edge2 = v$4[2];
-        var normal = v$4[3];
-        var result = null;
-        var DdN, sign, DdQxE2, DdE1xQ, QdN;
-        edge1.subVectors(b, a);
-        edge2.subVectors(c, a);
-        normal.crossVectors(edge1, edge2);
-        DdN = direction.dot(normal);
-
-        if (DdN !== 0.0 && !(backfaceCulling && DdN > 0.0)) {
-          if (DdN > 0.0) {
-            sign = 1.0;
-          } else {
-            sign = -1.0;
-            DdN = -DdN;
-          }
-
-          diff.subVectors(this.origin, a);
-          DdQxE2 = sign * direction.dot(edge2.crossVectors(diff, edge2));
-
-          if (DdQxE2 >= 0.0) {
-            DdE1xQ = sign * direction.dot(edge1.cross(diff));
-
-            if (DdE1xQ >= 0.0 && DdQxE2 + DdE1xQ <= DdN) {
-              QdN = -sign * diff.dot(normal);
-
-              if (QdN >= 0.0) {
-                result = this.at(QdN / DdN, target);
-              }
-            }
-          }
-        }
-
-        return result;
-      }
-    }, {
-      key: "applyMatrix4",
-      value: function applyMatrix4(m) {
-        this.origin.applyMatrix4(m);
-        this.direction.transformDirection(m);
-        return this;
-      }
-    }, {
-      key: "equals",
-      value: function equals(r) {
-        return r.origin.equals(this.origin) && r.direction.equals(this.direction);
-      }
-    }]);
-
-    return Ray;
-  }();
-
-  var c = new Vector3();
+  var c = new mathDs.Vector3();
 
   var CubicOctant = function () {
     function CubicOctant() {
-      var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
+      var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new mathDs.Vector3();
       var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
       _classCallCheck(this, CubicOctant);
@@ -1130,7 +167,7 @@
 
         for (i = 0; i < 8; ++i) {
           combination = layout[i];
-          children[i] = new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize);
+          children[i] = new this.constructor(new mathDs.Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), halfSize);
         }
       }
     }, {
@@ -1143,12 +180,12 @@
     return CubicOctant;
   }();
 
-  var c$1 = new Vector3();
+  var c$1 = new mathDs.Vector3();
 
   var Octant = function () {
     function Octant() {
-      var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector3();
-      var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
+      var min = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new mathDs.Vector3();
+      var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new mathDs.Vector3();
 
       _classCallCheck(this, Octant);
 
@@ -1178,7 +215,7 @@
 
         for (i = 0; i < 8; ++i) {
           combination = layout[i];
-          children[i] = new this.constructor(new Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z));
+          children[i] = new this.constructor(new mathDs.Vector3(combination[0] === 0 ? min.x : mid.x, combination[1] === 0 ? min.y : mid.y, combination[2] === 0 ? min.z : mid.z), new mathDs.Vector3(combination[0] === 0 ? mid.x : max.x, combination[1] === 0 ? mid.y : max.y, combination[2] === 0 ? mid.z : max.z));
         }
       }
     }]);
@@ -1216,7 +253,7 @@
           rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
 
           if (rayPointDistanceSq < thresholdSq) {
-            intersectPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
+            intersectPoint = raycaster.ray.closestPointToPoint(point, new mathDs.Vector3());
             distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
             if (distance >= raycaster.near && distance <= raycaster.far) {
@@ -1288,10 +325,10 @@
     return octantTable[currentOctant][exit];
   }
 
-  var v$1 = new Vector3();
-  var b = new Box3();
-  var d = new Box3();
-  var r = new Ray();
+  var v = new mathDs.Vector3();
+  var b = new mathDs.Box3();
+  var d = new mathDs.Box3();
+  var r = new mathDs.Ray();
 
   function _intersectOctree(octree, ray, flags) {
     var min = b.min.set(0, 0, 0);
@@ -1302,7 +339,7 @@
     var direction = r.direction.copy(ray.direction);
     var invDirX, invDirY, invDirZ;
     var tx0, tx1, ty0, ty1, tz0, tz1;
-    origin.sub(octree.getCenter(v$1)).add(halfDimensions);
+    origin.sub(octree.getCenter(v)).add(halfDimensions);
     flags.value = 0;
 
     if (direction.x < 0.0) {
@@ -1418,29 +455,7 @@
     return OctreeRaycaster;
   }();
 
-  var IteratorResult = function () {
-    function IteratorResult() {
-      var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      var done = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      _classCallCheck(this, IteratorResult);
-
-      this.value = value;
-      this.done = done;
-    }
-
-    _createClass(IteratorResult, [{
-      key: "reset",
-      value: function reset() {
-        this.value = null;
-        this.done = false;
-      }
-    }]);
-
-    return IteratorResult;
-  }();
-
-  var b$1 = new Box3();
+  var b$1 = new mathDs.Box3();
 
   var OctreeIterator = function () {
     function OctreeIterator(octree) {
@@ -1540,7 +555,7 @@
     return OctreeIterator;
   }();
 
-  var b$2 = new Box3();
+  var b$2 = new mathDs.Box3();
 
   function _getDepth(octant) {
     var children = octant.children;
@@ -1669,7 +684,7 @@
     return Octree;
   }();
 
-  var p = new Vector3();
+  var p = new mathDs.Vector3();
 
   var PointOctant = function (_Octant) {
     _inherits(PointOctant, _Octant);
@@ -1747,7 +762,7 @@
         var children = this.children;
 
         if (children !== null) {
-          var _points = [];
+          var points = [];
           var data = [];
           var i, l, child;
 
@@ -1755,13 +770,13 @@
             child = children[i];
 
             if (child.points !== null) {
-              _points = _points.concat(child.points);
+              points = points.concat(child.points);
               data = data.concat(child.data);
             }
           }
 
           this.children = null;
-          this.points = _points;
+          this.points = points;
           this.data = data;
         }
       }
@@ -1965,19 +980,19 @@
         }
       }
     } else if (octant.points !== null) {
-      var _points2 = octant.points;
+      var points = octant.points;
       var index = -1;
       var distance;
 
-      for (i = 0, l = _points2.length; i < l; ++i) {
-        if (_points2[i].equals(point)) {
+      for (i = 0, l = points.length; i < l; ++i) {
+        if (points[i].equals(point)) {
           if (!skipSelf) {
             bestDistance = 0.0;
             index = i;
             break;
           }
         } else {
-          distance = point.distanceTo(_points2[i]);
+          distance = point.distanceTo(points[i]);
 
           if (distance < bestDistance) {
             bestDistance = distance;
@@ -1988,7 +1003,7 @@
 
       if (index >= 0) {
         result = {
-          point: _points2[index],
+          point: points[index],
           data: octant.data[index],
           distance: bestDistance
         };
@@ -2013,13 +1028,13 @@
         }
       }
     } else if (octant.points !== null) {
-      var _points3 = octant.points;
+      var points = octant.points;
       var rSq = radius * radius;
 
       var _p;
 
-      for (i = 0, l = _points3.length; i < l; ++i) {
-        _p = _points3[i];
+      for (i = 0, l = points.length; i < l; ++i) {
+        _p = points[i];
 
         if (_p.equals(point)) {
           if (!skipSelf) {
