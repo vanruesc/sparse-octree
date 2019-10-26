@@ -95,7 +95,7 @@ const r = new Ray();
  * @param {Octree} octree - The octree.
  * @param {Ray} ray - A ray.
  * @param {Flags} flags - Raycasting flags.
- * @return {Number[]} The ray parameters tx0, tx1, ty0, ty1, tz0 and tz1, or null if the ray doesn&apos;t hit the octree.
+ * @return {Number[]} The ray parameters tx0, ty0, tz0, tx1, ty1 and tz1, in that order, or null if the ray doesn&apos;t hit the octree.
  */
 
 export function intersectOctree(octree, ray, flags) {
