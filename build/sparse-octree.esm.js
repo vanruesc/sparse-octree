@@ -1,7 +1,8 @@
 /**
- * sparse-octree v6.0.1 build Sat Oct 26 2019
+ * sparse-octree v6.0.2 build Sat Jan 18 2020
  * https://github.com/vanruesc/sparse-octree
- * Copyright 2019 Raoul van Rüschen, Zlib
+ * Copyright 2020 Raoul van Rüschen
+ * @license Zlib
  */
 import { Vector3, Box3, Ray } from 'math-ds';
 import IteratorResult from 'iterator-result';
@@ -626,7 +627,7 @@ const r = new Ray();
  * @param {Octree} octree - The octree.
  * @param {Ray} ray - A ray.
  * @param {Flags} flags - Raycasting flags.
- * @return {Number[]} The ray parameters tx0, tx1, ty0, ty1, tz0 and tz1, or null if the ray doesn't hit the octree.
+ * @return {Number[]} The ray parameters tx0, ty0, tz0, tx1, ty1 and tz1, in that order, or null if the ray doesn't hit the octree.
  */
 
 function intersectOctree(octree, ray, flags) {

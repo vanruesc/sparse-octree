@@ -134,65 +134,6 @@
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
-  var Demo = function () {
-    function Demo() {
-      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "demo";
-
-      _classCallCheck(this, Demo);
-
-      this.id = id;
-      this.renderer = null;
-      this.loadingManager = new three.LoadingManager();
-      this.assets = new Map();
-      this.scene = new three.Scene();
-      this.camera = null;
-      this.controls = null;
-      this.ready = false;
-    }
-
-    _createClass(Demo, [{
-      key: "setRenderer",
-      value: function setRenderer(renderer) {
-        this.renderer = renderer;
-        return this;
-      }
-    }, {
-      key: "load",
-      value: function load() {
-        return Promise.resolve();
-      }
-    }, {
-      key: "initialize",
-      value: function initialize() {}
-    }, {
-      key: "render",
-      value: function render(delta) {
-        this.renderer.render(this.scene, this.camera);
-      }
-    }, {
-      key: "registerOptions",
-      value: function registerOptions(menu) {}
-    }, {
-      key: "reset",
-      value: function reset() {
-        var fog = this.scene.fog;
-        this.scene = new three.Scene();
-        this.scene.fog = fog;
-        this.camera = null;
-
-        if (this.controls !== null) {
-          this.controls.dispose();
-          this.controls = null;
-        }
-
-        this.ready = false;
-        return this;
-      }
-    }]);
-
-    return Demo;
-  }();
-
   var Event = function Event(type) {
     _classCallCheck(this, Event);
 
@@ -3152,6 +3093,63 @@
   }
 
   var GUI$1 = GUI;
+
+  var Demo = function () {
+    function Demo() {
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "demo";
+
+      _classCallCheck(this, Demo);
+
+      this.id = id;
+      this.renderer = null;
+      this.loadingManager = new three.LoadingManager();
+      this.assets = new Map();
+      this.scene = new three.Scene();
+      this.camera = null;
+      this.controls = null;
+      this.ready = false;
+    }
+
+    _createClass(Demo, [{
+      key: "setRenderer",
+      value: function setRenderer(renderer) {
+        this.renderer = renderer;
+        return this;
+      }
+    }, {
+      key: "load",
+      value: function load() {
+        return Promise.resolve();
+      }
+    }, {
+      key: "initialize",
+      value: function initialize() {}
+    }, {
+      key: "render",
+      value: function render(delta) {
+        this.renderer.render(this.scene, this.camera);
+      }
+    }, {
+      key: "registerOptions",
+      value: function registerOptions(menu) {}
+    }, {
+      key: "reset",
+      value: function reset() {
+        this.scene = new three.Scene();
+        this.camera = null;
+
+        if (this.controls !== null) {
+          this.controls.dispose();
+          this.controls = null;
+        }
+
+        this.ready = false;
+        return this;
+      }
+    }]);
+
+    return Demo;
+  }();
 
   var DemoManagerEvent = function (_Event) {
     _inherits(DemoManagerEvent, _Event);
@@ -6602,7 +6600,7 @@
 
           geometry = new three.BufferGeometry();
           geometry.setIndex(new three.BufferAttribute(indices, 1));
-          geometry.addAttribute("position", new three.BufferAttribute(positions, 3));
+          geometry.setAttribute("position", new three.BufferAttribute(positions, 3));
           group.add(new three.LineSegments(geometry, material));
         }
 

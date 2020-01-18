@@ -1,7 +1,8 @@
 /**
- * sparse-octree v6.0.1 build Sat Oct 26 2019
+ * sparse-octree v6.0.2 build Sat Jan 18 2020
  * https://github.com/vanruesc/sparse-octree
- * Copyright 2019 Raoul van Rüschen, Zlib
+ * Copyright 2020 Raoul van Rüschen
+ * @license Zlib
  */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('math-ds'), require('iterator-result')) :
