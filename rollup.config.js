@@ -1,4 +1,4 @@
-import babel from "rollup-plugin-babel";
+import buble from "@rollup/plugin-buble";
 import resolve from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 
@@ -13,100 +13,59 @@ const banner = `/**
  */`;
 
 const production = (process.env.NODE_ENV === "production");
-const external = Object.keys(pkg.peerDependencies).concat(["three"]);
+const external = Object.keys(pkg.peerDependencies);
 const globals = Object.assign({}, ...external.map((value) => ({
 	[value]: value.replace(/-/g, "").toUpperCase()
 })));
 
 const lib = {
-
 	module: {
 		input: "src/index.js",
 		plugins: [resolve()],
 		external,
-		output: [{
-			file: pkg.module,
+		output: {
+			dir: "build",
+			entryFileNames: pkg.name + ".esm.js",
 			format: "esm",
 			banner
-		}, {
-			file: pkg.main,
-			format: "esm"
-		}, {
-			file: pkg.main.replace(".js", ".min.js"),
-			format: "esm"
-		}]
+		}
 	},
-
 	main: {
-		input: pkg.main,
-		plugins: [babel()],
+		input: "src/index.js",
+		plugins: [resolve(), buble()],
 		external,
-		output: {
-			file: pkg.main,
+		output: [{
+			dir: "build",
+			entryFileNames: pkg.name + ".js",
 			format: "umd",
 			name: pkg.name.replace(/-/g, "").toUpperCase(),
 			globals,
 			banner
-		}
-	},
-
-	min: {
-		input: pkg.main.replace(".js", ".min.js"),
-		plugins: [terser(), babel()],
-		external,
-		output: {
-			file: pkg.main.replace(".js", ".min.js"),
+		}, {
+			dir: "build",
+			entryFileNames: pkg.name + ".min.js",
 			format: "umd",
 			name: pkg.name.replace(/-/g, "").toUpperCase(),
+			plugins: [terser()],
 			globals,
 			banner
-		}
+		}]
 	}
-
 };
 
 const demo = {
-
-	module: {
-		input: "demo/src/index.js",
-		plugins: [resolve()],
-		external: ["three"],
-		output: [{
-			file: "public/demo/index.js",
-			format: "esm",
-			globals
-		}].concat(production ? [{
-			file: "public/demo/index.min.js",
-			format: "esm",
-			globals
-		}] : [])
-	},
-
-	main: {
-		input: production ? "public/demo/index.js" : "demo/src/index.js",
-		plugins: production ? [babel()] : [resolve()],
-		external: ["three"],
-		output: [{
-			file: "public/demo/index.js",
-			format: "iife",
-			globals
-		}]
-	},
-
-	min: {
-		input: "public/demo/index.min.js",
-		plugins: [terser(), babel()],
-		external: ["three"],
-		output: {
-			file: "public/demo/index.min.js",
-			format: "iife",
-			globals
-		}
-	}
-
+	input: "demo/src/index.js",
+	plugins: [resolve()].concat(production ? [buble()] : []),
+	output: [{
+		dir: "public/demo",
+		entryFileNames: "[name].js",
+		format: "iife"
+	}].concat(production ? [{
+		dir: "public/demo",
+		entryFileNames: "[name].min.js",
+		format: "iife",
+		plugins: [terser()]
+	}] : [])
 };
 
-export default production ? [
-	lib.module, lib.main, lib.min,
-	demo.module, demo.main, demo.min
-] : [demo.main];
+export default production ? [lib.module, lib.main, demo]: [demo];
