@@ -1,11 +1,10 @@
 /**
- * sparse-octree v6.0.2 build Sat Jan 18 2020
+ * sparse-octree v6.1.0 build Tue Aug 18 2020
  * https://github.com/vanruesc/sparse-octree
  * Copyright 2020 Raoul van Rüschen
  * @license Zlib
  */
 import { Vector3, Box3, Ray } from 'math-ds';
-import IteratorResult from 'iterator-result';
 
 /**
  * Describes all possible octant corner connections.
@@ -826,6 +825,57 @@ class OctreeRaycaster {
 			raycastOctant(octree.root, ...parameters, intersects);
 
 		}
+
+	}
+
+}
+
+/**
+ * iterator-result v1.0.0 build Fri Dec 27 2019
+ * https://github.com/vanruesc/iterator-result
+ * Copyright 2019 Raoul van Rüschen, Zlib
+ */
+/**
+ * A basic iterator result.
+ */
+
+class IteratorResult {
+
+	/**
+	 * Constructs a new iterator result.
+	 *
+	 * @param {Object} [value=null] - A value.
+	 * @param {Boolean} [done=false] - Whether this result is past the end of the iterated sequence.
+	 */
+
+	constructor(value = null, done = false) {
+
+		/**
+		 * The value returned by the iterator.
+		 *
+		 * @type {Object}
+		 */
+
+		this.value = value;
+
+		/**
+		 * Whether this result is past the end of the iterated sequence.
+		 *
+		 * @type {Boolean}
+		 */
+
+		this.done = done;
+
+	}
+
+	/**
+	 * Resets this iterator result.
+	 */
+
+	reset() {
+
+		this.value = null;
+		this.done = false;
 
 	}
 
