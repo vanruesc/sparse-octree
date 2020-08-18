@@ -5,9 +5,11 @@
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "build/sparse-octree.js",
 	"module": "build/sparse-octree.esm.js",
+	"exports": {
+		".": "./build/sparse-octree.esm.js"
+	},
 	"sideEffects": false,
 	"license": "Zlib",
-
 	"keywords": [
 		"partition",
 		"hierarchy",
@@ -21,75 +23,72 @@
 		"culling",
 		"pointer"
 	],
-
 	"author": {
 		"name": "Raoul van Rüschen",
 		"email": "vanruesc@outlook.de"
 	},
-
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/vanruesc/sparse-octree.git"
 	},
-
 	"bugs": {
 		"url": "https://github.com/vanruesc/sparse-octree/issues"
 	},
-
-	"files": ["build"],
-
+	"files": [
+		"build"
+	],
 	"scripts": {
 		"ava": "ava",
-		"lint": "npm run lint:lib && npm run lint:demo && npm run lint:test",
-		"lint:config": "eslint *.js",
-		"lint:lib": "eslint src",
-		"lint:demo": "eslint demo/src",
-		"lint:test": "eslint test",
 		"build": "rollup -c",
-		"build:production": "cross-env NODE_ENV=production npm run build",
-		"watch": "rollup -c --watch",
+		"build:production": "cross-env NODE_ENV=production rollup -c",
+		"watch": "rollup -c -w",
+		"dev": "concurrently -k -n server,rollup,eslint \"hs -s\" \"rollup -c -w\" \"esw -w src demo/src\"",
 		"doc": "rimraf public/docs && esdoc",
-		"pretest": "npm run lint && npm run build:production",
-		"test": "npm run ava",
-		"prepack": "npm test && npm run doc"
+		"lint": "eslint src demo/src",
+		"prepack": "npm test && npm run doc",
+		"pretest": "rimraf build && npm run build:production",
+		"test": "ava"
 	},
-
 	"ava": {
 		"failFast": true,
-		"files": ["test/**/*.js"]
+		"files": [
+			"test/**/*.js"
+		],
+		"require": [
+			"esm"
+		]
 	},
-
 	"eslintConfig": {
-		"extends": "delta"
+		"extends": "aether"
 	},
-
+	"dependencies": {
+		"iterator-result": "1.x.x"
+	},
 	"peerDependencies": {
-		"iterator-result": ">= 0.0.0 < 2.0.0",
 		"math-ds": ">= 1.0.0 < 2.0.0"
 	},
-
 	"devDependencies": {
-		"@babel/core": "7.x.x",
-		"@babel/preset-env": "7.x.x",
-		"@rollup/plugin-node-resolve": "7.x.x",
-		"ava": "2.x.x",
-		"cross-env": "6.x.x",
+		"@rollup/plugin-buble": "0.x.x",
+		"@rollup/plugin-node-resolve": "9.x.x",
+		"ava": "3.x.x",
+		"concurrently": "5.x.x",
+		"cross-env": "7.x.x",
 		"dat.gui": "0.x.x",
-		"delta-controls": "2.x.x",
 		"esdoc": "1.x.x",
 		"esdoc-importpath-plugin": "1.x.x",
 		"esdoc-standard-plugin": "1.x.x",
-		"eslint": "6.x.x",
-		"eslint-config-delta": "1.x.x",
-		"iterator-result": "1.x.x",
+		"eslint": "7.x.x",
+		"eslint-config-aether": "1.x.x",
+		"eslint-watch": "7.x.x",
+		"esm": "3.x.x",
+		"http-server": "0.x.x",
 		"math-ds": "1.x.x",
-		"rimraf": "3.x.x",
 		"octree-helper": "1.x.x",
-		"rollup": "1.x.x",
-		"rollup-plugin-babel": "4.x.x",
-		"rollup-plugin-terser": "5.x.x",
-		"synthetic-event": "1.x.x",
+		"rimraf": "3.x.x",
+		"rollup": "2.x.x",
+		"rollup-plugin-terser": "7.x.x",
+		"spatial-controls": "3.x.x",
 		"three": "0.x.x",
-		"three-demo": "3.x.x"
+		"three-demo": "4.x.x"
 	}
 }
