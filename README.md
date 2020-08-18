@@ -11,7 +11,7 @@ A sparse, pointer-based octree data structure. For a linear implementation see [
 
 ## Installation
 
-This library requires the peer dependencies [math-ds](https://github.com/vanruesc/math-ds).
+This library requires the peer dependency [math-ds](https://github.com/vanruesc/math-ds).
 
 ```sh
 npm install math-ds sparse-octree
