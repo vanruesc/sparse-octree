@@ -11,14 +11,10 @@ A sparse, pointer-based octree data structure. For a linear implementation see [
 
 ## Installation
 
-This library requires the peer dependencies [iterator-result](https://github.com/vanruesc/iterator-result) and [math-ds](https://github.com/vanruesc/math-ds).
+This library requires the peer dependencies [math-ds](https://github.com/vanruesc/math-ds).
 
 ```sh
-npm install iterator-result math-ds
-``` 
-
-```sh
-npm install sparse-octree
+npm install math-ds sparse-octree
 ``` 
 
 
