@@ -10,7 +10,7 @@ import {
 	Vector3
 } from "three";
 
-import { DeltaControls } from "delta-controls";
+import { SpatialControls } from "spatial-controls";
 import { OctreeHelper } from "octree-helper";
 import { Demo } from "three-demo";
 import { PointOctree } from "../../../src";
@@ -30,6 +30,15 @@ export class PointOctreeDemo extends Demo {
 	constructor() {
 
 		super("point-octree");
+
+		/**
+		 * Spatial controls.
+		 *
+		 * @type {SpatialControls}
+		 * @private
+		 */
+
+		this.controls = null;
 
 		/**
 		 * A point cloud.
@@ -80,18 +89,22 @@ export class PointOctreeDemo extends Demo {
 
 		// Camera.
 
-		const camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.3, 2000);
+		const aspect = window.innerWidth / window.innerHeight;
+		const camera = new PerspectiveCamera(50, aspect, 0.3, 2000);
 		camera.position.set(10, 6, 10);
 		this.camera = camera;
 
 		// Controls.
 
-		const controls = new DeltaControls(
-			camera.position, camera.quaternion, renderer.domElement
+		const controls = new SpatialControls(
+			camera.position,
+			camera.quaternion,
+			renderer.domElement
 		);
 
 		controls.settings.pointer.lock = false;
 		controls.settings.zoom.maxDistance = 60.0;
+		controls.settings.sensitivity.rotation = 2.0;
 		controls.settings.sensitivity.translation = 10.0;
 		controls.settings.sensitivity.zoom = 1.0;
 		controls.lookAt(scene.position);
@@ -114,13 +127,11 @@ export class PointOctreeDemo extends Demo {
 				const positions = new Float32Array(particles * 3);
 				const n2 = n / 2;
 
-				let x, y, z, i, l;
+				for(let i = 0, l = positions.length; i < l; i += 3) {
 
-				for(i = 0, l = positions.length; i < l; i += 3) {
-
-					x = Math.random() * n - n2;
-					y = Math.random() * n - n2;
-					z = zBase + (Math.random() * zBias * 2 - zBias);
+					const x = Math.random() * n - n2;
+					const y = Math.random() * n - n2;
+					const z = zBase + (Math.random() * zBias * 2 - zBias);
 
 					positions[i] = x;
 					positions[i + 1] = y;
@@ -128,7 +139,7 @@ export class PointOctreeDemo extends Demo {
 
 				}
 
-				geometry.addAttribute("position", new BufferAttribute(positions, 3));
+				geometry.setAttribute("position", new BufferAttribute(positions, 3));
 
 				return geometry;
 
@@ -181,18 +192,14 @@ export class PointOctreeDemo extends Demo {
 			bbox.setFromObject(scene);
 
 			const t0 = performance.now();
-
-			let d, p, i, l;
-			let array;
-
 			const octree = new PointOctree(bbox.min, bbox.max, 0.0, 8, 5);
 
-			for(d = points.children.length - 1; d >= 0; --d) {
+			for(let d = points.children.length - 1; d >= 0; --d) {
 
-				p = points.children[d];
-				array = p.geometry.getAttribute("position").array;
+				const p = points.children[d];
+				const array = p.geometry.getAttribute("position").array;
 
-				for(i = 0, l = array.length; i < l; i += 3) {
+				for(let i = 0, l = array.length; i < l; i += 3) {
 
 					octree.insert(v.fromArray(array, i), p);
 
@@ -232,7 +239,6 @@ export class PointOctreeDemo extends Demo {
 		// Frustum culling.
 
 		this.frustumCuller = new FrustumCuller(octree, scene);
-
 		scene.add(this.frustumCuller.cameraHelper);
 
 	}
@@ -240,14 +246,13 @@ export class PointOctreeDemo extends Demo {
 	/**
 	 * Renders this demo.
 	 *
-	 * @param {Number} delta - The time since the last frame in seconds.
+	 * @param {Number} deltaTime - The time since the last frame in seconds.
 	 */
 
-	render(delta) {
+	render(deltaTime) {
 
-		this.controls.update(delta);
-
-		super.render(delta);
+		this.controls.update(deltaTime);
+		super.render(deltaTime);
 
 	}
 
@@ -278,11 +283,12 @@ export class PointOctreeDemo extends Demo {
 
 		folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(() => {
 
-			let i, l;
+			for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
-			for(i = 0, l = octreeHelper.children.length; i < l; ++i) {
-
-				octreeHelper.children[i].visible = (params["level mask"] === octreeHelper.children.length || i === params["level mask"]);
+				octreeHelper.children[i].visible = (
+					params["level mask"] === octreeHelper.children.length ||
+					i === params["level mask"]
+				);
 
 			}
 
@@ -300,11 +306,8 @@ export class PointOctreeDemo extends Demo {
 
 	reset() {
 
-		super.reset();
-
 		this.renderer.domElement.removeEventListener("mousemove", this.raycaster);
-
-		return this;
+		return super.reset();
 
 	}
 

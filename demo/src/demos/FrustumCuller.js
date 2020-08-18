@@ -134,7 +134,7 @@ export class FrustumCuller {
 		cullCamera.lookAt(this.scene.position);
 		cullCamera.updateMatrixWorld(true);
 
-		frustum.setFromMatrix(
+		frustum.setFromProjectionMatrix(
 			matrix4.multiplyMatrices(
 				cullCamera.projectionMatrix,
 				cullCamera.matrixWorldInverse
@@ -181,8 +181,8 @@ export class FrustumCuller {
 
 				}
 
-				culledOctants.geometry.removeAttribute("position");
-				culledOctants.geometry.addAttribute("position", new BufferAttribute(positions, 3));
+				culledOctants.geometry.deleteAttribute("position");
+				culledOctants.geometry.setAttribute("position", new BufferAttribute(positions, 3));
 
 				this.scene.remove(culledOctants);
 				this.scene.add(culledOctants);
