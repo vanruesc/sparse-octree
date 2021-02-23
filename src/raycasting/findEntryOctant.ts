@@ -5,16 +5,17 @@
  * largest. The tms of the other axes must also be compared against that
  * largest t0.
  *
- * @param {Number} tx0 - Ray projection parameter.
- * @param {Number} ty0 - Ray projection parameter.
- * @param {Number} tz0 - Ray projection parameter.
- * @param {Number} txm - Ray projection parameter mean.
- * @param {Number} tym - Ray projection parameter mean.
- * @param {Number} tzm - Ray projection parameter mean.
- * @return {Number} The index of the first octant that the ray travels through.
+ * @param tx0 - Ray projection parameter.
+ * @param ty0 - Ray projection parameter.
+ * @param tz0 - Ray projection parameter.
+ * @param txm - Ray projection parameter mean.
+ * @param tym - Ray projection parameter mean.
+ * @param tzm - Ray projection parameter mean.
+ * @return The index of the first octant that the ray travels through.
  */
 
-export function findEntryOctant(tx0, ty0, tz0, txm, tym, tzm) {
+export function findEntryOctant(tx0: number, ty0: number, tz0: number,
+	txm: number, tym: number, tzm: number): number {
 
 	let entry = 0;
 

@@ -10,6 +10,7 @@ import {
 	Vector3
 } from "three";
 
+import { GUI } from "dat.gui";
 import { SpatialControls } from "spatial-controls";
 import { OctreeHelper } from "octree-helper";
 import { Demo } from "three-demo";
@@ -24,6 +25,36 @@ import { FrustumCuller } from "./FrustumCuller.js";
 export class PointOctreeDemo extends Demo {
 
 	/**
+	 * The controls.
+	 */
+
+	private controls: SpatialControls;
+
+	/**
+	 * A point cloud.
+	 */
+
+	private points: Points;
+
+	/**
+	 * An octree helper.
+	 */
+
+	private octreeHelper: OctreeHelper;
+
+	/**
+	 * An octree raycaster.
+	 */
+
+	private octreeRaycaster: OctreeRaycaster;
+
+	/**
+	 * A frustum culler.
+	 */
+
+	private frustumCuller: FrustumCuller;
+
+	/**
 	 * Constructs a new demo.
 	 */
 
@@ -31,93 +62,43 @@ export class PointOctreeDemo extends Demo {
 
 		super("point-octree");
 
-		/**
-		 * Spatial controls.
-		 *
-		 * @type {SpatialControls}
-		 * @private
-		 */
-
 		this.controls = null;
-
-		/**
-		 * A point cloud.
-		 *
-		 * @type {Points}
-		 * @private
-		 */
-
 		this.points = null;
-
-		/**
-		 * An octree helper.
-		 *
-		 * @type {OctreeHelper}
-		 * @private
-		 */
-
 		this.octreeHelper = null;
-
-		/**
-		 * An octree raycaster.
-		 *
-		 * @type {OctreeRaycaster}
-		 * @private
-		 */
-
 		this.octreeRaycaster = null;
-
-		/**
-		 * A frustum culler.
-		 *
-		 * @type {FrustumCuller}
-		 * @private
-		 */
-
 		this.frustumCuller = null;
 
 	}
 
-	/**
-	 * Creates the scene.
-	 */
-
-	initialize() {
+	initialize(): void {
 
 		const scene = this.scene;
 		const renderer = this.renderer;
 
-		// Camera.
+		// Camera
 
 		const aspect = window.innerWidth / window.innerHeight;
 		const camera = new PerspectiveCamera(50, aspect, 0.3, 2000);
-		camera.position.set(10, 6, 10);
 		this.camera = camera;
 
-		// Controls.
+		// Controls
 
-		const controls = new SpatialControls(
-			camera.position,
-			camera.quaternion,
-			renderer.domElement
-		);
-
-		controls.settings.pointer.lock = false;
-		controls.settings.zoom.maxDistance = 60.0;
-		controls.settings.sensitivity.rotation = 2.0;
-		controls.settings.sensitivity.translation = 10.0;
-		controls.settings.sensitivity.zoom = 1.0;
-		controls.lookAt(scene.position);
+		const controls = new SpatialControls(camera.position, camera.quaternion, renderer.domElement);
+		const settings = controls.settings;
+		settings.general.setMode(ControlMode.THIRD_PERSON);
+		settings.zoom.setRange(0.0, 60.0);
+		settings.rotation.setSensitivity(2.2);
+		settings.zoom.setSensitivity(1.0);
 		this.controls = controls;
 
 		camera.updateMatrixWorld();
 
-		// Fog.
+		// Fog
 
 		scene.fog = new FogExp2(0x0d0d0d, 0.025);
 		renderer.setClearColor(scene.fog.color);
 
-		// Points.
+		// Points
 
 		const points = (function generatePoints() {
 
@@ -183,7 +164,7 @@ export class PointOctreeDemo extends Demo {
 		this.points = points;
 		scene.add(points);
 
-		// Octree.
+		// Octree
 
 		const octree = (function createOctree(points) {
 
@@ -213,7 +194,7 @@ export class PointOctreeDemo extends Demo {
 
 		}(points));
 
-		// Octree Helper.
+		// Octree Helper
 
 		const octreeHelper = (function createOctreeHelper(octree) {
 
@@ -230,39 +211,32 @@ export class PointOctreeDemo extends Demo {
 		this.octreeHelper = octreeHelper;
 		scene.add(octreeHelper);
 
-		// Raycasting.
+		// Raycasting
 
 		this.raycaster = new OctreeRaycaster(octree, camera, points);
-		renderer.domElement.addEventListener("mousemove", this.raycaster);
+		renderer.domElement.addEventListener("mousemove", this.raycaster, { passive: true });
 		scene.add(this.raycaster.selectedPoint);
 
-		// Frustum culling.
+		// Frustum culling
 
 		this.frustumCuller = new FrustumCuller(octree, scene);
 		scene.add(this.frustumCuller.cameraHelper);
 
 	}
 
-	/**
-	 * Renders this demo.
-	 *
-	 * @param {Number} deltaTime - The time since the last frame in seconds.
-	 */
+	update(deltaTime: number, timestamp: number): void {
 
-	render(deltaTime) {
-
-		this.controls.update(deltaTime);
-		super.render(deltaTime);
+		this.controls.update(timestamp);
 
 	}
 
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} menu - A menu.
+	 * @param menu - A menu.
 	 */
 
-	registerOptions(menu) {
+	registerOptions(menu: GUI): void {
 
 		const points = this.points;
 		const octreeHelper = this.octreeHelper;
@@ -298,16 +272,9 @@ export class PointOctreeDemo extends Demo {
 
 	}
 
-	/**
-	 * Resets this demo.
-	 *
-	 * @return {Demo} This demo.
-	 */
-
-	reset() {
+	dispose() {
 
 		this.renderer.domElement.removeEventListener("mousemove", this.raycaster);
-		return super.reset();
 
 	}
 

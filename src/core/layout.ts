@@ -9,8 +9,6 @@
  * ```
  *
  * This common layout is crucial for positional assumptions.
- *
- * @type {Uint8Array[]}
  */
 
 export const layout = [

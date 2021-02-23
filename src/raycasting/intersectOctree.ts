@@ -1,51 +1,23 @@
-import { Box3, Ray, Vector3 } from "math-ds";
+import { Box3, Ray, Vector3 } from "three";
+import { Node } from "../core/Node";
+import { Flags } from "./Flags";
 
-/**
- * A vector.
- *
- * @type {Vector3}
- * @private
- */
-
+// Helper objects.
 const v = new Vector3();
-
-/**
- * A box.
- *
- * @type {Box3}
- * @private
- */
-
 const b = new Box3();
-
-/**
- * A box.
- *
- * @type {Box3}
- * @private
- */
-
 const d = new Box3();
-
-/**
- * A ray.
- *
- * @type {Ray}
- * @private
- */
-
 const r = new Ray();
 
 /**
  * Calculates ray projection parameters for the given octree and ray setup.
  *
- * @param {Octree} octree - The octree.
- * @param {Ray} ray - A ray.
- * @param {Flags} flags - Raycasting flags.
- * @return {Number[]} The ray parameters tx0, ty0, tz0, tx1, ty1 and tz1, in that order, or null if the ray doesn't hit the octree.
+ * @param octree - The octree.
+ * @param ray - A ray.
+ * @param flags - Raycasting flags.
+ * @return The ray parameters tx0, ty0, tz0, tx1, ty1 and tz1, in that order, or null if the ray doesn't hit the octree.
  */
 
-export function intersectOctree(octree, ray, flags) {
+export function intersectOctree<T>(octree: Node<T>, ray: Ray, flags: Flags): number[] {
 
 	// Translate the octant extents to the scene origin.
 	const min = b.min.set(0, 0, 0);
@@ -56,9 +28,6 @@ export function intersectOctree(octree, ray, flags) {
 
 	const origin = r.origin.copy(ray.origin);
 	const direction = r.direction.copy(ray.direction);
-
-	let invDirX, invDirY, invDirZ;
-	let tx0, tx1, ty0, ty1, tz0, tz1;
 
 	// Translate the ray to the center of the octant.
 	origin.sub(octree.getCenter(v)).add(halfDimensions);
@@ -92,17 +61,17 @@ export function intersectOctree(octree, ray, flags) {
 	}
 
 	// Improve IEEE double stability.
-	invDirX = 1.0 / direction.x;
-	invDirY = 1.0 / direction.y;
-	invDirZ = 1.0 / direction.z;
+	const invDirX = 1.0 / direction.x;
+	const invDirY = 1.0 / direction.y;
+	const invDirZ = 1.0 / direction.z;
 
 	// Project the ray to the octant's boundaries.
-	tx0 = (min.x - origin.x) * invDirX;
-	tx1 = (max.x - origin.x) * invDirX;
-	ty0 = (min.y - origin.y) * invDirY;
-	ty1 = (max.y - origin.y) * invDirY;
-	tz0 = (min.z - origin.z) * invDirZ;
-	tz1 = (max.z - origin.z) * invDirZ;
+	const tx0 = (min.x - origin.x) * invDirX;
+	const tx1 = (max.x - origin.x) * invDirX;
+	const ty0 = (min.y - origin.y) * invDirY;
+	const ty1 = (max.y - origin.y) * invDirY;
+	const tz0 = (min.z - origin.z) * invDirZ;
+	const tz1 = (max.z - origin.z) * invDirZ;
 
 	// Check if the ray hits the octree.
 	return (Math.max(Math.max(tx0, ty0), tz0) < Math.min(Math.min(tx1, ty1), tz1)) ?

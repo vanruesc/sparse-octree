@@ -12,18 +12,12 @@ import {
 
 /**
  * A matrix.
- *
- * @type {Matrix4}
- * @private
  */
 
 const matrix4 = new Matrix4();
 
 /**
  * A frustum.
- *
- * @type {Frustum}
- * @private
  */
 
 const frustum = new Frustum();
@@ -35,68 +29,70 @@ const frustum = new Frustum();
 export class FrustumCuller {
 
 	/**
-	 * Constructs a new octree culler.
-	 *
-	 * @param {Octree} octree - An octree.
-	 * @param {Scene} scene - A scene.
+	 * An octree.
 	 */
 
-	constructor(octree, scene) {
+	private octree: Octree;
 
-		/**
-		 * An octree.
-		 *
-		 * @type {Octree}
-		 * @private
-		 */
+	/**
+	 * A scene.
+	 */
+
+	private scene: Scene;
+
+	/**
+	 * Indicates whether the frustum culling is active.
+	 */
+
+	private enabled: boolean;
+
+	/**
+	 * A camera.
+	 */
+
+	private cullCamera: Camera;
+
+	/**
+	 * Spherical coordinates.
+	 */
+
+	private s: Spherical;
+
+	/**
+	 * A delta time.
+	 */
+
+	private delta: string;
+
+	/**
+	 * A camera helper.
+	 */
+
+	private cameraHelper: CameraHelper;
+
+	/**
+	 * A point cloud that visualises the culled octants.
+	 */
+
+	private culledOctants: Points;
+
+	/**
+	 * Constructs a new octree culler.
+	 *
+	 * @param octree - An octree.
+	 * @param scene - A scene.
+	 */
+
+	constructor(octree: Octree, scene: Scene) {
 
 		this.octree = octree;
-
-		/**
-		 * A scene.
-		 *
-		 * @type {Scene}
-		 */
-
 		this.scene = scene;
-
-		/**
-		 * Indicates whether the frustum culling is active.
-		 *
-		 * @type {Boolean}
-		 */
-
 		this.enabled = false;
-
-		/**
-		 * A camera.
-		 *
-		 * @type {PerspectiveCamera}
-		 */
-
 		this.cullCamera = new PerspectiveCamera(20, 1.77, 0.5, 5);
-
-		/**
-		 * A spherical coordinate system.
-		 *
-		 * @type {Spherical}
-		 */
-
 		this.s = new Spherical(5, Math.PI / 3, Math.PI * 1.75);
-
-		/**
-		 * A delta time.
-		 *
-		 * @type {String}
-		 */
-
 		this.delta = "";
-
-		/**
-		 * A point cloud that visualises the culled octants.
-		 *
-		 * @type {Points}
-		 */
+		this.cameraHelper = new CameraHelper(this.cullCamera);
+		this.cameraHelper.visible = false;
 
 		this.culledOctants = new Points(
 			new BufferGeometry(),
@@ -109,24 +105,13 @@ export class FrustumCuller {
 
 		this.culledOctants.visible = false;
 
-		/**
-		 * A camera helper.
-		 *
-		 * @type {CameraHelper}
-		 */
-
-		this.cameraHelper = new CameraHelper(this.cullCamera);
-		this.cameraHelper.visible = false;
-
 	}
 
 	/**
 	 * Updates the cull camera.
-	 *
-	 * @private
 	 */
 
-	updateCamera() {
+	private updateCamera(): void {
 
 		const cullCamera = this.cullCamera;
 
@@ -147,31 +132,26 @@ export class FrustumCuller {
 	 * Culls the octree.
 	 */
 
-	cull() {
+	cull(): void {
 
 		const culledOctants = this.culledOctants;
-
-		let t0;
-		let i, j, l;
-		let octant, octants;
-		let positions;
 
 		if(this.enabled) {
 
 			this.updateCamera();
 
-			t0 = performance.now();
-			octants = this.octree.cull(frustum);
+			const t0 = performance.now();
+			const octants = this.octree.cull(frustum);
 
 			this.delta = (performance.now() - t0).toFixed(2) + " ms";
 
 			if(octants.length > 0) {
 
-				positions = new Float32Array(octants.length * 3 * 2);
+				const positions = new Float32Array(octants.length * 3 * 2);
 
-				for(i = 0, j = 0, l = octants.length; i < l; ++i) {
+				for(let i = 0, j = 0, l = octants.length; i < l; ++i) {
 
-					octant = octants[i];
+					const octant = octants[i];
 					positions[j++] = octant.min.x;
 					positions[j++] = octant.min.y;
 					positions[j++] = octant.min.z;
@@ -200,10 +180,10 @@ export class FrustumCuller {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} menu - A menu.
+	 * @param menu - A menu.
 	 */
 
-	registerOptions(menu) {
+	registerOptions(menu: GUI): void {
 
 		const folder = menu.addFolder("Frustum Culling");
 
@@ -219,23 +199,9 @@ export class FrustumCuller {
 
 		const subFolder = folder.addFolder("Camera Adjustment");
 
-		subFolder.add(this.s, "radius").min(0.1).max(10.0).step(0.1).onChange(() => {
-
-			this.cull();
-
-		});
-
-		subFolder.add(this.s, "phi").min(1e-6).max(Math.PI - 1e-6).onChange(() => {
-
-			this.cull();
-
-		});
-
-		subFolder.add(this.s, "theta").min(0.0).max(Math.PI * 2.0).onChange(() => {
-
-			this.cull();
-
-		});
+		subFolder.add(this.s, "radius", 0.1, 10.0, 0.1).onChange(() => this.cull());
+		subFolder.add(this.s, "phi", 1e-6, Math.PI - 1e-6, 0.0001).onChange(() => this.cull());
+		subFolder.add(this.s, "theta", 0.0, Math.PI * 2.0, 0.0001).onChange(() => this.cull());
 
 	}
 

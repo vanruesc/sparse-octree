@@ -1,9 +1,6 @@
 /**
  * A lookup-table containing octant ids. Used to determine the exit plane from
  * an octant.
- *
- * @type {Uint8Array[]}
- * @private
  */
 
 const octantTable = [
@@ -23,17 +20,17 @@ const octantTable = [
  * Finds the next octant that intersects with the ray based on the exit plane of
  * the current one.
  *
- * @param {Number} currentOctant - The index of the current octant.
- * @param {Number} tx1 - Ray projection parameter.
- * @param {Number} ty1 - Ray projection parameter.
- * @param {Number} tz1 - Ray projection parameter.
- * @return {Number} The index of the next octant that the ray travels through.
+ * @param currentOctant - The index of the current octant.
+ * @param tx1 - Ray projection parameter.
+ * @param ty1 - Ray projection parameter.
+ * @param tz1 - Ray projection parameter.
+ * @return The index of the next octant that the ray travels through.
  */
 
-export function findNextOctant(currentOctant, tx1, ty1, tz1) {
+export function findNextOctant(currentOctant: number, tx1: number, ty1: number, tz1: number): number {
 
-	let min;
-	let exit = 0;
+	let min: number;
+	let exit: number;
 
 	// Find the exit plane.
 	if(tx1 < ty1) {

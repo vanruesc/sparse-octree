@@ -1,12 +1,12 @@
-import { Flags } from "./Flags.js";
-import { findEntryOctant } from "./findEntryOctant.js";
-import { findNextOctant } from "./findNextOctant.js";
-import { intersectOctree } from "./intersectOctree.js";
+import { Ray } from "three";
+import { Node } from "../core/Node";
+import { Flags } from "./Flags";
+import { findEntryOctant } from "./findEntryOctant";
+import { findNextOctant } from "./findNextOctant";
+import { intersectOctree } from "./intersectOctree";
 
 /**
  * Raycasting flags.
- *
- * @type {Flags}
  */
 
 const flags = new Flags();
@@ -14,31 +14,31 @@ const flags = new Flags();
 /**
  * Finds all octants that intersect with the given ray.
  *
- * @private
- * @param {Octant} octant - The current octant.
- * @param {Number} tx0 - A ray projection parameter.
- * @param {Number} ty0 - A ray projection parameter.
- * @param {Number} tz0 - A ray projection parameter.
- * @param {Number} tx1 - A ray projection parameter.
- * @param {Number} ty1 - A ray projection parameter.
- * @param {Number} tz1 - A ray projection parameter.
- * @param {Array} intersects - An array to be filled with the intersecting octants.
+ * @param node - The current node.
+ * @param tx0 - A ray projection parameter.
+ * @param ty0 - A ray projection parameter.
+ * @param tz0 - A ray projection parameter.
+ * @param tx1 - A ray projection parameter.
+ * @param ty1 - A ray projection parameter.
+ * @param tz1 - A ray projection parameter.
+ * @param intersects - An array to be filled with the intersecting octants.
  */
 
-function raycastOctant(octant, tx0, ty0, tz0, tx1, ty1, tz1, intersects) {
+function raycastOctant<T>(node: Node<T>, tx0: number, ty0: number, tz0: number,
+	tx1: number, ty1: number, tz1: number, intersects: Node<T>[]) {
 
 	if(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {
 
-		const children = octant.children;
+		const children = node.children;
 
 		if(children === null) {
 
 			// Leaf.
-			intersects.push(octant);
+			intersects.push(node);
 
 		} else {
 
-			// Compute means.
+			// Calculate mean values.
 			const txm = 0.5 * (tx0 + tx1);
 			const tym = 0.5 * (ty0 + ty1);
 			const tzm = 0.5 * (tz0 + tz1);
@@ -119,13 +119,13 @@ export class OctreeRaycaster {
 	/**
 	 * Finds (pseudo) leaf octants that intersect with the given ray.
 	 *
-	 * @param {Octree} octree - An octree.
-	 * @param {Ray} ray - A ray.
-	 * @param {Octant[]} [intersects] - An optional target list to be filled with the intersecting octants.
-	 * @return {Octant[]} The intersecting octants. Sorted by distance, closest first.
+	 * @param octree - An octree.
+	 * @param ray - A ray.
+	 * @param intersects - An array to be filled with the intersecting octants.
+	 * @return The intersecting octants. Sorted by distance, closest first.
 	 */
 
-	static intersectOctree(octree, ray, intersects = []) {
+	static intersectOctree<T>(octree: Node<T>, ray: Ray, intersects: Node<T>[] = []): Node<T>[] {
 
 		const parameters = intersectOctree(octree, ray, flags);
 

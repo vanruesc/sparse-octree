@@ -8,95 +8,78 @@ import {
 
 /**
  * A mouse position.
- *
- * @type {Vector2}
- * @private
  */
 
 const mouse = new Vector2();
 
 /**
  * An octree raycaster.
- *
- * @implements {EventListener}
  */
 
-export class OctreeRaycaster extends Raycaster {
+export class OctreeRaycaster extends Raycaster implements EventListenerObject {
+
+	/**
+	 * An octree.
+	 */
+
+	private octree: Octree;
+
+	/**
+	 * A camera.
+	 */
+
+	private camera: Camera;
+
+	/**
+	 * An object to raycast with a brute force approach.
+	 */
+
+	private object: Object3D;
+
+	/**
+	 * Indicates whether the raycaster is active.
+	 */
+
+	private enabled: boolean;
+
+	/**
+	 * A delta time.
+	 */
+
+	private delta: string;
+
+	/**
+	 * A selected object.
+	 */
+
+	private selectedObject: Object3D;
+
+	/**
+	 * The currently selected point.
+	 */
+
+	private selectedPoint: Mesh;
 
 	/**
 	 * Constructs a new octree raycaster.
 	 *
-	 * @param {Octree} octree - An octree.
-	 * @param {PerspectiveCamera} camera - A camera.
-	 * @param {Object3D} object - An object.
+	 * @param octree - An octree.
+	 * @param camera - A camera.
+	 * @param object - An object.
 	 */
 
-	constructor(octree, camera, object) {
+	constructor(octree: Octree, camera: Camera, object: Object3D) {
 
 		super();
 
-		/**
-		 * A picking accuracy threshold for points.
-		 */
-
 		this.params.Points.threshold = 1e-1;
 
-		/**
-		 * An octree.
-		 *
-		 * @type {Octree}
-		 * @private
-		 */
-
 		this.octree = octree;
-
-		/**
-		 * A camera.
-		 *
-		 * @type {PerspectiveCamera}
-		 * @private
-		 */
-
 		this.camera = camera;
-
-		/**
-		 * An object to raycast with a brute force approach.
-		 *
-		 * @type {Object3D}
-		 */
-
 		this.object = object;
-
-		/**
-		 * Indicates whether the raycaster is active.
-		 *
-		 * @type {Boolean}
-		 */
-
 		this.enabled = true;
-
-		/**
-		 * A delta time.
-		 *
-		 * @type {String}
-		 */
-
 		this.delta = "";
-
-		/**
-		 * A selected object.
-		 *
-		 * @type {Object3D}
-		 * @private
-		 */
-
 		this.selectedObject = null;
-
-		/**
-		 * The currently selected point.
-		 *
-		 * @type {Mesh}
-		 */
 
 		this.selectedPoint = new Mesh(
 			new SphereBufferGeometry(0.2, 16, 16),
@@ -111,13 +94,7 @@ export class OctreeRaycaster extends Raycaster {
 
 	}
 
-	/**
-	 * Raycasts on mouse move events.
-	 *
-	 * @param {Event} event - An event.
-	 */
-
-	handleEvent(event) {
+	handleEvent(event: Event): void {
 
 		switch(event.type) {
 
@@ -135,7 +112,7 @@ export class OctreeRaycaster extends Raycaster {
 	 * @param {Event} event - An event.
 	 */
 
-	raycast(event) {
+	raycast(event: Event) {
 
 		let intersects;
 		let t0, t, x;
@@ -196,10 +173,10 @@ export class OctreeRaycaster extends Raycaster {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param {GUI} menu - A menu.
+	 * @param menu - A menu.
 	 */
 
-	registerOptions(menu) {
+	registerOptions(menu: GUI): void {
 
 		const folder = menu.addFolder("Raycasting");
 

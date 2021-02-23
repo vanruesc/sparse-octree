@@ -1,7 +1,5 @@
 /**
  * Describes all possible octant corner connections.
- *
- * @type {Uint8Array[]}
  */
 
 export const edges = [
