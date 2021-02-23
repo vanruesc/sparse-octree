@@ -1,0 +1,23 @@
+{
+	"include": ["src", "demo/src"],
+	"compilerOptions": {
+		"rootDir": ".",
+		"moduleResolution": "node",
+		"module": "ESNext",
+		"target": "ESNext",
+		"strict": true,
+		"sourceMap": false,
+		"importHelpers": true,
+		"skipLibCheck": true,
+		"strictNullChecks": false
+	},
+	"typedocOptions": {
+		"entryPoints": ["./src/index.ts"],
+		"out": "public/docs",
+		"theme": "default",
+		"readme": "none",
+		"excludePrivate": true,
+		"includeVersion": true,
+		"hideGenerator": true
+	}
+}
