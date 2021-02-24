@@ -37,7 +37,7 @@
 		"url": "https://github.com/vanruesc/sparse-octree/issues"
 	},
 	"files": [
-		"build"
+		"dist"
 	],
 	"engines": {
 		"node": ">= 0.14.0"
@@ -47,7 +47,7 @@
 		"build": "run-s build:*",
 		"build:js": "cross-env NODE_ENV=production node esbuild",
 		"build:dts": "tsc -p tsconfig.d.json",
-		"clean": "del-cli build public",
+		"clean": "del-cli dist public",
 		"copy": "cpy --cwd=demo/static --parents \"**/*\" \"../../public/demo\"",
 		"deploy": "run-s copy lint build doc",
 		"dev": "run-s clean copy && run-p start watch",
