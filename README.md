@@ -1,8 +1,8 @@
 # Sparse Octree
 
-[![Build status](https://travis-ci.org/vanruesc/sparse-octree.svg?branch=master)](https://travis-ci.org/vanruesc/sparse-octree)
-[![npm version](https://badgen.net/npm/v/sparse-octree?color=green)](https://www.npmjs.com/package/sparse-octree)
-[![Peer dependencies](https://david-dm.org/vanruesc/sparse-octree/peer-status.svg)](https://david-dm.org/vanruesc/sparse-octree?type=peer)
+[![CI](https://badgen.net/github/checks/vanruesc/sparse-octree/main)](https://github.com/vanruesc/sparse-octree/actions)
+[![Version](https://badgen.net/npm/v/sparse-octree?color=green)](https://www.npmjs.com/package/sparse-octree)
+[![Peer dependencies](https://badgen.net/david/peer/vanruesc/sparse-octree)](https://david-dm.org/vanruesc/sparse-octree?type=peer)
 
 A sparse, pointer-based octree data structure. For a linear implementation see [linear-octree](https://github.com/vanruesc/linear-octree).
 
@@ -71,11 +71,6 @@ export class CubicOctree extends Octree {
 - Supports culling
 - Can be extended to manage any data
 - Provides a point management implementation
-
-
-## Octree Helper
-
-The [octree-helper](https://github.com/vanruesc/octree-helper) module provides an octree visualization tool for [three.js](https://threejs.org/).
 
 
 ## Contributing
