@@ -1,5 +1,4 @@
 import { Vector3 } from "three";
-import { NearestPoint } from "../../points/NearestPoint";
 
 /**
  * A collection of ray-point intersection data.
@@ -8,30 +7,44 @@ import { NearestPoint } from "../../points/NearestPoint";
 export class RayPointIntersection<T> {
 
 	/**
+	 * The distance from the origin of the ray to the point.
+	 */
+
+	distanceToOrigin: number;
+
+	/**
 	 * The shortest distance from the point to the ray.
 	 */
 
 	distanceToRay: number;
 
 	/**
-	 * The point, data and distance to the origin of the ray.
+	 * The point.
 	 */
 
-	point: NearestPoint<T>;
+	point: Vector3;
+
+	/**
+	 * The data.
+	 */
+
+	data: T;
 
 	/**
 	 * Constructs new ray-point intersection data.
 	 *
-	 * @param distance - The distance from the origin of the ray to the point.
+	 * @param distanceToOrigin - The distance from the origin of the ray to the point.
 	 * @param distanceToRay - The distance from the point to the ray.
 	 * @param point - The point.
 	 * @param data - The point's data.
 	 */
 
-	constructor(distance: number, distanceToRay: number, point: Vector3, data: T = null) {
+	constructor(distanceToOrigin: number, distanceToRay: number, point: Vector3, data: T = null) {
 
+		this.distanceToOrigin = distanceToOrigin;
 		this.distanceToRay = distanceToRay;
-		this.point = new NearestPoint(point, data, distance);
+		this.point = point;
+		this.data = data;
 
 	}
 
