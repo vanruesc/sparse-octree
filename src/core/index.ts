@@ -1,6 +1,7 @@
 export { edges } from "./edges";
 export { layout } from "./layout";
 
+export { DataContainer } from "./DataContainer";
 export { Node } from "./Node";
 export { Tree } from "./Tree";
 
