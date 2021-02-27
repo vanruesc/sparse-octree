@@ -2,10 +2,6 @@ import { Vector3 } from "three";
 import { Octant } from "../core/Octant";
 import { PointData } from "./PointData";
 
-/**
- * A point.
- */
-
 const p = new Vector3();
 
 /**
@@ -21,14 +17,14 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	 * @param max - The upper bounds.
 	 */
 
-	constructor(min, max) {
+	constructor(min: Vector3, max: Vector3) {
 
 		super(min, max);
 
 	}
 
 	/**
-	 * Calculates the distance squared from this octant to the given point.
+	 * Calculates the squared distance from this octant to the given point.
 	 *
 	 * @param point - A point.
 	 * @return The distance squared.
@@ -42,7 +38,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	}
 
 	/**
-	 * Calculates the distance squared from the center of this octant to the given
+	 * Calculates the squared distance from the center of this octant to the given
 	 * point.
 	 *
 	 * @param point - A point.
@@ -99,7 +95,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	redistribute(bias: number) {
 
 		const children = this.children;
-		const pointData = this.data as PointData<T>;
+		const pointData = this.data;
 
 		if(children !== null && pointData !== null) {
 
@@ -123,7 +119,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 
 						}
 
-						const childData = child.data as PointData<T>;
+						const childData = child.data;
 						childData.points.push(point);
 						childData.data.push(entry);
 
@@ -135,7 +131,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 
 			}
 
-			this.pointData = null;
+			this.data = null;
 
 		}
 
@@ -156,7 +152,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 			for(let i = 0, l = children.length; i < l; ++i) {
 
 				const child = children[i] as PointOctant<T>;
-				const childData = child.data as PointData<T>;
+				const childData = child.data;
 
 				if(childData !== null) {
 
