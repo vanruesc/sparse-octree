@@ -1,10 +1,6 @@
 import { Box3, Frustum } from "three";
 import { Node } from "./Node";
-import { Octree } from "./Octree";
-
-/**
- * A 3D box.
- */
+import { Tree } from "./Tree";
 
 const b = new Box3();
 
@@ -12,19 +8,19 @@ const b = new Box3();
  * An octree iterator.
  */
 
-export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
+export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 	/**
 	 * The octree.
 	 */
 
-	private octree: Octree<T>;
+	private octree: Tree;
 
 	/**
 	 * A region used for octree culling.
 	 */
 
-	private region: Frustum|Box3;
+	private region: Frustum | Box3;
 
 	/**
 	 * Whether this iterator should respect the cull region.
@@ -36,13 +32,13 @@ export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
 	 * An iterator result.
 	 */
 
-	private result: IteratorResult<Node<T>>;
+	private result: IteratorResult<Node>;
 
 	/**
 	 * An octant trace.
 	 */
 
-	private trace: Node<T>[];
+	private trace: Node[];
 
 	/**
 	 * Iteration indices.
@@ -57,7 +53,7 @@ export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
 	 * @param region - A cull region.
 	 */
 
-	constructor(octree: Octree<T>, region: Frustum|Box3 = null) {
+	constructor(octree: Tree, region: Frustum | Box3 = null) {
 
 		this.octree = octree;
 		this.region = region;
@@ -75,9 +71,9 @@ export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
 	 * @return This iterator.
 	 */
 
-	reset(): OctreeIterator<T> {
+	reset(): OctreeIterator {
 
-		const root = this.octree.root;
+		const root = this.octree;
 
 		this.trace = [];
 		this.indices = [];
@@ -105,7 +101,7 @@ export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
 
 	}
 
-	next(): IteratorResult<Node<T>> {
+	next(): IteratorResult<Node> {
 
 		const cull = this.cull;
 		const region = this.region;
@@ -170,7 +166,7 @@ export class OctreeIterator<T> implements Iterator<Node<T>>, Iterable<Node<T>> {
 
 	}
 
-	[Symbol.iterator](): Iterator<Node<T>> {
+	[Symbol.iterator](): Iterator<Node> {
 
 		return this;
 
