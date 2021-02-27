@@ -1,7 +1,6 @@
 import { Raycaster, Vector3 } from "three";
 import { Octree } from "../core/Octree";
-import { RayPointIntersection } from "../raycasting/points/RayPointIntersection";
-import { testPoints } from "../raycasting/points/testPoints";
+import { RayPointIntersection, testPoints } from "../raycasting/points";
 import { NearestPoint } from "./NearestPoint";
 import { Point } from "./Point";
 import { PointData } from "./PointData";
@@ -29,7 +28,7 @@ function countPoints<T>(octant: PointOctant<T>): number {
 
 	} else if(octant.data !== null) {
 
-		const pointData = octant.data as PointData<T>;
+		const pointData = octant.data;
 		result = pointData.points.length;
 
 	}
@@ -39,7 +38,7 @@ function countPoints<T>(octant: PointOctant<T>): number {
 }
 
 /**
- * Recursively inserts a point into the octree.
+ * Recursively adds a point to the octree.
  *
  * @param point - A point.
  * @param data - The data that belongs to the point.
@@ -49,14 +48,14 @@ function countPoints<T>(octant: PointOctant<T>): number {
  * @return Whether the operation was successful.
  */
 
-function insert<T>(point: Vector3, data: T, octree: PointOctree,
+function set<T>(point: Vector3, data: T, octree: PointOctree<T>,
 	octant: PointOctant<T>, depth: number): boolean {
 
 	let children = octant.children;
 	let exists = false;
 	let done = false;
 
-	if(octant.contains(point, octree.bias)) {
+	if(octant.contains(point, octree.getBias())) {
 
 		if(children === null) {
 
@@ -68,7 +67,7 @@ function insert<T>(point: Vector3, data: T, octree: PointOctree,
 
 			} else {
 
-				const pointData = octant.data as PointData<T>;
+				const pointData = octant.data;
 				const points = pointData.points;
 
 				for(let i = 0, l = points.length; !exists && i < l; ++i) {
@@ -80,24 +79,24 @@ function insert<T>(point: Vector3, data: T, octree: PointOctree,
 
 			}
 
-			const pointData = octant.data as PointData<T>;
+			const pointData = octant.data;
 
 			if(exists) {
 
 				pointData.data[index - 1] = data;
 				done = true;
 
-			} else if(pointData.points.length < octree.maxPoints || depth === octree.maxDepth) {
+			} else if(pointData.points.length < octree.getMaxPoints() ||
+				depth === octree.getMaxDepth()) {
 
 				pointData.points.push(point.clone());
 				pointData.data.push(data);
-				++octree.pointCount;
 				done = true;
 
 			} else {
 
 				octant.split();
-				octant.redistribute(octree.bias);
+				octant.redistribute(octree.getBias());
 				children = octant.children;
 
 			}
@@ -110,7 +109,7 @@ function insert<T>(point: Vector3, data: T, octree: PointOctree,
 
 			for(let i = 0, l = children.length; !done && i < l; ++i) {
 
-				done = insert(point, data, octree, children[i] as PointOctant<T>, depth);
+				done = set(point, data, octree, children[i] as PointOctant<T>, depth);
 
 			}
 
@@ -129,16 +128,16 @@ function insert<T>(point: Vector3, data: T, octree: PointOctree,
  * @param octree - The octree.
  * @param octant - The current octant.
  * @param parent - The parent of the current octant.
- * @return The data entry of the removed point or null if it didn't exist.
+ * @return The data entry of the removed point, or null if it didn't exist.
  */
 
-function remove<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>,
-	parent: PointOctant<T>): T {
+function remove<T>(point: Vector3, octree: PointOctree<T>,
+	octant: PointOctant<T>, parent: PointOctant<T>): T {
 
 	const children = octant.children;
 	let result = null;
 
-	if(octant.contains(point, octree.bias)) {
+	if(octant.contains(point, octree.getBias())) {
 
 		if(children !== null) {
 
@@ -148,9 +147,9 @@ function remove<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>,
 
 			}
 
-		} else if(octant.points !== null) {
+		} else if(octant.data !== null) {
 
-			const pointData = octant.data as PointData<T>;
+			const pointData = octant.data;
 			const points = pointData.points;
 			const data = pointData.data;
 
@@ -174,9 +173,7 @@ function remove<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>,
 					points.pop();
 					data.pop();
 
-					--octree.pointCount;
-
-					if(parent !== null && countPoints(parent) <= octree.maxPoints) {
+					if(parent !== null && countPoints(parent) <= octree.getMaxPoints()) {
 
 						parent.merge();
 
@@ -202,15 +199,16 @@ function remove<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>,
  * @param point - A point.
  * @param octree - The octree.
  * @param octant - The current octant octant.
- * @return The data entry that is associated with the given point or null if it doesn't exist.
+ * @return The data entry that is associated with the given point, or null if it doesn't exist.
  */
 
-function get<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>): T {
+function get<T>(point: Vector3, octree: PointOctree<T>,
+	octant: PointOctant<T>): T {
 
 	const children = octant.children;
 	let result = null;
 
-	if(octant.contains(point, octree.bias)) {
+	if(octant.contains(point, octree.getBias())) {
 
 		if(children !== null) {
 
@@ -220,9 +218,9 @@ function get<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>): T 
 
 			}
 
-		} else if(octant.points !== null) {
+		} else if(octant.data !== null) {
 
-			const pointData = octant.data as PointData<T>;
+			const pointData = octant.data;
 			const points = pointData.points;
 			const data = pointData.data;
 
@@ -253,18 +251,18 @@ function get<T>(point: Vector3, octree: PointOctree, octant: PointOctant<T>): T 
  * @param octant - The current octant.
  * @param parent - The parent of the current octant.
  * @param depth - The current depth.
- * @return The data entry of the updated point or null if it didn't exist.
+ * @return The data entry of the updated point, or null if it didn't exist.
  */
 
-function move<T>(point: Vector3, position: Vector3, octree: PointOctree,
+function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 	octant: PointOctant<T>, parent: PointOctant<T>, depth: number): T {
 
 	const children = octant.children;
 	let result = null;
 
-	if(octant.contains(point, octree.bias)) {
+	if(octant.contains(point, octree.getBias())) {
 
-		if(octant.contains(position, octree.bias)) {
+		if(octant.contains(position, octree.getBias())) {
 
 			// The point and the new position both fall into the current octant.
 			if(children !== null) {
@@ -273,14 +271,15 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree,
 
 				for(let i = 0, l = children.length; result === null && i < l; ++i) {
 
-					result = move(point, position, octree, children[i] as PointOctant<T>, octant, depth);
+					const child = children[i] as PointOctant<T>;
+					result = move(point, position, octree, child, octant, depth);
 
 				}
 
-			} else if(octant.points !== null) {
+			} else if(octant.data !== null) {
 
 				// No divergence - the point can be updated in place.
-				const pointData = octant.data as PointData<T>;
+				const pointData = octant.data;
 				const points = pointData.points;
 				const data = pointData.data;
 
@@ -291,7 +290,6 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree,
 						// The point exists! Update its position.
 						points[i].copy(position);
 						result = data[i];
-
 						break;
 
 					}
@@ -306,7 +304,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree,
 			result = remove(point, octree, octant, parent);
 
 			// Go back to the parent octant and add the updated point.
-			insert(position, result, octree, parent, depth - 1);
+			set(position, result, octree, parent, depth - 1);
 
 		}
 
@@ -327,7 +325,14 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree,
  */
 
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
-	skipSelf: boolean, octant: PointOctant<T>): NearestPoint {
+	skipSelf: boolean, octant: PointOctant<T>): NearestPoint<T> {
+
+	interface SortableOctant<T> {
+
+		octant: PointOctant<T>;
+		distance: number;
+
+	}
 
 	let result = null;
 	let bestDistance = maxDistance;
@@ -335,7 +340,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 	if(octant.children !== null) {
 
 		// Sort the children: smallest distance to the point first, ASC.
-		const sortedChildren: { octant: PointOctant<T>, distance: number }[] = octant.children.map((child) => {
+		const sortedChildren: SortableOctant<T>[] = octant.children.map((child) => {
 
 			const octant = child as PointOctant<T>;
 
@@ -354,7 +359,9 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 			if(child.contains(point, bestDistance)) {
 
-				const intermediateResult = findNearestPoint(point, bestDistance, skipSelf, child);
+				const intermediateResult = findNearestPoint(
+					point, bestDistance, skipSelf, child
+				);
 
 				if(intermediateResult !== null) {
 
@@ -373,9 +380,9 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 		}
 
-	} else if(octant.points !== null) {
+	} else if(octant.data !== null) {
 
-		const pointData = octant.data as PointData<T>;
+		const pointData = octant.data;
 		const points = pointData.points;
 		const data = pointData.data;
 
@@ -428,11 +435,11 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
  * @param radius - A radius.
  * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param octant - The current octant.
- * @param result - An array to be filled with objects.
+ * @param result - An array to be filled with points.
  */
 
 function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
-	octant: PointOctant<T>, result: Point[]): Point[] {
+	octant: PointOctant<T>, result: Point<T>[]): void {
 
 	const children = octant.children;
 
@@ -450,9 +457,9 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 		}
 
-	} else if(octant.points !== null) {
+	} else if(octant.data !== null) {
 
-		const pointData = octant.data as PointData<T>;
+		const pointData = octant.data;
 		const points = pointData.points;
 		const data = pointData.data;
 		const rSq = radius * radius;
@@ -477,7 +484,7 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
  * An octree that manages points.
  */
 
-export class PointOctree<T> extends Octree<PointData<T>> {
+export class PointOctree<T> extends Octree {
 
 	/**
 	 * An octant boundary bias.
@@ -498,18 +505,11 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	/**
 	 * The maximum tree depth level.
 	 *
-	 * It's possible to use Infinity, but keep in mind that allowing infinitely
-	 * small octants can have a severely negative impact on performance.
-	 * Finding a value that works best for a specific scene is advisable.
+	 * Infinity is a valid value, but allowing infinitely small octants can result
+	 * in poor performance.
 	 */
 
 	private maxDepth: number;
-
-	/**
-	 * The amount of points that are currently in this octree.
-	 */
-
-	pointCount: number;
 
 	/**
 	 * Constructs a new point octree.
@@ -517,18 +517,59 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * @param min - The lower bounds of the tree.
 	 * @param max - The upper bounds of the tree.
 	 * @param bias - An octant boundary bias. The octree is considered "loose" with a bias greater than 0.
-	 * @param maxPoints - Number of distinct points per octant before it splits up.
+	 * @param maxPoints - The maximum amount of distinct points per leaf octant.
 	 * @param maxDepth - The maximum tree depth level, starting at 0.
 	 */
 
-	constructor(min: Vector3, max: Vector3, bias = 0.0, maxPoints = 8, maxDepth = 8) {
+	constructor(
+		min: Vector3,
+		max: Vector3,
+		bias = 0.0,
+		maxPoints = 8,
+		maxDepth = 8
+	) {
 
 		super(new PointOctant<T>(min, max));
 
 		this.bias = Math.max(0.0, bias);
 		this.maxPoints = Math.max(1, Math.round(maxPoints));
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
-		this.pointCount = 0;
+
+	}
+
+	/**
+	 * Returns the octree bias.
+	 *
+	 * @return The bias.
+	 */
+
+	getBias(): number {
+
+		return this.bias;
+
+	}
+
+	/**
+	 * Returns the maximum amount of points per leaf octant.
+	 *
+	 * @return The maximum amount of points per leaf octant.
+	 */
+
+	getMaxPoints(): number {
+
+		return this.maxPoints;
+
+	}
+
+	/**
+	 * Returns the maximum tree depth.
+	 *
+	 * @return The maximum tree depth.
+	 */
+
+	getMaxDepth(): number {
+
+		return this.maxDepth;
 
 	}
 
@@ -539,36 +580,38 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * @return The amount of points.
 	 */
 
-	countPoints(octant: PointOctant<T>): number {
+	countPoints(octant: PointOctant<T> = this.root as PointOctant<T>): number {
 
 		return countPoints(octant);
 
 	}
 
 	/**
-	 * Puts a point into the octree.
+	 * Inserts a point into the octree.
 	 *
-	 * @param point - A point. If it's already in the octree, the data entry will be updated.
-	 * @param data - A data object that belongs to the point.
+	 * If the point exists in the tree already, the data entry will be replaced.
+	 *
+	 * @param point - The point.
+	 * @param data - Data that belongs to the point.
 	 * @return Whether the operation was successful.
 	 */
 
-	insert(point: Vector3, data: T): boolean {
+	set(point: Vector3, data: T): boolean {
 
-		return insert(point, data, this, this.root, 0);
+		return set(point, data, this, this.root as PointOctant<T>, 0);
 
 	}
 
 	/**
 	 * Removes a point from the tree.
 	 *
-	 * @param point - A point.
+	 * @param point - The point.
 	 * @return The data entry of the removed point or null if it didn't exist.
 	 */
 
 	remove(point: Vector3): T {
 
-		return remove(point, this, this.root, null);
+		return remove(point, this, this.root as PointOctant<T>, null);
 
 	}
 
@@ -576,12 +619,12 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * Retrieves the data of the specified point.
 	 *
 	 * @param point - A position.
-	 * @return The data entry that is associated with the given point or null if it doesn't exist.
+	 * @return The data that belongs to the given point, or null if it doesn't exist.
 	 */
 
 	get(point: Vector3): T {
 
-		return get(point, this, this.root);
+		return get(point, this, this.root as PointOctant<T>);
 
 	}
 
@@ -591,12 +634,12 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 *
 	 * @param point - The point.
 	 * @param position - The new position.
-	 * @return The data entry of the updated point or null if it didn't exist.
+	 * @return The data of the updated point, or null if it didn't exist.
 	 */
 
 	move(point: Vector3, position: Vector3): T {
 
-		return move(point, position, this, this.root, null, 0);
+		return move(point, position, this, this.root as PointOctant<T>, null, 0);
 
 	}
 
@@ -606,12 +649,14 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * @param point - A point.
 	 * @param maxDistance - An upper limit for the distance between the points.
 	 * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
-	 * @return An object representing the nearest point or null if there is none.
+	 * @return An object representing the nearest point, or null if there is none.
 	 */
 
-	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): NearestPoint {
+	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY,
+		skipSelf = false): NearestPoint<T> {
 
-		const result = findNearestPoint(point, maxDistance, skipSelf, this.root as PointOctant<T>);
+		const root = this.root as PointOctant<T>;
+		const result = findNearestPoint(point, maxDistance, skipSelf, root);
 
 		if(result !== null) {
 
@@ -629,13 +674,13 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * @param point - A position.
 	 * @param radius - A radius.
 	 * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
-	 * @return An array of objects.
+	 * @return A list of points.
 	 */
 
-	findPoints(point: Vector3, radius: number, skipSelf = false): Point[] {
+	findPoints(point: Vector3, radius: number, skipSelf = false): Point<T>[] {
 
-		const result: Point[] = [];
-		findPoints(point, radius, skipSelf, this.root, result);
+		const result: Point<T>[] = [];
+		findPoints(point, radius, skipSelf, this.root as PointOctant<T>, result);
 		return result;
 
 	}
@@ -644,13 +689,13 @@ export class PointOctree<T> extends Octree<PointData<T>> {
 	 * Finds the points that intersect with the given ray.
 	 *
 	 * @param raycaster - The raycaster.
-	 * @param intersects - An array to be filled with the intersecting points.
 	 * @return The intersecting points.
 	 */
 
-	raycast(raycaster: Raycaster, intersects: RayPointIntersection<T>[] = []): RayPointIntersection<T>[] {
+	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
 
-		const octants = super.raycast(raycaster) as PointOctant<T>[];
+		const intersects: RayPointIntersection<T>[] = [];
+		const octants = super.getIntersectingNodes(raycaster) as PointOctant<T>[];
 
 		if(octants.length > 0) {
 
