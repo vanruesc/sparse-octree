@@ -1,25 +1,25 @@
 import { Vector3 } from "three";
 
 /**
- * A container for a point and the associated data.
+ * A container for a point and associated data.
  */
 
 export class Point<T> {
 
 	/**
-	 * The point.
+	 * The position of the point.
 	 */
 
 	point: Vector3;
 
 	/**
-	 * The data.
+	 * The associated data.
 	 */
 
 	data: T;
 
 	/**
-	 * Constructs a new point data collection.
+	 * Constructs a new point.
 	 *
 	 * @param point - The point.
 	 * @param data - The data.
