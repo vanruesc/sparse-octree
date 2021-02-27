@@ -19,7 +19,7 @@ export class PointData<T> {
 	data: T[];
 
 	/**
-	 * Constructs a new point data collection.
+	 * Constructs new point data.
 	 */
 
 	constructor() {
