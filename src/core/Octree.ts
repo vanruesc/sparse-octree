@@ -4,10 +4,6 @@ import { OctreeIterator } from "./OctreeIterator";
 import { Node } from "./Node";
 import { Tree } from "./Tree";
 
-/**
- * 3D bounds.
- */
-
 const b = new Box3();
 
 /**
@@ -17,7 +13,7 @@ const b = new Box3();
  * @return The depth.
  */
 
-function getDepth<T>(node: Node<T>): number {
+function getDepth(node: Node): number {
 
 	const children = node.children;
 
@@ -51,7 +47,7 @@ function getDepth<T>(node: Node<T>): number {
  * @param result - A list to be filled with nodes that intersect with the region.
  */
 
-function cull<T>(node: Node<T>, region: Frustum|Box3, result: Node<T>[]) {
+function cull(node: Node, region: Frustum | Box3, result: Node[]): void {
 
 	const children = node.children;
 
@@ -87,7 +83,7 @@ function cull<T>(node: Node<T>, region: Frustum|Box3, result: Node<T>[]) {
  * @param result - A list to be filled with the identified octants.
  */
 
-function findNodesByLevel<T>(node: Node<T>, level: number, depth: number, result: Node<T>[]) {
+function findNodesByLevel(node: Node, level: number, depth: number, result: Node[]): void {
 
 	const children = node.children;
 
@@ -113,13 +109,13 @@ function findNodesByLevel<T>(node: Node<T>, level: number, depth: number, result
  * A pointer-based octree that subdivides space for fast spatial searches.
  */
 
-export class Octree<T> implements Node<T>, Tree<T>, Iterable {
+export class Octree implements Tree, Iterable<Node> {
 
 	/**
 	 * The root octant.
 	 */
 
-	protected root: Node<T>;
+	protected root: Node;
 
 	/**
 	 * Constructs a new octree.
@@ -127,7 +123,7 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * @param root - The root node. See {@link Octant} or {@link CubicOctant}.
 	 */
 
-	constructor(root: Node<T>) {
+	constructor(root: Node) {
 
 		this.root = root;
 
@@ -145,13 +141,7 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 
 	}
 
-	get data() {
-
-		return this.root.data;
-
-	}
-
-	get children(): Node<T>[] {
+	get children(): Node[] {
 
 		return this.root.children;
 
@@ -176,9 +166,9 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * @return The nodes.
 	 */
 
-	cull(region: Frustum|Box3): Node<T>[] {
+	cull(region: Frustum | Box3): Node[] {
 
-		const result: Node<T>[] = [];
+		const result: Node[] = [];
 		cull(this.root, region, result);
 		return result;
 
@@ -203,9 +193,9 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * @return The nodes.
 	 */
 
-	findNodesByLevel(level: number): Node<T>[] {
+	findNodesByLevel(level: number): Node[] {
 
-		const result: Node<T>[] = [];
+		const result: Node[] = [];
 		findNodesByLevel(this.root, level, 0, result);
 		return result;
 
@@ -216,14 +206,12 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * nodes are sorted by distance, closest first.
 	 *
 	 * @param raycaster - A raycaster.
-	 * @param intersects - An optional target list to be filled with the intersecting nodes.
 	 * @return The intersecting nodes.
 	 */
 
-	raycast(raycaster: Raycaster, intersects: Node<T>[] = []): Node<T>[] {
+	getIntersectingNodes(raycaster: Raycaster): Node[] {
 
-		OctreeRaycaster.intersectOctree(this, raycaster.ray, intersects);
-		return intersects;
+		return OctreeRaycaster.intersectOctree(this, raycaster.ray);
 
 	}
 
@@ -237,9 +225,9 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * @return An iterator.
 	 */
 
-	leaves(region: Frustum|Box3 = null): Iterator<Node<T>> {
+	leaves(region: Frustum | Box3 = null): Iterator<Node> {
 
-		return new OctreeIterator<T>(this, region);
+		return new OctreeIterator(this, region);
 
 	}
 
@@ -249,9 +237,9 @@ export class Octree<T> implements Node<T>, Tree<T>, Iterable {
 	 * @return An iterator.
 	 */
 
-	[Symbol.iterator](): Iterator<Node<T>> {
+	[Symbol.iterator](): Iterator<Node> {
 
-		return new OctreeIterator<T>(this);
+		return new OctreeIterator(this);
 
 	}
 
