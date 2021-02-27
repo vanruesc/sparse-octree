@@ -6,19 +6,13 @@ import {
 	LineBasicMaterial
 } from "three";
 
-import { edges, layout, Node, OctreeIterator, Tree } from "../core";
+import { edges, layout, Node, Tree } from "../core";
 
 /**
  * An octree helper.
  */
 
 export class OctreeHelper extends Group {
-
-	/**
-	 * The name of this object.
-	 */
-
-	protected name: string;
 
 	/**
 	 * The octree.
@@ -32,7 +26,7 @@ export class OctreeHelper extends Group {
 	 * @param octree - An octree.
 	 */
 
-	constructor(octree?: Tree = null) {
+	constructor(octree: Tree = null) {
 
 		super();
 
@@ -46,12 +40,13 @@ export class OctreeHelper extends Group {
 	/**
 	 * Creates the octant geometry.
 	 *
-	 * @param octants - An octant iterator.
+	 * @param octants - An octree iterator.
 	 * @param octantCount - The size of the given sequence.
 	 */
 
-	private createLineSegments(octants: OctreeIterator, octantCount: number): void {
+	private createLineSegments(octants: Node[], octantCount: number): void {
 
+		const iterator = octants[Symbol.iterator]();
 		const maxOctants = (Math.pow(2, 16) / 8) - 1;
 		const group = new Group();
 
@@ -70,14 +65,14 @@ export class OctreeHelper extends Group {
 			const positions = new Float32Array(vertexCount * 3);
 
 			// Continue where the previous run left off.
-			for(let c = 0, d = 0, result = octants.next(); !result.done && i < length;) {
+			for(let c = 0, d = 0, result = iterator.next(); !result.done && i < length;) {
 
-				const octant = result.value;
+				const octant = result.value as Node;
 				const min = octant.min;
 				const max = octant.max;
 
 				// Create line connections based on the current vertex count.
-				for(j = 0; j < 12; ++j) {
+				for(let j = 0; j < 12; ++j) {
 
 					const edge = edges[j];
 
@@ -87,7 +82,7 @@ export class OctreeHelper extends Group {
 				}
 
 				// Create the vertices.
-				for(j = 0; j < 8; ++j, ++c) {
+				for(let j = 0; j < 8; ++j, ++c) {
 
 					const corner = layout[j];
 
@@ -99,7 +94,7 @@ export class OctreeHelper extends Group {
 
 				if(++i < length) {
 
-					result = octants.next();
+					result = iterator.next();
 
 				}
 
@@ -123,23 +118,15 @@ export class OctreeHelper extends Group {
 
 	update(): void {
 
-		const depth = (this.octree !== null) ? this.octree.getDepth() : -1;
-
-		let level = 0;
-
 		// Remove existing geometry.
 		this.dispose();
 
-		while(level <= depth) {
+		const depth = (this.octree !== null) ? this.octree.getDepth() : -1;
+
+		for(let level = 0; level <= depth; ++level) {
 
 			const result = this.octree.findNodesByLevel(level);
-
-			this.createLineSegments(
-				result[Symbol.iterator](),
-				(typeof result.size === "number") ? result.size : result.length
-			);
-
-			++level;
+			this.createLineSegments(result, result.length);
 
 		}
 
@@ -160,8 +147,22 @@ export class OctreeHelper extends Group {
 
 			for(let j = 0, jl = children.length; j < jl; ++j) {
 
-				children[j].geometry.dispose();
-				children[j].material.dispose();
+				const lineSegments = children[j] as LineSegments;
+				lineSegments.geometry.dispose();
+
+				if(Array.isArray(lineSegments.material)) {
+
+					for(const m of lineSegments.material) {
+
+						m.dispose();
+
+					}
+
+				} else {
+
+					lineSegments.material.dispose();
+
+				}
 
 			}
 
