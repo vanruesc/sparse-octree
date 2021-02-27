@@ -4,7 +4,7 @@ import { Vector3 } from "three";
  * A tree node.
  */
 
-export interface Node<T> {
+export interface Node {
 
 	/**
 	 * The lower bounds of this node.
@@ -19,16 +19,10 @@ export interface Node<T> {
 	max: Vector3;
 
 	/**
-	 * The data that belongs to this node.
-	 */
-
-	data?: T;
-
-	/**
 	 * The children of this node.
 	 */
 
-	children?: Node<T>[];
+	children?: Node[];
 
 	/**
 	 * Calculates the center of this octree.

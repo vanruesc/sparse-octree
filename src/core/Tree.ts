@@ -4,7 +4,7 @@ import { Node } from "./Node";
  * A tree data structure.
  */
 
-export interface Tree<T> {
+export interface Tree extends Node {
 
 	/**
 	 * Calculates the depth of this tree.
@@ -21,6 +21,6 @@ export interface Tree<T> {
 	 * @return The nodes.
 	 */
 
-	findNodesByLevel(level: number): Node<T>[];
+	findNodesByLevel(level: number): Node[];
 
 }
