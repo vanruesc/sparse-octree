@@ -1,9 +1,7 @@
 import { Vector3 } from "three";
+import { DataContainer } from "./DataContainer";
+import { Node } from "./Node";
 import { layout } from "./layout";
-
-/**
- * A vector.
- */
 
 const c = new Vector3();
 
@@ -11,7 +9,13 @@ const c = new Vector3();
  * A cubic octant.
  */
 
-export class CubicOctant<T> implements Node<T> {
+export class CubicOctant<T> implements Node, DataContainer<T> {
+
+	min: Vector3;
+
+	children: Node[];
+
+	data: T;
 
 	/**
 	 * The size of this octant.
@@ -30,8 +34,8 @@ export class CubicOctant<T> implements Node<T> {
 
 		this.min = min;
 		this.size = size;
-		this.data = null;
 		this.children = null;
+		this.data = null;
 
 	}
 
@@ -83,7 +87,7 @@ export class CubicOctant<T> implements Node<T> {
 		const mid = this.getCenter(c);
 		const halfSize = this.size * 0.5;
 
-		const children = this.children = [
+		const children: Node[] = this.children = [
 			null, null, null, null,
 			null, null, null, null
 		];
@@ -91,7 +95,7 @@ export class CubicOctant<T> implements Node<T> {
 		for(let i = 0; i < 8; ++i) {
 
 			const combination = layout[i];
-			const child = new this.constructor() as CubicOctant<T>;
+			const child = new (<typeof CubicOctant> this.constructor)();
 
 			child.min.set(
 				(combination[0] === 0) ? min.x : mid.x,

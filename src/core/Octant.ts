@@ -1,10 +1,7 @@
 import { Vector3 } from "three";
-import { layout } from "./layout";
+import { DataContainer } from "./DataContainer";
 import { Node } from "./Node";
-
-/**
- * A vector.
- */
+import { layout } from "./layout";
 
 const c = new Vector3();
 
@@ -12,7 +9,12 @@ const c = new Vector3();
  * An octant.
  */
 
-export class Octant<T> implements Node<T> {
+export class Octant<T> implements Node, DataContainer<T> {
+
+	min: Vector3;
+	max: Vector3;
+	children: Node[];
+	data: T;
 
 	/**
 	 * Constructs a new octant.
@@ -25,8 +27,8 @@ export class Octant<T> implements Node<T> {
 
 		this.min = min;
 		this.max = max;
-		this.data = null;
 		this.children = null;
+		this.data = null;
 
 	}
 
@@ -66,7 +68,7 @@ export class Octant<T> implements Node<T> {
 		const max = this.max;
 		const mid = this.getCenter(c);
 
-		const children = this.children = [
+		const children: Node[] = this.children = [
 			null, null, null, null,
 			null, null, null, null
 		];
@@ -74,7 +76,7 @@ export class Octant<T> implements Node<T> {
 		for(let i = 0; i < 8; ++i) {
 
 			const combination = layout[i];
-			const child = new this.constructor() as Octant<T>;
+			const child = new (<typeof Octant> this.constructor)();
 
 			child.min.set(
 				(combination[0] === 0) ? min.x : mid.x,
