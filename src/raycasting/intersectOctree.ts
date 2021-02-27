@@ -1,5 +1,5 @@
 import { Box3, Ray, Vector3 } from "three";
-import { Node } from "../core/Node";
+import { Octree } from "../core/Octree";
 import { Flags } from "./Flags";
 
 // Helper objects.
@@ -17,7 +17,7 @@ const r = new Ray();
  * @return The ray parameters tx0, ty0, tz0, tx1, ty1 and tz1, in that order, or null if the ray doesn't hit the octree.
  */
 
-export function intersectOctree<T>(octree: Node<T>, ray: Ray, flags: Flags): number[] {
+export function intersectOctree(octree: Octree, ray: Ray, flags: Flags): number[] {
 
 	// Translate the octant extents to the scene origin.
 	const min = b.min.set(0, 0, 0);
