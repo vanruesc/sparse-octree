@@ -1,25 +1,21 @@
 import {
 	BufferAttribute,
 	BufferGeometry,
+	Camera,
 	CameraHelper,
 	Frustum,
 	Matrix4,
 	PerspectiveCamera,
 	Points,
 	PointsMaterial,
+	Scene,
 	Spherical
 } from "three";
 
-/**
- * A matrix.
- */
+import { GUI } from "dat.gui";
+import { Octree } from "../../../src";
 
 const matrix4 = new Matrix4();
-
-/**
- * A frustum.
- */
-
 const frustum = new Frustum();
 
 /**
@@ -104,6 +100,18 @@ export class FrustumCuller {
 		);
 
 		this.culledOctants.visible = false;
+
+	}
+
+	/**
+	 * Returns the camera helper.
+	 *
+	 * @return The camera helper.
+	 */
+
+	getCameraHelper(): CameraHelper {
+
+		return this.cameraHelper;
 
 	}
 

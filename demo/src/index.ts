@@ -1,6 +1,6 @@
 import { DemoManager } from "three-demo";
 import { Event as Event3, sRGBEncoding, WebGLRenderer } from "three";
-import { SparseOctreeDemo } from "./demos/SparseOctreeDemo";
+import { PointOctreeDemo } from "./demos/PointOctreeDemo";
 
 /**
  * A demo manager.
@@ -63,7 +63,7 @@ window.addEventListener("load", (event: Event) => {
 
 	});
 
-	manager.addDemo(new SparseOctreeDemo());
+	manager.addDemo(new PointOctreeDemo());
 	requestAnimationFrame(render);
 
 });

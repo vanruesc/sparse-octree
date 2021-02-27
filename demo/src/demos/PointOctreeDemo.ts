@@ -3,6 +3,7 @@ import {
 	BufferGeometry,
 	Box3,
 	FogExp2,
+	Group,
 	Object3D,
 	PerspectiveCamera,
 	Points,
@@ -11,12 +12,11 @@ import {
 } from "three";
 
 import { GUI } from "dat.gui";
-import { SpatialControls } from "spatial-controls";
-import { OctreeHelper } from "octree-helper";
+import { ControlMode, SpatialControls } from "spatial-controls";
 import { Demo } from "three-demo";
-import { PointOctree } from "../../../src";
-import { OctreeRaycaster } from "./OctreeRaycaster.js";
-import { FrustumCuller } from "./FrustumCuller.js";
+import { OctreeHelper, PointOctree } from "../../../src";
+import { OctreeRaycaster } from "../util/OctreeRaycaster.js";
+import { FrustumCuller } from "../util/FrustumCuller.js";
 
 /**
  * A point octree demo application.
@@ -31,10 +31,10 @@ export class PointOctreeDemo extends Demo {
 	private controls: SpatialControls;
 
 	/**
-	 * A point cloud.
+	 * A group of point clouds.
 	 */
 
-	private points: Points;
+	private points: Group;
 
 	/**
 	 * An octree helper.
@@ -100,127 +100,111 @@ export class PointOctreeDemo extends Demo {
 
 		// Points
 
-		const points = (function generatePoints() {
+		function createParticlePlane(particles: number, n: number, zBase: number,
+			zBias: number): BufferGeometry {
 
-			function createPlaneGeometry(particles, n, zBase, zBias) {
+			const geometry = new BufferGeometry();
+			const positions = new Float32Array(particles * 3);
+			const halfN = n / 2;
 
-				const geometry = new BufferGeometry();
-				const positions = new Float32Array(particles * 3);
-				const n2 = n / 2;
+			for(let i = 0, l = positions.length; i < l; i += 3) {
 
-				for(let i = 0, l = positions.length; i < l; i += 3) {
+				const x = Math.random() * n - halfN;
+				const y = Math.random() * n - halfN;
+				const z = zBase + (Math.random() * zBias * 2 - zBias);
 
-					const x = Math.random() * n - n2;
-					const y = Math.random() * n - n2;
-					const z = zBase + (Math.random() * zBias * 2 - zBias);
-
-					positions[i] = x;
-					positions[i + 1] = y;
-					positions[i + 2] = z;
-
-				}
-
-				geometry.setAttribute("position", new BufferAttribute(positions, 3));
-
-				return geometry;
+				positions[i] = x;
+				positions[i + 1] = y;
+				positions[i + 2] = z;
 
 			}
 
-			const points = new Object3D();
+			geometry.setAttribute("position", new BufferAttribute(positions, 3));
 
-			const w = 256;
-			const h = 256;
+			return geometry;
 
-			let d = 8;
+		}
 
-			const size = 6;
-			const zStep = size / (d - 1);
+		const points = new Group();
 
-			let z = size * -0.5;
-			let p;
+		let d = 8;
+		const size = 6;
+		const zStep = size / (d - 1);
+		const w = 256, h = 256;
+		let z = size * -0.5;
 
-			let material = new PointsMaterial({
-				color: 0xc00000,
-				sizeAttenuation: false,
-				size: 1
-			});
+		console.log("Generating %d points", w * h * d);
+		console.time("Point cloud creation");
 
-			console.log("Generating", w * h * d, "points...");
+		while(d-- > 0) {
 
-			while(d-- > 0) {
+			points.add(new Points(
+				createParticlePlane(w * h, size, z, 0.25),
+				new PointsMaterial({
+					color: 0xc00000,
+					sizeAttenuation: false,
+					size: 1
+				})
+			));
 
-				p = new Points(createPlaneGeometry(w * h, size, z, 0.25), material);
-				material = material.clone();
-				z += zStep;
+			z += zStep;
 
-				points.add(p);
+		}
 
-			}
-
-			return points;
-
-		}());
+		console.timeEnd("Point cloud creation");
 
 		this.points = points;
 		scene.add(points);
 
 		// Octree
 
-		const octree = (function createOctree(points) {
+		const v = new Vector3();
+		const bbox = new Box3();
+		bbox.setFromObject(scene);
 
-			const v = new Vector3();
-			const bbox = new Box3();
-			bbox.setFromObject(scene);
+		const octree = new PointOctree<Object3D>(bbox.min, bbox.max, 0.0, 8, 5);
 
-			const t0 = performance.now();
-			const octree = new PointOctree(bbox.min, bbox.max, 0.0, 8, 5);
+		console.time("Octree creation");
 
-			for(let d = points.children.length - 1; d >= 0; --d) {
+		for(let i = points.children.length - 1; i >= 0; --i) {
 
-				const p = points.children[d];
-				const array = p.geometry.getAttribute("position").array;
+			const p = points.children[i] as Points;
+			const array = p.geometry.getAttribute("position").array;
 
-				for(let i = 0, l = array.length; i < l; i += 3) {
+			for(let j = 0, l = array.length; j < l; j += 3) {
 
-					octree.insert(v.fromArray(array, i), p);
-
-				}
+				octree.set(v.fromArray(array, j), p);
 
 			}
 
-			console.log("Octree:", octree, "created in", (performance.now() - t0).toFixed(2) + " ms");
+		}
 
-			return octree;
-
-		}(points));
+		console.timeEnd("Octree creation");
+		console.log(octree);
 
 		// Octree Helper
 
-		const octreeHelper = (function createOctreeHelper(octree) {
+		console.time("Octree helper");
 
-			const t0 = performance.now();
-			const octreeHelper = new OctreeHelper(octree);
-			octreeHelper.visible = false;
+		const octreeHelper = new OctreeHelper(octree);
+		octreeHelper.visible = false;
 
-			console.log("OctreeHelper:", octreeHelper, "created in", (performance.now() - t0).toFixed(2) + " ms");
-
-			return octreeHelper;
-
-		}(octree));
+		console.timeEnd("Octree helper");
+		console.log(octreeHelper);
 
 		this.octreeHelper = octreeHelper;
 		scene.add(octreeHelper);
 
 		// Raycasting
 
-		this.raycaster = new OctreeRaycaster(octree, camera, points);
-		renderer.domElement.addEventListener("mousemove", this.raycaster, { passive: true });
-		scene.add(this.raycaster.selectedPoint);
+		this.octreeRaycaster = new OctreeRaycaster(octree, camera, points);
+		renderer.domElement.addEventListener("mousemove", this.octreeRaycaster, { passive: true });
+		scene.add(this.octreeRaycaster.getCursor());
 
 		// Frustum culling
 
 		this.frustumCuller = new FrustumCuller(octree, scene);
-		scene.add(this.frustumCuller.cameraHelper);
+		scene.add(this.frustumCuller.getCameraHelper());
 
 	}
 
@@ -241,7 +225,7 @@ export class PointOctreeDemo extends Demo {
 		const points = this.points;
 		const octreeHelper = this.octreeHelper;
 
-		this.raycaster.registerOptions(menu);
+		this.octreeRaycaster.registerOptions(menu);
 		this.frustumCuller.registerOptions(menu);
 
 		const params = {
@@ -255,13 +239,13 @@ export class PointOctreeDemo extends Demo {
 		folder = menu.addFolder("Octree Helper");
 		folder.add(octreeHelper, "visible");
 
-		folder.add(params, "level mask").min(0).max(octreeHelper.children.length).step(1).onChange(() => {
+		folder.add(params, "level mask", 0, octreeHelper.children.length, 1).onChange(() => {
 
 			for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
 				octreeHelper.children[i].visible = (
 					params["level mask"] === octreeHelper.children.length ||
-					i === params["level mask"]
+					params["level mask"] === i
 				);
 
 			}
@@ -274,7 +258,7 @@ export class PointOctreeDemo extends Demo {
 
 	dispose() {
 
-		this.renderer.domElement.removeEventListener("mousemove", this.raycaster);
+		this.renderer.domElement.removeEventListener("mousemove", this.octreeRaycaster);
 
 	}
 
