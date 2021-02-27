@@ -1,5 +1,4 @@
 import { Raycaster, Vector3 } from "three";
-import { PointData } from "../../points/PointData";
 import { PointOctant } from "../../points/PointOctant";
 import { RayPointIntersection } from "./RayPointIntersection";
 
@@ -11,7 +10,8 @@ import { RayPointIntersection } from "./RayPointIntersection";
  * @param intersects - An array to be filled with intersecting points.
  */
 
-export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster, intersects: RayPointIntersection<T>[]) {
+export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster,
+	intersects: RayPointIntersection<T>[]): void {
 
 	const threshold = raycaster.params.Points.threshold;
 	const thresholdSq = threshold * threshold;
@@ -19,7 +19,7 @@ export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster, i
 	for(let i = 0, il = octants.length; i < il; ++i) {
 
 		const octant = octants[i];
-		const pointData = octant.data as PointData<T>;
+		const pointData = octant.data;
 
 		if(pointData !== null) {
 
@@ -29,20 +29,18 @@ export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster, i
 			for(let j = 0, jl = points.length; j < jl; ++j) {
 
 				const point = points[j];
-				const rayPointDistanceSq = raycaster.ray.distanceSqToPoint(point);
+				const distanceToRaySquared = raycaster.ray.distanceSqToPoint(point);
 
-				if(rayPointDistanceSq < thresholdSq) {
+				if(distanceToRaySquared < thresholdSq) {
 
 					const closestPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
 					const distance = raycaster.ray.origin.distanceTo(closestPoint);
 
 					if(distance >= raycaster.near && distance <= raycaster.far) {
 
-						const distanceToRay = Math.sqrt(rayPointDistanceSq);
-
 						intersects.push(new RayPointIntersection<T>(
 							distance,
-							distanceToRay,
+							Math.sqrt(distanceToRaySquared),
 							closestPoint,
 							data[j]
 						));
