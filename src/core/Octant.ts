@@ -12,8 +12,11 @@ const c = new Vector3();
 export class Octant<T> implements Node, DataContainer<T> {
 
 	min: Vector3;
+
 	max: Vector3;
+
 	children: Node[];
+
 	data: T;
 
 	/**
@@ -32,29 +35,15 @@ export class Octant<T> implements Node, DataContainer<T> {
 
 	}
 
-	/**
-	 * Calculates the center of this octant.
-	 *
-	 * @param target - A target vector.
-	 * @return The center.
-	 */
+	getCenter(result: Vector3): Vector3 {
 
-	getCenter(target: Vector3): Vector3 {
-
-		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
+		return result.addVectors(this.min, this.max).multiplyScalar(0.5);
 
 	}
 
-	/**
-	 * Calculates the size of this octant.
-	 *
-	 * @param target - A target vector.
-	 * @return The size.
-	 */
+	getDimensions(result: Vector3): Vector3 {
 
-	getDimensions(target: Vector3): Vector3 {
-
-		return target.subVectors(this.max, this.min);
+		return result.subVectors(this.max, this.min);
 
 	}
 

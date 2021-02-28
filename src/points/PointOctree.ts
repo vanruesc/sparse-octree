@@ -321,7 +321,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
  * @param maxDistance - The maximum distance.
  * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param octant - The current octant.
- * @return An object that represents the nearest point, or null if there is none.
+ * @return The nearest point, or null if there is none.
  */
 
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
@@ -342,12 +342,12 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 		// Sort the children: smallest distance to the point first, ASC.
 		const sortedChildren: SortableOctant<T>[] = octant.children.map((child) => {
 
+			// Precompute distances.
 			const octant = child as PointOctant<T>;
 
-			// Precompute distances.
 			return {
-				octant,
-				distance: octant.distanceToCenterSquared(point)
+				distance: octant.distanceToCenterSquared(point),
+				octant
 			};
 
 		}).sort((a, b) => a.distance - b.distance);
@@ -428,11 +428,10 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 }
 
 /**
- * Recursively finds points that are inside the specified radius around a given
- * position.
+ * Recursively finds points within a specific radius around a given point.
  *
- * @param point - A position.
- * @param radius - A radius.
+ * @param point - The point.
+ * @param radius - The radius.
  * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param octant - The current octant.
  * @param result - An array to be filled with points.
@@ -576,7 +575,7 @@ export class PointOctree<T> extends Octree {
 	/**
 	 * Counts the points in the given octant.
 	 *
-	 * @param octant - An octant.
+	 * @param octant - An octant. Defaults to the root octant.
 	 * @return The amount of points.
 	 */
 
@@ -649,7 +648,7 @@ export class PointOctree<T> extends Octree {
 	 * @param point - A point.
 	 * @param maxDistance - An upper limit for the distance between the points.
 	 * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
-	 * @return An object representing the nearest point, or null if there is none.
+	 * @return The nearest point, or null if there is none.
 	 */
 
 	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY,
@@ -669,7 +668,7 @@ export class PointOctree<T> extends Octree {
 	}
 
 	/**
-	 * Finds points that are in the specified radius around the given position.
+	 * Finds points within a specific radius around a given point.
 	 *
 	 * @param point - A position.
 	 * @param radius - A radius.

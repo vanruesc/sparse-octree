@@ -147,15 +147,15 @@ export class Octree implements Tree, Iterable<Node> {
 
 	}
 
-	getCenter(target: Vector3): Vector3 {
+	getCenter(result: Vector3): Vector3 {
 
-		return this.root.getCenter(target);
+		return this.root.getCenter(result);
 
 	}
 
-	getDimensions(target: Vector3): Vector3 {
+	getDimensions(result: Vector3): Vector3 {
 
-		return this.root.getDimensions(target);
+		return this.root.getDimensions(result);
 
 	}
 
@@ -202,8 +202,8 @@ export class Octree implements Tree, Iterable<Node> {
 	}
 
 	/**
-	 * Finds the nodes that intersect with the given ray. The intersecting
-	 * nodes are sorted by distance, closest first.
+	 * Finds nodes that intersect with the given ray. The intersecting nodes are
+	 * sorted by distance, closest first.
 	 *
 	 * @param raycaster - A raycaster.
 	 * @return The intersecting nodes.

@@ -25,21 +25,21 @@ export interface Node {
 	children?: Node[];
 
 	/**
-	 * Calculates the center of this octree.
+	 * Calculates the center of this node.
 	 *
-	 * @param target - A target vector.
-	 * @return A vector that describes the center of this octree.
+	 * @param result - A vector to store the result in.
+	 * @return A vector that describes the center of this node.
 	 */
 
-	getCenter(target: Vector3): Vector3;
+	getCenter(result: Vector3): Vector3;
 
 	/**
-	 * Calculates the size of this octree.
+	 * Calculates the size of this node.
 	 *
-	 * @param target - A target vector.
-	 * @return A vector that describes the size of this octree.
+	 * @param result - A vector to store the result in.
+	 * @return A vector that describes the size of this node.
 	 */
 
-	getDimensions(target: Vector3): Vector3;
+	getDimensions(result: Vector3): Vector3;
 
 }

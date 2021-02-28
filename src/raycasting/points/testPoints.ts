@@ -15,6 +15,7 @@ export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster,
 
 	const threshold = raycaster.params.Points.threshold;
 	const thresholdSq = threshold * threshold;
+	const ray = raycaster.ray;
 
 	for(let i = 0, il = octants.length; i < il; ++i) {
 
@@ -29,18 +30,18 @@ export function testPoints<T>(octants: PointOctant<T>[], raycaster: Raycaster,
 			for(let j = 0, jl = points.length; j < jl; ++j) {
 
 				const point = points[j];
-				const distanceToRaySquared = raycaster.ray.distanceSqToPoint(point);
+				const distanceToRaySq = ray.distanceSqToPoint(point);
 
-				if(distanceToRaySquared < thresholdSq) {
+				if(distanceToRaySq < thresholdSq) {
 
-					const closestPoint = raycaster.ray.closestPointToPoint(point, new Vector3());
-					const distance = raycaster.ray.origin.distanceTo(closestPoint);
+					const closestPoint = ray.closestPointToPoint(point, new Vector3());
+					const distance = ray.origin.distanceTo(closestPoint);
 
 					if(distance >= raycaster.near && distance <= raycaster.far) {
 
 						intersects.push(new RayPointIntersection<T>(
 							distance,
-							Math.sqrt(distanceToRaySquared),
+							Math.sqrt(distanceToRaySq),
 							closestPoint,
 							data[j]
 						));

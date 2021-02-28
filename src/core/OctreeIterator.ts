@@ -1,6 +1,5 @@
 import { Box3, Frustum } from "three";
 import { Node } from "./Node";
-import { Tree } from "./Tree";
 
 const b = new Box3();
 
@@ -11,10 +10,10 @@ const b = new Box3();
 export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 	/**
-	 * The octree.
+	 * The root node.
 	 */
 
-	private octree: Tree;
+	private root: Node;
 
 	/**
 	 * A region used for octree culling.
@@ -35,7 +34,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	private result: IteratorResult<Node>;
 
 	/**
-	 * An octant trace.
+	 * A node trace.
 	 */
 
 	private trace: Node[];
@@ -47,15 +46,15 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	private indices: number[];
 
 	/**
-	 * Constructs a new octant iterator.
+	 * Constructs a new octree iterator.
 	 *
-	 * @param octree - An octree.
+	 * @param root - The root node.
 	 * @param region - A cull region.
 	 */
 
-	constructor(octree: Tree, region: Frustum | Box3 = null) {
+	constructor(root: Node, region: Frustum | Box3 = null) {
 
-		this.octree = octree;
+		this.root = root;
 		this.region = region;
 		this.cull = (region !== null);
 		this.trace = null;
@@ -73,7 +72,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 	reset(): OctreeIterator {
 
-		const root = this.octree;
+		const root = this.root;
 
 		this.trace = [];
 		this.indices = [];

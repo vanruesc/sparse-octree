@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
 
 /**
- * A collection of points and data.
+ * A collection of many points and associated data entries.
  */
 
 export class PointData<T> {
@@ -13,7 +13,7 @@ export class PointData<T> {
 	points: Vector3[];
 
 	/**
-	 * The data.
+	 * The data entries.
 	 */
 
 	data: T[];
