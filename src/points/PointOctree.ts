@@ -465,9 +465,13 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 			const p = points[i];
 
-			if(!skipSelf && p.equals(point)) {
+			if(p.equals(point)) {
 
-				result.push(new PointContainer(p.clone(), data[i], 0.0));
+				if(!skipSelf) {
+
+					result.push(new PointContainer(p.clone(), data[i], 0.0));
+
+				}
 
 			} else {
 
