@@ -1,8 +1,7 @@
 import { Raycaster, Vector3 } from "three";
 import { Octree } from "../core/Octree";
 import { RayPointIntersection, testPoints } from "../raycasting/points";
-import { NearestPoint } from "./NearestPoint";
-import { Point } from "./Point";
+import { PointContainer } from "./PointContainer";
 import { PointData } from "./PointData";
 import { PointOctant } from "./PointOctant";
 
@@ -325,7 +324,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
  */
 
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
-	skipSelf: boolean, octant: PointOctant<T>): NearestPoint<T> {
+	skipSelf: boolean, octant: PointOctant<T>): PointContainer<T> {
 
 	interface SortableOctant<T> {
 
@@ -417,7 +416,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 		if(index >= 0) {
 
-			result = new NearestPoint(points[index], data[index], bestDistance);
+			result = new PointContainer(points[index], data[index], bestDistance);
 
 		}
 
@@ -438,7 +437,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
  */
 
 function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
-	octant: PointOctant<T>, result: Point<T>[]): void {
+	octant: PointOctant<T>, result: PointContainer<T>[]): void {
 
 	const children = octant.children;
 
@@ -461,15 +460,25 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 		const pointData = octant.data;
 		const points = pointData.points;
 		const data = pointData.data;
-		const rSq = radius * radius;
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
 			const p = points[i];
 
-			if((p.equals(point) && !skipSelf) || p.distanceToSquared(point) <= rSq) {
+			if(!skipSelf && p.equals(point)) {
 
-				result.push(new Point(p.clone(), data[i]));
+				result.push(new PointContainer(p.clone(), data[i], 0.0));
+
+			} else {
+
+				const rSq = radius * radius;
+				const dSq = p.distanceToSquared(point);
+
+				if(dSq <= rSq) {
+
+					result.push(new PointContainer(p.clone(), data[i], Math.sqrt(dSq)));
+
+				}
 
 			}
 
@@ -652,7 +661,7 @@ export class PointOctree<T> extends Octree {
 	 */
 
 	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY,
-		skipSelf = false): NearestPoint<T> {
+		skipSelf = false): PointContainer<T> {
 
 		const root = this.root as PointOctant<T>;
 		const result = findNearestPoint(point, maxDistance, skipSelf, root);
@@ -676,9 +685,9 @@ export class PointOctree<T> extends Octree {
 	 * @return A list of points.
 	 */
 
-	findPoints(point: Vector3, radius: number, skipSelf = false): Point<T>[] {
+	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
 
-		const result: Point<T>[] = [];
+		const result: PointContainer<T>[] = [];
 		findPoints(point, radius, skipSelf, this.root as PointOctant<T>, result);
 		return result;
 
