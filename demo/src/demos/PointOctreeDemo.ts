@@ -89,6 +89,7 @@ export class PointOctreeDemo extends Demo {
 		settings.zoom.setRange(0.0, 60.0);
 		settings.rotation.setSensitivity(2.2);
 		settings.zoom.setSensitivity(1.0);
+		controls.setPosition(10, 6, 10);
 		this.controls = controls;
 
 		camera.updateMatrixWorld();
@@ -142,8 +143,7 @@ export class PointOctreeDemo extends Demo {
 				createParticlePlane(w * h, size, z, 0.25),
 				new PointsMaterial({
 					color: 0xc00000,
-					sizeAttenuation: false,
-					size: 1
+					sizeAttenuation: false
 				})
 			));
 
