@@ -2,7 +2,7 @@
  * A container for raycasting flags.
  */
 
-export class Flags {
+export class RaycastingFlags {
 
 	/**
 	 * The current flags.

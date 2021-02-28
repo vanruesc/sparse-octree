@@ -1,6 +1,6 @@
 import { Ray } from "three";
-import { Node, Octree } from "../core";
-import { Flags } from "./Flags";
+import { Node, Tree } from "../core";
+import { RaycastingFlags } from "./RaycastingFlags";
 import { findEntryOctant } from "./findEntryOctant";
 import { findNextOctant } from "./findNextOctant";
 import { intersectOctree } from "./intersectOctree";
@@ -9,7 +9,7 @@ import { intersectOctree } from "./intersectOctree";
  * Raycasting flags.
  */
 
-const flags = new Flags();
+const flags = new RaycastingFlags();
 
 /**
  * Finds all octants that intersect with the given ray.
@@ -125,7 +125,7 @@ export class OctreeRaycaster {
 	 * @return The intersecting octants. Sorted by distance, closest first.
 	 */
 
-	static intersectOctree(octree: Octree, ray: Ray): Node[] {
+	static intersectOctree(octree: Tree, ray: Ray): Node[] {
 
 		const intersects: Node[] = [];
 		const t = intersectOctree(octree, ray, flags);

@@ -1,6 +1,6 @@
 export * from "./points";
 
-export { Flags } from "./Flags";
+export { RaycastingFlags } from "./RaycastingFlags";
 export { findEntryOctant } from "./findEntryOctant";
 export { findNextOctant } from "./findNextOctant";
 export { intersectOctree } from "./intersectOctree";
