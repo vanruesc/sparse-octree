@@ -113,7 +113,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 
 					if(child.contains(point, bias)) {
 
-						if(child.data !== null) {
+						if(child.data === null) {
 
 							child.data = new PointData<T>();
 
