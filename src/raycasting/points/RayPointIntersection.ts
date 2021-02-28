@@ -1,34 +1,17 @@
 import { Vector3 } from "three";
+import { PointContainer } from "../../points/PointContainer";
 
 /**
  * A collection of ray-point intersection data.
  */
 
-export class RayPointIntersection<T> {
-
-	/**
-	 * The distance from the origin of the ray to the point.
-	 */
-
-	distanceToOrigin: number;
+export class RayPointIntersection<T> extends PointContainer<T> {
 
 	/**
 	 * The shortest distance from the point to the ray.
 	 */
 
 	distanceToRay: number;
-
-	/**
-	 * The point.
-	 */
-
-	point: Vector3;
-
-	/**
-	 * The data.
-	 */
-
-	data: T;
 
 	/**
 	 * Constructs new ray-point intersection data.
@@ -39,12 +22,15 @@ export class RayPointIntersection<T> {
 	 * @param data - The point's data.
 	 */
 
-	constructor(distanceToOrigin: number, distanceToRay: number, point: Vector3, data: T = null) {
+	constructor(
+		distanceToOrigin: number,
+		distanceToRay: number,
+		point: Vector3,
+		data: T = null
+	) {
 
-		this.distanceToOrigin = distanceToOrigin;
+		super(point, data, distanceToOrigin);
 		this.distanceToRay = distanceToRay;
-		this.point = point;
-		this.data = data;
 
 	}
 
