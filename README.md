@@ -6,15 +6,15 @@
 
 A sparse, pointer-based octree data structure. For a linear implementation see [linear-octree](https://github.com/vanruesc/linear-octree).
 
-*[Demo](https://vanruesc.github.io/sparse-octree/public/demo)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/s/sparse-octree-3yn8o)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/public/docs)*
+*[Demo](https://vanruesc.github.io/sparse-octree/demo)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/s/sparse-octree-3yn8o)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/docs)*
 
 
 ## Installation
 
-This library requires the peer dependency [math-ds](https://github.com/vanruesc/math-ds).
+This library requires the peer dependency [three](https://github.com/mrdoob/three.js/).
 
 ```sh
-npm install math-ds sparse-octree
+npm install three sparse-octree
 ``` 
 
 
@@ -23,7 +23,7 @@ npm install math-ds sparse-octree
 ##### Points
 
 ```js
-import { Vector3 } from "math-ds";
+import { Vector3 } from "three";
 import { PointOctree } from "sparse-octree";
 
 const min = new Vector3(-1, -1, -1);
@@ -35,7 +35,7 @@ const myData = {};
 const p1 = new Vector3(0, 0, 0);
 const p2 = new Vector3(0, 0, 0.5);
 
-octree.insert(p1, myData);
+octree.set(p1, myData);
 octree.move(p1, p2);
 octree.get(p2); // => myData
 
@@ -66,7 +66,7 @@ export class CubicOctree extends Octree {
   - Handles octant splitting
   - Supports cubic octrees for reduced memory usage
   - Dynamic depth
-- Adheres to a [common octant layout](https://vanruesc.github.io/sparse-octree/public/docs/variable/index.html#static-variable-layout)
+- Adheres to a [common octant layout](https://vanruesc.github.io/sparse-octree/docs/index.html#layout)
 - Supports raycasting
 - Supports culling
 - Can be extended to manage any data
