@@ -1,7 +1,6 @@
 import test from "ava";
-import { Raycaster } from "three";
-import { Vector3 } from "math-ds";
-import { Octant, Octree } from "../../build/sparse-octree.js";
+import { Raycaster, Vector3 } from "three";
+import { Octant, Octree } from "../../dist/sparse-octree.js";
 
 const root = new Octant(
 	new Vector3(-1, -1, -1),
@@ -18,7 +17,7 @@ test("can find intersecting octants", t => {
 
 	octree.root.split();
 
-	const intersects = octree.raycast(raycaster);
+	const intersects = octree.getIntersectingNodes(raycaster);
 
 	t.is(intersects.length, 1, "should return one intersecting octant");
 	t.is(intersects[0], octree.root.children[5], "should return the sixth child");

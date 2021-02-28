@@ -1,12 +1,12 @@
 import test from "ava";
-import { Vector3 } from "math-ds";
-import { PointOctant } from "../../build/sparse-octree.js";
+import { Vector3 } from "three";
+import { PointOctant } from "../../dist/sparse-octree.js";
 
 test("can be instantiated", t => {
 
 	const object = new PointOctant();
 
-	t.truthy(object);
+	t.pass();
 
 });
 

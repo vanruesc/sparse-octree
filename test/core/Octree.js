@@ -1,6 +1,6 @@
 import test from "ava";
-import { Vector3 } from "math-ds";
-import { Octant, Octree } from "../../build/sparse-octree.js";
+import { Vector3 } from "three";
+import { Octant, Octree } from "../../dist/sparse-octree.js";
 
 const root = new Octant(
 	new Vector3(-1, -1, -1),
@@ -11,7 +11,7 @@ test("can be instantiated", t => {
 
 	const object = new Octree(root);
 
-	t.truthy(object);
+	t.pass();
 
 });
 
