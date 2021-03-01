@@ -254,6 +254,12 @@ export class PointOctreeDemo extends Demo {
 
 		folder.open();
 
+		if(window.innerWidth < 720) {
+
+			menu.close();
+
+		}
+
 	}
 
 	dispose() {
