@@ -111,14 +111,16 @@ document.addEventListener("DOMContentLoaded", (event: Event) => {
  * @param event - An event.
  */
 
-document.addEventListener("keydown", (event: KeyboardEvent) => {
+document.addEventListener("keyup", (event: KeyboardEvent) => {
 
-	const aside = document.getElementById("aside");
+	if(event.key === "h") {
 
-	if(aside !== null && event.key === "h") {
+		const aside = document.querySelector("aside");
+		const footer = document.querySelector("footer");
 
 		event.preventDefault();
 		aside.classList.toggle("hidden");
+		footer.classList.toggle("hidden");
 
 	}
 
