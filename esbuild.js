@@ -18,11 +18,15 @@ const banner = `/**
  * @license ${pkg.license}
  */`;
 
+const common = {
+	logLevel: "info",
+	bundle: true
+};
+
 const configs = [{
 	entryPoints: ["demo/src/index.ts"],
 	outfile: "public/demo/index.js",
 	format: "iife",
-	bundle: true,
 	minify: production,
 	watch: argv.watch
 }, {
@@ -30,12 +34,11 @@ const configs = [{
 	outfile: `dist/${pkg.name}.js`,
 	banner: { js: banner },
 	format: "esm",
-	bundle: true,
 	external
 }];
 
-const t0 = Date.now();
+for(const c of configs) {
 
-await Promise.all(configs.map(c => esbuild.build(c)
-	.then(() => console.log(`Built ${c.outfile} in ${Date.now() - t0}ms`))
-	.catch(() => process.exit(1))));
+	void esbuild.build(Object.assign(c, common));
+
+}
