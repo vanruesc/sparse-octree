@@ -67,13 +67,7 @@
 		]
 	},
 	"eslintConfig": {
-		"root": true,
-		"extends": "aether/typescript",
-		"parserOptions": {
-			"project": [
-				"tsconfig.json"
-			]
-		}
+		"extends": "aether/typescript"
 	},
 	"peerDependencies": {
 		"three": ">= 0.126.0 < 0.129.0"
