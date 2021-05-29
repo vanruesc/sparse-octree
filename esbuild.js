@@ -23,7 +23,7 @@ await esbuild.build({
 
 await esbuild.build({
 	entryPoints: ["demo/src/index.ts"],
-	outfile: "public/demo/index.js",
+	outdir: "public/demo",
 	minify: process.argv.includes("-m"),
 	watch: process.argv.includes("-w"),
 	logLevel: "info",
