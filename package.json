@@ -70,7 +70,7 @@
 		"extends": "aether/typescript"
 	},
 	"peerDependencies": {
-		"three": ">= 0.126.0 < 0.129.0"
+		"three": ">= 0.126.0 < 0.130.0"
 	},
 	"devDependencies": {
 		"@types/dat.gui": "0.x.x",
@@ -92,6 +92,6 @@
 		"three-demo": "5.x.x",
 		"tslib": "2.x.x",
 		"typedoc": "0.x.x",
-		"typescript": "4.x.x"
+		"typescript": "4.2.x"
 	}
 }
