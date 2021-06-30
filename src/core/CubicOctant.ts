@@ -81,7 +81,7 @@ export class CubicOctant<T> implements Node, DataContainer<T> {
 	 * Splits this octant into eight smaller ones.
 	 */
 
-	split() {
+	split(): void {
 
 		const min = this.min;
 		const mid = this.getCenter(c);

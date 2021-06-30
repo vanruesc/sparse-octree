@@ -32,7 +32,7 @@ export class PointContainer<T> implements DataContainer<T> {
 	 * @param distance - A distance.
 	 */
 
-	constructor(point: Vector3 = null, data: T = null, distance: number = 0.0) {
+	constructor(point: Vector3 = null, data: T = null, distance = 0.0) {
 
 		this.point = point;
 		this.data = data;

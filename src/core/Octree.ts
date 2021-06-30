@@ -129,13 +129,13 @@ export class Octree implements Tree, Iterable<Node> {
 
 	}
 
-	get min() {
+	get min(): Vector3 {
 
 		return this.root.min;
 
 	}
 
-	get max() {
+	get max(): Vector3 {
 
 		return this.root.max;
 

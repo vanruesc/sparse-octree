@@ -51,7 +51,7 @@ export class Octant<T> implements Node, DataContainer<T> {
 	 * Splits this octant into eight smaller ones.
 	 */
 
-	split() {
+	split(): void {
 
 		const min = this.min;
 		const max = this.max;

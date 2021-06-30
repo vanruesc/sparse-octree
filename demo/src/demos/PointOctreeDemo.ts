@@ -262,9 +262,10 @@ export class PointOctreeDemo extends Demo {
 
 	}
 
-	dispose() {
+	dispose(): void {
 
-		this.renderer.domElement.removeEventListener("mousemove", this.octreeRaycaster);
+		const domElement = this.renderer.domElement;
+		domElement.removeEventListener("mousemove", this.octreeRaycaster);
 
 	}
 

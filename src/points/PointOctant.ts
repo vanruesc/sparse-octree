@@ -92,7 +92,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	 * @param bias - A proximity threshold.
 	 */
 
-	redistribute(bias: number) {
+	redistribute(bias: number): void {
 
 		const children = this.children;
 		const pointData = this.data;
@@ -141,7 +141,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	 * Deletes all child nodes and collects their points.
 	 */
 
-	merge() {
+	merge(): void {
 
 		const children = this.children;
 
