@@ -49,7 +49,7 @@
 		"build:dts": "tsc -p tsconfig.d.json",
 		"clean": "del-cli dist public",
 		"copy": "cpy --cwd=demo/static --parents \"**/*\" \"../../public/demo\"",
-		"deploy": "run-s copy lint build doc",
+		"deploy": "run-s test copy doc",
 		"dev": "run-s clean copy && run-p start watch",
 		"doc": "typedoc",
 		"lint": "tsc --noemit & eslint --ext .ts --fix src demo/src",
@@ -71,7 +71,7 @@
 		"extends": "aether/typescript"
 	},
 	"peerDependencies": {
-		"three": ">= 0.126.0 < 0.132.0"
+		"three": ">= 0.126.0 < 0.133.0"
 	},
 	"devDependencies": {
 		"@types/dat.gui": "0.x.x",
