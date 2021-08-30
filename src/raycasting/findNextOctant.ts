@@ -27,7 +27,8 @@ const octantTable = [
  * @return The index of the next octant that the ray travels through.
  */
 
-export function findNextOctant(currentOctant: number, tx1: number, ty1: number, tz1: number): number {
+export function findNextOctant(currentOctant: number, tx1: number, ty1: number,
+	tz1: number): number {
 
 	let min: number;
 	let exit: number;

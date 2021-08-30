@@ -55,17 +55,17 @@ export class OctreeHelper extends Group {
 		});
 
 		// Create geometry in multiple runs to limit the amount of vertices.
-		for(let i = 0, length = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
+		for(let i = 0, l = 0, n = Math.ceil(octantCount / maxOctants); n > 0; --n) {
 
-			length += (octantCount < maxOctants) ? octantCount : maxOctants;
+			l += (octantCount < maxOctants) ? octantCount : maxOctants;
 			octantCount -= maxOctants;
 
-			const vertexCount = length * 8;
+			const vertexCount = l * 8;
 			const indices = new Uint16Array(vertexCount * 3);
 			const positions = new Float32Array(vertexCount * 3);
 
 			// Continue where the previous run left off.
-			for(let c = 0, d = 0, result = iterator.next(); !result.done && i < length;) {
+			for(let c = 0, d = 0, result = iterator.next(); !result.done && i < l;) {
 
 				const octant = result.value as Node;
 				const min = octant.min;
@@ -92,7 +92,7 @@ export class OctreeHelper extends Group {
 
 				}
 
-				if(++i < length) {
+				if(++i < l) {
 
 					result = iterator.next();
 

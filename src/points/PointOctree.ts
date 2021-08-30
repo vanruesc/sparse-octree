@@ -689,7 +689,8 @@ export class PointOctree<T> extends Octree {
 	 * @return A list of points.
 	 */
 
-	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
+	findPoints(point: Vector3, radius: number,
+		skipSelf = false): PointContainer<T>[] {
 
 		const result: PointContainer<T>[] = [];
 		findPoints(point, radius, skipSelf, this.root as PointOctant<T>, result);

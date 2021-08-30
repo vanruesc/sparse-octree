@@ -83,7 +83,8 @@ function cull(node: Node, region: Frustum | Box3, result: Node[]): void {
  * @param result - A list to be filled with the identified octants.
  */
 
-function findNodesByLevel(node: Node, level: number, depth: number, result: Node[]): void {
+function findNodesByLevel(node: Node, level: number, depth: number,
+	result: Node[]): void {
 
 	const children = node.children;
 
