@@ -1,6 +1,6 @@
 # Sparse Octree
 
-[![CI](https://badgen.net/github/checks/vanruesc/sparse-octree/main)](https://github.com/vanruesc/sparse-octree/actions)
+[![CI](https://github.com/vanruesc/sparse-octree/actions/workflows/ci.yml/badge.svg)](https://github.com/vanruesc/sparse-octree/actions/workflows/ci.yml)
 [![Version](https://badgen.net/npm/v/sparse-octree?color=green)](https://www.npmjs.com/package/sparse-octree)
 [![Peer dependencies](https://badgen.net/david/peer/vanruesc/sparse-octree)](https://david-dm.org/vanruesc/sparse-octree?type=peer)
 
