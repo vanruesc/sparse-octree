@@ -13,10 +13,10 @@ import {
 
 import { GUI } from "dat.gui";
 import { ControlMode, SpatialControls } from "spatial-controls";
-import { Demo } from "three-demo";
+import { calculateVerticalFoV, Demo } from "three-demo";
 import { OctreeHelper, PointOctree } from "../../../src";
-import { OctreeRaycaster } from "../util/OctreeRaycaster.js";
-import { FrustumCuller } from "../util/FrustumCuller.js";
+import { OctreeRaycaster } from "../utils/OctreeRaycaster.js";
+import { FrustumCuller } from "../utils/FrustumCuller.js";
 
 /**
  * A point octree demo application.
@@ -28,7 +28,7 @@ export class PointOctreeDemo extends Demo {
 	 * The controls.
 	 */
 
-	private controls: SpatialControls;
+	controls: SpatialControls;
 
 	/**
 	 * A group of point clouds.
@@ -70,25 +70,31 @@ export class PointOctreeDemo extends Demo {
 
 	}
 
-	initialize(): void {
+	override initialize(): void {
 
 		const scene = this.scene;
 		const renderer = this.renderer;
+		const domElement = renderer.domElement;
 
 		// Camera
 
 		const aspect = window.innerWidth / window.innerHeight;
-		const camera = new PerspectiveCamera(50, aspect, 0.3, 2000);
+		const vFoV = calculateVerticalFoV(90, Math.max(aspect, 16 / 9));
+		const camera = new PerspectiveCamera(vFoV, aspect, 0.3, 2000);
 		this.camera = camera;
 
 		// Controls
 
-		const controls = new SpatialControls(camera.position, camera.quaternion, renderer.domElement);
+		const { position, quaternion } = camera;
+		const controls = new SpatialControls(position, quaternion, domElement);
 		const settings = controls.settings;
 		settings.general.setMode(ControlMode.THIRD_PERSON);
 		settings.zoom.setRange(0.0, 60.0);
 		settings.rotation.setSensitivity(2.2);
+		settings.rotation.setDamping(0.05);
+		settings.translation.setDamping(0.1);
 		settings.zoom.setSensitivity(1.0);
+		settings.zoom.setDamping(0.1);
 		controls.setPosition(10, 6, 10);
 		this.controls = controls;
 
@@ -198,7 +204,10 @@ export class PointOctreeDemo extends Demo {
 		// Raycasting
 
 		this.octreeRaycaster = new OctreeRaycaster(octree, camera, points);
-		renderer.domElement.addEventListener("mousemove", this.octreeRaycaster, { passive: true });
+		renderer.domElement.addEventListener("pointermove", this.octreeRaycaster, {
+			passive: true
+		});
+
 		scene.add(this.octreeRaycaster.getCursor());
 
 		// Frustum culling
@@ -208,19 +217,13 @@ export class PointOctreeDemo extends Demo {
 
 	}
 
-	update(deltaTime: number, timestamp: number): void {
+	override update(deltaTime: number, timestamp: number): void {
 
 		this.controls.update(timestamp);
 
 	}
 
-	/**
-	 * Registers configuration options.
-	 *
-	 * @param menu - A menu.
-	 */
-
-	registerOptions(menu: GUI): void {
+	override registerOptions(menu: GUI): void {
 
 		const points = this.points;
 		const octreeHelper = this.octreeHelper;
@@ -239,18 +242,19 @@ export class PointOctreeDemo extends Demo {
 		folder = menu.addFolder("Octree Helper");
 		folder.add(octreeHelper, "visible");
 
-		folder.add(params, "level mask", 0, octreeHelper.children.length, 1).onChange(() => {
+		folder.add(params, "level mask", 0, octreeHelper.children.length, 1)
+			.onChange(() => {
 
-			for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
+				for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
-				octreeHelper.children[i].visible = (
-					params["level mask"] === octreeHelper.children.length ||
-					params["level mask"] === i
-				);
+					octreeHelper.children[i].visible = (
+						params["level mask"] === octreeHelper.children.length ||
+						params["level mask"] === i
+					);
 
-			}
+				}
 
-		});
+			});
 
 		folder.open();
 
@@ -262,10 +266,10 @@ export class PointOctreeDemo extends Demo {
 
 	}
 
-	dispose(): void {
+	override dispose(): void {
 
 		const domElement = this.renderer.domElement;
-		domElement.removeEventListener("mousemove", this.octreeRaycaster);
+		domElement.removeEventListener("pointermove", this.octreeRaycaster);
 
 	}
 

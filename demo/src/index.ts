@@ -1,35 +1,17 @@
-import { DemoManager } from "three-demo";
-import { Event as Event3, sRGBEncoding, WebGLRenderer } from "three";
+import {
+	Event as Event3,
+	PerspectiveCamera,
+	sRGBEncoding,
+	Vector3,
+	WebGLRenderer
+} from "three";
+
+import { calculateVerticalFoV, DemoManager } from "three-demo";
 import { PointOctreeDemo } from "./demos/PointOctreeDemo";
-
-/**
- * A demo manager.
- */
-
-let manager: DemoManager;
-
-/**
- * The main render loop.
- *
- * @param timestamp - The current time in milliseconds.
- */
-
-function render(timestamp: number): void {
-
-	requestAnimationFrame(render);
-	manager.render(timestamp);
-
-}
-
-/**
- * Performs initialization tasks when the page has been fully loaded.
- *
- * @param event - An event.
- */
 
 window.addEventListener("load", (event: Event) => {
 
-	const debug = (window.location.href.indexOf("localhost") !== -1);
+	const debug = (window.location.hostname === "localhost");
 	const viewport = document.getElementById("viewport");
 
 	const renderer = new WebGLRenderer({
@@ -40,19 +22,23 @@ window.addEventListener("load", (event: Event) => {
 		depth: true
 	});
 
+	renderer.physicallyCorrectLights = true;
 	renderer.outputEncoding = sRGBEncoding;
 	renderer.debug.checkShaderErrors = debug;
 	renderer.setSize(viewport.clientWidth, viewport.clientHeight);
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setClearColor(0x000000, 0.0);
 
-	manager = new DemoManager(viewport, {
+	const manager = new DemoManager(viewport, {
 		aside: document.getElementById("aside"),
 		renderer
 	});
 
+	const demo = new PointOctreeDemo();
+
 	manager.addEventListener("change", (event: Event3) => {
 
+		renderer.shadowMap.needsUpdate = true;
 		document.querySelector(".loading").classList.remove("hidden");
 
 	});
@@ -63,30 +49,65 @@ window.addEventListener("load", (event: Event) => {
 
 	});
 
-	manager.addDemo(new PointOctreeDemo());
-	requestAnimationFrame(render);
+	manager.addDemo(demo);
+
+	window.addEventListener("resize", (event: Event) => {
+
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+		const camera = demo.getCamera() as PerspectiveCamera;
+
+		if(camera !== null) {
+
+			const aspect = Math.max(width / height, 16 / 9);
+			const vFoV = calculateVerticalFoV(90, aspect);
+			camera.fov = vFoV;
+
+		}
+
+		manager.setSize(width, height);
+
+	});
+
+	document.addEventListener("keyup", (event: KeyboardEvent) => {
+
+		const p = new Vector3();
+		const v = new Vector3();
+		const controls = demo.controls;
+		const aside = document.querySelector("aside");
+		const footer = document.querySelector("footer");
+
+		switch(event.key) {
+
+			case "h":
+				event.preventDefault();
+				aside.classList.toggle("hidden");
+				footer.classList.toggle("hidden");
+				break;
+
+			case "c":
+				if(controls === null) { break; }
+				console.log("Camera position", p.copy(controls.getPosition()));
+				console.log("World direction", controls.getViewDirection(v));
+				console.log("Target position", p.clone().add(v));
+				break;
+
+			case "i":
+				console.log(renderer.info);
+				break;
+
+		}
+
+	});
+
+	requestAnimationFrame(function render(timestamp: number): void {
+
+		requestAnimationFrame(render);
+		manager.render(timestamp);
+
+	});
 
 });
-
-/**
- * Handles browser resizing.
- *
- * @param event - An event.
- */
-
-window.addEventListener("resize", (event: Event) => {
-
-	const width = window.innerWidth;
-	const height = window.innerHeight;
-	manager.setSize(width, height);
-
-});
-
-/**
- * Performs initialization tasks when the document is ready.
- *
- * @param event - An event.
- */
 
 document.addEventListener("DOMContentLoaded", (event: Event) => {
 
@@ -100,27 +121,6 @@ document.addEventListener("DOMContentLoaded", (event: Event) => {
 			div.classList.toggle("hidden");
 
 		});
-
-	}
-
-});
-
-/**
- * Handles keyboard events.
- *
- * @param event - An event.
- */
-
-document.addEventListener("keyup", (event: KeyboardEvent) => {
-
-	if(event.key === "h") {
-
-		const aside = document.querySelector("aside");
-		const footer = document.querySelector("footer");
-
-		event.preventDefault();
-		aside.classList.toggle("hidden");
-		footer.classList.toggle("hidden");
 
 	}
 

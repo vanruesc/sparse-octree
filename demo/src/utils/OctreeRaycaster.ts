@@ -188,7 +188,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		switch(event.type) {
 
-			case "mousemove":
+			case "pointermove":
 				this.raycast(event as PointerEvent);
 				break;
 
