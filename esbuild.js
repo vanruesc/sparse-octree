@@ -28,5 +28,6 @@ await esbuild.build({
 	watch: process.argv.includes("-w"),
 	logLevel: "info",
 	format: "iife",
+	target: "es6",
 	bundle: true
 }).catch(() => process.exit(1));
