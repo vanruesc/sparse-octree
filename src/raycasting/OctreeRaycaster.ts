@@ -5,10 +5,6 @@ import { findEntryOctant } from "./findEntryOctant";
 import { findNextOctant } from "./findNextOctant";
 import { intersectOctree } from "./intersectOctree";
 
-/**
- * Raycasting flags.
- */
-
 const flags = new RaycastingFlags();
 
 /**
@@ -51,7 +47,7 @@ function raycastOctant(node: Node, tx0: number, ty0: number, tz0: number,
 			greatest, the fourth one will be returned. If the second value is the
 			greatest, the fifth one will be returned, etc. */
 
-			do {
+			while(currentOctant < 8) {
 
 				switch(currentOctant) {
 
@@ -98,7 +94,7 @@ function raycastOctant(node: Node, tx0: number, ty0: number, tz0: number,
 
 				}
 
-			} while(currentOctant < 8);
+			}
 
 		}
 
@@ -121,22 +117,21 @@ export class OctreeRaycaster {
 	 *
 	 * @param octree - An octree.
 	 * @param ray - A ray.
-	 * @param intersects - An array to be filled with the intersecting octants.
 	 * @return The intersecting octants. Sorted by distance, closest first.
 	 */
 
 	static intersectOctree(octree: Tree, ray: Ray): Node[] {
 
-		const intersects: Node[] = [];
+		const result: Node[] = [];
 		const t = intersectOctree(octree, ray, flags);
 
 		if(t !== null) {
 
-			raycastOctant(octree, t[0], t[1], t[2], t[3], t[4], t[5], intersects);
+			raycastOctant(octree, t[0], t[1], t[2], t[3], t[4], t[5], result);
 
 		}
 
-		return intersects;
+		return result;
 
 	}
 

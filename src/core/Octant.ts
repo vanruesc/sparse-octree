@@ -12,11 +12,8 @@ const c = new Vector3();
 export class Octant<T> implements Node, DataContainer<T> {
 
 	min: Vector3;
-
 	max: Vector3;
-
 	children: Node[];
-
 	data: T;
 
 	/**
