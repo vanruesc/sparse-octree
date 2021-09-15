@@ -1,6 +1,6 @@
 {
 	"name": "sparse-octree",
-	"version": "7.0.6",
+	"version": "7.0.7",
 	"description": "A sparse octree data structure.",
 	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"main": "dist/sparse-octree.js",
