@@ -7,6 +7,8 @@ const c = new Vector3();
 
 /**
  * An octant.
+ *
+ * @param T - The type of the data.
  */
 
 export class Octant<T> implements Node, DataContainer<T> {

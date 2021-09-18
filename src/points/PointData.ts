@@ -3,6 +3,8 @@ import { RayPointIntersection } from "./RayPointIntersection";
 
 /**
  * A collection of many points and associated data entries.
+ *
+ * @param T - The type of the data.
  */
 
 export class PointData<T> {

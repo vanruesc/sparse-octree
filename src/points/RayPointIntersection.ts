@@ -3,6 +3,8 @@ import { PointContainer } from "./PointContainer";
 
 /**
  * A collection of ray-point intersection data.
+ *
+ * @param T - The type of the data.
  */
 
 export class RayPointIntersection<T> extends PointContainer<T> {

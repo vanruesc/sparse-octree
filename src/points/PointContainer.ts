@@ -3,6 +3,8 @@ import { DataContainer } from "../core/DataContainer";
 
 /**
  * A container for a single point and its data.
+ *
+ * @param T - The type of the data.
  */
 
 export class PointContainer<T> implements DataContainer<T> {

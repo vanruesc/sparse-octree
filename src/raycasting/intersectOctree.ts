@@ -2,7 +2,6 @@ import { Box3, Ray, Vector3 } from "three";
 import { Node } from "../core/Node";
 import { RaycastingFlags } from "./RaycastingFlags";
 
-// Helper objects.
 const v = new Vector3();
 const b = new Box3();
 const d = new Box3();

@@ -6,6 +6,8 @@ const p = new Vector3();
 
 /**
  * An octant that contains points.
+ *
+ * @param T - The type of the data.
  */
 
 export class PointOctant<T> extends Octant<PointData<T>> {

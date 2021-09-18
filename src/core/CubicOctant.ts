@@ -7,14 +7,14 @@ const c = new Vector3();
 
 /**
  * A cubic octant.
+ *
+ * @param T - The type of the data.
  */
 
 export class CubicOctant<T> implements Node, DataContainer<T> {
 
 	min: Vector3;
-
 	children: Node[];
-
 	data: T;
 
 	/**

@@ -494,6 +494,8 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 /**
  * An octree that manages points.
+ *
+ * @param T - The type of the data.
  */
 
 export class PointOctree<T> extends Octree {
