@@ -1,5 +1,3 @@
-export * from "./points";
-
 export { RaycastingFlags } from "./RaycastingFlags";
 export { findEntryOctant } from "./findEntryOctant";
 export { findNextOctant } from "./findNextOctant";

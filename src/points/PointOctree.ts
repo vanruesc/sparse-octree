@@ -1,9 +1,9 @@
 import { Raycaster, Vector3 } from "three";
 import { Octree } from "../core/Octree";
-import { RayPointIntersection, testPoints } from "../raycasting/points";
 import { PointContainer } from "./PointContainer";
 import { PointData } from "./PointData";
 import { PointOctant } from "./PointOctant";
+import { RayPointIntersection } from "./RayPointIntersection";
 
 /**
  * Recursively counts the points that are in the given octant.
@@ -707,16 +707,27 @@ export class PointOctree<T> extends Octree {
 
 	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
 
-		const intersects: RayPointIntersection<T>[] = [];
+		const result: RayPointIntersection<T>[] = [];
 		const octants = super.getIntersectingNodes(raycaster) as PointOctant<T>[];
 
 		if(octants.length > 0) {
 
-			testPoints(octants, raycaster, intersects);
+			for(let i = 0, l = octants.length; i < l; ++i) {
+
+				const octant = octants[i];
+				const pointData = octant.data;
+
+				if(pointData !== null) {
+
+					pointData.testPoints(raycaster, result);
+
+				}
+
+			}
 
 		}
 
-		return intersects;
+		return result;
 
 	}
 
