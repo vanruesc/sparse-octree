@@ -80,7 +80,7 @@ export class PointOctreeDemo extends Demo {
 
 		const aspect = window.innerWidth / window.innerHeight;
 		const vFoV = calculateVerticalFoV(90, Math.max(aspect, 16 / 9));
-		const camera = new PerspectiveCamera(vFoV, aspect, 0.3, 2000);
+		const camera = new PerspectiveCamera(vFoV, aspect, 0.1, 1000);
 		this.camera = camera;
 
 		// Controls
@@ -89,7 +89,7 @@ export class PointOctreeDemo extends Demo {
 		const controls = new SpatialControls(position, quaternion, domElement);
 		const settings = controls.settings;
 		settings.general.setMode(ControlMode.THIRD_PERSON);
-		settings.zoom.setRange(0.0, 60.0);
+		settings.zoom.setRange(1e-6, 60.0);
 		settings.rotation.setSensitivity(2.2);
 		settings.rotation.setDamping(0.05);
 		settings.translation.setDamping(0.1);
