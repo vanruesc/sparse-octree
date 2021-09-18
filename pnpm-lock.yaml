@@ -33,7 +33,7 @@ devDependencies:
   del-cli: 4.0.1
   esbuild: 0.12.28
   eslint: 7.32.0
-  eslint-config-aether: 1.2.1
+  eslint-config-aether: 1.2.2
   eslint-watch: 7.0.0_eslint@7.32.0
   npm-run-all: 4.1.5
   serve: 12.0.1
@@ -59,8 +59,8 @@ packages:
       '@babel/highlight': 7.14.5
     dev: true
 
-  /@babel/helper-validator-identifier/7.14.9:
-    resolution: {integrity: sha512-pQYxPY0UP6IHISRitNe8bsijHex4TWZXi2HwKVsjPiltzlhse2znVcm9Ace510VT1kxIHjGJCZZQBX2gJDbo0g==}
+  /@babel/helper-validator-identifier/7.15.7:
+    resolution: {integrity: sha512-K4JvCtQqad9OY2+yTU8w+E82ywk/fe+ELNlt1G8z3bVGlZfn/hOcQQsUhGhW/N+tb3fxK800wLtKOE/aM0m72w==}
     engines: {node: '>=6.9.0'}
     dev: true
 
@@ -68,7 +68,7 @@ packages:
     resolution: {integrity: sha512-qf9u2WFWVV0MppaL877j2dBtQIDgmidgjGk5VIMw3OadXvYaXn66U1BFlH2t4+t3i+8PhedppRv+i40ABzd+gg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-validator-identifier': 7.14.9
+      '@babel/helper-validator-identifier': 7.15.7
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
@@ -166,7 +166,7 @@ packages:
     resolution: {integrity: sha512-w+LsMxKyYQm347Otw+IfBXOv9UWVjpHpCDdbBMt8Kz/xbvCYNjP+0qPh91Km3iKfSRLBB0P7fAMf0KHrPu+MyA==}
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 16.9.1
+      '@types/node': 16.9.2
     dev: true
 
   /@types/json-schema/7.0.9:
@@ -181,8 +181,8 @@ packages:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
 
-  /@types/node/16.9.1:
-    resolution: {integrity: sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==}
+  /@types/node/16.9.2:
+    resolution: {integrity: sha512-ZHty/hKoOLZvSz6BtP1g7tc7nUeJhoCf3flLjh8ZEv1vFKBWHXcnMbJMyN/pftSljNyy0kNW/UqI3DccnBnZ8w==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -560,11 +560,11 @@ packages:
       resolve-cwd: 3.0.0
       slash: 3.0.0
       source-map-support: 0.5.20
-      stack-utils: 2.0.4
+      stack-utils: 2.0.5
       strip-ansi: 6.0.0
       supertap: 2.0.0
       temp-dir: 2.0.0
-      trim-off-newlines: 1.0.1
+      trim-off-newlines: 1.0.2
       update-notifier: 5.1.0
       write-file-atomic: 3.0.3
       yargs: 16.2.0
@@ -623,8 +623,8 @@ packages:
       widest-line: 2.0.1
     dev: true
 
-  /boxen/5.1.1:
-    resolution: {integrity: sha512-JtIQYts08AFAYGF4eSh3pUt3NQkYV/e75pRtQmAVTLNWR/1L7Bsswxlgzgk8nmLEM+gFszsIlA9BgD3XnSqp3g==}
+  /boxen/5.1.2:
+    resolution: {integrity: sha512-9gYgQKXx+1nP8mP7CzFyaUARhg7D3n1dF/FnErWmu9l6JvGpNUN278h0aSb+QjoiKSWG+iZ3uHrcqk0qrY9RQQ==}
     engines: {node: '>=10'}
     dependencies:
       ansi-align: 3.0.0
@@ -940,7 +940,7 @@ packages:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
     dependencies:
-      mime-db: 1.49.0
+      mime-db: 1.50.0
     dev: true
 
   /compression/1.7.3:
@@ -1349,8 +1349,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /eslint-config-aether/1.2.1:
-    resolution: {integrity: sha512-jrr7kCydKk2yK0YYpIA5trzvpSANIME8rdJkHlEDypmRaTiV7l6eN1fq/FyRIBsE8OmrcZhOmrHQuWjOy6JVWw==}
+  /eslint-config-aether/1.2.2:
+    resolution: {integrity: sha512-C91B35kNPgVX3oCOAJ0F+qNoBeWoixJNiPgZDFg4wZ8hjVVq0sYUINSyqssEmDnMbwFeto3kP5CsunywWGAXmQ==}
     dev: true
 
   /eslint-scope/5.1.1:
@@ -1514,7 +1514,7 @@ packages:
       is-stream: 1.1.0
       npm-run-path: 2.0.2
       p-finally: 1.0.0
-      signal-exit: 3.0.3
+      signal-exit: 3.0.4
       strip-eof: 1.0.0
     dev: true
 
@@ -1527,7 +1527,7 @@ packages:
       is-stream: 1.1.0
       npm-run-path: 2.0.2
       p-finally: 1.0.0
-      signal-exit: 3.0.3
+      signal-exit: 3.0.4
       strip-eof: 1.0.0
     dev: true
 
@@ -1542,7 +1542,7 @@ packages:
       merge-stream: 2.0.0
       npm-run-path: 4.0.1
       onetime: 5.1.2
-      signal-exit: 3.0.3
+      signal-exit: 3.0.4
       strip-final-newline: 2.0.0
     dev: true
 
@@ -2742,6 +2742,11 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /mime-db/1.50.0:
+    resolution: {integrity: sha512-9tMZCDlYHqeERXEHO9f/hKfNXhre5dK2eE/krIvUjZbS2KPcqGDfNShIWS1uW9XOTKQKqK6qbeOci18rbfW77A==}
+    engines: {node: '>= 0.6'}
+    dev: true
+
   /mime-types/2.1.18:
     resolution: {integrity: sha512-lc/aahn+t4/SWV/qcmumYjymLsWfN3ELhpmVuUFjgsORruuZPVSwAQryq+HHGvO/SI2KVX26bx+En+zhM8g8hQ==}
     engines: {node: '>= 0.6'}
@@ -3507,7 +3512,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       onetime: 5.1.2
-      signal-exit: 3.0.3
+      signal-exit: 3.0.4
     dev: true
 
   /ret/0.1.15:
@@ -3661,8 +3666,8 @@ packages:
       object-inspect: 1.11.0
     dev: true
 
-  /signal-exit/3.0.3:
-    resolution: {integrity: sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==}
+  /signal-exit/3.0.4:
+    resolution: {integrity: sha512-rqYhcAnZ6d/vTPGghdrw7iumdcbXpsk1b8IG/rz+VWV51DM0p7XCtMoJ3qhPLIbp3tvyt3pKRbaaEMZYpHto8Q==}
     dev: true
 
   /slash/2.0.0:
@@ -3796,12 +3801,11 @@ packages:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: true
 
-  /stack-utils/2.0.4:
-    resolution: {integrity: sha512-ERg+H//lSSYlZhBIUu+wJnqg30AbyBbpZlIhcshpn7BNzpoRODZgfyr9J+8ERf3ooC6af3u7Lcl01nleau7MrA==}
+  /stack-utils/2.0.5:
+    resolution: {integrity: sha512-xrQcmYhOsn/1kX+Vraq+7j4oE2j/6BFscZ0etmYg81xuM8Gq0022Pxb8+IqgOFUIaxHs0KaSb7T1+OegiNrNFA==}
     engines: {node: '>=10'}
     dependencies:
       escape-string-regexp: 2.0.0
-      source-map-support: 0.5.20
     dev: true
 
   /static-extend/0.1.2:
@@ -4047,8 +4051,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /trim-off-newlines/1.0.1:
-    resolution: {integrity: sha1-n5up2e+odkw4dpi8v+sshI8RrbM=}
+  /trim-off-newlines/1.0.2:
+    resolution: {integrity: sha512-DAnbtY4lNoOTLw05HLuvPoBFAGV4zOKQ9d1Q45JB+bcDwYIEkCr0xNgwKtygtKFBbRlFA/8ytkAM1V09QGWksg==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -4179,7 +4183,7 @@ packages:
     resolution: {integrity: sha512-ItnICHbeMh9GqUy31hFPrD1kcuZ3rpxDZbf4KUDavXwS0bW5m7SLbDQpGX3UYr072cbrF5hFUs3r5tUsPwjfHw==}
     engines: {node: '>=10'}
     dependencies:
-      boxen: 5.1.1
+      boxen: 5.1.2
       chalk: 4.1.2
       configstore: 5.0.1
       has-yarn: 2.1.0
@@ -4315,7 +4319,7 @@ packages:
     dependencies:
       imurmurhash: 0.1.4
       is-typedarray: 1.0.0
-      signal-exit: 3.0.3
+      signal-exit: 3.0.4
       typedarray-to-buffer: 3.1.5
     dev: true
 
