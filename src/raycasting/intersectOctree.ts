@@ -44,7 +44,7 @@ export function intersectOctree(octree: Node, ray: Ray,
 
 	} else if(direction.x === 0.0) {
 
-		direction.x = 1e-16;
+		direction.x = Number.EPSILON;
 
 	}
 
@@ -56,7 +56,7 @@ export function intersectOctree(octree: Node, ray: Ray,
 
 	} else if(direction.y === 0.0) {
 
-		direction.y = 1e-16;
+		direction.y = Number.EPSILON;
 
 	}
 
@@ -68,7 +68,7 @@ export function intersectOctree(octree: Node, ray: Ray,
 
 	} else if(direction.z === 0.0) {
 
-		direction.z = 1e-16;
+		direction.z = Number.EPSILON;
 
 	}
 
