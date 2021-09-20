@@ -35,12 +35,16 @@ export function intersectOctree(octree: Node, ray: Ray,
 	// Reset all flags.
 	flags.value = 0;
 
-	// Handle rays with negative directions.
+	// Handle rays with negative directions and prevent division by zero.
 	if(direction.x < 0.0) {
 
 		origin.x = dimensions.x - origin.x;
 		direction.x = -direction.x;
 		flags.value |= 4;
+
+	} else if(direction.x === 0.0) {
+
+		direction.x = 1e-16;
 
 	}
 
@@ -50,6 +54,10 @@ export function intersectOctree(octree: Node, ray: Ray,
 		direction.y = -direction.y;
 		flags.value |= 2;
 
+	} else if(direction.y === 0.0) {
+
+		direction.y = 1e-16;
+
 	}
 
 	if(direction.z < 0.0) {
@@ -57,6 +65,10 @@ export function intersectOctree(octree: Node, ray: Ray,
 		origin.z = dimensions.z - origin.z;
 		direction.z = -direction.z;
 		flags.value |= 1;
+
+	} else if(direction.z === 0.0) {
+
+		direction.z = 1e-16;
 
 	}
 
