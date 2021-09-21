@@ -86,8 +86,7 @@ export function intersectOctree(octree: Node, ray: Ray,
 	const tz1 = (max.z - origin.z) * invDirZ;
 
 	// Check if the ray hits the octree.
-	const hit = (Math.max(Math.max(tx0, ty0), tz0) <
-		Math.min(Math.min(tx1, ty1), tz1));
+	const hit = (Math.max(tx0, ty0, tz0) < Math.min(tx1, ty1, tz1));
 
 	return hit ? [tx0, ty0, tz0, tx1, ty1, tz1] : null;
 
