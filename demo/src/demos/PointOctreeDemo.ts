@@ -203,17 +203,21 @@ export class PointOctreeDemo extends Demo {
 
 		// Raycasting
 
-		this.octreeRaycaster = new OctreeRaycaster(octree, camera, points);
-		renderer.domElement.addEventListener("pointermove", this.octreeRaycaster, {
-			passive: true
-		});
+		this.octreeRaycaster = new OctreeRaycaster(
+			octree,
+			camera,
+			points,
+			domElement
+		);
 
 		scene.add(this.octreeRaycaster.getCursor());
 
 		// Frustum culling
 
-		this.frustumCuller = new FrustumCuller(octree, scene);
-		scene.add(this.frustumCuller.getCameraHelper());
+		const frustumCuller = new FrustumCuller(octree);
+		this.frustumCuller = frustumCuller;
+		scene.add(frustumCuller.getCameraHelper());
+		scene.add(frustumCuller.getMesh());
 
 	}
 
@@ -268,8 +272,8 @@ export class PointOctreeDemo extends Demo {
 
 	override dispose(): void {
 
-		const domElement = this.renderer.domElement;
-		domElement.removeEventListener("pointermove", this.octreeRaycaster);
+		this.octreeRaycaster.dispose();
+		this.frustumCuller.dispose();
 
 	}
 
