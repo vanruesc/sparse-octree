@@ -1,6 +1,7 @@
 import {
 	Camera,
 	Group,
+	Material,
 	Mesh,
 	MeshBasicMaterial,
 	Object3D,
@@ -29,6 +30,12 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	private octree: PointOctree<Object3D>;
 
 	/**
+	 * A DOM element.
+	 */
+
+	private domElement: HTMLElement;
+
+	/**
 	 * A group of points.
 	 */
 
@@ -41,10 +48,10 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	private enabled: boolean;
 
 	/**
-	 * A delta time.
+	 * The measured processing time.
 	 */
 
-	private delta: string;
+	private time: string;
 
 	/**
 	 * The selected mesh.
@@ -64,9 +71,11 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	 * @param octree - An octree.
 	 * @param camera - A camera.
 	 * @param group - A group of points.
+	 * @param domElement - A DOM element.
 	 */
 
-	constructor(octree: PointOctree<Object3D>, camera: Camera, group: Group) {
+	constructor(octree: PointOctree<Object3D>, camera: Camera, group: Group,
+		domElement: HTMLElement) {
 
 		super();
 
@@ -75,8 +84,9 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 		this.octree = octree;
 		this.camera = camera;
 		this.group = group;
+		this.domElement = domElement;
 		this.enabled = true;
-		this.delta = "";
+		this.time = "";
 		this.selectedPoints = null;
 
 		this.cursor = new Mesh(
@@ -89,6 +99,8 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 		);
 
 		this.cursor.visible = false;
+
+		domElement.addEventListener("pointermove", this, { passive: true });
 
 	}
 
@@ -154,7 +166,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		}
 
-		this.delta = (performance.now() - t0).toFixed(2) + " ms";
+		this.time = (performance.now() - t0).toFixed(2) + " ms";
 
 		if(x !== undefined) {
 
@@ -179,7 +191,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		const folder = menu.addFolder("Raycasting");
 		folder.add(this, "enabled");
-		folder.add(this, "delta").listen();
+		folder.add(this, "time").listen();
 		folder.open();
 
 	}
@@ -193,6 +205,23 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 				break;
 
 		}
+
+	}
+
+	/**
+	 * Deletes this raycaster.
+	 */
+
+	dispose(): void {
+
+		const domElement = this.domElement;
+		domElement.removeEventListener("pointermove", this);
+
+		const geometry = this.cursor.geometry;
+		const material = this.cursor.material as Material;
+
+		geometry.dispose();
+		material.dispose();
 
 	}
 
