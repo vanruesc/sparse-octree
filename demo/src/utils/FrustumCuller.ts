@@ -1,22 +1,27 @@
 import {
-	BufferAttribute,
-	BufferGeometry,
+	BoxGeometry,
 	Camera,
 	CameraHelper,
 	Frustum,
+	InstancedMesh,
+	Material,
 	Matrix4,
+	Mesh,
+	MeshBasicMaterial,
 	PerspectiveCamera,
-	Points,
-	PointsMaterial,
-	Scene,
-	Spherical
+	Quaternion,
+	Spherical,
+	Vector3
 } from "three";
 
 import { GUI } from "dat.gui";
 import { Octree } from "../../../src";
 
-const matrix4 = new Matrix4();
 const frustum = new Frustum();
+const m = new Matrix4();
+const s = new Vector3();
+const p = new Vector3();
+const q = new Quaternion();
 
 /**
  * A frustum-based octree culler.
@@ -29,12 +34,6 @@ export class FrustumCuller {
 	 */
 
 	private octree: Octree;
-
-	/**
-	 * A scene.
-	 */
-
-	private scene: Scene;
 
 	/**
 	 * Indicates whether the frustum culling is active.
@@ -55,10 +54,10 @@ export class FrustumCuller {
 	private s: Spherical;
 
 	/**
-	 * A delta time.
+	 * The measured processing time.
 	 */
 
-	private delta: string;
+	private time: string;
 
 	/**
 	 * A camera helper.
@@ -67,39 +66,50 @@ export class FrustumCuller {
 	private cameraHelper: CameraHelper;
 
 	/**
-	 * A point cloud that visualises the culled octants.
+	 * A mesh that represents intersecting octants.
 	 */
 
-	private culledOctants: Points;
+	private mesh: InstancedMesh;
 
 	/**
 	 * Constructs a new octree culler.
 	 *
 	 * @param octree - An octree.
-	 * @param scene - A scene.
 	 */
 
-	constructor(octree: Octree, scene: Scene) {
+	constructor(octree: Octree) {
 
 		this.octree = octree;
-		this.scene = scene;
-		this.enabled = false;
 		this.cullCamera = new PerspectiveCamera(20, 1.77, 0.5, 5);
-		this.s = new Spherical(5, Math.PI / 3, Math.PI * 1.75);
-		this.delta = "";
+		this.s = new Spherical(2, Math.PI / 3, Math.PI * 1.75);
 		this.cameraHelper = new CameraHelper(this.cullCamera);
-		this.cameraHelper.visible = false;
 
-		this.culledOctants = new Points(
-			new BufferGeometry(),
-			new PointsMaterial({
+		this.mesh = new InstancedMesh(
+			new BoxGeometry(1, 1, 1),
+			new MeshBasicMaterial({
+				transparent: true,
 				color: 0xccff00,
-				sizeAttenuation: false,
-				size: 2
-			})
+				opacity: 0.75
+			}),
+			2000
 		);
 
-		this.culledOctants.visible = false;
+		this.mesh.visible = false;
+		this.cameraHelper.visible = false;
+		this.enabled = false;
+		this.time = "";
+
+	}
+
+	/**
+	 * Returns a mesh that represents intersecting octants.
+	 *
+	 * @return The mesh.
+	 */
+
+	getMesh(): Mesh {
+
+		return this.mesh;
 
 	}
 
@@ -122,13 +132,12 @@ export class FrustumCuller {
 	private updateCamera(): void {
 
 		const cullCamera = this.cullCamera;
-
-		cullCamera.position.setFromSpherical(this.s);
-		cullCamera.lookAt(this.scene.position);
+		cullCamera.position.setFromSpherical(this.s.makeSafe());
+		cullCamera.lookAt(p.set(0, 0, 0));
 		cullCamera.updateMatrixWorld(true);
 
 		frustum.setFromProjectionMatrix(
-			matrix4.multiplyMatrices(
+			m.multiplyMatrices(
 				cullCamera.projectionMatrix,
 				cullCamera.matrixWorldInverse
 			)
@@ -142,43 +151,30 @@ export class FrustumCuller {
 
 	cull(): void {
 
-		const culledOctants = this.culledOctants;
+		const mesh = this.mesh;
 
 		if(this.enabled) {
 
 			this.updateCamera();
 
 			const t0 = performance.now();
-			const octants = this.octree.cull(frustum);
+			const intersections = this.octree.cull(frustum);
+			this.time = (performance.now() - t0).toFixed(2) + " ms";
 
-			this.delta = (performance.now() - t0).toFixed(2) + " ms";
+			mesh.count = intersections.length;
 
-			if(octants.length > 0) {
+			if(intersections.length > 0) {
 
-				const positions = new Float32Array(octants.length * 3 * 2);
+				for(let i = 0, l = intersections.length; i < l; ++i) {
 
-				for(let i = 0, j = 0, l = octants.length; i < l; ++i) {
-
-					const octant = octants[i];
-					positions[j++] = octant.min.x;
-					positions[j++] = octant.min.y;
-					positions[j++] = octant.min.z;
-					positions[j++] = octant.max.x;
-					positions[j++] = octant.max.y;
-					positions[j++] = octant.max.z;
+					const x = intersections[i];
+					x.getCenter(p);
+					x.getDimensions(s);
+					mesh.setMatrixAt(i, m.compose(p, q, s));
 
 				}
 
-				culledOctants.geometry.deleteAttribute("position");
-				culledOctants.geometry.setAttribute("position",
-					new BufferAttribute(positions, 3));
-
-				this.scene.remove(culledOctants);
-				this.scene.add(culledOctants);
-
-			} else {
-
-				this.scene.remove(culledOctants);
+				mesh.instanceMatrix.needsUpdate = true;
 
 			}
 
@@ -196,14 +192,15 @@ export class FrustumCuller {
 
 		const folder = menu.addFolder("Frustum Culling");
 
-		folder.add(this, "enabled").onChange(() => {
+		folder.add(this, "enabled").onChange((value: boolean) => {
 
-			this.cameraHelper.visible = this.culledOctants.visible = this.enabled;
+			this.cameraHelper.visible = value;
+			this.mesh.visible = value;
 			this.cull();
 
 		});
 
-		folder.add(this, "delta").listen();
+		folder.add(this, "time").listen();
 		folder.open();
 
 		const subFolder = folder.addFolder("Camera Adjustment");
@@ -216,6 +213,20 @@ export class FrustumCuller {
 
 		subFolder.add(this.s, "theta", 0.0, Math.PI * 2.0, 0.0001)
 			.onChange(() => this.cull());
+
+	}
+
+	/**
+	 * Deletes this frustum culler.
+	 */
+
+	dispose(): void {
+
+		const geometry = this.mesh.geometry;
+		const material = this.mesh.material as Material;
+
+		geometry.dispose();
+		material.dispose();
 
 	}
 
