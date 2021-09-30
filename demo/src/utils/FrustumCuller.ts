@@ -81,7 +81,7 @@ export class FrustumCuller {
 
 		this.octree = octree;
 		this.cullCamera = new PerspectiveCamera(20, 1.77, 0.5, 5);
-		this.s = new Spherical(2, Math.PI / 3, Math.PI * 1.75);
+		this.s = new Spherical(5, Math.PI / 3, Math.PI * 1.75);
 		this.cameraHelper = new CameraHelper(this.cullCamera);
 
 		this.mesh = new InstancedMesh(
