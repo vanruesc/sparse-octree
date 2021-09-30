@@ -19,6 +19,7 @@
 		"readme": "none",
 		"excludePrivate": true,
 		"includeVersion": true,
-		"hideGenerator": true
+		"hideGenerator": true,
+		"treatWarningsAsErrors": true
 	}
 }
