@@ -149,39 +149,51 @@ test("can find points inside a radius", t => {
 });
 
 test("retrieves leaves when octree is small", (t) => {
-  const octree = new PointOctree(box.min, box.max);
 
-  octree.set(new Vector3(0.0, 0, 0), data0);
-  octree.set(new Vector3(0.1, 0, 0), data1);
-  octree.set(new Vector3(0.2, 0, 0), data2);
+	const octree = new PointOctree(box.min, box.max);
 
-  const found = [];
-  for (let node of octree.leaves()) {
-    if (!node.data) continue;
-    const { points } = node.data;
-    if (points) {
-      for (let point of points) found.push(point);
-    }
-  }
+	octree.set(new Vector3(0.0, 0, 0), data0);
+	octree.set(new Vector3(0.1, 0, 0), data1);
+	octree.set(new Vector3(0.2, 0, 0), data2);
 
-  t.is(found.length, 3, "should find points");
+	const found = [];
+
+	for(let node of octree.leaves()) {
+
+		if(node.data && node.data.points) {
+
+			found.push(...node.data.points);
+
+		}
+
+	}
+
+	t.is(found.length, 3, "should find 3 points");
+
 });
 
 test("retrieves leaves when octree is large", (t) => {
-  const octree = new PointOctree(box.min, box.max);
 
-  for (let i = 0; i < 100; i++) {
-    octree.set(new Vector3(0 + i / 100, 0, 0), data0);
-  }
+	const octree = new PointOctree(box.min, box.max);
 
-  const found = [];
-  for (let node of octree.leaves()) {
-    if (!node.data) continue;
-    const { points } = node.data;
-    if (points) {
-      for (let point of points) found.push(point);
-    }
-  }
+	for(let i = 0; i < 100; i++) {
 
-  t.is(found.length, 100, "should find points");
+		octree.set(new Vector3(i / 100, 0, 0), data0);
+
+	}
+
+	const found = [];
+
+	for(let node of octree.leaves()) {
+
+		if(node.data && node.data.points) {
+
+			found.push(...node.data.points);
+
+		}
+
+	}
+
+	t.is(found.length, 100, "should find 100 points");
+
 });
