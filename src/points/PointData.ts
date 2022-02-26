@@ -60,12 +60,7 @@ export class PointData<T> {
 
 				if(distance >= raycaster.near && distance <= raycaster.far) {
 
-					result.push(new RayPointIntersection<T>(
-						distance,
-						Math.sqrt(distanceToRaySq),
-						closestPoint,
-						data[i]
-					));
+					result.push(new RayPointIntersection<T>(distance, Math.sqrt(distanceToRaySq), closestPoint, data[i]));
 
 				}
 

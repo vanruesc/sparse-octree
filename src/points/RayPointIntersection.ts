@@ -24,12 +24,7 @@ export class RayPointIntersection<T> extends PointContainer<T> {
 	 * @param data - The point's data.
 	 */
 
-	constructor(
-		distanceToOrigin: number,
-		distanceToRay: number,
-		point: Vector3,
-		data: T = null
-	) {
+	constructor(distanceToOrigin: number, distanceToRay: number, point: Vector3, data: T = null) {
 
 		super(point, data, distanceToOrigin);
 		this.distanceToRay = distanceToRay;

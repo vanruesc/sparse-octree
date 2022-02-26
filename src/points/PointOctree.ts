@@ -47,8 +47,7 @@ function countPoints<T>(octant: PointOctant<T>): number {
  * @return Whether the operation was successful.
  */
 
-function set<T>(point: Vector3, data: T, octree: PointOctree<T>,
-	octant: PointOctant<T>, depth: number): boolean {
+function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOctant<T>, depth: number): boolean {
 
 	let children = octant.children;
 	let exists = false;
@@ -85,8 +84,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>,
 				pointData.data[index - 1] = data;
 				done = true;
 
-			} else if(pointData.points.length < octree.getMaxPoints() ||
-				depth === octree.getMaxDepth()) {
+			} else if(pointData.points.length < octree.getMaxPoints() || depth === octree.getMaxDepth()) {
 
 				pointData.points.push(point.clone());
 				pointData.data.push(data);
@@ -130,8 +128,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>,
  * @return The data entry of the removed point, or null if it didn't exist.
  */
 
-function remove<T>(point: Vector3, octree: PointOctree<T>,
-	octant: PointOctant<T>, parent: PointOctant<T>): T {
+function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>, parent: PointOctant<T>): T {
 
 	const children = octant.children;
 	let result = null;
@@ -201,8 +198,7 @@ function remove<T>(point: Vector3, octree: PointOctree<T>,
  * @return The data entry that is associated with the given point, or null if it doesn't exist.
  */
 
-function get<T>(point: Vector3, octree: PointOctree<T>,
-	octant: PointOctant<T>): T {
+function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T {
 
 	const children = octant.children;
 	let result = null;
@@ -509,9 +505,8 @@ export class PointOctree<T> extends Octree {
 	/**
 	 * The number of points per octant before a split occurs.
 	 *
-	 * This value works together with the maximum depth as a secondary limiting
-	 * factor. Smaller values cause splits to occur earlier which results in a
-	 * faster and deeper tree growth.
+	 * This value works together with the maximum depth as a secondary limiting factor. Smaller values cause splits to
+	 * occur earlier which results in a faster and deeper tree growth.
 	 */
 
 	private maxPoints: number;
@@ -519,8 +514,7 @@ export class PointOctree<T> extends Octree {
 	/**
 	 * The maximum tree depth level.
 	 *
-	 * Infinity is a valid value, but allowing infinitely small octants can result
-	 * in poor performance.
+	 * Infinity is a valid value, but allowing infinitely small octants can result in poor performance.
 	 */
 
 	private maxDepth: number;
@@ -535,13 +529,7 @@ export class PointOctree<T> extends Octree {
 	 * @param maxDepth - The maximum tree depth level, starting at 0.
 	 */
 
-	constructor(
-		min: Vector3,
-		max: Vector3,
-		bias = 0.0,
-		maxPoints = 8,
-		maxDepth = 8
-	) {
+	constructor(min: Vector3, max: Vector3, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
 		super(new PointOctant<T>(min, max));
 
@@ -643,8 +631,7 @@ export class PointOctree<T> extends Octree {
 	}
 
 	/**
-	 * Moves an existing point to a new position. Has no effect if the point
-	 * doesn't exist.
+	 * Moves an existing point to a new position. Has no effect if the point doesn't exist.
 	 *
 	 * @param point - The point.
 	 * @param position - The new position.
@@ -666,8 +653,7 @@ export class PointOctree<T> extends Octree {
 	 * @return The nearest point, or null if there is none.
 	 */
 
-	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY,
-		skipSelf = false): PointContainer<T> {
+	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> {
 
 		const root = this.root as PointOctant<T>;
 		const result = findNearestPoint(point, maxDistance, skipSelf, root);
@@ -691,8 +677,7 @@ export class PointOctree<T> extends Octree {
 	 * @return A list of points.
 	 */
 
-	findPoints(point: Vector3, radius: number,
-		skipSelf = false): PointContainer<T>[] {
+	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
 
 		const result: PointContainer<T>[] = [];
 		findPoints(point, radius, skipSelf, this.root as PointOctant<T>, result);

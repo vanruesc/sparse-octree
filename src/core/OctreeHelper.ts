@@ -1,11 +1,4 @@
-import {
-	BufferAttribute,
-	BufferGeometry,
-	Group,
-	LineSegments,
-	LineBasicMaterial
-} from "three";
-
+import { BufferAttribute, BufferGeometry, Group, LineSegments, LineBasicMaterial } from "three";
 import { edges, layout, Node, Tree } from "../core";
 
 /**
@@ -75,7 +68,6 @@ export class OctreeHelper extends Group {
 				for(let j = 0; j < 12; ++j) {
 
 					const edge = edges[j];
-
 					indices[d++] = c + edge[0];
 					indices[d++] = c + edge[1];
 
@@ -85,7 +77,6 @@ export class OctreeHelper extends Group {
 				for(let j = 0; j < 8; ++j, ++c) {
 
 					const corner = layout[j];
-
 					positions[c * 3] = (corner[0] === 0) ? min.x : max.x;
 					positions[c * 3 + 1] = (corner[1] === 0) ? min.y : max.y;
 					positions[c * 3 + 2] = (corner[2] === 0) ? min.z : max.z;
@@ -103,7 +94,6 @@ export class OctreeHelper extends Group {
 			const geometry = new BufferGeometry();
 			geometry.setIndex(new BufferAttribute(indices, 1));
 			geometry.setAttribute("position", new BufferAttribute(positions, 3));
-
 			group.add(new LineSegments(geometry, material));
 
 		}

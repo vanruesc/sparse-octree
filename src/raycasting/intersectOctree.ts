@@ -16,8 +16,7 @@ const r = new Ray();
  * @return The ray parameters `[tx0, ty0, tz0, tx1, ty1, tz1]`, or null if the ray doesn't hit the octree.
  */
 
-export function intersectOctree(octree: Node, ray: Ray,
-	flags: RaycastingFlags): number[] {
+export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags): number[] {
 
 	// Translate the octant extents to the scene origin.
 	const min = b.min.set(0, 0, 0);
@@ -87,7 +86,6 @@ export function intersectOctree(octree: Node, ray: Ray,
 
 	// Check if the ray hits the octree.
 	const hit = (Math.max(tx0, ty0, tz0) < Math.min(tx1, ty1, tz1));
-
 	return hit ? [tx0, ty0, tz0, tx1, ty1, tz1] : null;
 
 }

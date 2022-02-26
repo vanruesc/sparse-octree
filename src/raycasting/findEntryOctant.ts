@@ -1,9 +1,8 @@
 /**
  * Finds the entry plane of the first octant that a ray travels through.
  *
- * Determining the first octant requires knowing which of the t0s is the
- * largest. The tms of the other axes must also be compared against that
- * largest t0.
+ * Determining the first octant requires knowing which of the t0s is the largest. The tms of the other axes must also be
+ * compared against that largest t0.
  *
  * @param tx0 - Ray projection parameter.
  * @param ty0 - Ray projection parameter.
@@ -14,8 +13,7 @@
  * @return The index of the first octant that the ray travels through.
  */
 
-export function findEntryOctant(tx0: number, ty0: number, tz0: number,
-	txm: number, tym: number, tzm: number): number {
+export function findEntryOctant(tx0: number, ty0: number, tz0: number, txm: number, tym: number, tzm: number): number {
 
 	let entry = 0;
 

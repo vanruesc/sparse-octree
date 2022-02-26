@@ -40,8 +40,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	}
 
 	/**
-	 * Calculates the squared distance from the center of this octant to the given
-	 * point.
+	 * Calculates the squared distance from the center of this octant to the given point.
 	 *
 	 * @param point - A point.
 	 * @return The distance squared.
@@ -62,8 +61,7 @@ export class PointOctant<T> extends Octant<PointData<T>> {
 	/**
 	 * Checks if the given point lies inside this octant's boundaries.
 	 *
-	 * This method can also be used to check if this octant intersects a sphere by
-	 * providing a radius as bias.
+	 * This method can also be used to check if this octant intersects a sphere by providing a radius as bias.
 	 *
 	 * @param point - A point.
 	 * @param bias - A padding that extends the boundaries temporarily.
