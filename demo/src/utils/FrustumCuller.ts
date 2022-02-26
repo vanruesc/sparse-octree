@@ -91,7 +91,7 @@ export class FrustumCuller {
 				color: 0xccff00,
 				opacity: 0.75
 			}),
-			2000
+			2500
 		);
 
 		this.mesh.visible = false;
