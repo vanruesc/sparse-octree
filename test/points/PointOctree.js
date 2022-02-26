@@ -147,3 +147,41 @@ test("can find points inside a radius", t => {
 	t.is(octree.findPoints(new Vector3(0, 0, 0), 0.15, true).length, 2, "should be able to skip itself");
 
 });
+
+test("retrieves leaves when octree is small", (t) => {
+  const octree = new PointOctree(box.min, box.max);
+
+  octree.set(new Vector3(0.0, 0, 0), data0);
+  octree.set(new Vector3(0.1, 0, 0), data1);
+  octree.set(new Vector3(0.2, 0, 0), data2);
+
+  const found = [];
+  for (let node of octree.leaves()) {
+    if (!node.data) continue;
+    const { points } = node.data;
+    if (points) {
+      for (let point of points) found.push(point);
+    }
+  }
+
+  t.is(found.length, 3, "should find points");
+});
+
+test("retrieves leaves when octree is large", (t) => {
+  const octree = new PointOctree(box.min, box.max);
+
+  for (let i = 0; i < 100; i++) {
+    octree.set(new Vector3(0 + i / 100, 0, 0), data0);
+  }
+
+  const found = [];
+  for (let node of octree.leaves()) {
+    if (!node.data) continue;
+    const { points } = node.data;
+    if (points) {
+      for (let point of points) found.push(point);
+    }
+  }
+
+  t.is(found.length, 100, "should find points");
+});
