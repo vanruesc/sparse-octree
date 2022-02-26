@@ -1,5 +1,5 @@
 import test from "ava";
-import { Box3, Vector3 } from "three";
+import { Box3, Raycaster, Vector3 } from "three";
 import { PointOctree } from "sparse-octree";
 
 const box = new Box3(
@@ -195,5 +195,25 @@ test("retrieves leaves when octree is large", (t) => {
 	}
 
 	t.is(found.length, 100, "should find 100 points");
+
+});
+
+test("intersects root when octree is small", (t) => {
+
+	const octree = new PointOctree(box.min, box.max);
+
+	octree.set(new Vector3(0.0, 0, 0), data0);
+	octree.set(new Vector3(0.1, 0, 0), data1);
+	octree.set(new Vector3(0.2, 0, 0), data2);
+
+	const raycaster = new Raycaster(
+		new Vector3(0, 0, 0),
+		new Vector3(0, 0, -1)
+	);
+
+	raycaster.params.Points.threshold = 0.5;
+	const found = octree.raycast(raycaster);
+
+	t.is(found.length, 3, "should find 3 points");
 
 });
