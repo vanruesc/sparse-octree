@@ -24,7 +24,7 @@ const p = new Vector3();
 const q = new Quaternion();
 
 /**
- * A frustum-based octree culler.
+ * A frustum-based octree culling helper.
  */
 
 export class FrustumCuller {
@@ -204,15 +204,9 @@ export class FrustumCuller {
 		folder.open();
 
 		const subFolder = folder.addFolder("Camera Adjustment");
-
-		subFolder.add(this.s, "radius", 0.1, 10.0, 0.1)
-			.onChange(() => this.cull());
-
-		subFolder.add(this.s, "phi", 1e-6, Math.PI - 1e-6, 0.0001)
-			.onChange(() => this.cull());
-
-		subFolder.add(this.s, "theta", 0.0, Math.PI * 2.0, 0.0001)
-			.onChange(() => this.cull());
+		subFolder.add(this.s, "radius", 0.1, 10.0, 0.1).onChange(() => this.cull());
+		subFolder.add(this.s, "phi", 1e-6, Math.PI - 1e-6, 0.0001).onChange(() => this.cull());
+		subFolder.add(this.s, "theta", 0.0, Math.PI * 2.0, 0.0001).onChange(() => this.cull());
 
 	}
 

@@ -18,7 +18,7 @@ import { PointOctree } from "../../../src";
 const pointer = new Vector2();
 
 /**
- * An octree raycaster.
+ * An octree raycasting helper.
  */
 
 export class OctreeRaycaster extends Raycaster implements EventListenerObject {
@@ -74,8 +74,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	 * @param domElement - A DOM element.
 	 */
 
-	constructor(octree: PointOctree<Object3D>, camera: Camera, group: Group,
-		domElement: HTMLElement) {
+	constructor(octree: PointOctree<Object3D>, camera: Camera, group: Group, domElement: HTMLElement) {
 
 		super();
 

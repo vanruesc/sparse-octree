@@ -107,8 +107,7 @@ export class PointOctreeDemo extends Demo {
 
 		// Points
 
-		function createParticlePlane(particles: number, n: number, zBase: number,
-			zBias: number): BufferGeometry {
+		function createParticlePlane(particles: number, n: number, zBase: number, zBias: number): BufferGeometry {
 
 			const geometry = new BufferGeometry();
 			const positions = new Float32Array(particles * 3);
@@ -127,7 +126,6 @@ export class PointOctreeDemo extends Demo {
 			}
 
 			geometry.setAttribute("position", new BufferAttribute(positions, 3));
-
 			return geometry;
 
 		}
@@ -203,13 +201,7 @@ export class PointOctreeDemo extends Demo {
 
 		// Raycasting
 
-		this.octreeRaycaster = new OctreeRaycaster(
-			octree,
-			camera,
-			points,
-			domElement
-		);
-
+		this.octreeRaycaster = new OctreeRaycaster(octree, camera, points, domElement);
 		scene.add(this.octreeRaycaster.getCursor());
 
 		// Frustum culling
@@ -246,19 +238,18 @@ export class PointOctreeDemo extends Demo {
 		folder = menu.addFolder("Octree Helper");
 		folder.add(octreeHelper, "visible");
 
-		folder.add(params, "level mask", 0, octreeHelper.children.length, 1)
-			.onChange(() => {
+		folder.add(params, "level mask", 0, octreeHelper.children.length, 1).onChange(() => {
 
-				for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
+			for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
-					octreeHelper.children[i].visible = (
-						params["level mask"] === octreeHelper.children.length ||
-						params["level mask"] === i
-					);
+				octreeHelper.children[i].visible = (
+					params["level mask"] === octreeHelper.children.length ||
+					params["level mask"] === i
+				);
 
-				}
+			}
 
-			});
+		});
 
 		folder.open();
 
