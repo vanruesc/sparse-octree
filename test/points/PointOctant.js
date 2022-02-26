@@ -1,6 +1,6 @@
 import test from "ava";
 import { Vector3 } from "three";
-import { PointOctant } from "../../dist/sparse-octree.js";
+import { PointOctant } from "sparse-octree";
 
 test("can be instantiated", t => {
 

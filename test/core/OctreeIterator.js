@@ -1,6 +1,6 @@
 import test from "ava";
 import { Box3, Vector3 } from "three";
-import { Octant, OctreeIterator, Octree } from "../../dist/sparse-octree.js";
+import { Octant, OctreeIterator, Octree } from "sparse-octree";
 
 const root = new Octant(
 	new Vector3(-1, -1, -1),
