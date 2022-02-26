@@ -19,7 +19,7 @@ test("can find intersecting octants", t => {
 
 	const intersects = octree.getIntersectingNodes(raycaster);
 
-	t.is(intersects.length, 2, "should return two intersecting octant");
+	t.is(intersects.length, 2, "should return 2 intersecting octants");
 	t.is(intersects[0], octree.root.children[7], "should return octant #8");
 
 });
