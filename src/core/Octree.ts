@@ -210,7 +210,7 @@ export class Octree implements Tree, Iterable<Node> {
 
 	getIntersectingNodes(raycaster: Raycaster): Node[] {
 
-		return OctreeRaycaster.intersectOctree(this, raycaster.ray);
+		return OctreeRaycaster.intersectOctree(this.root, raycaster.ray);
 
 	}
 
