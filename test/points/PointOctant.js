@@ -5,7 +5,6 @@ import { PointOctant } from "sparse-octree";
 test("can be instantiated", t => {
 
 	const object = new PointOctant();
-
 	t.pass();
 
 });
@@ -19,7 +18,11 @@ test("correctly computes the distance to a point", t => {
 
 	const point = new Vector3(1, 2, 3);
 
-	t.is(octant.distanceToSquared(point), octant.max.distanceToSquared(point), "should calculate the squared distance");
+	t.is(
+		octant.distanceToSquared(point),
+		octant.max.distanceToSquared(point),
+		"should calculate the squared distance"
+	);
 
 });
 
@@ -32,7 +35,11 @@ test("correctly computes the distance from its center to a point", t => {
 
 	const point = new Vector3(1, 2, 3);
 
-	t.is(octant.distanceToCenterSquared(point), octant.getCenter(new Vector3()).distanceToSquared(point), "should calculate the squared distance");
+	t.is(
+		octant.distanceToCenterSquared(point),
+		octant.getCenter(new Vector3()).distanceToSquared(point),
+		"should calculate the squared distance"
+	);
 
 });
 

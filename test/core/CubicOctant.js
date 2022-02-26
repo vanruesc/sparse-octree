@@ -10,7 +10,6 @@ const box = new Box3(
 test("can be instantiated", t => {
 
 	const object = new CubicOctant();
-
 	t.pass();
 
 });
@@ -19,7 +18,10 @@ test("can compute its center", t => {
 
 	const octant = new CubicOctant(box.min, 2);
 
-	t.true(octant.getCenter(new Vector3()).equals(new Vector3(0, 0, 0)), "should be able to compute its center");
+	t.true(
+		octant.getCenter(new Vector3()).equals(new Vector3(0, 0, 0)),
+		"should be able to compute its center"
+	);
 
 });
 
@@ -27,7 +29,10 @@ test("can compute its dimensions", t => {
 
 	const octant = new CubicOctant(box.min, 2);
 
-	t.true(octant.getDimensions(new Vector3()).equals(new Vector3(2, 2, 2)), "should be able to compute its dimensions");
+	t.true(
+		octant.getDimensions(new Vector3()).equals(new Vector3(2, 2, 2)),
+		"should be able to compute its dimensions"
+	);
 
 });
 

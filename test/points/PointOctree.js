@@ -14,7 +14,6 @@ const data2 = {};
 test("can be instantiated", t => {
 
 	const object = new PointOctree();
-
 	t.pass();
 
 });

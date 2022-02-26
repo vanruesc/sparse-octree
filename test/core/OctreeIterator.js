@@ -15,7 +15,6 @@ const region = new Box3(
 test("can be instantiated", t => {
 
 	const object = new OctreeIterator(new Octree(root));
-
 	t.pass();
 
 });
