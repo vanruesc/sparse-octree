@@ -225,7 +225,7 @@ export class Octree implements Tree, Iterable<Node> {
 
 	leaves(region: Frustum | Box3 = null): Iterator<Node> {
 
-		return new OctreeIterator(this, region);
+		return new OctreeIterator(this.root, region);
 
 	}
 
@@ -237,7 +237,7 @@ export class Octree implements Tree, Iterable<Node> {
 
 	[Symbol.iterator](): Iterator<Node> {
 
-		return new OctreeIterator(this);
+		return new OctreeIterator(this.root);
 
 	}
 
