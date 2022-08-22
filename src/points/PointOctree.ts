@@ -81,7 +81,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
 
 			if(exists) {
 
-				pointData.data[index - 1] = data;
+				pointData.data[index] = data;
 				done = true;
 
 			} else if(pointData.points.length < octree.getMaxPoints() || depth === octree.getMaxDepth()) {
