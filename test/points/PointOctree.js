@@ -30,12 +30,17 @@ test("can add a point", t => {
 test("overwrites duplicates", t => {
 
 	const octree = new PointOctree(box.min, box.max, 0.0, 1, 1);
+	const p1 = new Vector3(0, 0, 0);
+	const p2 = new Vector3(1, 0, 0);
 
-	octree.set(new Vector3(0, 0, 0), data0);
-	octree.set(new Vector3(0, 0, 0), data1);
-	octree.set(new Vector3(1, 0, 0), data2);
+	octree.set(p1, data0);
+	octree.set(p1, data1);
+	octree.set(p2, data0);
+	octree.set(p2, data2);
 
 	t.is(octree.countPoints(), 2, "should overwrite duplicates");
+	t.is(octree.get(p1), data1, "should find the correct data");
+	t.is(octree.get(p2), data2, "should find the correct data");
 
 });
 
