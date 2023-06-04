@@ -10,25 +10,7 @@ body {
 	line-height: 150%;
 	margin: 0;
 	min-height: 100vh;
-}
-
-a {
-	color: grey;
-	transition: color 0.2s;
-}
-
-a:hover, a:active {
-	color: white;
-}
-
-aside, footer {
-	position: absolute;
-	z-index: 1;
-}
-
-aside {
-	right: 0;
-	top: 0;
+	overflow-x: hidden;
 }
 
 canvas {
@@ -37,9 +19,16 @@ canvas {
 	max-width: 100%;
 }
 
+main {
+	height: 100%;
+}
+
 footer {
 	bottom: 0;
 	left: 0;
+	position: absolute;
+	user-select: none;
+	z-index: 1;
 }
 
 footer img {
@@ -51,14 +40,6 @@ footer img {
 
 footer img:hover {
 	opacity: 0.25;
-}
-
-main {
-	height: 100%;
-}
-
-p {
-	margin: 0;
 }
 
 .loading {
@@ -74,47 +55,28 @@ p {
 	user-select: none;
 }
 
-.github, .code, .info {
-	bottom: 15px;
+.github, .code {
+	bottom: 20px;
 	position: absolute;
 }
 
 .code {
-	left: 50px;
+	left: 20px;
 }
 
 .github {
-	left: 90px;
-}
-
-.info {
-	bottom: 12px;
-	left: 8px;
-}
-
-.info div {
-	bottom: 100%;
-	color: rgb(90, 95, 90);
-	font-size: 75%;
-	max-width: calc(100vw - 12px);
-	position: absolute;
-	width: max-content;
-}
-
-.dg {
-	user-select: none;
-}
-
-.dg ul {
-	max-height: 80vh;
-	overflow: auto;
-	scrollbar-width: thin;
-}
-
-.dg select {
-	max-width: 100%;
+	left: 60px;
 }
 
 .hidden {
 	display: none;
+}
+
+.tp {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	user-select: none;
+	width: 300px;
+	z-index: 1;
 }

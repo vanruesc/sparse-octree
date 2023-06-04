@@ -14,8 +14,8 @@ import {
 	Vector3
 } from "three";
 
-import { GUI } from "dat.gui";
-import { Octree } from "../../../src";
+import { Pane } from "tweakpane";
+import { Octree } from "sparse-octree";
 
 const frustum = new Frustum();
 const m = new Matrix4();
@@ -36,12 +36,6 @@ export class FrustumCuller {
 	private octree: Octree;
 
 	/**
-	 * Indicates whether the frustum culling is active.
-	 */
-
-	private enabled: boolean;
-
-	/**
 	 * A camera.
 	 */
 
@@ -54,12 +48,6 @@ export class FrustumCuller {
 	private s: Spherical;
 
 	/**
-	 * The measured processing time.
-	 */
-
-	private time: string;
-
-	/**
 	 * A camera helper.
 	 */
 
@@ -70,6 +58,18 @@ export class FrustumCuller {
 	 */
 
 	private mesh: InstancedMesh;
+
+	/**
+	 * Indicates whether the frustum culling is active.
+	 */
+
+	enabled: boolean;
+
+	/**
+	 * The measured processing time.
+	 */
+
+	time: string;
 
 	/**
 	 * Constructs a new octree culler.
@@ -185,28 +185,30 @@ export class FrustumCuller {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param menu - A menu.
+	 * @param pane - A settings pane.
 	 */
 
-	registerOptions(menu: GUI): void {
+	registerOptions(pane: Pane): void {
 
-		const folder = menu.addFolder("Frustum Culling");
+		const folder = pane.addFolder({ title: "Frustum Culling" });
 
-		folder.add(this, "enabled").onChange((value: boolean) => {
+		folder.addInput(this, "enabled").on("change", (e) => {
 
-			this.cameraHelper.visible = value;
-			this.mesh.visible = value;
+			this.cameraHelper.visible = e.value;
+			this.mesh.visible = e.value;
 			this.cull();
 
 		});
 
-		folder.add(this, "time").listen();
-		folder.open();
+		folder.addMonitor(this, "time");
 
-		const subFolder = folder.addFolder("Camera Adjustment");
-		subFolder.add(this.s, "radius", 0.1, 10.0, 0.1).onChange(() => this.cull());
-		subFolder.add(this.s, "phi", 1e-6, Math.PI - 1e-6, 0.0001).onChange(() => this.cull());
-		subFolder.add(this.s, "theta", 0.0, Math.PI * 2.0, 0.0001).onChange(() => this.cull());
+		const subfolder = folder.addFolder({ title: "Camera Adjustment" });
+		subfolder.addInput(this.s, "radius", { min: 0.1, max: 10.0, step: 0.1 })
+			.on("change", (e) => this.cull());
+		subfolder.addInput(this.s, "phi", { min: 1e-6, max: Math.PI - 1e-6, step: 0.0001 })
+			.on("change", (e) => this.cull());
+		subfolder.addInput(this.s, "theta", { min: 0.0, max: Math.PI * 2.0, step: 0.0001 })
+			.on("change", (e) => this.cull());
 
 	}
 

@@ -8,12 +8,12 @@ import {
 	Points,
 	PointsMaterial,
 	Raycaster,
-	SphereBufferGeometry,
+	SphereGeometry,
 	Vector2
 } from "three";
 
-import { GUI } from "dat.gui";
-import { PointOctree } from "../../../src";
+import { Pane } from "tweakpane";
+import { PointOctree } from "sparse-octree";
 
 const pointer = new Vector2();
 
@@ -42,28 +42,28 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	private group: Group;
 
 	/**
+	 * The selected mesh.
+	 */
+
+	private selectedPoints: Points | null;
+
+	/**
+	 * @see {@link cursor}
+	 */
+
+	private _cursor: Mesh;
+
+	/**
 	 * Indicates whether this raycaster is active.
 	 */
 
-	private enabled: boolean;
+	enabled: boolean;
 
 	/**
 	 * The measured processing time.
 	 */
 
-	private time: string;
-
-	/**
-	 * The selected mesh.
-	 */
-
-	private selectedPoints: Points;
-
-	/**
-	 * A mesh that represents the selected point.
-	 */
-
-	private cursor: Mesh;
+	time: string;
 
 	/**
 	 * Constructs a new octree raycaster.
@@ -78,7 +78,11 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		super();
 
-		this.params.Points.threshold = 1e-1;
+		if(this.params.Points !== undefined) {
+
+			this.params.Points.threshold = 1e-1;
+
+		}
 
 		this.octree = octree;
 		this.camera = camera;
@@ -88,8 +92,8 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 		this.time = "";
 		this.selectedPoints = null;
 
-		this.cursor = new Mesh(
-			new SphereBufferGeometry(0.2, 16, 16),
+		this._cursor = new Mesh(
+			new SphereGeometry(0.2, 16, 16),
 			new MeshBasicMaterial({
 				transparent: true,
 				color: 0x00ccff,
@@ -97,7 +101,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 			})
 		);
 
-		this.cursor.visible = false;
+		this._cursor.visible = false;
 
 		domElement.addEventListener("pointermove", this, { passive: true });
 
@@ -105,13 +109,11 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 	/**
 	 * Returns a mesh that represents the selected point.
-	 *
-	 * @return The selected point.
 	 */
 
-	getCursor(): Mesh {
+	get cursor(): Mesh {
 
-		return this.cursor;
+		return this._cursor;
 
 	}
 
@@ -167,10 +169,11 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		this.time = (performance.now() - t0).toFixed(2) + " ms";
 
-		if(x !== undefined) {
+		if(x !== undefined && point !== null && point !== undefined &&
+			selectedPoints !== null && selectedPoints !== undefined) {
 
 			this.selectedPoints = selectedPoints as Points;
-			this.cursor.visible = selectedPoints.parent.visible;
+			this.cursor.visible = (selectedPoints.parent === null) ? false : selectedPoints.parent.visible;
 			this.cursor.position.copy(point);
 
 			const material = this.selectedPoints.material as PointsMaterial;
@@ -183,15 +186,14 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 	/**
 	 * Registers configuration options.
 	 *
-	 * @param menu - A menu.
+	 * @param pane - A settings pane.
 	 */
 
-	registerOptions(menu: GUI): void {
+	registerOptions(pane: Pane): void {
 
-		const folder = menu.addFolder("Raycasting");
-		folder.add(this, "enabled");
-		folder.add(this, "time").listen();
-		folder.open();
+		const folder = pane.addFolder({ title: "Rayasting" });
+		folder.addInput(this, "enabled");
+		folder.addMonitor(this, "time");
 
 	}
 
@@ -216,8 +218,8 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 		const domElement = this.domElement;
 		domElement.removeEventListener("pointermove", this);
 
-		const geometry = this.cursor.geometry;
-		const material = this.cursor.material as Material;
+		const geometry = this._cursor.geometry;
+		const material = this._cursor.material as Material;
 
 		geometry.dispose();
 		material.dispose();
