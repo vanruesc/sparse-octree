@@ -58,7 +58,7 @@ export class OctreeHelper extends Group {
 			const positions = new Float32Array(vertexCount * 3);
 
 			// Continue where the previous run left off.
-			for(let c = 0, d = 0, result = iterator.next(); result.done !== undefined && !result.done && i < l;) {
+			for(let c = 0, d = 0, result = iterator.next(); result.done !== true && i < l;) {
 
 				const octant = result.value;
 				const min = octant.min;
