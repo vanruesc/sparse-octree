@@ -10,7 +10,7 @@ const box = new Box3(
 test("can be instantiated", t => {
 
 	const object = new Octant();
-	t.pass();
+	t.truthy(object);
 
 });
 

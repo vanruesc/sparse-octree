@@ -9,17 +9,17 @@ const root = new Octant(
 
 test("can find intersecting octants", t => {
 
-	const octree = new Octree(root);
 	const raycaster = new Raycaster(
 		new Vector3(0.5, 0.5, 2),
 		new Vector3(0, 0, -1)
 	);
 
-	octree.root.split();
+	root.split();
 
+	const octree = new Octree(root);
 	const intersects = octree.getIntersectingNodes(raycaster);
 
 	t.is(intersects.length, 2, "should return 2 intersecting octants");
-	t.is(intersects[0], octree.root.children[7], "should return octant #8");
+	t.is(intersects[0], root.children[7], "should return octant #8");
 
 });

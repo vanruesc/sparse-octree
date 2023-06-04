@@ -10,7 +10,7 @@ const root = new Octant(
 test("can be instantiated", t => {
 
 	const object = new Octree(root);
-	t.pass();
+	t.truthy(object);
 
 });
 
@@ -38,11 +38,11 @@ test("can compute its dimensions", t => {
 
 test("can compute its depth", t => {
 
-	const octree = new Octree(root);
+	root.split();
+	root.children[0].split();
+	root.children[0].children[0].split();
 
-	octree.root.split();
-	octree.root.children[0].split();
-	octree.root.children[0].children[0].split();
+	const octree = new Octree(root);
 
 	t.is(octree.getDepth(), 3, "should be able to compute the current tree depth");
 
@@ -50,12 +50,11 @@ test("can compute its depth", t => {
 
 test("finds octants by depth level", t => {
 
+	root.split();
+	root.children[0].split();
+	root.children[7].split();
+
 	const octree = new Octree(root);
-
-	octree.root.split();
-	octree.root.children[0].split();
-	octree.root.children[7].split();
-
 	const octants = octree.findNodesByLevel(2);
 
 	t.true(Array.isArray(octants), "should return a list");

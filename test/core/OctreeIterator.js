@@ -15,20 +15,20 @@ const region = new Box3(
 test("can be instantiated", t => {
 
 	const object = new OctreeIterator(new Octree(root));
-	t.pass();
+	t.truthy(object);
 
 });
 
 test("iterates over all leaf octants", t => {
+
+	root.split();
 
 	const octree = new Octree(root);
 	const iterator = octree.leaves();
 
 	let i = 0;
 
-	octree.root.split();
-
-	while(!iterator.next().done) {
+	while(!(iterator.next().done ?? false)) {
 
 		++i;
 
@@ -40,14 +40,14 @@ test("iterates over all leaf octants", t => {
 
 test("can cull leaf octants", t => {
 
+	root.split();
+
 	const octree = new Octree(root);
 	const iterator = octree.leaves(region);
 
 	let i = 0;
 
-	octree.root.split();
-
-	while(!iterator.next().done) {
+	while(!(iterator.next().done ?? false)) {
 
 		++i;
 
