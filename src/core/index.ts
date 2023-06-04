@@ -1,12 +1,12 @@
-export { edges } from "./edges";
-export { layout } from "./layout";
+export { edges } from "./edges.js";
+export { layout } from "./layout.js";
 
-export { DataContainer } from "./DataContainer";
-export { Node } from "./Node";
-export { Tree } from "./Tree";
+export { DataContainer } from "./DataContainer.js";
+export { Node } from "./Node.js";
+export { Tree } from "./Tree.js";
 
-export { CubicOctant } from "./CubicOctant";
-export { Octant } from "./Octant";
-export { Octree } from "./Octree";
-export { OctreeHelper } from "./OctreeHelper";
-export { OctreeIterator } from "./OctreeIterator";
+export { CubicOctant } from "./CubicOctant.js";
+export { Octant } from "./Octant.js";
+export { Octree } from "./Octree.js";
+export { OctreeHelper } from "./OctreeHelper.js";
+export { OctreeIterator } from "./OctreeIterator.js";

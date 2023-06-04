@@ -1,9 +1,9 @@
 import { Raycaster, Vector3 } from "three";
-import { Octree } from "../core/Octree";
-import { PointContainer } from "./PointContainer";
-import { PointData } from "./PointData";
-import { PointOctant } from "./PointOctant";
-import { RayPointIntersection } from "./RayPointIntersection";
+import { Octree } from "../core/Octree.js";
+import { PointContainer } from "./PointContainer.js";
+import { PointData } from "./PointData.js";
+import { PointOctant } from "./PointOctant.js";
+import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
  * Recursively counts the points that are in the given octant.
@@ -47,13 +47,15 @@ function countPoints<T>(octant: PointOctant<T>): number {
  * @return Whether the operation was successful.
  */
 
-function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOctant<T>, depth: number): boolean {
+function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOctant<T> | null,
+	depth: number): boolean {
 
-	let children = octant.children;
 	let exists = false;
 	let done = false;
 
-	if(octant.contains(point, octree.getBias())) {
+	if(octant !== null && octant.contains(point, octree.getBias())) {
+
+		let children = octant.children;
 
 		if(children === null) {
 
@@ -128,7 +130,8 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
  * @return The data entry of the removed point, or null if it didn't exist.
  */
 
-function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>, parent: PointOctant<T>): T {
+function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>,
+	parent: PointOctant<T> | null): T | null {
 
 	const children = octant.children;
 	let result = null;
@@ -198,7 +201,7 @@ function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T
  * @return The data entry that is associated with the given point, or null if it doesn't exist.
  */
 
-function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T {
+function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T | null {
 
 	const children = octant.children;
 	let result = null;
@@ -250,7 +253,7 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
  */
 
 function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
-	octant: PointOctant<T>, parent: PointOctant<T>, depth: number): T {
+	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | null {
 
 	const children = octant.children;
 	let result = null;
@@ -320,7 +323,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
  */
 
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
-	skipSelf: boolean, octant: PointOctant<T>): PointContainer<T> {
+	skipSelf: boolean, octant: PointOctant<T>): PointContainer<T> | null {
 
 	interface SortableOctant<T> {
 
@@ -611,7 +614,7 @@ export class PointOctree<T> extends Octree {
 	 * @return The data entry of the removed point or null if it didn't exist.
 	 */
 
-	remove(point: Vector3): T {
+	remove(point: Vector3): T | null {
 
 		return remove(point, this, this.root as PointOctant<T>, null);
 
@@ -624,7 +627,7 @@ export class PointOctree<T> extends Octree {
 	 * @return The data that belongs to the given point, or null if it doesn't exist.
 	 */
 
-	get(point: Vector3): T {
+	get(point: Vector3): T | null {
 
 		return get(point, this, this.root as PointOctant<T>);
 
@@ -638,7 +641,7 @@ export class PointOctree<T> extends Octree {
 	 * @return The data of the updated point, or null if it didn't exist.
 	 */
 
-	move(point: Vector3, position: Vector3): T {
+	move(point: Vector3, position: Vector3): T | null {
 
 		return move(point, position, this, this.root as PointOctant<T>, null, 0);
 
@@ -653,12 +656,12 @@ export class PointOctree<T> extends Octree {
 	 * @return The nearest point, or null if there is none.
 	 */
 
-	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> {
+	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> | null {
 
 		const root = this.root as PointOctant<T>;
 		const result = findNearestPoint(point, maxDistance, skipSelf, root);
 
-		if(result !== null) {
+		if(result !== null && result.point !== null) {
 
 			result.point = result.point.clone();
 

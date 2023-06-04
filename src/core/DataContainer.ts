@@ -10,6 +10,6 @@ export interface DataContainer<T> {
 	 * The data.
 	 */
 
-	data?: T;
+	data: T | null;
 
 }

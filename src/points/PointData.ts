@@ -1,5 +1,5 @@
 import { Raycaster, Vector3 } from "three";
-import { RayPointIntersection } from "./RayPointIntersection";
+import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
  * A collection of many points and associated data entries.
@@ -41,7 +41,7 @@ export class PointData<T> {
 
 	testPoints(raycaster: Raycaster, result: RayPointIntersection<T>[]): void {
 
-		const threshold = raycaster.params.Points.threshold;
+		const threshold = (raycaster.params.Points !== undefined) ? raycaster.params.Points.threshold : 0;
 		const thresholdSq = threshold * threshold;
 		const ray = raycaster.ray;
 

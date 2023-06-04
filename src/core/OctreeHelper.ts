@@ -1,5 +1,5 @@
 import { BufferAttribute, BufferGeometry, Group, LineSegments, LineBasicMaterial } from "three";
-import { edges, layout, Node, Tree } from "../core";
+import { edges, layout, Node, Tree } from "../core/index.js";
 
 /**
  * An octree helper.
@@ -11,7 +11,7 @@ export class OctreeHelper extends Group {
 	 * The octree.
 	 */
 
-	octree: Tree;
+	octree: Tree | null;
 
 	/**
 	 * Constructs a new octree helper.
@@ -19,7 +19,7 @@ export class OctreeHelper extends Group {
 	 * @param octree - An octree.
 	 */
 
-	constructor(octree: Tree = null) {
+	constructor(octree: Tree | null = null) {
 
 		super();
 
@@ -58,9 +58,9 @@ export class OctreeHelper extends Group {
 			const positions = new Float32Array(vertexCount * 3);
 
 			// Continue where the previous run left off.
-			for(let c = 0, d = 0, result = iterator.next(); !result.done && i < l;) {
+			for(let c = 0, d = 0, result = iterator.next(); result.done !== undefined && !result.done && i < l;) {
 
-				const octant = result.value as Node;
+				const octant = result.value;
 				const min = octant.min;
 				const max = octant.max;
 
@@ -115,7 +115,7 @@ export class OctreeHelper extends Group {
 
 		for(let level = 0; level <= depth; ++level) {
 
-			const result = this.octree.findNodesByLevel(level);
+			const result = this.octree?.findNodesByLevel(level) || [];
 			this.createLineSegments(result, result.length);
 
 		}

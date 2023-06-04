@@ -1,7 +1,7 @@
 import { Vector3 } from "three";
-import { DataContainer } from "./DataContainer";
-import { Node } from "./Node";
-import { layout } from "./layout";
+import { DataContainer } from "./DataContainer.js";
+import { Node } from "./Node.js";
+import { layout } from "./layout.js";
 
 const c = new Vector3();
 
@@ -15,8 +15,8 @@ export class Octant<T> implements Node, DataContainer<T> {
 
 	min: Vector3;
 	max: Vector3;
-	children: Node[];
-	data: T;
+	children: Node[] | null;
+	data: T | null;
 
 	/**
 	 * Constructs a new octant.
@@ -56,10 +56,7 @@ export class Octant<T> implements Node, DataContainer<T> {
 		const max = this.max;
 		const mid = this.getCenter(c);
 
-		const children: Node[] = this.children = [
-			null, null, null, null,
-			null, null, null, null
-		];
+		const children: Node[] = this.children = [];
 
 		for(let i = 0; i < 8; ++i) {
 

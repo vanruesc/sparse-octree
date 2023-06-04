@@ -1,6 +1,6 @@
 import { Box3, Ray, Vector3 } from "three";
-import { Node } from "../core/Node";
-import { RaycastingFlags } from "./RaycastingFlags";
+import { Node } from "../core/Node.js";
+import { RaycastingFlags } from "./RaycastingFlags.js";
 
 const v = new Vector3();
 const b = new Box3();
@@ -16,7 +16,7 @@ const r = new Ray();
  * @return The ray parameters `[tx0, ty0, tz0, tx1, ty1, tz1]`, or null if the ray doesn't hit the octree.
  */
 
-export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags): number[] {
+export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags): number[] | null {
 
 	// Translate the octant extents to the scene origin.
 	const min = b.min.set(0, 0, 0);

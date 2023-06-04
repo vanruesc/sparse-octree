@@ -1,5 +1,5 @@
 import { Box3, Frustum } from "three";
-import { Node } from "./Node";
+import { Node } from "./Node.js";
 
 const b = new Box3();
 
@@ -19,31 +19,25 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	 * A region used for octree culling.
 	 */
 
-	private region: Frustum | Box3;
-
-	/**
-	 * Whether this iterator should respect the cull region.
-	 */
-
-	private cull: boolean;
+	private region: Frustum | Box3 | null;
 
 	/**
 	 * An iterator result.
 	 */
 
-	private result: IteratorResult<Node>;
+	private result!: IteratorResult<Node>;
 
 	/**
 	 * A node trace.
 	 */
 
-	private trace: Node[];
+	private trace!: Node[];
 
 	/**
 	 * Iteration indices.
 	 */
 
-	private indices: number[];
+	private indices!: number[];
 
 	/**
 	 * Constructs a new octree iterator.
@@ -52,14 +46,10 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	 * @param region - A cull region.
 	 */
 
-	constructor(root: Node, region: Frustum | Box3 = null) {
+	constructor(root: Node, region: Frustum | Box3 | null = null) {
 
 		this.root = root;
 		this.region = region;
-		this.cull = (region !== null);
-		this.trace = null;
-		this.indices = null;
-
 		this.reset();
 
 	}
@@ -82,7 +72,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 			b.min = root.min;
 			b.max = root.max;
 
-			if(!this.cull || this.region.intersectsBox(b)) {
+			if(this.region === null || this.region.intersectsBox(b)) {
 
 				this.trace.push(root);
 				this.indices.push(0);
@@ -92,9 +82,8 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 		}
 
 		this.result = {
-			done: false,
-			value: null
-		};
+			done: false
+		} as IteratorResult<Node>;
 
 		return this;
 
@@ -102,7 +91,6 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 	next(): IteratorResult<Node> {
 
-		const cull = this.cull;
 		const region = this.region;
 		const indices = this.indices;
 		const trace = this.trace;
@@ -121,7 +109,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 					const child = children[index];
 
-					if(cull) {
+					if(region !== null) {
 
 						b.min = child.min;
 						b.max = child.max;

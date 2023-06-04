@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
-import { Octant } from "../core/Octant";
-import { PointData } from "./PointData";
+import { Octant } from "../core/Octant.js";
+import { PointData } from "./PointData.js";
 
 const p = new Vector3();
 

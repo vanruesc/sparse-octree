@@ -22,7 +22,7 @@ export interface Node {
 	 * The children of this node.
 	 */
 
-	children?: Node[];
+	children: Node[] | null;
 
 	/**
 	 * Calculates the center of this node.
