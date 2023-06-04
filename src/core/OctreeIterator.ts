@@ -105,7 +105,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 			if(index < 8) {
 
-				if(children !== null) {
+				if(children !== undefined && children !== null) {
 
 					const child = children[index];
 

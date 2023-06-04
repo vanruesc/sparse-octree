@@ -19,7 +19,7 @@ function getDepth(node: Node): number {
 
 	let result = 0;
 
-	if(children !== null) {
+	if(children !== undefined && children !== null) {
 
 		for(let i = 0, l = children.length; i < l; ++i) {
 
@@ -56,7 +56,7 @@ function cull(node: Node, region: Frustum | Box3, result: Node[]): void {
 
 	if(region.intersectsBox(b)) {
 
-		if(children !== null) {
+		if(children !== undefined && children !== null) {
 
 			for(let i = 0, l = children.length; i < l; ++i) {
 
@@ -91,7 +91,7 @@ function findNodesByLevel(node: Node, level: number, depth: number, result: Node
 
 		result.push(node);
 
-	} else if(children !== null) {
+	} else if(children !== undefined && children !== null) {
 
 		++depth;
 
@@ -143,7 +143,7 @@ export class Octree implements Tree, Iterable<Node> {
 
 	get children(): Node[] | null {
 
-		return this.root.children;
+		return this.root.children || null;
 
 	}
 
