@@ -1,25 +1,20 @@
 {
-	"include": ["src", "demo/src"],
+	"include": ["./*.js", "./src", "./demo/src", "./test"],
 	"compilerOptions": {
-		"rootDir": ".",
+		"baseUrl": ".",
+		"outDir": "./dist",
 		"moduleResolution": "node",
 		"module": "ESNext",
 		"target": "ESNext",
 		"strict": true,
 		"sourceMap": false,
-		"importHelpers": true,
 		"skipLibCheck": true,
-		"strictNullChecks": false,
-		"noImplicitOverride": true
-	},
-	"typedocOptions": {
-		"entryPoints": ["./src/index.ts"],
-		"out": "public/docs",
-		"theme": "default",
-		"readme": "none",
-		"excludePrivate": true,
-		"includeVersion": true,
-		"hideGenerator": true,
-		"treatWarningsAsErrors": true
+		"importHelpers": true,
+		"resolveJsonModule": true,
+		"noImplicitOverride": true,
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"sparse-octree": ["./src/index.js"]
+		}
 	}
 }
