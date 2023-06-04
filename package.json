@@ -45,6 +45,15 @@
 	"engines": {
 		"node": ">= 0.14.0"
 	},
+	"ava": {
+		"failFast": true,
+		"files": [
+			"test/**/*.js"
+		]
+	},
+	"eslintConfig": {
+		"extends": "aether/typescript"
+	},
 	"scripts": {
 		"ava": "ava",
 		"build": "run-s build:js:min build:dts",
@@ -65,15 +74,6 @@
 		"watch:tsc": "tsc --noemit --watch --preserveWatchOutput",
 		"watch:eslint": "esw -w --ext .ts --color src demo/src",
 		"watch:js": "node esbuild -w"
-	},
-	"ava": {
-		"failFast": true,
-		"files": [
-			"test/**/*.js"
-		]
-	},
-	"eslintConfig": {
-		"extends": "aether/typescript"
 	},
 	"peerDependencies": {
 		"three": "0.x.x"
@@ -99,6 +99,6 @@
 		"tweakpane": "3.x.x",
 		"typedoc": "0.x.x",
 		"typedoc-plugin-mdn-links": "3.x.x",
-		"typescript": "5.0.x"
+		"typescript": "5.x.x"
 	}
 }
