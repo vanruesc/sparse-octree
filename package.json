@@ -33,8 +33,7 @@
 		"email": "vanruesc@outlook.de"
 	},
 	"repository": {
-		"type": "git",
-		"url": "https://github.com/vanruesc/sparse-octree.git"
+		"url": "git+https://github.com/vanruesc/sparse-octree.git"
 	},
 	"bugs": {
 		"url": "https://github.com/vanruesc/sparse-octree/issues"
