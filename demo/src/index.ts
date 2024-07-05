@@ -175,12 +175,12 @@ window.addEventListener("load", () => {
 	};
 
 	let folder = pane.addFolder({ title: "Points" });
-	folder.addInput(points, "visible");
+	folder.addBinding(points, "visible");
 
 	folder = pane.addFolder({ title: "Octree Helper", expanded: false });
-	folder.addInput(octreeHelper, "visible");
+	folder.addBinding(octreeHelper, "visible");
 
-	folder.addInput(params, "level mask", { min: 0, max: octreeHelper.children.length, step: 1 }).on("change", () => {
+	folder.addBinding(params, "level mask", { min: 0, max: octreeHelper.children.length, step: 1 }).on("change", () => {
 
 		for(let i = 0, l = octreeHelper.children.length; i < l; ++i) {
 
