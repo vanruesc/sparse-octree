@@ -1,6 +1,10 @@
 name: CI
 
-on: push
+on:
+  pull_request:
+  push:
+    branches:
+      - "*"
 
 jobs:
   test:
@@ -8,14 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
       - name: Install Node
         uses: actions/setup-node@v4
         with:
+          node-version: 24
           cache: "pnpm"
       - name: Install and test
         run: pnpm install-test --frozen-lockfile
