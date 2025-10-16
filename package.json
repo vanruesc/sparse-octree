@@ -41,37 +41,35 @@
 	"files": [
 		"dist"
 	],
-	"engines": {
-		"node": ">= 0.14.0"
-	},
 	"ava": {
 		"failFast": true,
 		"files": [
 			"test/**/*.js"
 		]
 	},
-	"eslintConfig": {
-		"extends": "aether/typescript"
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
 	},
 	"scripts": {
 		"ava": "ava",
-		"build": "run-s build:js:min build:dts",
+		"build": "run-p build:js:min build:dts",
 		"build:js": "node esbuild",
 		"build:js:min": "node esbuild -m",
 		"build:dts": "tsc -p tsconfig.d.json",
-		"postbuild": "copyfiles -u 2 demo/static/**/* public/demo",
+		"postbuild": "cpy \"demo/static/**/*\" public/demo",
 		"clean": "del-cli dist public",
 		"doc": "typedoc --plugin typedoc-plugin-mdn-links",
-		"lint": "run-s lint:*",
-		"lint:js": "eslint --ext .ts --fix src demo/src",
-		"lint:tsc": "tsc --noemit",
-		"prepublishOnly": "run-s test doc",
+		"lint": "run-p lint:*",
+		"lint:js": "eslint --fix src demo/src",
+		"lint:tsc": "tsc --noEmit",
+		"prepublishOnly": "npm test",
 		"start": "serve public",
-		"test": "run-s lint clean build ava",
+		"test": "run-s lint clean build ava doc",
 		"prewatch": "run-s clean build:js build:dts postbuild",
 		"watch": "run-p watch:* start",
-		"watch:tsc": "tsc --noemit --watch --preserveWatchOutput",
-		"watch:eslint": "esw -w --ext .ts --color src demo/src",
+		"watch:tsc": "tsc --noEmit --watch --preserveWatchOutput",
 		"watch:js": "node esbuild -w"
 	},
 	"peerDependencies": {
@@ -79,25 +77,23 @@
 	},
 	"devDependencies": {
 		"@tweakpane/core": "2.x.x",
-		"@types/node": "20.x.x",
+		"@types/node": "24.x.x",
 		"@types/three": "0.x.x",
-		"@typescript-eslint/eslint-plugin": "7.x.x",
-		"@typescript-eslint/parser": "7.x.x",
+		"@typescript-eslint/eslint-plugin": "8.x.x",
+		"@typescript-eslint/parser": "8.x.x",
 		"ava": "6.x.x",
-		"copyfiles": "2.x.x",
-		"del-cli": "5.x.x",
-		"esbuild": "0.x.x",
-		"eslint": "8.x.x",
-		"eslint-config-aether": "1.x.x",
-		"eslint-watch": "8.x.x",
+		"cpy-cli": "6.x.x",
+		"del-cli": "7.x.x",
+		"esbuild": "0.25.x",
+		"eslint": "9.x.x",
+		"eslint-config-aether": "2.x.x",
 		"npm-run-all": "4.x.x",
 		"serve": "14.x.x",
-		"spatial-controls": "6.x.x",
 		"three": "0.x.x",
 		"tslib": "2.x.x",
 		"tweakpane": "4.x.x",
 		"typedoc": "0.x.x",
-		"typedoc-plugin-mdn-links": "3.x.x",
-		"typescript": "5.x.x"
+		"typedoc-plugin-mdn-links": "5.x.x",
+		"typescript": "5.9.x"
 	}
 }
