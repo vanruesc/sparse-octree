@@ -65,7 +65,7 @@ export class CubicOctree extends Octree {
   - Handles octant splitting
   - Supports cubic octrees for reduced memory usage
   - Dynamic depth
-- Adheres to a [common octant layout](https://vanruesc.github.io/sparse-octree/docs/index.html#layout)
+- Adheres to a [common octant layout](https://vanruesc.github.io/sparse-octree/docs/variables/layout.html)
 - Supports raycasting
 - Supports culling
 - Can be extended to manage any data
