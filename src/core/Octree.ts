@@ -143,7 +143,7 @@ export class Octree implements Tree, Iterable<Node> {
 
 	get children(): Node[] | null {
 
-		return this.root.children || null;
+		return this.root.children ?? null;
 
 	}
 

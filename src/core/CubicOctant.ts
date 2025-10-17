@@ -92,7 +92,7 @@ export class CubicOctant<T> implements Node, DataContainer<T> {
 		for(let i = 0; i < 8; ++i) {
 
 			const combination = layout[i];
-			const child = new (<typeof CubicOctant> this.constructor)();
+			const child = new (this.constructor as typeof CubicOctant)();
 
 			child.min.set(
 				(combination[0] === 0) ? min.x : mid.x,

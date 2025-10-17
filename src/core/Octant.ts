@@ -61,7 +61,7 @@ export class Octant<T> implements Node, DataContainer<T> {
 		for(let i = 0; i < 8; ++i) {
 
 			const combination = layout[i];
-			const child = new (<typeof Octant> this.constructor)();
+			const child = new (this.constructor as typeof Octant)();
 
 			child.min.set(
 				(combination[0] === 0) ? min.x : mid.x,

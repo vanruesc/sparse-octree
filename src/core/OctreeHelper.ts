@@ -115,7 +115,7 @@ export class OctreeHelper extends Group {
 
 		for(let level = 0; level <= depth; ++level) {
 
-			const result = this.octree?.findNodesByLevel(level) || [];
+			const result = this.octree?.findNodesByLevel(level) ?? [];
 			this.createLineSegments(result, result.length);
 
 		}
