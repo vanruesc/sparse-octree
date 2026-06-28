@@ -1,0 +1,3 @@
+save: false
+allowBuilds:
+  'esbuild': true
