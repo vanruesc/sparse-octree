@@ -1,7 +1,7 @@
 import { Box3, Frustum } from "three";
 import { Node } from "./Node.js";
 
-const b = new Box3();
+const b = /* @__PURE__ */ new Box3();
 
 /**
  * An octree iterator.

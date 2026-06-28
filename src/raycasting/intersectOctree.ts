@@ -2,10 +2,10 @@ import { Box3, Ray, Vector3 } from "three";
 import { Node } from "../core/Node.js";
 import { RaycastingFlags } from "./RaycastingFlags.js";
 
-const v = new Vector3();
-const b = new Box3();
-const d = new Box3();
-const r = new Ray();
+const v = /* @__PURE__ */ new Vector3();
+const b = /* @__PURE__ */ new Box3();
+const d = /* @__PURE__ */ new Box3();
+const r = /* @__PURE__ */ new Ray();
 
 /**
  * Calculates ray projection parameters for the given octree and ray setup.

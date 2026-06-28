@@ -4,7 +4,7 @@ import { OctreeIterator } from "./OctreeIterator.js";
 import { Node } from "./Node.js";
 import { Tree } from "./Tree.js";
 
-const b = new Box3();
+const b = /* @__PURE__ */ new Box3();
 
 /**
  * Recursively calculates the depth of the given node.

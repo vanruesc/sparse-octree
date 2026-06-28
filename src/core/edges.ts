@@ -2,7 +2,7 @@
  * Describes all possible octant corner connections.
  */
 
-export const edges = [
+export const edges = /* @__PURE__ */ [
 
 	// X-Axis.
 	new Uint8Array([0, 4]),

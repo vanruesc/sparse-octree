@@ -2,7 +2,7 @@ import { Vector3 } from "three";
 import { Octant } from "../core/Octant.js";
 import { PointData } from "./PointData.js";
 
-const p = new Vector3();
+const p = /* @__PURE__ */ new Vector3();
 
 /**
  * An octant that contains points.

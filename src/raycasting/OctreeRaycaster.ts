@@ -5,7 +5,7 @@ import { findEntryOctant } from "./findEntryOctant.js";
 import { findNextOctant } from "./findNextOctant.js";
 import { intersectOctree } from "./intersectOctree.js";
 
-const flags = new RaycastingFlags();
+const flags = /* @__PURE__ */ new RaycastingFlags();
 
 /**
  * Finds all octants that intersect with the given ray.

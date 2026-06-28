@@ -3,7 +3,7 @@ import { DataContainer } from "./DataContainer.js";
 import { Node } from "./Node.js";
 import { layout } from "./layout.js";
 
-const c = new Vector3();
+const c = /* @__PURE__ */ new Vector3();
 
 /**
  * A cubic octant.
