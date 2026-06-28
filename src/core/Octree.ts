@@ -1,9 +1,10 @@
-import { Box3, Frustum, Raycaster, Vector3 } from "three";
+import { Box3, Raycaster, Vector3 } from "three";
 import { OctreeRaycaster } from "../raycasting/index.js";
-import { OctreeIterator } from "./OctreeIterator.js";
+import { BoxIntersector } from "./BoxIntersector.js";
 import { Node } from "./Node.js";
-import { Tree } from "./Tree.js";
 import { Octant } from "./Octant.js";
+import { OctreeIterator } from "./OctreeIterator.js";
+import { Tree } from "./Tree.js";
 
 const b = /* @__PURE__ */ new Box3();
 
@@ -48,7 +49,7 @@ function getDepth(node: Node): number {
  * @param result - A list to be filled with nodes that intersect with the region.
  */
 
-function cull(node: Node, region: Frustum | Box3, result: Node[]): void {
+function cull(node: Node, region: BoxIntersector, result: Node[]): void {
 
 	const children = node.children;
 
@@ -169,7 +170,7 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return The nodes.
 	 */
 
-	cull(region: Frustum | Box3): Octant<T>[] {
+	cull(region: BoxIntersector): Octant<T>[] {
 
 		const result: Octant<T>[] = [];
 		cull(this.root, region, result);
@@ -226,7 +227,7 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return An iterator.
 	 */
 
-	leaves(region: Frustum | Box3 | null = null): OctreeIterator<T> {
+	leaves(region: BoxIntersector | null = null): OctreeIterator<T> {
 
 		return new OctreeIterator(this.root, region);
 

@@ -1,6 +1,7 @@
-import { Box3, Frustum } from "three";
+import { Box3 } from "three";
 import { Node } from "./Node.js";
 import { Octant } from "./Octant.js";
+import { BoxIntersector } from "./BoxIntersector.js";
 
 const b = /* @__PURE__ */ new Box3();
 
@@ -22,7 +23,7 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 	 * A region used for octree culling.
 	 */
 
-	private region: Frustum | Box3 | null;
+	private region: BoxIntersector | null;
 
 	/**
 	 * An iterator result.
@@ -49,7 +50,7 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 	 * @param region - A cull region.
 	 */
 
-	constructor(root: Node, region: Frustum | Box3 | null = null) {
+	constructor(root: Node, region: BoxIntersector | null = null) {
 
 		this.root = root;
 		this.region = region;
