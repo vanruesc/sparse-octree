@@ -41,60 +41,41 @@
 	"files": [
 		"dist"
 	],
-	"ava": {
-		"failFast": true,
-		"files": [
-			"test/**/*.js"
-		]
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"esbuild"
-		]
-	},
 	"scripts": {
-		"ava": "ava",
-		"build": "run-p build:js:min build:dts",
-		"build:js": "node esbuild",
-		"build:js:min": "node esbuild -m",
-		"build:dts": "tsc -p tsconfig.d.json",
-		"postbuild": "cpy \"demo/static/**/*\" public/demo",
+		"build": "node esbuild",
 		"clean": "del-cli dist public",
-		"doc": "typedoc --plugin typedoc-plugin-mdn-links",
-		"lint": "run-p lint:*",
-		"lint:js": "eslint --fix src demo/src",
-		"lint:tsc": "tsc --noEmit",
-		"prepublishOnly": "npm test",
-		"start": "serve public",
-		"test": "run-s lint clean build ava doc",
-		"prewatch": "run-s clean build:js build:dts postbuild",
+		"copy": "cpy \"demo/static/**/*\" public/demo",
+		"dts": "tsc -p tsconfig.d.json",
+		"lint": "eslint --fix src demo/src test",
+		"start": "serve public -Lu",
+		"pretest": "run-s clean dts lint build copy",
+		"test": "node --import tsx --test",
+		"posttest": "typedoc --plugin typedoc-plugin-mdn-links",
+		"prewatch": "run-s clean dts copy",
 		"watch": "run-p watch:* start",
-		"watch:tsc": "tsc --noEmit --watch --preserveWatchOutput",
-		"watch:js": "node esbuild -w"
+		"watch:js": "node esbuild -w",
+		"prepublishOnly": "run-s test"
 	},
 	"peerDependencies": {
 		"three": "0.x.x"
 	},
 	"devDependencies": {
 		"@tweakpane/core": "2.x.x",
-		"@types/node": "24.x.x",
+		"@types/node": "26.x.x",
 		"@types/three": "0.x.x",
-		"@typescript-eslint/eslint-plugin": "8.x.x",
-		"@typescript-eslint/parser": "8.x.x",
-		"ava": "6.x.x",
-		"cpy-cli": "6.x.x",
+		"cpy-cli": "7.x.x",
 		"del-cli": "7.x.x",
-		"esbuild": "0.25.x",
-		"eslint": "9.x.x",
-		"eslint-config-aether": "2.x.x",
+		"esbuild": "0.28.x",
+		"eslint": "10.x.x",
+		"eslint-config-aether": "3.x.x",
 		"npm-run-all": "4.x.x",
 		"serve": "14.x.x",
 		"spatial-controls": "6.x.x",
 		"three": "0.x.x",
-		"tslib": "2.x.x",
+		"tsx": "4.x.x",
 		"tweakpane": "4.x.x",
-		"typedoc": "0.x.x",
+		"typedoc": "0.28.x",
 		"typedoc-plugin-mdn-links": "5.x.x",
-		"typescript": "5.9.x"
+		"typescript": "6.0.x"
 	}
 }
