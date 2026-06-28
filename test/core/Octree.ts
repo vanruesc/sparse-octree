@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { Vector3 } from "three";
-import { Octant, Octree } from "sparse-octree";
+import { CubicOctant, Octant, Octree } from "sparse-octree";
 
 const root = new Octant(
 	new Vector3(-1, -1, -1),
@@ -12,7 +12,15 @@ describe("Octree", () => {
 
 	it("can be instantiated", () => {
 
-		assert.doesNotThrow(() => new Octree(root));
+		assert.doesNotThrow(() => new Octree(new Octant<number>(
+			new Vector3(-1, -1, -1),
+			new Vector3(1, 1, 1)
+		)));
+
+		assert.doesNotThrow(() => new Octree(new CubicOctant<string>(
+			new Vector3(-1, -1, -1),
+			2
+		)));
 
 	});
 
