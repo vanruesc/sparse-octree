@@ -123,7 +123,7 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 	/**
 	 * Constructs a new octree.
 	 *
-	 * @param root - The root node. See {@link Octant} or {@link CubicOctant}.
+	 * @param root - The root node.
 	 */
 
 	constructor(root: T) {
