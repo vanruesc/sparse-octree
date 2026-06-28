@@ -27,6 +27,10 @@ Temporary Items
 .idea
 .vscore
 
+# AI
+.agents
+.codex
+
 # Node
 node_modules
 package-lock.json
