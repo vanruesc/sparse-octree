@@ -7,7 +7,6 @@ A sparse, pointer-based octree data structure. For a linear implementation see [
 
 *[Demo](https://vanruesc.github.io/sparse-octree/demo)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/s/sparse-octree-3yn8o)&ensp;&middot;&ensp;[Documentation](https://vanruesc.github.io/sparse-octree/docs)*
 
-
 ## Installation
 
 This library requires the peer dependency [three](https://github.com/mrdoob/three.js/).
@@ -15,7 +14,6 @@ This library requires the peer dependency [three](https://github.com/mrdoob/thre
 ```sh
 npm install three sparse-octree
 ``` 
-
 
 ## Usage
 
@@ -58,7 +56,6 @@ export class CubicOctree extends Octree {
 }
 ```
 
-
 ## Features
 
 - Pointer-based structure
@@ -70,7 +67,6 @@ export class CubicOctree extends Octree {
 - Supports culling
 - Can be extended to manage any data
 - Provides a point management implementation
-
 
 ## Contributing
 
