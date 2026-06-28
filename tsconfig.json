@@ -1,20 +1,26 @@
 {
-	"include": ["./*.js", "./src", "./demo/src", "./test"],
+	"include": [
+		"./src",
+		"./test",
+		"./demo/src"
+	],
 	"compilerOptions": {
-		"baseUrl": ".",
+		// File Layout
+		"rootDir": ".",
 		"outDir": "./dist",
-		"moduleResolution": "node",
-		"module": "ESNext",
-		"target": "ESNext",
-		"strict": true,
-		"sourceMap": false,
-		"skipLibCheck": true,
-		"importHelpers": true,
-		"resolveJsonModule": true,
+		// Environment Settings
+		"moduleResolution": "bundler",
+		"module": "esnext",
+		"target": "es2025",
+		"types": ["node"],
+		// Style Options
+		"noImplicitReturns": true,
 		"noImplicitOverride": true,
+		// Other
 		"allowSyntheticDefaultImports": true,
-		"paths": {
-			"sparse-octree": ["./src/index.js"]
-		}
+		"noUncheckedSideEffectImports": true,
+		"resolveJsonModule": true,
+		"sourceMap": false,
+		"skipLibCheck": true
 	}
 }
