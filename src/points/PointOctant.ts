@@ -10,7 +10,7 @@ const p = /* @__PURE__ */ new Vector3();
  * @param T - The type of the data.
  */
 
-export class PointOctant<T> extends Octant<PointData<T>> {
+export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 
 	/**
 	 * Constructs a new point octant.

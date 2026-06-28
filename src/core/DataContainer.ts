@@ -4,7 +4,7 @@
  * @param T - The type of the data.
  */
 
-export interface DataContainer<T> {
+export interface DataContainer<T = unknown> {
 
 	/**
 	 * The data.

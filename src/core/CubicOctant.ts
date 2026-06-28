@@ -11,10 +11,10 @@ const c = /* @__PURE__ */ new Vector3();
  * @param T - The type of the data.
  */
 
-export class CubicOctant<T> implements Node, DataContainer<T> {
+export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 
 	min: Vector3;
-	children: Node[] | null;
+	children: CubicOctant<T>[] | null;
 	data: T | null;
 
 	/**
@@ -87,12 +87,13 @@ export class CubicOctant<T> implements Node, DataContainer<T> {
 		const mid = this.getCenter(c);
 		const halfSize = this.size * 0.5;
 
-		const children: Node[] = this.children = [];
+		const children: CubicOctant<T>[] = [];
+		this.children = children;
 
 		for(let i = 0; i < 8; ++i) {
 
 			const combination = layout[i];
-			const child = new (this.constructor as typeof CubicOctant)();
+			const child = new (this.constructor as typeof CubicOctant<T>)();
 
 			child.min.set(
 				(combination[0] === 0) ? min.x : mid.x,

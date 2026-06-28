@@ -7,7 +7,7 @@ import { PointContainer } from "./PointContainer.js";
  * @param T - The type of the data.
  */
 
-export class RayPointIntersection<T> extends PointContainer<T> {
+export class RayPointIntersection<T = unknown> extends PointContainer<T> {
 
 	/**
 	 * The shortest distance from the point to the ray.

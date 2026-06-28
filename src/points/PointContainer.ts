@@ -7,7 +7,7 @@ import { DataContainer } from "../core/DataContainer.js";
  * @param T - The type of the data.
  */
 
-export class PointContainer<T> implements DataContainer<T> {
+export class PointContainer<T = unknown> implements DataContainer<T> {
 
 	data: T | null;
 

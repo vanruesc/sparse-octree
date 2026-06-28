@@ -1,13 +1,16 @@
 import { Box3, Frustum } from "three";
 import { Node } from "./Node.js";
+import { Octant } from "./Octant.js";
 
 const b = /* @__PURE__ */ new Box3();
 
 /**
  * An octree iterator.
+ *
+ * @param T - The type of the data stored in the octants.
  */
 
-export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
+export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterable<Octant<T>> {
 
 	/**
 	 * The root node.
@@ -25,7 +28,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	 * An iterator result.
 	 */
 
-	private result!: IteratorResult<Node>;
+	private result!: IteratorResult<Octant<T>>;
 
 	/**
 	 * A node trace.
@@ -60,7 +63,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 	 * @return This iterator.
 	 */
 
-	reset(): OctreeIterator {
+	reset(): this {
 
 		const root = this.root;
 
@@ -83,13 +86,13 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 		this.result = {
 			done: false
-		} as IteratorResult<Node>;
+		} as IteratorResult<Octant<T>>;
 
 		return this;
 
 	}
 
-	next(): IteratorResult<Node> {
+	next(): IteratorResult<Octant<T>> {
 
 		const region = this.region;
 		const indices = this.indices;
@@ -153,7 +156,7 @@ export class OctreeIterator implements Iterator<Node>, Iterable<Node> {
 
 	}
 
-	[Symbol.iterator](): Iterator<Node> {
+	[Symbol.iterator](): Iterator<Octant<T>> {
 
 		return this;
 

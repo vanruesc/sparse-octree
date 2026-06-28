@@ -497,7 +497,7 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
  * @param T - The type of the data.
  */
 
-export class PointOctree<T> extends Octree {
+export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	/**
 	 * An octant boundary bias.

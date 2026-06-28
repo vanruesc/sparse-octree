@@ -7,7 +7,7 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
  * @param T - The type of the data.
  */
 
-export class PointData<T> {
+export class PointData<T = unknown> {
 
 	/**
 	 * The points.
