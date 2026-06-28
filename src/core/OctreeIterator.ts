@@ -1,6 +1,5 @@
 import { Box3 } from "three";
 import { Node } from "./Node.js";
-import { Octant } from "./Octant.js";
 import { BoxIntersector } from "./BoxIntersector.js";
 
 const b = /* @__PURE__ */ new Box3();
@@ -8,16 +7,16 @@ const b = /* @__PURE__ */ new Box3();
 /**
  * An octree iterator.
  *
- * @param T - The type of the data stored in the octants.
+ * @param T - The type of the octants.
  */
 
-export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterable<Octant<T>> {
+export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Iterable<T> {
 
 	/**
 	 * The root node.
 	 */
 
-	private root: Node;
+	private root: T;
 
 	/**
 	 * A region used for octree culling.
@@ -29,7 +28,7 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 	 * An iterator result.
 	 */
 
-	private result!: IteratorResult<Octant<T>>;
+	private result!: IteratorResult<T>;
 
 	/**
 	 * A node trace.
@@ -50,7 +49,7 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 	 * @param region - A cull region.
 	 */
 
-	constructor(root: Node, region: BoxIntersector | null = null) {
+	constructor(root: T, region: BoxIntersector | null = null) {
 
 		this.root = root;
 		this.region = region;
@@ -87,13 +86,13 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 
 		this.result = {
 			done: false
-		} as IteratorResult<Octant<T>>;
+		} as IteratorResult<T>;
 
 		return this;
 
 	}
 
-	next(): IteratorResult<Octant<T>> {
+	next(): IteratorResult<T> {
 
 		const region = this.region;
 		const indices = this.indices;
@@ -157,7 +156,7 @@ export class OctreeIterator<T = unknown> implements Iterator<Octant<T>>, Iterabl
 
 	}
 
-	[Symbol.iterator](): Iterator<Octant<T>> {
+	[Symbol.iterator](): Iterator<T> {
 
 		return this;
 

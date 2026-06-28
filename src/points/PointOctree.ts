@@ -497,7 +497,7 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
  * @param T - The type of the data.
  */
 
-export class PointOctree<T = unknown> extends Octree<PointData<T>> {
+export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	/**
 	 * An octant boundary bias.
@@ -585,7 +585,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 	 * @return The amount of points.
 	 */
 
-	countPoints(octant: PointOctant<T> = this.root as PointOctant<T>): number {
+	countPoints(octant: PointOctant<T> = this.root): number {
 
 		return countPoints(octant);
 
@@ -603,7 +603,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	set(point: Vector3, data: T): boolean {
 
-		return set(point, data, this, this.root as PointOctant<T>, 0);
+		return set(point, data, this, this.root, 0);
 
 	}
 
@@ -616,7 +616,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	remove(point: Vector3): T | null {
 
-		return remove(point, this, this.root as PointOctant<T>, null);
+		return remove(point, this, this.root, null);
 
 	}
 
@@ -629,7 +629,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	get(point: Vector3): T | null {
 
-		return get(point, this, this.root as PointOctant<T>);
+		return get(point, this, this.root);
 
 	}
 
@@ -643,7 +643,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	move(point: Vector3, position: Vector3): T | null {
 
-		return move(point, position, this, this.root as PointOctant<T>, null, 0);
+		return move(point, position, this, this.root, null, 0);
 
 	}
 
@@ -658,8 +658,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 
 	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> | null {
 
-		const root = this.root as PointOctant<T>;
-		const result = findNearestPoint(point, maxDistance, skipSelf, root);
+		const result = findNearestPoint(point, maxDistance, skipSelf, this.root);
 
 		if(result !== null && result.point !== null) {
 
@@ -683,7 +682,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
 
 		const result: PointContainer<T>[] = [];
-		findPoints(point, radius, skipSelf, this.root as PointOctant<T>, result);
+		findPoints(point, radius, skipSelf, this.root, result);
 		return result;
 
 	}
@@ -698,7 +697,7 @@ export class PointOctree<T = unknown> extends Octree<PointData<T>> {
 	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
 
 		const result: RayPointIntersection<T>[] = [];
-		const octants = super.getIntersectingNodes(raycaster) as PointOctant<T>[];
+		const octants = super.getIntersectingNodes(raycaster);
 
 		if(octants.length > 0) {
 

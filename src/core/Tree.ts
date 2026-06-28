@@ -4,7 +4,7 @@ import { Node } from "./Node.js";
  * A tree data structure.
  */
 
-export interface Tree extends Node {
+export interface Tree<T extends Node = Node> extends Node {
 
 	/**
 	 * Calculates the depth of this tree.
@@ -21,6 +21,6 @@ export interface Tree extends Node {
 	 * @return The nodes.
 	 */
 
-	findNodesByLevel(level: number): Node[];
+	findNodesByLevel(level: number): T[];
 
 }

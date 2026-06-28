@@ -2,7 +2,6 @@ import { Box3, Raycaster, Vector3 } from "three";
 import { OctreeRaycaster } from "../raycasting/index.js";
 import { BoxIntersector } from "./BoxIntersector.js";
 import { Node } from "./Node.js";
-import { Octant } from "./Octant.js";
 import { OctreeIterator } from "./OctreeIterator.js";
 import { Tree } from "./Tree.js";
 
@@ -110,16 +109,16 @@ function findNodesByLevel(node: Node, level: number, depth: number, result: Node
 /**
  * A pointer-based octree that subdivides space for fast spatial searches.
  *
- * @param T - The type of the data stored in the octants.
+ * @param T - The type of the octants.
  */
 
-export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
+export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 
 	/**
 	 * The root octant.
 	 */
 
-	protected root: Octant<T>;
+	protected root: T;
 
 	/**
 	 * Constructs a new octree.
@@ -127,7 +126,7 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @param root - The root node. See {@link Octant} or {@link CubicOctant}.
 	 */
 
-	constructor(root: Octant<T>) {
+	constructor(root: T) {
 
 		this.root = root;
 
@@ -145,9 +144,9 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 
 	}
 
-	get children(): Octant<T>[] | null {
+	get children(): T[] | null {
 
-		return this.root.children ?? null;
+		return (this.root.children ?? null) as T[] | null;
 
 	}
 
@@ -170,9 +169,9 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return The nodes.
 	 */
 
-	cull(region: BoxIntersector): Octant<T>[] {
+	cull(region: BoxIntersector): T[] {
 
-		const result: Octant<T>[] = [];
+		const result: T[] = [];
 		cull(this.root, region, result);
 		return result;
 
@@ -197,9 +196,9 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return The nodes.
 	 */
 
-	findNodesByLevel(level: number): Octant<T>[] {
+	findNodesByLevel(level: number): T[] {
 
-		const result: Octant<T>[] = [];
+		const result: T[] = [];
 		findNodesByLevel(this.root, level, 0, result);
 		return result;
 
@@ -212,9 +211,9 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return The intersecting nodes.
 	 */
 
-	getIntersectingNodes(raycaster: Raycaster): Octant<T>[] {
+	getIntersectingNodes(raycaster: Raycaster): T[] {
 
-		return OctreeRaycaster.intersectOctree(this.root, raycaster.ray) as Octant<T>[];
+		return OctreeRaycaster.intersectOctree(this.root, raycaster.ray) as T[];
 
 	}
 
@@ -229,7 +228,7 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 
 	leaves(region: BoxIntersector | null = null): OctreeIterator<T> {
 
-		return new OctreeIterator(this.root, region);
+		return new OctreeIterator<T>(this.root, region);
 
 	}
 
@@ -239,7 +238,7 @@ export class Octree<T = unknown> implements Tree, Iterable<Octant<T>> {
 	 * @return An iterator.
 	 */
 
-	[Symbol.iterator](): Iterator<Octant<T>> {
+	[Symbol.iterator](): Iterator<T> {
 
 		return new OctreeIterator<T>(this.root);
 

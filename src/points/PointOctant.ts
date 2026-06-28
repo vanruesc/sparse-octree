@@ -147,8 +147,7 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 
 			for(let i = 0, l = children.length; i < l; ++i) {
 
-				const child = children[i] as PointOctant<T>;
-				const childData = child.data;
+				const childData = children[i].data;
 
 				if(childData !== null) {
 
