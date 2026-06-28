@@ -2,7 +2,7 @@
  * A lookup-table containing octant ids. Used to determine the exit plane from an octant.
  */
 
-const octantTable = /* @__PURE__ */ [
+const octantTable = [
 
 	new Uint8Array([4, 2, 1]),
 	new Uint8Array([5, 3, 8]),

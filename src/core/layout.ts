@@ -11,7 +11,7 @@
  * This common layout is crucial for positional assumptions.
  */
 
-export const layout = /* @__PURE__ */ [
+export const layout = [
 
 	new Uint8Array([0, 0, 0]),
 	new Uint8Array([0, 0, 1]),
