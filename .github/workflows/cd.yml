@@ -18,7 +18,7 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v7
       - name: Install PNPM
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.0.9
         with:
           version: 11
       - name: Install Node
