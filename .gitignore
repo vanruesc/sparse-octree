@@ -25,7 +25,7 @@ Temporary Items
 # IDE settings
 .project
 .idea
-.vscore
+.vscode
 
 # AI
 .agents
