@@ -228,4 +228,72 @@ describe("PointOctree", () => {
 
 	});
 
+	it("moves points at splitting planes into the correct octant", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+
+		octree.set(new Vector3(-0.5, 0.5, 1), "A");
+		octree.set(new Vector3(0.5, -1, 0), "B");
+		assert.equal(octree.countPoints(), 2);
+
+		octree.move(new Vector3(-0.5, 0.5, 1), new Vector3(-0.5, 0.5, 0)); // z = 0 is a splitting plane
+		assert.equal(octree.countPoints(), 2);
+
+		octree.set(new Vector3(-0.5, 0.5, 0), "A2");
+		assert.equal(octree.countPoints(), 2);
+		assert.deepEqual(octree.findPoints(new Vector3(-0.5, 0.5, 0), 0.01).map(p => p.data), ["A2"]);
+
+		assert.equal(octree.remove(new Vector3(-0.5, 0.5, 0)), "A2");
+		assert.equal(octree.get(new Vector3(-0.5, 0.5, 0)), null);
+
+	});
+
+	it("moves points at splitting planes below the root into the correct octant", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+		const point = new Vector3(-0.75, -0.25, 0);
+		const position = new Vector3(-0.75, -0.25, -0.5);
+
+		octree.set(point, "A");
+		octree.set(new Vector3(-0.25, -1, -0.5), "B");
+		assert.equal(octree.getDepth(), 2);
+		assert.equal(octree.countPoints(), 2);
+
+		// Both positions belong to the same root child; z = -0.5 splits its children.
+		assert.equal(octree.move(point, position), "A");
+		assert.equal(octree.countPoints(), 2);
+
+		octree.set(position, "A2");
+		assert.equal(octree.countPoints(), 2);
+		assert.deepEqual(octree.findPoints(position, 0.01).map(p => p.data), ["A2"]);
+
+		assert.equal(octree.remove(position), "A2");
+		assert.equal(octree.get(position), null);
+
+	});
+
+	it("moves points in overlapping biased octants into the correct octant", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0.125, 1, 8);
+		const point = new Vector3(-0.5, 0.5, 1);
+		const position = new Vector3(-0.5, 0.5, 0.0625);
+
+		octree.set(point, "A");
+		octree.set(new Vector3(0.5, -1, 0), "B");
+		assert.equal(octree.getDepth(), 1);
+		assert.equal(octree.countPoints(), 2);
+
+		// The destination lies inside the overlap, away from the z = 0 splitting plane.
+		assert.equal(octree.move(point, position), "A");
+		assert.equal(octree.countPoints(), 2);
+
+		octree.set(position, "A2");
+		assert.equal(octree.countPoints(), 2);
+		assert.deepEqual(octree.findPoints(position, 0.125).map(p => p.data), ["A2"]);
+
+		assert.equal(octree.remove(position), "A2");
+		assert.equal(octree.get(position), null);
+
+	});
+
 });
