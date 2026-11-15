@@ -258,21 +258,56 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | typeof NOT_FOUND {
 
 	const children = octant.children;
+	const bias = octree.getBias();
 	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
-	if(octant.contains(point, octree.getBias())) {
+	if(octant.contains(point, bias)) {
 
-		if(octant.contains(position, octree.getBias())) {
+		if(octant.contains(position, bias)) {
 
 			// The point and the new position both fall into the current octant.
 			if(children !== null) {
 
-				++depth;
+				let source: PointOctant<T> | null = null;
+				let destination: PointOctant<T> | null = null;
 
-				for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
+				// Match set() and redistribute(): the first containing child owns the point.
+				for(let i = 0, l = children.length; (source === null || destination === null) && i < l; ++i) {
 
 					const child = children[i] as PointOctant<T>;
-					result = move(point, position, octree, child, octant, depth);
+
+					if(source === null && child.contains(point, bias)) {
+
+						source = child;
+
+					}
+
+					if(destination === null && child.contains(position, bias)) {
+
+						destination = child;
+
+					}
+
+				}
+
+				if(source !== null) {
+
+					if(source === destination) {
+
+						result = move(point, position, octree, source, octant, depth + 1);
+
+					} else {
+
+						result = remove(point, octree, source, octant);
+
+						if(result !== NOT_FOUND) {
+
+							// The paths diverge here. Removal may merge children, so reinsert via this octant.
+							set(position, result, octree, octant, depth);
+
+						}
+
+					}
 
 				}
 
