@@ -14,6 +14,31 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
 const NOT_FOUND = Symbol("NOT_FOUND");
 
 /**
+ * Removes a point and its data by replacing them with the last entry.
+ *
+ * @param pointData - The point collection.
+ * @param index - The index of the entry to remove.
+ */
+
+function swapAndPop<T>(pointData: PointData<T>, index: number): void {
+
+	const points = pointData.points;
+	const data = pointData.data;
+	const last = points.length - 1;
+
+	if(index < last) {
+
+		points[index] = points[last];
+		data[index] = data[last];
+
+	}
+
+	points.pop();
+	data.pop();
+
+}
+
+/**
  * Recursively counts the points that are in the given octant.
  *
  * @param octant - An octant.
@@ -164,21 +189,8 @@ function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T
 
 				if(points[i].equals(point)) {
 
-					const last = l - 1;
 					result = data[i];
-
-					// If the point is NOT the last one in the array:
-					if(i < last) {
-
-						// Overwrite with the last point and data entry.
-						points[i] = points[last];
-						data[i] = data[last];
-
-					}
-
-					// Drop the last entry.
-					points.pop();
-					data.pop();
+					swapAndPop(pointData, i);
 
 					if(parent !== null && countPoints(parent) <= octree.getMaxPoints()) {
 
