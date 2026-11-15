@@ -126,7 +126,14 @@ export class OctreeHelper extends Group {
 	 * Destroys the helper geometry.
 	 */
 
-	dispose(): void {
+	override dispose(): void {
+
+		// Object3D.dispose was added in three r186.
+		if(typeof super.dispose !== "undefined") {
+
+			super.dispose();
+
+		}
 
 		const groups = this.children;
 
