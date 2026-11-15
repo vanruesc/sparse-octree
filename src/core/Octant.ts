@@ -48,6 +48,8 @@ export class Octant<T = unknown> implements Node, DataContainer<T> {
 
 	/**
 	 * Splits this octant into eight smaller ones.
+	 *
+	 * @remarks The current child octants will be discarded.
 	 */
 
 	split(): void {
