@@ -123,6 +123,45 @@ describe("PointOctree", () => {
 
 	});
 
+	it("does not insert a point when moving a missing point", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 2);
+		const point = new Vector3(-0.5, -0.5, -0.5);
+		const position = new Vector3(0.5, 0.5, 0.5);
+
+		octree.set(new Vector3(-0.75, -0.75, -0.75), "A");
+		octree.set(new Vector3(0.75, -0.75, -0.75), "B");
+
+		assert.equal(octree.move(point, position), null);
+		assert.equal(octree.countPoints(), 2);
+		assert.equal(octree.get(position), null);
+		assert.equal(octree.remove(point), null);
+
+	});
+
+	it("distinguishes null and undefined data from missing points when moving", () => {
+
+		for(const data of [null, undefined]) {
+
+			const octree = new PointOctree<null | undefined>(box.min, box.max, 0, 1, 2);
+			const point = new Vector3(0, 0, 0);
+			const position = new Vector3(0.75, 0.75, 0.75);
+
+			octree.set(point, data);
+			octree.set(new Vector3(0.75, -0.75, -0.75), data);
+
+			assert.equal(octree.move(point, position), data);
+			assert.equal(octree.countPoints(), 2);
+			assert.equal(octree.get(point), null);
+			assert.equal(octree.get(position), data);
+			assert.equal(octree.remove(position), data);
+			assert.equal(octree.countPoints(), 1);
+			assert.equal(octree.get(position), null);
+
+		}
+
+	});
+
 	it("can find the nearest point", () => {
 
 		const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
