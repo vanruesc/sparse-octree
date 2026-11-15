@@ -123,6 +123,120 @@ describe("PointOctree", () => {
 
 	});
 
+	it("removes points that are moved outside the tree", () => {
+
+		// maxPoints = 1 forces a split, testing removal from a subdivided tree.
+		// maxPoints = 8 keeps both points in the root leaf, testing removal without subdivision.
+		for(const maxPoints of [1, 8]) {
+
+			const octree = new PointOctree<string>(box.min, box.max, 0, maxPoints, 2);
+			const point = new Vector3(-0.5, -0.5, -0.5);
+			const other = new Vector3(0.5, 0.5, 0.5);
+			const position = new Vector3(2, 0, 0);
+
+			octree.set(point, "A");
+			octree.set(other, "B");
+
+			assert.equal(octree.move(point, position), "A");
+			assert.equal(octree.countPoints(), 1);
+			assert.equal(octree.get(point), null);
+			assert.equal(octree.get(position), null);
+			assert.equal(octree.get(other), "B");
+			assert.equal(octree.move(point, position), null);
+			assert.equal(octree.countPoints(), 1);
+
+		}
+
+	});
+
+	it("overwrites an occupied position when moving between branches", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 2);
+		const point = new Vector3(-0.5, -0.5, -0.5);
+		const position = new Vector3(0.5, 0.5, 0.5);
+
+		octree.set(point, "A");
+		octree.set(position, "B");
+		assert.equal(octree.getDepth(), 1);
+		assert.equal(octree.countPoints(), 2);
+
+		assert.equal(octree.move(point, position), "A");
+		assert.equal(octree.countPoints(), 1);
+		assert.equal(octree.get(point), null);
+		assert.equal(octree.get(position), "A");
+		assert.equal(octree.remove(position), "A");
+		assert.equal(octree.countPoints(), 0);
+		assert.equal(octree.get(position), null);
+
+	});
+
+	it("overwrites an occupied position when moving within a leaf", () => {
+
+		const point = new Vector3(-0.5, -0.5, -0.5);
+		const position = new Vector3(0.5, 0.5, 0.5);
+		const other = new Vector3(0, 0, 0);
+		const points = [point, position, other];
+		const data = ["A", "B", "C"];
+
+		// Destination last, source last, or an unrelated point last.
+		for(const order of [[0, 1], [1, 0], [0, 1, 2]]) {
+
+			const octree = new PointOctree<string>(box.min, box.max);
+
+			for(const index of order) {
+
+				octree.set(points[index], data[index]);
+
+			}
+
+			assert.equal(octree.getDepth(), 0);
+			assert.equal(octree.move(point, position), "A");
+			assert.equal(octree.countPoints(), order.length - 1);
+			assert.equal(octree.get(point), null);
+			assert.equal(octree.get(position), "A");
+			assert.equal(octree.remove(position), "A");
+			assert.equal(octree.countPoints(), order.length - 2);
+			assert.equal(octree.get(position), null);
+
+			if(order.length === 3) {
+
+				assert.equal(octree.get(other), "C");
+
+			}
+
+		}
+
+	});
+
+	it("preserves points moved to their current position", () => {
+
+		for(const maxPoints of [1, 8]) {
+
+			for(const clonePosition of [false, true]) {
+
+				const octree = new PointOctree<string>(box.min, box.max, 0, maxPoints, 2);
+				const point = new Vector3(-0.5, -0.5, -0.5);
+				const other = new Vector3(0.5, 0.5, 0.5);
+				const position = clonePosition ? point.clone() : point;
+
+				octree.set(point, "A");
+				octree.set(other, "B");
+
+				assert.equal(octree.move(point, position), "A");
+				assert.equal(octree.countPoints(), 2);
+				assert.equal(octree.get(point), "A");
+				assert.equal(octree.get(other), "B");
+				assert.equal(octree.remove(point), "A");
+				assert.equal(octree.countPoints(), 1);
+				assert.equal(octree.get(point), null);
+				assert.equal(octree.get(other), "B");
+
+			}
+
+		}
+
+	});
+
 	it("does not insert a point when moving a missing point", () => {
 
 		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 2);
