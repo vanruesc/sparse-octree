@@ -83,65 +83,53 @@ function countPoints<T>(octant: PointOctant<T>): number {
 function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOctant<T> | null,
 	depth: number): boolean {
 
-	let exists = false;
-	let done = false;
+	if(octant === null || !octant.contains(point, octree.getBias())) {
 
-	if(octant !== null && octant.contains(point, octree.getBias())) {
+		return false;
 
-		let children = octant.children;
+	}
 
-		if(children === null) {
+	let children = octant.children;
 
-			let index = 0;
+	if(children === null) {
 
-			if(octant.data === null) {
+		const pointData = octant.data ??= new PointData<T>();
+		const points = pointData.points;
 
-				octant.data = new PointData<T>();
+		for(let i = 0, l = points.length; i < l; ++i) {
 
-			} else {
+			if(points[i].equals(point)) {
 
-				const pointData = octant.data;
-				const points = pointData.points;
-
-				for(let i = 0, l = points.length; !exists && i < l; ++i) {
-
-					exists = points[i].equals(point);
-					index = i;
-
-				}
-
-			}
-
-			const pointData = octant.data;
-
-			if(exists) {
-
-				pointData.data[index] = data;
-				done = true;
-
-			} else if(pointData.points.length < octree.getMaxPoints() || depth === octree.getMaxDepth()) {
-
-				pointData.points.push(point.clone());
-				pointData.data.push(data);
-				done = true;
-
-			} else {
-
-				octant.split();
-				octant.redistribute(octree.getBias());
-				children = octant.children;
+				pointData.data[i] = data;
+				return true;
 
 			}
 
 		}
 
-		if(children !== null) {
+		if(points.length < octree.getMaxPoints() || depth === octree.getMaxDepth()) {
 
-			++depth;
+			points.push(point.clone());
+			pointData.data.push(data);
+			return true;
 
-			for(let i = 0, l = children.length; !done && i < l; ++i) {
+		}
 
-				done = set(point, data, octree, children[i] as PointOctant<T>, depth);
+		octant.split();
+		octant.redistribute(octree.getBias());
+		children = octant.children;
+
+	}
+
+	if(children !== null) {
+
+		++depth;
+
+		for(let i = 0, l = children.length; i < l; ++i) {
+
+			if(set(point, data, octree, children[i] as PointOctant<T>, depth)) {
+
+				return true;
 
 			}
 
@@ -149,7 +137,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
 
 	}
 
-	return done;
+	return false;
 
 }
 
