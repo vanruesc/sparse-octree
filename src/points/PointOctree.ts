@@ -261,6 +261,61 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 }
 
 /**
+ * Moves a point within a leaf's point collection, replacing any point at the destination.
+ *
+ * @param point - The point.
+ * @param position - The new position.
+ * @param pointData - The point collection.
+ * @return The data entry of the updated point, or NOT_FOUND if it didn't exist.
+ */
+
+function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>): T | typeof NOT_FOUND {
+
+	const points = pointData.points;
+	const data = pointData.data;
+	let result: T | typeof NOT_FOUND = NOT_FOUND;
+
+	let sourceIndex = -1;
+	let destinationIndex = -1;
+
+	for(let i = 0, l = points.length; i < l; ++i) {
+
+		if(sourceIndex === -1 && point.equals(points[i])) {
+
+			// Found the point.
+			sourceIndex = i;
+
+		}
+
+		if(destinationIndex === -1 && position.equals(points[i])) {
+
+			// Found another point at the destination.
+			destinationIndex = i;
+
+		}
+
+	}
+
+	if(sourceIndex !== -1) {
+
+		// The point exists; update its position.
+		points[sourceIndex].copy(position);
+		result = data[sourceIndex];
+
+		if(destinationIndex !== -1) {
+
+			// There was another point at the destination; remove it.
+			swapAndPop(pointData, destinationIndex);
+
+		}
+
+	}
+
+	return result;
+
+}
+
+/**
  * Recursively moves an existing point to a new position.
  *
  * @param point - The point.
@@ -285,114 +340,75 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 	const bias = octree.getBias();
 	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
-	if(octant.contains(point, bias)) {
+	if(!octant.contains(point, bias)) {
 
-		if(octant.contains(position, bias)) {
+		return NOT_FOUND;
 
-			// The point and the new position both fall into the current octant.
-			if(children !== null) {
+	}
 
-				let source: PointOctant<T> | null = null;
-				let destination: PointOctant<T> | null = null;
+	if(!octant.contains(position, bias)) {
 
-				// Match set() and redistribute(): the first containing child owns the point.
-				for(let i = 0, l = children.length; (source === null || destination === null) && i < l; ++i) {
+		// Retrieve the point and remove it.
+		result = remove(point, octree, octant, parent);
 
-					const child = children[i] as PointOctant<T>;
+		if(result !== NOT_FOUND) {
 
-					if(source === null && child.contains(point, bias)) {
+			// Go back to the parent octant and add the updated point.
+			set(position, result, octree, parent, depth - 1);
 
-						source = child;
+		}
 
-					}
+		return result;
 
-					if(destination === null && child.contains(position, bias)) {
+	}
 
-						destination = child;
+	// The point and the new position both fall into the current octant.
+	if(children !== null) {
 
-					}
+		let source: PointOctant<T> | null = null;
+		let destination: PointOctant<T> | null = null;
 
-				}
+		// Match set() and redistribute(): the first containing child owns the point.
+		for(let i = 0, l = children.length; (source === null || destination === null) && i < l; ++i) {
 
-				if(source !== null) {
+			const child = children[i] as PointOctant<T>;
 
-					if(source === destination) {
+			if(source === null && child.contains(point, bias)) {
 
-						result = move(point, position, octree, source, octant, depth + 1);
-
-					} else {
-
-						result = remove(point, octree, source, octant);
-
-						if(result !== NOT_FOUND) {
-
-							// The paths diverge here. Removal may merge children, so reinsert via this octant.
-							set(position, result, octree, octant, depth);
-
-						}
-
-					}
-
-				}
-
-			} else if(octant.data !== null) {
-
-				// No divergence - the point can be updated in place (if it exists).
-				const pointData = octant.data;
-				const points = pointData.points;
-				const data = pointData.data;
-
-				let sourceIndex = -1;
-				let destinationIndex = -1;
-
-				for(let i = 0, l = points.length; i < l; ++i) {
-
-					if(sourceIndex === -1 && point.equals(points[i])) {
-
-						// Found the point.
-						sourceIndex = i;
-
-					}
-
-					if(destinationIndex === -1 && position.equals(points[i])) {
-
-						// Found another point at the destination.
-						destinationIndex = i;
-
-					}
-
-				}
-
-				if(sourceIndex !== -1) {
-
-					// The point exists; update its position.
-					points[sourceIndex].copy(position);
-					result = data[sourceIndex];
-
-					if(destinationIndex !== -1) {
-
-						// There was another point at the destination; remove it.
-						swapAndPop(pointData, destinationIndex);
-
-					}
-
-				}
+				source = child;
 
 			}
 
-		} else {
+			if(destination === null && child.contains(position, bias)) {
 
-			// Retrieve the point and remove it.
-			result = remove(point, octree, octant, parent);
-
-			if(result !== NOT_FOUND) {
-
-				// Go back to the parent octant and add the updated point.
-				set(position, result, octree, parent, depth - 1);
+				destination = child;
 
 			}
 
 		}
+
+		if(source !== null) {
+
+			if(source === destination) {
+
+				return move(point, position, octree, source, octant, depth + 1);
+
+			}
+
+			result = remove(point, octree, source, octant);
+
+			if(result !== NOT_FOUND) {
+
+				// The paths diverge here. Removal may merge children, so reinsert via this octant.
+				set(position, result, octree, octant, depth);
+
+			}
+
+		}
+
+	} else if(octant.data !== null) {
+
+		result = movePoint(point, position, octant.data);
 
 	}
 
