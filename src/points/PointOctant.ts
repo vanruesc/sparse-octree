@@ -51,7 +51,7 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 		const center = this.getCenter(p);
 
 		const dx = point.x - center.x;
-		const dy = point.y - center.x;
+		const dy = point.y - center.y;
 		const dz = point.z - center.z;
 
 		return dx * dx + dy * dy + dz * dz;
