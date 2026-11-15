@@ -212,29 +212,31 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 	const children = octant.children;
 	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
-	if(octant.contains(point, octree.getBias())) {
+	if(!octant.contains(point, octree.getBias())) {
 
-		if(children !== null) {
+		return NOT_FOUND;
 
-			for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
+	}
 
-				result = get(point, octree, children[i] as PointOctant<T>);
+	if(children !== null) {
 
-			}
+		for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
 
-		} else if(octant.data !== null) {
+			result = get(point, octree, children[i] as PointOctant<T>);
 
-			const pointData = octant.data;
-			const points = pointData.points;
-			const data = pointData.data;
+		}
 
-			for(let i = 0, l = points.length; result === NOT_FOUND && i < l; ++i) {
+	} else if(octant.data !== null) {
 
-				if(points[i].equals(point)) {
+		const pointData = octant.data;
+		const points = pointData.points;
+		const data = pointData.data;
 
-					result = data[i];
+		for(let i = 0, l = points.length; i < l; ++i) {
 
-				}
+			if(points[i].equals(point)) {
+
+				return data[i];
 
 			}
 
