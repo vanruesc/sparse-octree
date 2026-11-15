@@ -542,36 +542,42 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 		}
 
-	} else if(octant.data !== null) {
+		return;
 
-		const pointData = octant.data;
-		const points = pointData.points;
-		const data = pointData.data;
+	}
 
-		for(let i = 0, l = points.length; i < l; ++i) {
+	if(octant.data === null) {
 
-			const p = points[i];
+		return;
 
-			if(p.equals(point)) {
+	}
 
-				if(!skipSelf) {
+	const pointData = octant.data;
+	const points = pointData.points;
+	const data = pointData.data;
 
-					result.push(new PointContainer(p.clone(), data[i], 0.0));
+	for(let i = 0, l = points.length; i < l; ++i) {
 
-				}
+		const p = points[i];
 
-			} else {
+		if(p.equals(point)) {
 
-				const rSq = radius * radius;
-				const dSq = p.distanceToSquared(point);
+			if(!skipSelf) {
 
-				if(dSq <= rSq) {
-
-					result.push(new PointContainer(p.clone(), data[i], Math.sqrt(dSq)));
-
-				}
+				result.push(new PointContainer(p.clone(), data[i], 0.0));
 
 			}
+
+			continue;
+
+		}
+
+		const rSq = radius * radius;
+		const dSq = p.distanceToSquared(point);
+
+		if(dSq <= rSq) {
+
+			result.push(new PointContainer(p.clone(), data[i], Math.sqrt(dSq)));
 
 		}
 
