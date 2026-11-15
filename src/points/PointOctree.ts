@@ -275,6 +275,12 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | typeof NOT_FOUND {
 
+	if(point.equals(position)) {
+
+		return get(point, octree, octant);
+
+	}
+
 	const children = octant.children;
 	const bias = octree.getBias();
 	let result: T | typeof NOT_FOUND = NOT_FOUND;
@@ -331,19 +337,42 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 
 			} else if(octant.data !== null) {
 
-				// No divergence - the point can be updated in place.
+				// No divergence - the point can be updated in place (if it exists).
 				const pointData = octant.data;
 				const points = pointData.points;
 				const data = pointData.data;
 
+				let sourceIndex = -1;
+				let destinationIndex = -1;
+
 				for(let i = 0, l = points.length; i < l; ++i) {
 
-					if(point.equals(points[i])) {
+					if(sourceIndex === -1 && point.equals(points[i])) {
 
-						// The point exists! Update its position.
-						points[i].copy(position);
-						result = data[i];
-						break;
+						// Found the point.
+						sourceIndex = i;
+
+					}
+
+					if(destinationIndex === -1 && position.equals(points[i])) {
+
+						// Found another point at the destination.
+						destinationIndex = i;
+
+					}
+
+				}
+
+				if(sourceIndex !== -1) {
+
+					// The point exists; update its position.
+					points[sourceIndex].copy(position);
+					result = data[sourceIndex];
+
+					if(destinationIndex !== -1) {
+
+						// There was another point at the destination; remove it.
+						swapAndPop(pointData, destinationIndex);
 
 					}
 
