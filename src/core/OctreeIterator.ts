@@ -19,10 +19,10 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 	private root: T;
 
 	/**
-	 * A region used for octree culling.
+	 * An intersector used for octree culling.
 	 */
 
-	private region: BoxIntersector | null;
+	private intersector: BoxIntersector | null;
 
 	/**
 	 * An iterator result.
@@ -46,13 +46,13 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 	 * Constructs a new octree iterator.
 	 *
 	 * @param root - The root node.
-	 * @param region - A cull region.
+	 * @param intersector - A cull intersector.
 	 */
 
-	constructor(root: T, region: BoxIntersector | null = null) {
+	constructor(root: T, intersector: BoxIntersector | null = null) {
 
 		this.root = root;
-		this.region = region;
+		this.intersector = intersector;
 		this.reset();
 
 	}
@@ -75,7 +75,7 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 			b.min = root.min;
 			b.max = root.max;
 
-			if(this.region === null || this.region.intersectsBox(b)) {
+			if(this.intersector === null || this.intersector.intersectsBox(b)) {
 
 				this.trace.push(root);
 				this.indices.push(0);
@@ -94,7 +94,7 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 
 	next(): IteratorResult<T> {
 
-		const region = this.region;
+		const intersector = this.intersector;
 		const indices = this.indices;
 		const trace = this.trace;
 
@@ -112,12 +112,12 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 
 					const child = children[index];
 
-					if(region !== null) {
+					if(intersector !== null) {
 
 						b.min = child.min;
 						b.max = child.max;
 
-						if(!region.intersectsBox(b)) {
+						if(!intersector.intersectsBox(b)) {
 
 							// Cull this octant.
 							continue;

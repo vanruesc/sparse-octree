@@ -41,21 +41,21 @@ function getDepth(node: Node): number {
 }
 
 /**
- * Recursively collects octants that lie inside the specified region.
+ * Recursively collects octants that lie inside the specified intersector.
  *
  * @param node - An octant.
- * @param region - A region.
- * @param result - A list to be filled with nodes that intersect with the region.
+ * @param intersector - An intersector.
+ * @param result - A list to be filled with intersecting nodes.
  */
 
-function cull(node: Node, region: BoxIntersector, result: Node[]): void {
+function cull(node: Node, intersector: BoxIntersector, result: Node[]): void {
 
 	const children = node.children;
 
 	b.min = node.min;
 	b.max = node.max;
 
-	if(!region.intersectsBox(b)) {
+	if(!intersector.intersectsBox(b)) {
 
 		return;
 
@@ -65,7 +65,7 @@ function cull(node: Node, region: BoxIntersector, result: Node[]): void {
 
 		for(let i = 0, l = children.length; i < l; ++i) {
 
-			cull(children[i], region, result);
+			cull(children[i], intersector, result);
 
 		}
 
@@ -165,16 +165,16 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 	}
 
 	/**
-	 * Recursively collects nodes that intersect with the specified region.
+	 * Recursively collects nodes that intersect with the given intersector.
 	 *
-	 * @param region - A region.
+	 * @param intersector - A intersector.
 	 * @return The nodes.
 	 */
 
-	cull(region: BoxIntersector): T[] {
+	cull(intersector: BoxIntersector): T[] {
 
 		const result: T[] = [];
-		cull(this.root, region, result);
+		cull(this.root, intersector, result);
 		return result;
 
 	}
@@ -222,15 +222,15 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 	/**
 	 * Returns an iterator that traverses the octree and returns leaf nodes.
 	 *
-	 * When a cull region is provided, the iterator will only return leaves that intersect with that region.
+	 * When an intersector is provided, the iterator will only return intersecting leaves.
 	 *
-	 * @param region - A cull region.
+	 * @param intersector - An intersector used for culling.
 	 * @return An iterator.
 	 */
 
-	leaves(region: BoxIntersector | null = null): OctreeIterator<T> {
+	leaves(intersector: BoxIntersector | null = null): OctreeIterator<T> {
 
-		return new OctreeIterator<T>(this.root, region);
+		return new OctreeIterator<T>(this.root, intersector);
 
 	}
 
