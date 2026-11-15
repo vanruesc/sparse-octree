@@ -41,7 +41,7 @@ export class PointData<T = unknown> {
 
 	testPoints(raycaster: Raycaster, result: RayPointIntersection<T>[]): void {
 
-		const threshold = (raycaster.params.Points !== undefined) ? raycaster.params.Points.threshold : 0;
+		const threshold = raycaster.params.Points?.threshold ?? 0;
 		const thresholdSq = threshold * threshold;
 		const ray = raycaster.ray;
 
