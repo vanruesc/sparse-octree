@@ -5,6 +5,12 @@ import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
+/**
+ * A Symbol that indicates a lookup miss.
+ *
+ * @remarks Using a Symbol instead of `null` or `undefined` to support these values as user data.
+ */
+
 const NOT_FOUND = Symbol("NOT_FOUND");
 
 /**
