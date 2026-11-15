@@ -5,6 +5,8 @@ import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
+const NOT_FOUND = Symbol("NOT_FOUND");
+
 /**
  * Recursively counts the points that are in the given octant.
  *
@@ -127,20 +129,20 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
  * @param octree - The octree.
  * @param octant - The current octant.
  * @param parent - The parent of the current octant.
- * @return The data entry of the removed point, or null if it didn't exist.
+ * @return The data entry of the removed point, or NOT_FOUND if it didn't exist.
  */
 
 function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>,
-	parent: PointOctant<T> | null): T | null {
+	parent: PointOctant<T> | null): T | typeof NOT_FOUND {
 
 	const children = octant.children;
-	let result = null;
+	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
 	if(octant.contains(point, octree.getBias())) {
 
 		if(children !== null) {
 
-			for(let i = 0, l = children.length; result === null && i < l; ++i) {
+			for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
 
 				result = remove(point, octree, children[i] as PointOctant<T>, octant);
 
@@ -198,19 +200,19 @@ function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T
  * @param point - A point.
  * @param octree - The octree.
  * @param octant - The current octant octant.
- * @return The data entry that is associated with the given point, or null if it doesn't exist.
+ * @return The data entry that is associated with the given point, or NOT_FOUND if it doesn't exist.
  */
 
-function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T | null {
+function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T | typeof NOT_FOUND {
 
 	const children = octant.children;
-	let result = null;
+	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
 	if(octant.contains(point, octree.getBias())) {
 
 		if(children !== null) {
 
-			for(let i = 0, l = children.length; result === null && i < l; ++i) {
+			for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
 
 				result = get(point, octree, children[i] as PointOctant<T>);
 
@@ -222,7 +224,7 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 			const points = pointData.points;
 			const data = pointData.data;
 
-			for(let i = 0, l = points.length; result === null && i < l; ++i) {
+			for(let i = 0, l = points.length; result === NOT_FOUND && i < l; ++i) {
 
 				if(point.equals(points[i])) {
 
@@ -249,14 +251,14 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
  * @param octant - The current octant.
  * @param parent - The parent of the current octant.
  * @param depth - The current depth.
- * @return The data entry of the updated point, or null if it didn't exist.
+ * @return The data entry of the updated point, or NOT_FOUND if it didn't exist.
  */
 
 function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
-	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | null {
+	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | typeof NOT_FOUND {
 
 	const children = octant.children;
-	let result = null;
+	let result: T | typeof NOT_FOUND = NOT_FOUND;
 
 	if(octant.contains(point, octree.getBias())) {
 
@@ -267,7 +269,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 
 				++depth;
 
-				for(let i = 0, l = children.length; result === null && i < l; ++i) {
+				for(let i = 0, l = children.length; result === NOT_FOUND && i < l; ++i) {
 
 					const child = children[i] as PointOctant<T>;
 					result = move(point, position, octree, child, octant, depth);
@@ -301,8 +303,12 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 			// Retrieve the point and remove it.
 			result = remove(point, octree, octant, parent);
 
-			// Go back to the parent octant and add the updated point.
-			set(position, result, octree, parent, depth - 1);
+			if(result !== NOT_FOUND) {
+
+				// Go back to the parent octant and add the updated point.
+				set(position, result, octree, parent, depth - 1);
+
+			}
 
 		}
 
@@ -616,7 +622,8 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	remove(point: Vector3): T | null {
 
-		return remove(point, this, this.root, null);
+		const result = remove(point, this, this.root, null);
+		return result === NOT_FOUND ? null : result;
 
 	}
 
@@ -629,7 +636,8 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	get(point: Vector3): T | null {
 
-		return get(point, this, this.root);
+		const result = get(point, this, this.root);
+		return result === NOT_FOUND ? null : result;
 
 	}
 
@@ -643,7 +651,8 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	move(point: Vector3, position: Vector3): T | null {
 
-		return move(point, position, this, this.root, null, 0);
+		const result = move(point, position, this, this.root, null, 0);
+		return result === NOT_FOUND ? null : result;
 
 	}
 
