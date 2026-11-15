@@ -417,20 +417,14 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
 	skipSelf: boolean, octant: PointOctant<T>): PointContainer<T> | null {
 
-	interface SortableOctant<T> {
-
-		octant: PointOctant<T>;
-		distance: number;
-
-	}
-
-	let result = null;
 	let bestDistance = maxDistance;
 
 	if(octant.children !== null) {
 
+		let result = null;
+
 		// Sort the children: smallest distance to the point first, ASC.
-		const sortedChildren: SortableOctant<T>[] = octant.children.map((child) => {
+		const sortedChildren = octant.children.map((child) => {
 
 			// Precompute distances.
 			const octant = child as PointOctant<T>;
@@ -460,7 +454,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 					if(bestDistance === 0.0) {
 
-						break;
+						return result;
 
 					}
 
@@ -470,7 +464,11 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 		}
 
-	} else if(octant.data !== null) {
+		return result;
+
+	}
+
+	if(octant.data !== null) {
 
 		const pointData = octant.data;
 		const points = pointData.points;
@@ -484,9 +482,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 				if(!skipSelf) {
 
-					bestDistance = 0.0;
-					index = i;
-					break;
+					return new PointContainer(points[i], data[i], 0.0);
 
 				}
 
@@ -507,13 +503,13 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 		if(index >= 0) {
 
-			result = new PointContainer(points[index], data[index], bestDistance);
+			return new PointContainer(points[index], data[index], bestDistance);
 
 		}
 
 	}
 
-	return result;
+	return null;
 
 }
 
