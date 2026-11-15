@@ -97,39 +97,41 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 		const children = this.children;
 		const pointData = this.data;
 
-		if(children !== null && pointData !== null) {
+		if(children === null || pointData === null) {
 
-			const points = pointData.points;
-			const data = pointData.data;
+			return;
 
-			for(let i = 0, il = points.length; i < il; ++i) {
+		}
 
-				const point = points[i];
-				const entry = data[i];
+		const points = pointData.points;
+		const data = pointData.data;
 
-				for(let j = 0, jl = children.length; j < jl; ++j) {
+		for(let i = 0, il = points.length; i < il; ++i) {
 
-					const child = children[j] as PointOctant<T>;
+			const point = points[i];
+			const entry = data[i];
 
-					if(child.contains(point, bias)) {
+			for(let j = 0, jl = children.length; j < jl; ++j) {
 
-						child.data ??= new PointData<T>();
+				const child = children[j] as PointOctant<T>;
 
-						const childData = child.data;
-						childData.points.push(point);
-						childData.data.push(entry);
+				if(child.contains(point, bias)) {
 
-						break;
+					child.data ??= new PointData<T>();
 
-					}
+					const childData = child.data;
+					childData.points.push(point);
+					childData.data.push(entry);
+
+					break;
 
 				}
 
 			}
 
-			this.data = null;
-
 		}
+
+		this.data = null;
 
 	}
 
@@ -141,27 +143,29 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 
 		const children = this.children;
 
-		if(children !== null) {
+		if(children === null) {
 
-			const pointData = new PointData<T>();
+			return;
 
-			for(let i = 0, l = children.length; i < l; ++i) {
+		}
 
-				const childData = children[i].data;
+		const pointData = new PointData<T>();
 
-				if(childData !== null) {
+		for(let i = 0, l = children.length; i < l; ++i) {
 
-					pointData.points = pointData.points.concat(childData.points);
-					pointData.data = pointData.data.concat(childData.data);
+			const childData = children[i].data;
 
-				}
+			if(childData !== null) {
+
+				pointData.points = pointData.points.concat(childData.points);
+				pointData.data = pointData.data.concat(childData.data);
 
 			}
 
-			this.children = null;
-			this.data = pointData;
-
 		}
+
+		this.children = null;
+		this.data = pointData;
 
 	}
 

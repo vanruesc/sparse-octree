@@ -23,78 +23,77 @@ const flags = /* @__PURE__ */ new RaycastingFlags();
 function raycastOctant(node: Node, tx0: number, ty0: number, tz0: number,
 	tx1: number, ty1: number, tz1: number, result: Node[]): void {
 
-	if(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0) {
+	if(!(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0)) {
 
-		const c = node.children;
+		return;
 
-		if(c === null || c === undefined) {
+	}
 
-			// Leaf.
-			result.push(node);
+	const c = node.children;
 
-		} else {
+	if(c === null || c === undefined) {
 
-			// Calculate mean values.
-			const txm = 0.5 * (tx0 + tx1);
-			const tym = 0.5 * (ty0 + ty1);
-			const tzm = 0.5 * (tz0 + tz1);
+		// Leaf.
+		result.push(node);
+		return;
 
-			const f = flags.value;
-			let currentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);
+	}
 
-			/* The possibilities for the next node are passed in the same respective
-			order as the t-values. Hence, if the first value is found to be the
-			greatest, the fourth one will be returned. If the second value is the
-			greatest, the fifth one will be returned, etc. */
+	// Calculate mean values.
+	const txm = 0.5 * (tx0 + tx1);
+	const tym = 0.5 * (ty0 + ty1);
+	const tzm = 0.5 * (tz0 + tz1);
 
-			while(currentOctant < 8) {
+	const f = flags.value;
+	let currentOctant = findEntryOctant(tx0, ty0, tz0, txm, tym, tzm);
 
-				switch(currentOctant) {
+	// The possibilities for the next node are passed in the same respective order as the t-values.
+	// Hence, if the first value is found to be the greatest, the fourth one will be returned.
+	// If the second value is the greatest, the fifth one will be returned, etc.
+	while(currentOctant < 8) {
 
-					case 0:
-						raycastOctant(c[f], tx0, ty0, tz0, txm, tym, tzm, result);
-						currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
-						break;
+		switch(currentOctant) {
 
-					case 1:
-						raycastOctant(c[f ^ 1], tx0, ty0, tzm, txm, tym, tz1, result);
-						currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
-						break;
+			case 0:
+				raycastOctant(c[f], tx0, ty0, tz0, txm, tym, tzm, result);
+				currentOctant = findNextOctant(currentOctant, txm, tym, tzm);
+				break;
 
-					case 2:
-						raycastOctant(c[f ^ 2], tx0, tym, tz0, txm, ty1, tzm, result);
-						currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
-						break;
+			case 1:
+				raycastOctant(c[f ^ 1], tx0, ty0, tzm, txm, tym, tz1, result);
+				currentOctant = findNextOctant(currentOctant, txm, tym, tz1);
+				break;
 
-					case 3:
-						raycastOctant(c[f ^ 3], tx0, tym, tzm, txm, ty1, tz1, result);
-						currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
-						break;
+			case 2:
+				raycastOctant(c[f ^ 2], tx0, tym, tz0, txm, ty1, tzm, result);
+				currentOctant = findNextOctant(currentOctant, txm, ty1, tzm);
+				break;
 
-					case 4:
-						raycastOctant(c[f ^ 4], txm, ty0, tz0, tx1, tym, tzm, result);
-						currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
-						break;
+			case 3:
+				raycastOctant(c[f ^ 3], tx0, tym, tzm, txm, ty1, tz1, result);
+				currentOctant = findNextOctant(currentOctant, txm, ty1, tz1);
+				break;
 
-					case 5:
-						raycastOctant(c[f ^ 5], txm, ty0, tzm, tx1, tym, tz1, result);
-						currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
-						break;
+			case 4:
+				raycastOctant(c[f ^ 4], txm, ty0, tz0, tx1, tym, tzm, result);
+				currentOctant = findNextOctant(currentOctant, tx1, tym, tzm);
+				break;
 
-					case 6:
-						raycastOctant(c[f ^ 6], txm, tym, tz0, tx1, ty1, tzm, result);
-						currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
-						break;
+			case 5:
+				raycastOctant(c[f ^ 5], txm, ty0, tzm, tx1, tym, tz1, result);
+				currentOctant = findNextOctant(currentOctant, tx1, tym, tz1);
+				break;
 
-					case 7:
-						raycastOctant(c[f ^ 7], txm, tym, tzm, tx1, ty1, tz1, result);
-						// Far top right octant. No other octants can be reached from here.
-						currentOctant = 8;
-						break;
+			case 6:
+				raycastOctant(c[f ^ 6], txm, tym, tz0, tx1, ty1, tzm, result);
+				currentOctant = findNextOctant(currentOctant, tx1, ty1, tzm);
+				break;
 
-				}
-
-			}
+			case 7:
+				raycastOctant(c[f ^ 7], txm, tym, tzm, tx1, ty1, tz1, result);
+				// Far top right octant. No other octants can be reached from here.
+				currentOctant = 8;
+				break;
 
 		}
 

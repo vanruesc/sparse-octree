@@ -55,21 +55,23 @@ function cull(node: Node, region: BoxIntersector, result: Node[]): void {
 	b.min = node.min;
 	b.max = node.max;
 
-	if(region.intersectsBox(b)) {
+	if(!region.intersectsBox(b)) {
 
-		if(children !== undefined && children !== null) {
+		return;
 
-			for(let i = 0, l = children.length; i < l; ++i) {
+	}
 
-				cull(children[i], region, result);
+	if(children !== undefined && children !== null) {
 
-			}
+		for(let i = 0, l = children.length; i < l; ++i) {
 
-		} else {
-
-			result.push(node);
+			cull(children[i], region, result);
 
 		}
+
+	} else {
+
+		result.push(node);
 
 	}
 
