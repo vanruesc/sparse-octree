@@ -10,7 +10,7 @@ const root = new Octant(
 
 describe("OctreeRaycaster", () => {
 
-	it("can find intersecting octants", () => {
+	it("finds intersecting octants", () => {
 
 		const raycaster = new Raycaster(
 			new Vector3(0.5, 0.5, 2),

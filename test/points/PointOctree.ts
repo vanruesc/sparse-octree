@@ -162,7 +162,7 @@ describe("PointOctree", () => {
 
 	});
 
-	it("can find the nearest point", () => {
+	it("finds the nearest point", () => {
 
 		const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
@@ -181,7 +181,7 @@ describe("PointOctree", () => {
 
 	});
 
-	it("can find points inside a radius", () => {
+	it("finds points inside a radius", () => {
 
 		const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
 
