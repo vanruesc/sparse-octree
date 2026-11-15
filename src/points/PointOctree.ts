@@ -121,17 +121,13 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
 
 	}
 
-	if(children !== null) {
+	++depth;
 
-		++depth;
+	for(let i = 0, l = children!.length; i < l; ++i) {
 
-		for(let i = 0, l = children.length; i < l; ++i) {
+		if(set(point, data, octree, children![i] as PointOctant<T>, depth)) {
 
-			if(set(point, data, octree, children[i] as PointOctant<T>, depth)) {
-
-				return true;
-
-			}
+			return true;
 
 		}
 
@@ -232,7 +228,7 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 
 			for(let i = 0, l = points.length; result === NOT_FOUND && i < l; ++i) {
 
-				if(point.equals(points[i])) {
+				if(points[i].equals(point)) {
 
 					result = data[i];
 
@@ -268,14 +264,14 @@ function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>
 
 	for(let i = 0, l = points.length; i < l; ++i) {
 
-		if(sourceIndex === -1 && point.equals(points[i])) {
+		if(sourceIndex === -1 && points[i].equals(point)) {
 
 			// Found the point.
 			sourceIndex = i;
 
 		}
 
-		if(destinationIndex === -1 && position.equals(points[i])) {
+		if(destinationIndex === -1 && points[i].equals(position)) {
 
 			// Found another point at the destination.
 			destinationIndex = i;
