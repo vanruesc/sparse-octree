@@ -105,6 +105,35 @@ describe("PointOctree", () => {
 
 	});
 
+	it("preserves descendant points when removal merges an ancestor", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 2, 8);
+		const points = [-0.8, -0.7, -0.6, 0.8].map(value => new Vector3(value, value, value));
+		const data = ["A", "B", "C", "D"];
+
+		for(let i = 0; i < points.length; ++i) {
+
+			octree.set(points[i], data[i]);
+
+		}
+
+		assert.equal(octree.countPoints(), 4);
+		assert.equal(octree.remove(points[0]), "A");
+		assert.equal(octree.countPoints(), 3);
+		assert.equal(octree.get(points[1]), "B");
+		assert.equal(octree.get(points[2]), "C");
+
+		// The clustered points still occupy descendants when removing D triggers a root merge.
+		assert.ok(octree.getDepth() > 1);
+		assert.equal(octree.remove(points[3]), "D");
+		assert.equal(octree.countPoints(), 2, "should preserve points below immediate children");
+		assert.equal(octree.get(points[1]), "B");
+		assert.equal(octree.get(points[2]), "C");
+		assert.equal(octree.get(points[0]), null);
+		assert.equal(octree.get(points[3]), null);
+
+	});
+
 	it("can move points", () => {
 
 		const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
