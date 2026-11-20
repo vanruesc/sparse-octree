@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"include": ["."],
+	"compilerOptions": {
+		"noEmit": true,
+		"paths": {
+			// Using library sources directly to access and test internals.
+			// The unit test runner ignores this config and uses the library bundle.
+			"sparse-octree": ["../src/index.ts"]
+		}
+	}
+}
