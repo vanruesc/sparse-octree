@@ -324,6 +324,26 @@ describe("PointOctree", () => {
 
 	});
 
+	it("finds the nearest point outside its leaf's bounds in a loose octree", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0.125, 1, 8);
+		const point = new Vector3(0.0625, -0.5, -0.5);
+
+		octree.set(point, "A");
+		octree.set(new Vector3(0.75, 0.75, 0.75), "B");
+		assert.equal(octree.getDepth(), 1);
+		assert.equal(octree.get(point), "A");
+
+		// Bias assigns A to the first child, whose upper x bound is zero.
+		const result = octree.findNearestPoint(point, 0.01);
+
+		assert.notEqual(result, null, "should search the biased bounds of the leaf");
+		assert.deepEqual(result?.point, point);
+		assert.equal(result?.data, "A");
+		assert.equal(result?.distance, 0);
+
+	});
+
 	it("finds points inside a radius", () => {
 
 		const octree = new PointOctree(box.min, box.max, 0.0, 1, 2);
@@ -337,6 +357,26 @@ describe("PointOctree", () => {
 
 		assert.equal(octree.findPoints(new Vector3(0, 0, 0), 0.15).length, 3, "should find points inside a radius");
 		assert.equal(octree.findPoints(new Vector3(0, 0, 0), 0.15, true).length, 2, "should be able to skip itself");
+
+	});
+
+	it("finds points outside their leaf's bounds in a loose octree", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0.125, 1, 8);
+		const point = new Vector3(0.0625, -0.5, -0.5);
+
+		octree.set(point, "A");
+		octree.set(new Vector3(0.75, 0.75, 0.75), "B");
+		assert.equal(octree.getDepth(), 1);
+		assert.equal(octree.get(point), "A");
+
+		// The radius is smaller than A's displacement beyond its leaf's bounds.
+		const result = octree.findPoints(point, 0.01);
+
+		assert.equal(result.length, 1, "should search the biased bounds of the leaf");
+		assert.deepEqual(result[0].point, point);
+		assert.equal(result[0].data, "A");
+		assert.equal(result[0].distance, 0);
 
 	});
 
