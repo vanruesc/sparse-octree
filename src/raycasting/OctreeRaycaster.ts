@@ -9,17 +9,23 @@ const flags = /* @__PURE__ */ new RaycastingFlags();
 const v = /* @__PURE__ */ new Vector3();
 
 /**
- * Finds all octants that intersect with the given ray.
+ * Traverses the current octant and appends intersected leaves in ray order.
  *
- * @param node - The current node.
- * @param ray - The original ray.
- * @param tx0 - A ray projection parameter.
- * @param ty0 - A ray projection parameter.
- * @param tz0 - A ray projection parameter.
- * @param tx1 - A ray projection parameter.
- * @param ty1 - A ray projection parameter.
- * @param tz1 - A ray projection parameter.
- * @param result - An array to be filled with the intersecting octants.
+ * @remarks The six parameters describe the intervals where the ray is inside each axis slab.
+ * The octant's entry is the largest of the three entry parameters, and its exit is the smallest of the three
+ * exit parameters. {@link intersectOctree} reflects negative directions at the root so the traversal can
+ * assume non-negative directions. The reflection flags map child indices back to the original layout.
+ * For a parallel axis, the original ray origin determines which side of the split plane to traverse.
+ *
+ * @param node - The current octant.
+ * @param ray - The original ray, used to resolve parallel axes.
+ * @param tx0 - The X slab entry parameter.
+ * @param ty0 - The Y slab entry parameter.
+ * @param tz0 - The Z slab entry parameter.
+ * @param tx1 - The X slab exit parameter.
+ * @param ty1 - The Y slab exit parameter.
+ * @param tz1 - The Z slab exit parameter.
+ * @param result - The array to append intersected leaves to, closest first.
  */
 
 function raycastOctant(node: Node, ray: Ray, tx0: number, ty0: number, tz0: number,
@@ -111,9 +117,7 @@ function raycastOctant(node: Node, ray: Ray, tx0: number, ty0: number, tz0: numb
 /**
  * A raycaster for pointer-based octrees.
  *
- * Reference:
- *  "An Efficient Parametric Algorithm for Octree Traversal"
- *  by J. Revelles et al. (2000)
+ * @see "An Efficient Parametric Algorithm for Octree Traversal" by J. Revelles et al. (2000)
  */
 
 export class OctreeRaycaster {
