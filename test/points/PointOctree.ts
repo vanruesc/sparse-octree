@@ -469,6 +469,27 @@ describe("PointOctree", () => {
 
 	});
 
+	it("raycasts overlapping siblings in both directions across a split", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+		octree.set(new Vector3(-0.03, -0.5, 0.25), "left");
+		octree.set(new Vector3(0.03, -0.5, 0.25), "right");
+
+		for(const sign of [-1, 1]) {
+
+			// The ray crosses X = 0 at Z = 0.25, within range of both siblings.
+			const origin = new Vector3(-0.075 * sign, -0.5, 1.5);
+			const direction = new Vector3(0.06 * sign, 0, -1).normalize();
+			const raycaster = new Raycaster(origin, direction);
+			raycaster.params.Points.threshold = 0.05;
+
+			const expected = sign > 0 ? ["left", "right"] : ["right", "left"];
+			assert.deepEqual(octree.raycast(raycaster).map(point => point.data), expected);
+
+		}
+
+	});
+
 	it("raycasts points within the threshold when the ray misses the root bounds", () => {
 
 		const octree = new PointOctree<string>(box.min, box.max);
