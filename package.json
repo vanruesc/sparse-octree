@@ -2,12 +2,29 @@
 	"name": "sparse-octree",
 	"version": "7.2.0",
 	"description": "A sparse octree data structure.",
-	"homepage": "https://github.com/vanruesc/sparse-octree",
 	"license": "Zlib",
+	"author": "Raoul van Rüschen <vanruesc@outlook.de>",
+	"homepage": "https://github.com/vanruesc/sparse-octree",
+	"repository": {
+		"url": "git+https://github.com/vanruesc/sparse-octree.git"
+	},
+	"bugs": "https://github.com/vanruesc/sparse-octree/issues",
+	"keywords": [
+		"3d",
+		"space",
+		"spatial",
+		"partition",
+		"subdivision",
+		"hierarchy",
+		"voxel",
+		"points",
+		"frustum",
+		"culling",
+		"raycasting"
+	],
 	"type": "module",
 	"sideEffects": false,
 	"main": "./dist/index.js",
-	"module": "./dist/index.js",
 	"types": "./dist/types/index.d.ts",
 	"exports": {
 		".": {
@@ -15,47 +32,15 @@
 			"default": "./dist/index.js"
 		}
 	},
-	"keywords": [
-		"partition",
-		"hierarchy",
-		"subdivision",
-		"raycasting",
-		"3d",
-		"spatial",
-		"voxel",
-		"points",
-		"frustum",
-		"culling",
-		"pointer"
-	],
-	"author": {
-		"name": "Raoul van Rüschen",
-		"email": "vanruesc@outlook.de"
-	},
-	"repository": {
-		"url": "git+https://github.com/vanruesc/sparse-octree.git"
-	},
-	"bugs": {
-		"url": "https://github.com/vanruesc/sparse-octree/issues"
-	},
 	"files": [
 		"dist"
 	],
-	"scripts": {
-		"build": "node esbuild",
-		"clean": "del-cli dist public",
-		"copy": "cpy \"demo/static/**/*\" public/demo",
-		"dts": "tsc -p tsconfig.d.json",
-		"lint": "eslint src demo/src test",
-		"format": "eslint --fix src demo/src test",
-		"start": "serve public -Lu",
-		"pretest": "run-s clean dts lint build copy",
-		"test": "node --import tsx --test",
-		"posttest": "typedoc --plugin typedoc-plugin-mdn-links",
-		"prewatch": "run-s clean dts copy",
-		"watch": "run-p watch:* start",
-		"watch:js": "node esbuild -w",
-		"prepublishOnly": "run-s test"
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=12 <13",
+			"onFail": "error"
+		}
 	},
 	"peerDependencies": {
 		"three": "0.x.x"
@@ -65,7 +50,7 @@
 		"@types/node": "^26.6.6",
 		"@types/three": "^0.187.0",
 		"cpy-cli": "^7.0.0",
-		"del-cli": "^7.0.0",
+		"del-cli": "^8.0.1",
 		"esbuild": "^0.28.2",
 		"eslint": "^10.15.0",
 		"eslint-config-aether": "^3.3.1",
@@ -73,10 +58,28 @@
 		"serve": "^14.2.8",
 		"spatial-controls": "^6.3.1",
 		"three": "^0.187.0",
-		"tsx": "^4.23.15",
 		"tweakpane": "^4.0.5",
 		"typedoc": "^0.28.20",
 		"typedoc-plugin-mdn-links": "^5.1.1",
 		"typescript": "^6.0.3"
+	},
+	"scripts": {
+		"prewatch": "run-s clean copy",
+		"watch": "run-p watch:* start",
+		"watch:js": "node build.js -w",
+		"watch:tsc": "tsc -p tsconfig.d.json --watch --preserveWatchOutput",
+		"build": "run-p build:*",
+		"build:js": "node build.js",
+		"build:tsc": "tsc -p tsconfig.d.json",
+		"build:doc": "typedoc --tsconfig tsconfig.d.json",
+		"lint": "eslint src demo/src test",
+		"format": "eslint --fix src demo/src test",
+		"start": "serve public -Lu",
+		"pretest": "run-s clean lint build copy",
+		"test": "node --test",
+		"posttest": "typedoc --plugin typedoc-plugin-mdn-links",
+		"clean": "del-cli dist public",
+		"copy": "cpy \"demo/static/**/*\" public/demo",
+		"prepublishOnly": "run-s test"
 	}
 }
