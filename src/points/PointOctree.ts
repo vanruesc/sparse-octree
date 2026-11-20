@@ -1,5 +1,6 @@
 import { Raycaster, Vector3 } from "three";
 import { Octree } from "../core/Octree.js";
+import { RayBoxIntersector } from "../raycasting/RayBoxIntersector.js";
 import { PointContainer } from "./PointContainer.js";
 import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
@@ -596,6 +597,12 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	/**
+	 * A reusable intersector for threshold-aware point raycasting.
+	 */
+
+	private readonly raycastIntersector: RayBoxIntersector;
+
+	/**
 	 * An octant boundary bias.
 	 */
 
@@ -632,6 +639,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 		super(new PointOctant<T>(min, max));
 
+		this.raycastIntersector = new RayBoxIntersector();
 		this.bias = Math.max(0.0, bias);
 		this.maxPoints = Math.max(1, Math.round(maxPoints));
 		this.maxDepth = Math.max(0, Math.round(maxDepth));
@@ -790,13 +798,19 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * Finds the points that intersect with the given ray.
 	 *
 	 * @param raycaster - The raycaster.
-	 * @return The intersecting points.
+	 * @return The intersecting points, sorted by distance, closest first.
 	 */
 
 	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
 
 		const result: RayPointIntersection<T>[] = [];
-		const octants = super.getIntersectingNodes(raycaster);
+		const threshold = raycaster.params.Points?.threshold ?? 0;
+		const intersector = this.raycastIntersector;
+
+		intersector.ray = raycaster.ray;
+		intersector.padding = Math.abs(threshold) + this.bias;
+
+		const octants = super.cull(intersector);
 
 		if(octants.length > 0) {
 
@@ -815,7 +829,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 		}
 
-		return result;
+		return result.sort((a, b) => a.distance - b.distance);
 
 	}
 
