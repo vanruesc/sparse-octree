@@ -411,11 +411,12 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
  * @param maxDistance - The maximum distance.
  * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param octant - The current octant.
+ * @param bias - The octree boundary bias.
  * @return The nearest point, or null if there is none.
  */
 
 function findNearestPoint<T>(point: Vector3, maxDistance: number,
-	skipSelf: boolean, octant: PointOctant<T>): PointContainer<T> | null {
+	skipSelf: boolean, octant: PointOctant<T>, bias: number): PointContainer<T> | null {
 
 	let bestDistance = maxDistance;
 
@@ -441,10 +442,10 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 			const child = sortedChildren[i].octant;
 
-			if(child.contains(point, bestDistance)) {
+			if(child.contains(point, bestDistance + bias)) {
 
 				const intermediateResult = findNearestPoint(
-					point, bestDistance, skipSelf, child
+					point, bestDistance, skipSelf, child, bias
 				);
 
 				if(intermediateResult !== null) {
@@ -520,11 +521,12 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
  * @param radius - The radius.
  * @param skipSelf - Whether a point that is exactly at the given position should be skipped.
  * @param octant - The current octant.
+ * @param bias - The octree boundary bias.
  * @param result - An array to be filled with points.
  */
 
 function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
-	octant: PointOctant<T>, result: PointContainer<T>[]): void {
+	octant: PointOctant<T>, bias: number, result: PointContainer<T>[]): void {
 
 	const children = octant.children;
 
@@ -534,9 +536,9 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 			const child = children[i] as PointOctant<T>;
 
-			if(child.contains(point, radius)) {
+			if(child.contains(point, radius + bias)) {
 
-				findPoints(point, radius, skipSelf, child, result);
+				findPoints(point, radius, skipSelf, child, bias, result);
 
 			}
 
@@ -755,7 +757,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 
 	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> | null {
 
-		const result = findNearestPoint(point, maxDistance, skipSelf, this.root);
+		const result = findNearestPoint(point, maxDistance, skipSelf, this.root, this.bias);
 
 		if(result !== null && result.point !== null) {
 
@@ -779,7 +781,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
 
 		const result: PointContainer<T>[] = [];
-		findPoints(point, radius, skipSelf, this.root, result);
+		findPoints(point, radius, skipSelf, this.root, this.bias, result);
 		return result;
 
 	}
