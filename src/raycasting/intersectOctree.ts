@@ -34,16 +34,12 @@ export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags):
 	// Reset all flags.
 	flags.value = 0;
 
-	// Handle rays with negative directions and prevent division by zero.
+	// Handle rays with negative directions.
 	if(direction.x < 0.0) {
 
 		origin.x = dimensions.x - origin.x;
 		direction.x = -direction.x;
 		flags.value |= 4;
-
-	} else if(direction.x === 0.0) {
-
-		direction.x = Number.EPSILON;
 
 	}
 
@@ -53,10 +49,6 @@ export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags):
 		direction.y = -direction.y;
 		flags.value |= 2;
 
-	} else if(direction.y === 0.0) {
-
-		direction.y = Number.EPSILON;
-
 	}
 
 	if(direction.z < 0.0) {
@@ -65,9 +57,14 @@ export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags):
 		direction.z = -direction.z;
 		flags.value |= 1;
 
-	} else if(direction.z === 0.0) {
+	}
 
-		direction.z = Number.EPSILON;
+	// Parallel rays must lie inside the corresponding slab, including its boundary faces.
+	if((direction.x === 0.0 && (origin.x < min.x || origin.x > max.x)) ||
+		(direction.y === 0.0 && (origin.y < min.y || origin.y > max.y)) ||
+		(direction.z === 0.0 && (origin.z < min.z || origin.z > max.z))) {
+
+		return null;
 
 	}
 
@@ -77,12 +74,12 @@ export function intersectOctree(octree: Node, ray: Ray, flags: RaycastingFlags):
 	const invDirZ = 1.0 / direction.z;
 
 	// Project the ray to the octant's boundaries.
-	const tx0 = (min.x - origin.x) * invDirX;
-	const tx1 = (max.x - origin.x) * invDirX;
-	const ty0 = (min.y - origin.y) * invDirY;
-	const ty1 = (max.y - origin.y) * invDirY;
-	const tz0 = (min.z - origin.z) * invDirZ;
-	const tz1 = (max.z - origin.z) * invDirZ;
+	const tx0 = (direction.x === 0.0) ? -Infinity : (min.x - origin.x) * invDirX;
+	const tx1 = (direction.x === 0.0) ? Infinity : (max.x - origin.x) * invDirX;
+	const ty0 = (direction.y === 0.0) ? -Infinity : (min.y - origin.y) * invDirY;
+	const ty1 = (direction.y === 0.0) ? Infinity : (max.y - origin.y) * invDirY;
+	const tz0 = (direction.z === 0.0) ? -Infinity : (min.z - origin.z) * invDirZ;
+	const tz1 = (direction.z === 0.0) ? Infinity : (max.z - origin.z) * invDirZ;
 
 	// Check if the ray hits the octree.
 	const hit = (Math.max(tx0, ty0, tz0) < Math.min(tx1, ty1, tz1));
