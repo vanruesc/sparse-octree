@@ -1,6 +1,8 @@
 import { Raycaster, Vector3 } from "three";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
+const projection = /* @__PURE__ */ new Vector3();
+
 /**
  * A collection of many points and associated data entries.
  *
@@ -51,16 +53,21 @@ export class PointData<T = unknown> {
 		for(let i = 0, l = points.length; i < l; ++i) {
 
 			const point = points[i];
-			const distanceToRaySq = ray.distanceSqToPoint(point);
+			const closestPoint = ray.closestPointToPoint(point, projection);
+			const distanceToRaySq = closestPoint.distanceToSquared(point);
 
 			if(distanceToRaySq < thresholdSq) {
 
-				const closestPoint = ray.closestPointToPoint(point, new Vector3());
 				const distance = ray.origin.distanceTo(closestPoint);
 
 				if(distance >= raycaster.near && distance <= raycaster.far) {
 
-					result.push(new RayPointIntersection<T>(distance, Math.sqrt(distanceToRaySq), closestPoint, data[i]));
+					result.push(new RayPointIntersection<T>(
+						distance,
+						Math.sqrt(distanceToRaySq),
+						closestPoint.clone(),
+						data[i]
+					));
 
 				}
 
