@@ -1,6 +1,6 @@
 import { Box3, Raycaster, Vector3 } from "three";
+import { BoxIntersector } from "../math/BoxIntersector.js";
 import { OctreeRaycaster } from "../raycasting/index.js";
-import { BoxIntersector } from "./BoxIntersector.js";
 import { Node } from "./Node.js";
 import { OctreeIterator } from "./OctreeIterator.js";
 import { Tree } from "./Tree.js";

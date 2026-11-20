@@ -1,6 +1,6 @@
 import { Box3 } from "three";
+import { BoxIntersector } from "../math/BoxIntersector.js";
 import { Node } from "./Node.js";
-import { BoxIntersector } from "./BoxIntersector.js";
 
 const b = /* @__PURE__ */ new Box3();
 

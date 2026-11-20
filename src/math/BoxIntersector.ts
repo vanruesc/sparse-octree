@@ -1,7 +1,7 @@
 import { Box3 } from "three";
 
 /**
- * Describes objects that can intersect with a 3D box.
+ * Describes objects that can intersect a 3D box.
  */
 
 export interface BoxIntersector {
