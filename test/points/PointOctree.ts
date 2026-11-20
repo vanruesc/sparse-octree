@@ -556,6 +556,8 @@ describe("PointOctree", () => {
 		const result = octree.raycast(raycaster);
 		assert.deepEqual(result.map(point => point.data), ["B", "A"]);
 		assert.deepEqual(result.map(point => point.distance), [2.75, 3]);
+		assert.deepEqual(result.map(point => point.point), [new Vector3(0, 0, 0.25), new Vector3()]);
+		assert.deepEqual(result.map(point => point.distanceToRay), [0.1, 0.1]);
 
 	});
 
