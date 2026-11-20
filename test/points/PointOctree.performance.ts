@@ -161,6 +161,7 @@ it("benchmarks PointOctree raycasting", { skip: !runBenchmark }, (t) => {
 
 			t.diagnostic("  Rays with exactly the brute-force hit IDs | " +
 				`centerline ${centerlineMatches}/${rayCount} | padded ${paddedMatches}/${rayCount}`);
+
 			assert.equal(paddedMatches, rayCount, `padded hit mismatch at bias ${bias}, threshold ${threshold}`);
 
 		}
