@@ -450,6 +450,112 @@ describe("PointOctree", () => {
 
 	});
 
+	it("raycasts points within the threshold in adjacent octants", () => {
+
+		for(const maxPoints of [8, 1]) {
+
+			const octree = new PointOctree<string>(box.min, box.max, 0, maxPoints, 8);
+			octree.set(new Vector3(0.05, -0.5, 0), "A");
+			octree.set(new Vector3(0.75, 0.75, 0.75), "B");
+
+			const raycaster = new Raycaster(new Vector3(-0.05, -0.5, 2), new Vector3(0, 0, -1));
+			raycaster.params.Points.threshold = 0.2;
+
+			// A remains within the threshold even when subdivision separates it from the ray.
+			const result = octree.raycast(raycaster);
+			assert.deepEqual(result.map(point => point.data), ["A"]);
+
+		}
+
+	});
+
+	it("raycasts points within the threshold when the ray misses the root bounds", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max);
+		octree.set(new Vector3(0.95, -0.5, 0), "A");
+
+		const raycaster = new Raycaster(new Vector3(1.05, -0.5, 2), new Vector3(0, 0, -1));
+		raycaster.params.Points.threshold = 0.2;
+
+		const result = octree.raycast(raycaster);
+		assert.deepEqual(result.map(point => point.data), ["A"]);
+
+	});
+
+	it("uses the current ray and threshold across repeated raycasts", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+		octree.set(new Vector3(0.05, -0.5, 0), "A");
+		octree.set(new Vector3(0.75, 0.75, 0.75), "B");
+
+		const raycaster = new Raycaster(new Vector3(-0.05, -0.5, 2), new Vector3(0, 0, -1));
+		raycaster.params.Points.threshold = 0.2;
+		assert.deepEqual(octree.raycast(raycaster).map(point => point.data), ["A"]);
+
+		raycaster.params.Points.threshold = 0.01;
+		assert.deepEqual(octree.raycast(raycaster), []);
+
+		const otherRaycaster = new Raycaster(new Vector3(0.75, 0.75, 2), new Vector3(0, 0, -1));
+		otherRaycaster.params.Points.threshold = 0.01;
+		assert.deepEqual(octree.raycast(otherRaycaster).map(point => point.data), ["B"]);
+
+	});
+
+	it("raycasts points within biased octant bounds", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0.125, 1, 8);
+		const point = new Vector3(0.0625, -0.5, 0);
+		octree.set(point, "A");
+		octree.set(new Vector3(0.75, 0.75, 0.75), "B");
+
+		const raycaster = new Raycaster(new Vector3(0.0625, -0.5, 2), new Vector3(0, 0, -1));
+		raycaster.params.Points.threshold = 0.01;
+
+		const bounds = [...octree].map(node => new Box3(node.min.clone(), node.max.clone()));
+		const result = octree.raycast(raycaster);
+
+		assert.deepEqual(result.map(point => point.data), ["A"]);
+		assert.equal(octree.get(point), "A");
+		assert.deepEqual([...octree].map(node => new Box3(node.min, node.max)), bounds);
+
+	});
+
+	it("filters raycast candidates by distance to the ray and near and far limits", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+		octree.set(new Vector3(0, 0, 0.75), "near");
+		octree.set(new Vector3(0, 0, -0.75), "far");
+		octree.set(new Vector3(0.15, 0.15, 0), "outside threshold");
+		octree.set(new Vector3(0.1, 0, 0), "A");
+		octree.set(new Vector3(-0.1, 0, 0.25), "B");
+
+		const raycaster = new Raycaster(new Vector3(0, 0, 3), new Vector3(0, 0, -1), 2.5, 3.5);
+		raycaster.params.Points.threshold = 0.2;
+
+		const result = octree.raycast(raycaster);
+		assert.deepEqual(result.map(point => point.data), ["B", "A"]);
+		assert.deepEqual(result.map(point => point.distance), [2.75, 3]);
+
+	});
+
+	it("raycasts points directly on a ray along an upper boundary", () => {
+
+		for(const maxPoints of [8, 1]) {
+
+			const octree = new PointOctree<string>(box.min, box.max, 0, maxPoints, 8);
+			octree.set(new Vector3(1, 0.5, 0), "A");
+			octree.set(new Vector3(-0.75, -0.75, -0.75), "B");
+
+			const raycaster = new Raycaster(new Vector3(1, 0.5, 2), new Vector3(0, 0, -1));
+			raycaster.params.Points.threshold = 0.01;
+
+			const result = octree.raycast(raycaster);
+			assert.deepEqual(result.map(point => point.data), ["A"]);
+
+		}
+
+	});
+
 	it("moves points at splitting planes into the correct octant", () => {
 
 		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
