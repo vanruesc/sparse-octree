@@ -561,6 +561,30 @@ describe("PointOctree", () => {
 
 	});
 
+	it("finds the closest raycast hit and preserves the first hit at equal distance", () => {
+
+		const octree = new PointOctree<string>(box.min, box.max, 0, 1, 8);
+		octree.set(new Vector3(0.0625, -0.5, 0.5), "right");
+		octree.set(new Vector3(-0.0625, -0.5, 0.5), "left");
+		octree.set(new Vector3(-0.0625, -0.5, -0.5), "far");
+
+		const raycaster = new Raycaster(new Vector3(0, -0.5, 2), new Vector3(0, 0, -1));
+		raycaster.params.Points.threshold = 0.125;
+
+		const closest = octree.raycastClosest(raycaster);
+		assert.equal(closest?.data, "left");
+		assert.deepEqual(closest, octree.raycast(raycaster)[0]);
+
+		raycaster.near = 2;
+		raycaster.far = 2.5;
+		assert.equal(octree.raycastClosest(raycaster)?.data, "far");
+		assert.deepEqual(closest?.point, new Vector3(0, -0.5, 0.5));
+
+		raycaster.far = 2;
+		assert.equal(octree.raycastClosest(raycaster), null);
+
+	});
+
 	it("raycasts points directly on a ray along an upper boundary", () => {
 
 		for(const maxPoints of [8, 1]) {
