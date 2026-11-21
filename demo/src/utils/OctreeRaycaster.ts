@@ -143,11 +143,11 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		if(this.enabled) {
 
-			const intersections = this.octree.raycast(this);
+			const intersection = this.octree.raycastClosest(this);
 
-			if(intersections.length > 0) {
+			if(intersection !== null) {
 
-				x = intersections[0];
+				x = intersection;
 				selectedPoints = x.data;
 				point = x.point;
 

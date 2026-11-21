@@ -1,13 +1,36 @@
-import { Raycaster } from "three";
+import { Raycaster, Vector3 } from "three";
 import { RayAxis } from "../math/RayAxis.js";
+import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
+
+interface ClosestHit<T> {
+	distance: number;
+	distanceToRaySq: number;
+	point: Vector3 | null;
+	data: T | null;
+}
+
+function keepClosestHit<T>(result: ClosestHit<T>, distance: number,
+	distanceToRaySq: number, point: Vector3, data: T): void {
+
+	// Keep the first hit at a given distance, matching the stable order of raycast().
+	if(result.point === null || distance < result.distance) {
+
+		result.distance = distance;
+		result.distanceToRaySq = distanceToRaySq;
+		result.point = result.point === null ? point.clone() : result.point.copy(point);
+		result.data = data;
+
+	}
+
+}
 
 /**
  * Traverses an octant whose padded bounds intersect the ray over the given interval.
  *
  * @param octant - The current octant.
- * @param raycaster - The raycaster used to test points at the leaves.
+ * @param visit - The function that processes the point data of each intersecting leaf.
  * @param padding - The absolute point threshold plus the octree boundary bias.
  * @param x - The ray projection along the X axis.
  * @param y - The ray projection along the Y axis.
@@ -15,18 +38,21 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
  * @param flags - The layout bits for axes with negative ray directions (X = 4, Y = 2, Z = 1).
  * @param entry - The lower ray parameter of the current padded interval.
  * @param exit - The upper ray parameter of the current padded interval.
- * @param result - A list to be filled with intersecting points.
  */
 
-function raycastOctant<T>(octant: PointOctant<T>, raycaster: Raycaster, padding: number,
-	x: RayAxis, y: RayAxis, z: RayAxis, flags: number, entry: number, exit: number,
-	result: RayPointIntersection<T>[]): void {
+function raycastOctant<T>(octant: PointOctant<T>, visit: (data: PointData<T>) => void, padding: number,
+	x: RayAxis, y: RayAxis, z: RayAxis, flags: number, entry: number, exit: number): void {
 
 	const children = octant.children;
 
 	if(children === null) {
 
-		octant.data?.testPoints(raycaster, result);
+		if(octant.data !== null) {
+
+			visit(octant.data);
+
+		}
+
 		return;
 
 	}
@@ -75,7 +101,7 @@ function raycastOctant<T>(octant: PointOctant<T>, raycaster: Raycaster, padding:
 			// Keep boundary contacts, but reject intervals that can only start at infinity.
 			if(childEntry <= childExit && childEntry < Infinity) {
 
-				raycastOctant(child, raycaster, padding, x, y, z, flags, childEntry, childExit, result);
+				raycastOctant(child, visit, padding, x, y, z, flags, childEntry, childExit);
 
 			}
 
@@ -86,22 +112,22 @@ function raycastOctant<T>(octant: PointOctant<T>, raycaster: Raycaster, padding:
 }
 
 /**
- * Finds point intersections by clipping one padded ray interval per octant.
+ * Visits intersecting leaves by clipping one padded ray interval per octant.
  *
  * @param root - The root octant.
  * @param raycaster - The raycaster.
  * @param bias - The octree boundary bias.
- * @return The intersecting points. Sorted by distance, closest first.
+ * @param visit - The function that processes the point data of each intersecting leaf.
  */
 
-export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number): RayPointIntersection<T>[] {
+function visitLeaves<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number,
+	visit: (data: PointData<T>) => void): void {
 
-	const result: RayPointIntersection<T>[] = [];
 	const threshold = raycaster.params.Points?.threshold ?? 0;
 
 	if(!(threshold * threshold > 0.0)) {
 
-		return result;
+		return;
 
 	}
 
@@ -129,10 +155,49 @@ export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bia
 	if(entry <= exit && entry < Infinity) {
 
 		const flags = (x.reversed ? 4 : 0) | (y.reversed ? 2 : 0) | (z.reversed ? 1 : 0);
-		raycastOctant(root, raycaster, padding, x, y, z, flags, entry, exit, result);
+		raycastOctant(root, visit, padding, x, y, z, flags, entry, exit);
 
 	}
 
+}
+
+/**
+ * Finds all point intersections.
+ *
+ * @param root - The root octant.
+ * @param raycaster - The raycaster.
+ * @param bias - The octree boundary bias.
+ * @return The intersecting points, sorted by distance, closest first.
+ */
+
+export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number): RayPointIntersection<T>[] {
+
+	const result: RayPointIntersection<T>[] = [];
+	visitLeaves(root, raycaster, bias, data => data.testPoints(raycaster, result));
 	return result.sort((a, b) => a.distance - b.distance);
+
+}
+
+/**
+ * Finds the closest point intersection.
+ *
+ * @param root - The root octant.
+ * @param raycaster - The raycaster.
+ * @param bias - The octree boundary bias.
+ * @return The closest intersection, or null if there is no hit.
+ */
+
+export function raycastClosestPoint<T>(root: PointOctant<T>, raycaster: Raycaster,
+	bias: number): RayPointIntersection<T> | null {
+
+	const result: ClosestHit<T> = { distance: Infinity, distanceToRaySq: 0.0, point: null, data: null };
+	visitLeaves(root, raycaster, bias, data => data.visitHits(raycaster, result, keepClosestHit));
+
+	return result.point === null ? null : new RayPointIntersection<T>(
+		result.distance,
+		Math.sqrt(result.distanceToRaySq),
+		result.point,
+		result.data
+	);
 
 }

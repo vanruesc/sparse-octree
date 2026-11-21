@@ -3,6 +3,15 @@ import { RayPointIntersection } from "./RayPointIntersection.js";
 
 const projection = /* @__PURE__ */ new Vector3();
 
+type HitVisitor<T, R> = (result: R, distance: number, distanceToRaySq: number, point: Vector3, data: T) => void;
+
+function appendHit<T>(result: RayPointIntersection<T>[], distance: number,
+	distanceToRaySq: number, point: Vector3, data: T): void {
+
+	result.push(new RayPointIntersection<T>(distance, Math.sqrt(distanceToRaySq), point.clone(), data));
+
+}
+
 /**
  * A collection of many points and associated data entries.
  *
@@ -43,6 +52,21 @@ export class PointData<T = unknown> {
 
 	testPoints(raycaster: Raycaster, result: RayPointIntersection<T>[]): void {
 
+		this.visitHits(raycaster, result, appendHit);
+
+	}
+
+	/**
+	 * Visits the points that intersect with the given ray.
+	 *
+	 * @param raycaster - The raycaster.
+	 * @param result - The result passed to the visitor.
+	 * @param visit - A visitor that may use the projected point until it returns.
+	 * @internal
+	 */
+
+	visitHits<R>(raycaster: Raycaster, result: R, visit: HitVisitor<T, R>): void {
+
 		const threshold = raycaster.params.Points?.threshold ?? 0;
 		const thresholdSq = threshold * threshold;
 		const ray = raycaster.ray;
@@ -62,12 +86,7 @@ export class PointData<T = unknown> {
 
 				if(distance >= raycaster.near && distance <= raycaster.far) {
 
-					result.push(new RayPointIntersection<T>(
-						distance,
-						Math.sqrt(distanceToRaySq),
-						closestPoint.clone(),
-						data[i]
-					));
+					visit(result, distance, distanceToRaySq, closestPoint, data[i]);
 
 				}
 

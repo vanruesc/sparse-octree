@@ -4,7 +4,7 @@ import { PointContainer } from "./PointContainer.js";
 import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
-import { raycastPoints } from "./raycastPoints.js";
+import { raycastClosestPoint, raycastPoints } from "./raycastPoints.js";
 
 /**
  * A Symbol that indicates a lookup miss.
@@ -797,6 +797,20 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
 
 		return raycastPoints(this.root, raycaster, this.bias);
+
+	}
+
+	/**
+	 * Finds the point intersection closest to the ray origin.
+	 *
+	 * @remarks Uses the same hit criteria and tie order as {@link raycast}.
+	 * @param raycaster - The raycaster.
+	 * @return The closest intersection, or null if there is no hit.
+	 */
+
+	raycastClosest(raycaster: Raycaster): RayPointIntersection<T> | null {
+
+		return raycastClosestPoint(this.root, raycaster, this.bias);
 
 	}
 
