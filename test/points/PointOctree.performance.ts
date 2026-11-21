@@ -156,8 +156,8 @@ it("benchmarks PointOctree raycasting", { skip: !runBenchmark }, (t) => {
 
 			}
 
-			t.diagnostic(`bias ${bias}, threshold ${threshold} | centerline ${centerline} | padded ${padded} | ` +
-				`brute-force reference ${referenceHitsPerRay.toFixed(1)} hits/ray`);
+			t.diagnostic(`bias ${bias.toFixed(3)}, threshold ${threshold.toFixed(3)} | ` +
+				`centerline ${centerline} | padded ${padded} (brute-force ${referenceHitsPerRay.toFixed(1)} hits/ray)`);
 
 			t.diagnostic("  Rays with exactly the brute-force hit IDs | " +
 				`centerline ${centerlineMatches}/${rayCount} | padded ${paddedMatches}/${rayCount}`);
