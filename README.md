@@ -20,7 +20,7 @@ npm install three sparse-octree
 ##### Points
 
 ```js
-import { Vector3 } from "three";
+import { Raycaster, Vector3 } from "three";
 import { PointOctree } from "sparse-octree";
 
 const min = new Vector3(-1, -1, -1);
@@ -36,9 +36,16 @@ octree.set(p1, myData);
 octree.move(p1, p2);
 octree.get(p2); // => myData
 
+const raycaster = new Raycaster(new Vector3(0, 0, 2), new Vector3(0, 0, -1));
+raycaster.params.Points.threshold = 0.1;
+const hit = octree.raycastClosest(raycaster);
+hit?.data; // => myData
+
 octree.remove(p2);
 octree.get(p2); // => null
 ```
+
+`raycastClosest()` returns `null` if there is no hit. Use `raycast()` to get all hits, nearest first.
 
 ##### Custom Octrees
 
@@ -49,7 +56,7 @@ export class CubicOctree extends Octree {
 
 	constructor(min, size) {
 
-		this.root = new CubicOctant(min, size);
+		super(new CubicOctant(min, size));
 
 	}
 
