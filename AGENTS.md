@@ -3,6 +3,7 @@
 ## Agent guidance
 
 * Follow existing project patterns and inspect relevant source code, tests, and documentation before making assumptions.
+* New classes, class members and functions should include appropriate documentation comments.
 * Keep changes focused and avoid unrelated refactoring.
 * Use the project's scripts rather than invoking underlying tools directly.
 * `pnpm run lint` is read-only; use `pnpm run format` when ESLint fixes are needed.
