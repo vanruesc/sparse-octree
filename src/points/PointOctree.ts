@@ -3,8 +3,8 @@ import { Octree } from "../core/Octree.js";
 import { PointContainer } from "./PointContainer.js";
 import { PointData } from "./PointData.js";
 import { PointOctant } from "./PointOctant.js";
-import { RayPointIntersection } from "./RayPointIntersection.js";
-import { raycastClosestPoint, raycastPoints } from "./raycastPoints.js";
+import { RayPointIntersection } from "./raycasting/RayPointIntersection.js";
+import { raycastClosestPoint, raycastPoints } from "./raycasting/raycastPoints.js";
 
 /**
  * A Symbol that indicates a lookup miss.

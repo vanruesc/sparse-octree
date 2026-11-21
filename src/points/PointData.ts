@@ -1,16 +1,8 @@
 import { Raycaster, Vector3 } from "three";
-import { RayPointIntersection } from "./RayPointIntersection.js";
+import { RayPointHit } from "./raycasting/RayPointHit.js";
+import { RayPointIntersection } from "./raycasting/RayPointIntersection.js";
 
-const projection = /* @__PURE__ */ new Vector3();
-
-type HitVisitor<T, R> = (result: R, distance: number, distanceToRaySq: number, point: Vector3, data: T) => void;
-
-function appendHit<T>(result: RayPointIntersection<T>[], distance: number,
-	distanceToRaySq: number, point: Vector3, data: T): void {
-
-	result.push(new RayPointIntersection<T>(distance, Math.sqrt(distanceToRaySq), point.clone(), data));
-
-}
+const hit = /* @__PURE__ */ new RayPointHit();
 
 /**
  * A collection of many points and associated data entries.
@@ -52,47 +44,64 @@ export class PointData<T = unknown> {
 
 	testPoints(raycaster: Raycaster, result: RayPointIntersection<T>[]): void {
 
-		this.visitHits(raycaster, result, appendHit);
-
-	}
-
-	/**
-	 * Visits the points that intersect with the given ray.
-	 *
-	 * @param raycaster - The raycaster.
-	 * @param result - The result passed to the visitor.
-	 * @param visit - A visitor that may use the projected point until it returns.
-	 * @internal
-	 */
-
-	visitHits<R>(raycaster: Raycaster, result: R, visit: HitVisitor<T, R>): void {
-
 		const threshold = raycaster.params.Points?.threshold ?? 0;
 		const thresholdSq = threshold * threshold;
-		const ray = raycaster.ray;
-
 		const points = this.points;
 		const data = this.data;
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
-			const point = points[i];
-			const closestPoint = ray.closestPointToPoint(point, projection);
-			const distanceToRaySq = closestPoint.distanceToSquared(point);
+			if(hit.testPoint(raycaster, points[i], thresholdSq)) {
 
-			if(distanceToRaySq < thresholdSq) {
+				result.push(hit.toIntersection(data[i]));
 
-				const distance = ray.origin.distanceTo(closestPoint);
+			}
 
-				if(distance >= raycaster.near && distance <= raycaster.far) {
+		}
 
-					visit(result, distance, distanceToRaySq, closestPoint, data[i]);
+	}
+
+	/**
+	 * Updates the closest intersection with points from this leaf.
+	 *
+	 * @param raycaster - The raycaster.
+	 * @param closest - The current closest hit, or null if none has been found.
+	 * @return The closest intersection so far. Reuses the input hit when provided.
+	 * @internal
+	 */
+
+	testClosestPoint(raycaster: Raycaster, closest: RayPointIntersection<T> | null): RayPointIntersection<T> | null {
+
+		const threshold = raycaster.params.Points?.threshold ?? 0;
+		const thresholdSq = threshold * threshold;
+		const points = this.points;
+		const data = this.data;
+
+		let result = closest;
+
+		for(let i = 0, l = points.length; i < l; ++i) {
+
+			// Keep the first hit at a given distance, matching the stable order of raycast().
+			if(hit.testPoint(raycaster, points[i], thresholdSq) && (result === null || hit.distance < result.distance)) {
+
+				if(result === null) {
+
+					result = hit.toIntersection(data[i]);
+
+				} else {
+
+					result.distance = hit.distance;
+					result.distanceToRay = Math.sqrt(hit.distanceToRaySq);
+					result.point!.copy(hit.point);
+					result.data = data[i] ?? null;
 
 				}
 
 			}
 
 		}
+
+		return result;
 
 	}
 

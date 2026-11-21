@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import { PointContainer } from "./PointContainer.js";
+import { PointContainer } from "../PointContainer.js";
 
 /**
  * A collection of ray-point intersection data.

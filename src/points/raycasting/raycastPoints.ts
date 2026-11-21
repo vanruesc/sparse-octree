@@ -1,30 +1,8 @@
-import { Raycaster, Vector3 } from "three";
-import { RayAxis } from "../math/RayAxis.js";
-import { PointData } from "./PointData.js";
-import { PointOctant } from "./PointOctant.js";
+import { Raycaster } from "three";
+import { RayAxis } from "../../math/RayAxis.js";
+import { PointData } from "../PointData.js";
+import { PointOctant } from "../PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
-
-interface ClosestHit<T> {
-	distance: number;
-	distanceToRaySq: number;
-	point: Vector3 | null;
-	data: T | null;
-}
-
-function keepClosestHit<T>(result: ClosestHit<T>, distance: number,
-	distanceToRaySq: number, point: Vector3, data: T): void {
-
-	// Keep the first hit at a given distance, matching the stable order of raycast().
-	if(result.point === null || distance < result.distance) {
-
-		result.distance = distance;
-		result.distanceToRaySq = distanceToRaySq;
-		result.point = result.point === null ? point.clone() : result.point.copy(point);
-		result.data = data;
-
-	}
-
-}
 
 /**
  * Traverses an octant whose padded bounds intersect the ray over the given interval.
@@ -168,6 +146,7 @@ function visitLeaves<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number
  * @param raycaster - The raycaster.
  * @param bias - The octree boundary bias.
  * @return The intersecting points, sorted by distance, closest first.
+ * @internal
  */
 
 export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number): RayPointIntersection<T>[] {
@@ -185,19 +164,20 @@ export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bia
  * @param raycaster - The raycaster.
  * @param bias - The octree boundary bias.
  * @return The closest intersection, or null if there is no hit.
+ * @internal
  */
 
 export function raycastClosestPoint<T>(root: PointOctant<T>, raycaster: Raycaster,
 	bias: number): RayPointIntersection<T> | null {
 
-	const result: ClosestHit<T> = { distance: Infinity, distanceToRaySq: 0.0, point: null, data: null };
-	visitLeaves(root, raycaster, bias, data => data.visitHits(raycaster, result, keepClosestHit));
+	let closest: RayPointIntersection<T> | null = null;
 
-	return result.point === null ? null : new RayPointIntersection<T>(
-		result.distance,
-		Math.sqrt(result.distanceToRaySq),
-		result.point,
-		result.data
-	);
+	visitLeaves(root, raycaster, bias, data => {
+
+		closest = data.testClosestPoint(raycaster, closest);
+
+	});
+
+	return closest;
 
 }
