@@ -171,57 +171,144 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@tweakpane/core':
+      specifier: ^2.0.5
+      version: 2.0.5
+    '@types/node':
+      specifier: ^26.6.6
+      version: 26.6.6
+    '@types/three':
+      specifier: ^0.187.0
+      version: 0.187.0
+    cpy-cli:
+      specifier: ^7.0.0
+      version: 7.0.0
+    del-cli:
+      specifier: ^8.0.1
+      version: 8.0.1
+    esbuild:
+      specifier: ^0.28.2
+      version: 0.28.2
+    eslint:
+      specifier: ^10.15.0
+      version: 10.15.0
+    eslint-config-aether:
+      specifier: ^3.3.1
+      version: 3.3.1
+    npm-run-all:
+      specifier: ^4.1.5
+      version: 4.1.5
+    serve:
+      specifier: ^14.2.8
+      version: 14.2.8
+    spatial-controls:
+      specifier: ^6.3.1
+      version: 6.3.1
+    three:
+      specifier: ^0.187.0
+      version: 0.187.0
+    tweakpane:
+      specifier: ^4.0.5
+      version: 4.0.5
+    typedoc:
+      specifier: ^0.28.20
+      version: 0.28.20
+    typedoc-plugin-mdn-links:
+      specifier: ^5.1.1
+      version: 5.1.1
+    typescript:
+      specifier: ^6.0.3
+      version: 6.0.3
+
 importers:
 
-  .:
+  .: {}
+
+  apps/sparse-octree-demo:
+    dependencies:
+      sparse-octree:
+        specifier: 'workspace:'
+        version: link:../../packages/sparse-octree
     devDependencies:
       '@tweakpane/core':
-        specifier: ^2.0.5
+        specifier: 'catalog:'
         version: 2.0.5
       '@types/node':
-        specifier: ^26.6.6
+        specifier: 'catalog:'
         version: 26.6.6
       '@types/three':
-        specifier: ^0.187.0
+        specifier: 'catalog:'
         version: 0.187.0
       cpy-cli:
-        specifier: ^7.0.0
+        specifier: 'catalog:'
         version: 7.0.0
       del-cli:
-        specifier: ^8.0.1
+        specifier: 'catalog:'
         version: 8.0.1
       esbuild:
-        specifier: ^0.28.2
+        specifier: 'catalog:'
         version: 0.28.2
       eslint:
-        specifier: ^10.15.0
+        specifier: 'catalog:'
         version: 10.15.0(supports-color@7.2.0)
       eslint-config-aether:
-        specifier: ^3.3.1
+        specifier: 'catalog:'
         version: 3.3.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       npm-run-all:
-        specifier: ^4.1.5
+        specifier: 'catalog:'
         version: 4.1.5
       serve:
-        specifier: ^14.2.8
+        specifier: 'catalog:'
         version: 14.2.8(supports-color@7.2.0)
       spatial-controls:
-        specifier: ^6.3.1
+        specifier: 'catalog:'
         version: 6.3.1(three@0.187.0)
       three:
-        specifier: ^0.187.0
+        specifier: 'catalog:'
         version: 0.187.0
       tweakpane:
-        specifier: ^4.0.5
+        specifier: 'catalog:'
         version: 4.0.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/sparse-octree:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      '@types/three':
+        specifier: 'catalog:'
+        version: 0.187.0
+      del-cli:
+        specifier: 'catalog:'
+        version: 8.0.1
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.28.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.15.0(supports-color@7.2.0)
+      eslint-config-aether:
+        specifier: 'catalog:'
+        version: 3.3.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      npm-run-all:
+        specifier: 'catalog:'
+        version: 4.1.5
+      three:
+        specifier: 'catalog:'
+        version: 0.187.0
       typedoc:
-        specifier: ^0.28.20
+        specifier: 'catalog:'
         version: 0.28.20(typescript@6.0.3)
       typedoc-plugin-mdn-links:
-        specifier: ^5.1.1
+        specifier: 'catalog:'
         version: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
       typescript:
-        specifier: ^6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
 packages:

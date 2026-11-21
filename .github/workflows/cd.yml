@@ -25,14 +25,9 @@ jobs:
       - name: Build and test
         run: pnpm -r test
       - name: Publish
-        run: |
-          package=$(node -p "require('./package.json').name")
-          version=$(node -p "require('./package.json').version")
-          if pnpm view "$package@$version" version >/dev/null 2>&1; then
-            echo "::notice::$package@$version is already published, skipping."
-            exit 0
-          fi
-          pnpm publish --ignore-scripts
+        run: bash .github/scripts/publish.sh packages/sparse-octree
+      - name: Deploy pages
+        run: pnpm run -r deploy
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages

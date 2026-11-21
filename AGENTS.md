@@ -18,12 +18,12 @@
 ## Verification
 
 - Prefer using the project's `pnpm` scripts.
-  `pnpm run lint` checks files without modifying them. Use `pnpm run format` when ESLint fixes are needed.
+  `pnpm run lint` checks the workspace without modifying files. Use `pnpm run format` when ESLint fixes are needed.
 - Run `pnpm test` for full verification. For a localized change, a focused run such as `node --test test/core/Octree.ts`
-  is sufficient when it covers the affected behavior. Use the full suite for changes that affect multiple areas or
-  shared behavior.
+  from `packages/sparse-octree` is sufficient when it covers the affected behavior. Use the full suite for changes
+  that affect multiple areas or shared behavior.
 - `pnpm test` builds the project through `pretest`. If a test invocation bypasses `pretest`, run `pnpm run build:js`
-  first whenever source files have changed.
+  in the library package first whenever source files have changed.
 - If a test fails and the cause is unclear, compare against the baseline. Use `HEAD` as the baseline for uncommitted
   changes and prefer a separate worktree to preserve the current working tree. Report which checks ran and identify any
   failures reproduced on the baseline.

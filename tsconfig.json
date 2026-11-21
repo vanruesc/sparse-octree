@@ -1,14 +1,5 @@
 {
-	"include": [
-		"./*.js",
-		"./*.ts",
-		"./src",
-		"./demo/src"
-	],
 	"compilerOptions": {
-		// File Layout
-		"rootDir": ".",
-		"outDir": "./dist",
 		// Environment Settings
 		"moduleResolution": "bundler",
 		"module": "esnext",

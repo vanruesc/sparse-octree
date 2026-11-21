@@ -1,40 +1,6 @@
 {
-	"name": "sparse-octree",
-	"version": "7.3.0",
-	"description": "A sparse octree data structure.",
-	"license": "Zlib",
-	"author": "Raoul van Rüschen <vanruesc@outlook.de>",
-	"homepage": "https://github.com/vanruesc/sparse-octree",
-	"repository": {
-		"url": "git+https://github.com/vanruesc/sparse-octree.git"
-	},
-	"bugs": "https://github.com/vanruesc/sparse-octree/issues",
-	"keywords": [
-		"3d",
-		"space",
-		"spatial",
-		"partition",
-		"subdivision",
-		"hierarchy",
-		"voxel",
-		"points",
-		"frustum",
-		"culling",
-		"raycasting"
-	],
-	"type": "module",
-	"sideEffects": false,
-	"main": "./dist/index.js",
-	"types": "./dist/types/index.d.ts",
-	"exports": {
-		".": {
-			"types": "./dist/types/index.d.ts",
-			"default": "./dist/index.js"
-		}
-	},
-	"files": [
-		"dist"
-	],
+	"name": "octree-workspace",
+	"private": true,
 	"devEngines": {
 		"packageManager": {
 			"name": "pnpm",
@@ -42,44 +8,13 @@
 			"onFail": "error"
 		}
 	},
-	"peerDependencies": {
-		"three": "0.x.x"
-	},
-	"devDependencies": {
-		"@tweakpane/core": "^2.0.5",
-		"@types/node": "^26.6.6",
-		"@types/three": "^0.187.0",
-		"cpy-cli": "^7.0.0",
-		"del-cli": "^8.0.1",
-		"esbuild": "^0.28.2",
-		"eslint": "^10.15.0",
-		"eslint-config-aether": "^3.3.1",
-		"npm-run-all": "^4.1.5",
-		"serve": "^14.2.8",
-		"spatial-controls": "^6.3.1",
-		"three": "^0.187.0",
-		"tweakpane": "^4.0.5",
-		"typedoc": "^0.28.20",
-		"typedoc-plugin-mdn-links": "^5.1.1",
-		"typescript": "^6.0.3"
-	},
 	"scripts": {
-		"prewatch": "run-s clean copy",
-		"watch": "run-p watch:* start",
-		"watch:js": "node build.js -w",
-		"watch:tsc": "tsc -p tsconfig.d.json --watch --preserveWatchOutput",
-		"build": "run-p build:*",
-		"build:js": "node build.js",
-		"build:tsc": "tsc -p tsconfig.d.json",
-		"build:doc": "typedoc --tsconfig tsconfig.d.json",
-		"lint": "eslint src demo/src test",
-		"format": "eslint --fix src demo/src test",
-		"start": "serve public -Lu",
-		"pretest": "run-s clean lint build copy",
-		"test": "node --test",
-		"posttest": "typedoc --plugin typedoc-plugin-mdn-links",
-		"clean": "del-cli dist public",
-		"copy": "cpy \"demo/static/**/*\" public/demo",
-		"prepublishOnly": "run-s test"
+		"build": "pnpm -r build",
+		"lint": "pnpm -r lint",
+		"format": "pnpm -r format",
+		"test": "pnpm -r test",
+		"prewatch": "pnpm --filter sparse-octree run build:js",
+		"watch": "pnpm -r --parallel watch",
+		"start": "pnpm --filter sparse-octree-demo start"
 	}
 }

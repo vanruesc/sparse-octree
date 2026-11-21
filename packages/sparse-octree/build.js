@@ -20,24 +20,13 @@ const lib = {
 	bundle: true
 };
 
-const demo = {
-	entryPoints: ["./demo/src/index.ts"],
-	outdir: "./public/demo",
-	logLevel: "info",
-	format: "iife",
-	target: "es6",
-	minify: !watch,
-	bundle: true
-};
-
 if(watch) {
 
-	const ctxDemo = await esbuild.context(demo);
-	await ctxDemo.watch();
+	const context = await esbuild.context(lib);
+	await context.watch();
 
 } else {
 
 	await esbuild.build(lib);
-	await esbuild.build(demo);
 
 }

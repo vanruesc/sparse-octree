@@ -1,0 +1,40 @@
+{
+	"name": "sparse-octree-demo",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"sparse-octree": "workspace:"
+	},
+	"devDependencies": {
+		"@tweakpane/core": "catalog:",
+		"@types/node": "catalog:",
+		"@types/three": "catalog:",
+		"cpy-cli": "catalog:",
+		"del-cli": "catalog:",
+		"esbuild": "catalog:",
+		"eslint": "catalog:",
+		"eslint-config-aether": "catalog:",
+		"npm-run-all": "catalog:",
+		"serve": "catalog:",
+		"spatial-controls": "catalog:",
+		"three": "catalog:",
+		"tweakpane": "catalog:",
+		"typescript": "catalog:"
+	},
+	"scripts": {
+		"prewatch": "pnpm run copy",
+		"watch": "run-p watch:* start",
+		"watch:js": "node build.js -w",
+		"build": "run-p build:js copy",
+		"build:js": "node build.js",
+		"lint": "eslint src",
+		"format": "eslint --fix src",
+		"pretest": "run-s clean lint build",
+		"test": "tsc --noEmit",
+		"clean": "del-cli public",
+		"copy": "cpy \"static/**/*\" public/demo",
+		"deploy": "pnpm run move",
+		"move": "node move.js",
+		"start": "serve public -Lu"
+	}
+}
