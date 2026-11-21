@@ -193,6 +193,7 @@ export class OctreeRaycaster extends Raycaster implements EventListenerObject {
 
 		const folder = pane.addFolder({ title: "Rayasting" });
 		folder.addBinding(this, "enabled");
+		folder.addBinding(this.params.Points, "threshold", { min: 0.01, max: 0.1, step: 0.001 });
 		folder.addBinding(this, "time", { readonly: true });
 
 	}
