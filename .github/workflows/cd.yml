@@ -25,7 +25,10 @@ jobs:
       - name: Build and test
         run: pnpm -r test
       - name: Publish
-        run: bash .github/scripts/publish.sh packages/sparse-octree
+        run: |
+          bash .github/scripts/publish.sh packages/sparse-octree
+          bash .github/scripts/publish.sh packages/linear-octree
+          bash .github/scripts/publish.sh packages/octree-helper
       - name: Deploy pages
         run: pnpm run -r deploy
       - uses: JamesIves/github-pages-deploy-action@v4
