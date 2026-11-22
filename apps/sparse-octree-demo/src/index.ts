@@ -16,7 +16,8 @@ import {
 import { Pane } from "tweakpane";
 import { calculateVerticalFoV, OctreeRaycaster, FrustumCuller } from "./utils/index.js";
 import { ControlMode, SpatialControls } from "spatial-controls";
-import { OctreeHelper, PointOctree } from "sparse-octree";
+import { OctreeHelper } from "octree-helper";
+import { PointOctree } from "sparse-octree";
 
 function createParticlePlane(particles: number, n: number, zBase: number, zBias: number): BufferGeometry {
 

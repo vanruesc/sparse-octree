@@ -1,0 +1,55 @@
+{
+	"name": "octree-helper",
+	"version": "0.1.0",
+	"description": "A Three.js wireframe helper for octrees.",
+	"license": "Zlib",
+	"author": "Raoul van Rüschen <vanruesc@outlook.de>",
+	"homepage": "https://github.com/vanruesc/sparse-octree/tree/main/packages/octree-helper",
+	"repository": {
+		"url": "git+https://github.com/vanruesc/sparse-octree.git",
+		"directory": "packages/octree-helper"
+	},
+	"bugs": "https://github.com/vanruesc/sparse-octree/issues",
+	"type": "module",
+	"sideEffects": false,
+	"main": "./dist/index.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/types/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"dependencies": {
+		"sparse-octree": "workspace:7.x.x"
+	},
+	"peerDependencies": {
+		"three": "catalog:peers"
+	},
+	"devDependencies": {
+		"@types/three": "catalog:",
+		"three": "catalog:",
+		"typedoc": "catalog:",
+		"typedoc-plugin-mdn-links": "catalog:"
+	},
+	"scripts": {
+		"watch": "run-p watch:*",
+		"watch:js": "node build.js -w",
+		"watch:tsc": "tsc -p tsconfig.d.json --watch --preserveWatchOutput",
+		"build": "run-p build:*",
+		"build:js": "node build.js",
+		"build:tsc": "tsc -p tsconfig.d.json",
+		"build:doc": "typedoc --tsconfig tsconfig.d.json --plugin typedoc-plugin-mdn-links",
+		"lint": "eslint src",
+		"format": "eslint --fix src",
+		"pretest": "run-s clean lint",
+		"test": "pnpm run build",
+		"clean": "del-cli dist public",
+		"deploy": "pnpm run move",
+		"move": "node move.js",
+		"prepublishOnly": "run-s test"
+	}
+}

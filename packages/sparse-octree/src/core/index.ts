@@ -6,5 +6,4 @@ export * from "./Tree.js";
 export * from "./CubicOctant.js";
 export * from "./Octant.js";
 export * from "./Octree.js";
-export * from "./OctreeHelper.js";
 export * from "./OctreeIterator.js";

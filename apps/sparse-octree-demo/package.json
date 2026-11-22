@@ -3,6 +3,7 @@
 	"private": true,
 	"type": "module",
 	"dependencies": {
+		"octree-helper": "workspace:",
 		"sparse-octree": "workspace:"
 	},
 	"devDependencies": {

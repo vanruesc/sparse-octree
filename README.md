@@ -3,6 +3,7 @@
 ## Packages
 
 - [`sparse-octree`](./packages/sparse-octree/) — A sparse, pointer-based octree library. [API documentation](https://vanruesc.github.io/sparse-octree/docs/)
+- [`octree-helper`](./packages/octree-helper/) — A Three.js wireframe helper for both octree libraries. [API documentation](https://vanruesc.github.io/sparse-octree/octree-helper/docs/)
 
 ## Demos
 

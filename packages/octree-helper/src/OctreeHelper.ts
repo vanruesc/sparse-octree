@@ -1,8 +1,5 @@
 import { BufferAttribute, BufferGeometry, Group, LineBasicMaterial, LineSegments } from "three";
-import { edges } from "../core/edges.js";
-import { layout } from "../core/layout.js";
-import { Node } from "../core/Node.js";
-import { Tree } from "../core/Tree.js";
+import { edges, layout, Node, Tree } from "sparse-octree";
 
 /**
  * An octree helper.
