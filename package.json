@@ -8,13 +8,20 @@
 			"onFail": "error"
 		}
 	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"del-cli": "catalog:",
+		"esbuild": "catalog:",
+		"eslint": "catalog:",
+		"eslint-config-aether": "catalog:",
+		"npm-run-all": "catalog:",
+		"typescript": "catalog:"
+	},
 	"scripts": {
 		"build": "pnpm -r build",
 		"lint": "pnpm -r lint",
 		"format": "pnpm -r format",
 		"test": "pnpm -r test",
-		"prewatch": "pnpm --filter sparse-octree run build:js",
-		"watch": "pnpm -r --parallel watch",
-		"start": "pnpm --filter sparse-octree-demo start"
+		"watch": "pnpm -r --parallel watch"
 	}
 }

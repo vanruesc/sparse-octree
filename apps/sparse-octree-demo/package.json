@@ -11,16 +11,10 @@
 		"@types/node": "catalog:",
 		"@types/three": "catalog:",
 		"cpy-cli": "catalog:",
-		"del-cli": "catalog:",
-		"esbuild": "catalog:",
-		"eslint": "catalog:",
-		"eslint-config-aether": "catalog:",
-		"npm-run-all": "catalog:",
 		"serve": "catalog:",
 		"spatial-controls": "catalog:",
 		"three": "catalog:",
-		"tweakpane": "catalog:",
-		"typescript": "catalog:"
+		"tweakpane": "catalog:"
 	},
 	"scripts": {
 		"prewatch": "pnpm run copy",

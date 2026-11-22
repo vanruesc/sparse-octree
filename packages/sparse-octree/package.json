@@ -42,15 +42,9 @@
 	"devDependencies": {
 		"@types/node": "catalog:",
 		"@types/three": "catalog:",
-		"del-cli": "catalog:",
-		"esbuild": "catalog:",
-		"eslint": "catalog:",
-		"eslint-config-aether": "catalog:",
-		"npm-run-all": "catalog:",
 		"three": "catalog:",
 		"typedoc": "catalog:",
-		"typedoc-plugin-mdn-links": "catalog:",
-		"typescript": "catalog:"
+		"typedoc-plugin-mdn-links": "catalog:"
 	},
 	"scripts": {
 		"watch": "run-p watch:*",
