@@ -1,0 +1,11 @@
+{
+	"extends": "../tsconfig.json",
+	"include": ["."],
+	"compilerOptions": {
+		"noEmit": true,
+		"paths": {
+			// Resolve test types from source before the library bundle is built.
+			"linear-octree": ["../src/index.ts"]
+		}
+	}
+}
