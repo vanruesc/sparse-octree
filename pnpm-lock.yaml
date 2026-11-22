@@ -224,10 +224,69 @@ catalogs:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      del-cli:
+        specifier: 'catalog:'
+        version: 8.0.1
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.28.2
+      eslint:
+        specifier: 'catalog:'
+        version: 10.15.0(supports-color@7.2.0)
+      eslint-config-aether:
+        specifier: 'catalog:'
+        version: 3.3.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      npm-run-all:
+        specifier: 'catalog:'
+        version: 4.1.5
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  apps/linear-octree-demo:
+    dependencies:
+      linear-octree:
+        specifier: 'workspace:'
+        version: link:../../packages/linear-octree
+      octree-helper:
+        specifier: 'workspace:'
+        version: link:../../packages/octree-helper
+    devDependencies:
+      '@tweakpane/core':
+        specifier: 'catalog:'
+        version: 2.0.5
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      '@types/three':
+        specifier: 'catalog:'
+        version: 0.187.0
+      cpy-cli:
+        specifier: 'catalog:'
+        version: 7.0.0
+      serve:
+        specifier: 'catalog:'
+        version: 14.2.8(supports-color@7.2.0)
+      spatial-controls:
+        specifier: 'catalog:'
+        version: 6.3.1(three@0.187.0)
+      three:
+        specifier: 'catalog:'
+        version: 0.187.0
+      tweakpane:
+        specifier: 'catalog:'
+        version: 4.0.5
 
   apps/sparse-octree-demo:
     dependencies:
+      octree-helper:
+        specifier: 'workspace:'
+        version: link:../../packages/octree-helper
       sparse-octree:
         specifier: 'workspace:'
         version: link:../../packages/sparse-octree
@@ -244,21 +303,6 @@ importers:
       cpy-cli:
         specifier: 'catalog:'
         version: 7.0.0
-      del-cli:
-        specifier: 'catalog:'
-        version: 8.0.1
-      esbuild:
-        specifier: 'catalog:'
-        version: 0.28.2
-      eslint:
-        specifier: 'catalog:'
-        version: 10.15.0(supports-color@7.2.0)
-      eslint-config-aether:
-        specifier: 'catalog:'
-        version: 3.3.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      npm-run-all:
-        specifier: 'catalog:'
-        version: 4.1.5
       serve:
         specifier: 'catalog:'
         version: 14.2.8(supports-color@7.2.0)
@@ -271,11 +315,12 @@ importers:
       tweakpane:
         specifier: 'catalog:'
         version: 4.0.5
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
-  packages/sparse-octree:
+  packages/linear-octree:
+    dependencies:
+      sparse-octree:
+        specifier: workspace:7.x.x
+        version: link:../sparse-octree
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -283,21 +328,6 @@ importers:
       '@types/three':
         specifier: 'catalog:'
         version: 0.187.0
-      del-cli:
-        specifier: 'catalog:'
-        version: 8.0.1
-      esbuild:
-        specifier: 'catalog:'
-        version: 0.28.2
-      eslint:
-        specifier: 'catalog:'
-        version: 10.15.0(supports-color@7.2.0)
-      eslint-config-aether:
-        specifier: 'catalog:'
-        version: 3.3.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      npm-run-all:
-        specifier: 'catalog:'
-        version: 4.1.5
       three:
         specifier: 'catalog:'
         version: 0.187.0
@@ -307,9 +337,43 @@ importers:
       typedoc-plugin-mdn-links:
         specifier: 'catalog:'
         version: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
-      typescript:
+
+  packages/octree-helper:
+    dependencies:
+      sparse-octree:
+        specifier: workspace:7.x.x
+        version: link:../sparse-octree
+    devDependencies:
+      '@types/three':
         specifier: 'catalog:'
-        version: 6.0.3
+        version: 0.187.0
+      three:
+        specifier: 'catalog:'
+        version: 0.187.0
+      typedoc:
+        specifier: 'catalog:'
+        version: 0.28.20(typescript@6.0.3)
+      typedoc-plugin-mdn-links:
+        specifier: 'catalog:'
+        version: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
+
+  packages/sparse-octree:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.6
+      '@types/three':
+        specifier: 'catalog:'
+        version: 0.187.0
+      three:
+        specifier: 'catalog:'
+        version: 0.187.0
+      typedoc:
+        specifier: 'catalog:'
+        version: 0.28.20(typescript@6.0.3)
+      typedoc-plugin-mdn-links:
+        specifier: 'catalog:'
+        version: 5.1.1(typedoc@0.28.20(typescript@6.0.3))
 
 packages:
 
@@ -1028,8 +1092,8 @@ packages:
     peerDependencies:
       eslint: '>=10 <11'
 
-  eslint-plugin-jsdoc@65.5.0:
-    resolution: {integrity: sha512-dVrpBDWYSt1hihtNbbAoCEe4NmXSvm7Ph+BaZ9w58T7omMkHybm6udqWkCQopddTuf8pCVH11A+MnPGlped0Vw==}
+  eslint-plugin-jsdoc@65.5.1:
+    resolution: {integrity: sha512-B7nUzgyazhOtiznF1fOQOmYZpTlLEdgaCsVV67V1WgtXuqWSWm0kPS4auekdHoEQBEKahS11weUC+z5nkhIu9g==}
     engines: {node: ^22.22.2 || >=24.15.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2792,7 +2856,7 @@ snapshots:
       '@eslint/js': 10.0.1(eslint@10.15.0(supports-color@7.2.0))
       '@stylistic/eslint-plugin': 5.10.0(eslint@10.15.0(supports-color@7.2.0))
       eslint: 10.15.0(supports-color@7.2.0)
-      eslint-plugin-jsdoc: 65.5.0(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      eslint-plugin-jsdoc: 65.5.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       globals: 17.14.0
       typescript-eslint: 8.73.0(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -2800,7 +2864,7 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-jsdoc@65.5.0(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
+  eslint-plugin-jsdoc@65.5.1(eslint@10.15.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
       '@es-joy/escodegen': 5.0.1
       '@es-joy/jsdoccomment': 1.2.0
