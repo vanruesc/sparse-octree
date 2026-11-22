@@ -55,7 +55,7 @@ window.addEventListener("load", () => {
 	});
 
 	renderer.debug.checkShaderErrors = (window.location.hostname === "localhost");
-	renderer.setClearColor(0x000000, 0);
+	renderer.setPixelRatio(window.devicePixelRatio);
 
 	const container = document.querySelector(".viewport")!;
 	container.append(renderer.domElement);
