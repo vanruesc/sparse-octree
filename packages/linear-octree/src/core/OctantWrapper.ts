@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import { Node } from "sparse-octree";
+import { Node, Vector3Like } from "sparse-octree";
 import { Octant } from "./Octant.js";
 import { OctantId } from "./OctantId.js";
 
@@ -62,15 +62,23 @@ export class OctantWrapper<T> implements Node {
 
 	}
 
-	getCenter(target: Vector3): Vector3 {
+	getCenter<V extends Vector3Like>(target: V): V {
 
-		return target.addVectors(this.min, this.max).multiplyScalar(0.5);
+		const { min, max } = this;
+		target.x = (min.x + max.x) * 0.5;
+		target.y = (min.y + max.y) * 0.5;
+		target.z = (min.z + max.z) * 0.5;
+		return target;
 
 	}
 
-	getDimensions(target: Vector3): Vector3 {
+	getDimensions<V extends Vector3Like>(target: V): V {
 
-		return target.subVectors(this.max, this.min);
+		const { min, max } = this;
+		target.x = max.x - min.x;
+		target.y = max.y - min.y;
+		target.z = max.z - min.z;
+		return target;
 
 	}
 

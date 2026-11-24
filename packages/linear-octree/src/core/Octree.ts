@@ -1,5 +1,5 @@
 import { Box3, Raycaster, Vector3 } from "three";
-import { BoxIntersector, layout, Node, Tree } from "sparse-octree";
+import { BoxIntersector, layout, Node, Tree, Vector3Like } from "sparse-octree";
 import { IntermediateOctant } from "./IntermediateOctant.js";
 import { KeyDesign } from "./KeyDesign.js";
 import { Octant } from "./Octant.js";
@@ -334,13 +334,13 @@ export class Octree<T> implements Tree, Iterable<OctantWrapper<T>> {
 
 	}
 
-	getCenter(result: Vector3): Vector3 {
+	getCenter<V extends Vector3Like>(result: V): V {
 
 		return this.root.getCenter(result);
 
 	}
 
-	getDimensions(result: Vector3): Vector3 {
+	getDimensions<V extends Vector3Like>(result: V): V {
 
 		return this.root.getDimensions(result);
 
