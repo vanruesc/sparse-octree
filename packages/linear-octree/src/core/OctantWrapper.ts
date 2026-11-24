@@ -1,5 +1,4 @@
-import { Vector3 } from "three";
-import { Node, Vector3Like } from "sparse-octree";
+import { Node, Vector3, Vector3Like } from "sparse-octree";
 import { Octant } from "./Octant.js";
 import { OctantId } from "./OctantId.js";
 
@@ -13,8 +12,8 @@ const p = /* @__PURE__ */ new Vector3();
 
 export class OctantWrapper<T> implements Node {
 
-	min: Vector3;
-	max: Vector3;
+	min: Vector3Like;
+	max: Vector3Like;
 
 	/**
 	 * The octant.
@@ -55,10 +54,38 @@ export class OctantWrapper<T> implements Node {
 
 		this.octant = octantWrapper.octant;
 		this.id.copy(octantWrapper.id);
-		this.min.copy(octantWrapper.min);
-		this.max.copy(octantWrapper.max);
+		const { min, max } = octantWrapper;
+		this.min.x = min.x;
+		this.min.y = min.y;
+		this.min.z = min.z;
+		this.max.x = max.x;
+		this.max.y = max.y;
+		this.max.z = max.z;
 
 		return this;
+
+	}
+
+	/**
+	 * Updates the bounds from key coordinates in a grid.
+	 *
+	 * @param keyX - The X coordinate in the grid.
+	 * @param keyY - The Y coordinate in the grid.
+	 * @param keyZ - The Z coordinate in the grid.
+	 * @param cellSize - The size of a grid cell.
+	 * @param origin - The lower bounds of the tree.
+	 * @internal
+	 */
+
+	setBounds(keyX: number, keyY: number, keyZ: number, cellSize: Vector3Like, origin: Vector3Like): void {
+
+		const { min, max } = this;
+		min.x = keyX * cellSize.x + origin.x;
+		min.y = keyY * cellSize.y + origin.y;
+		min.z = keyZ * cellSize.z + origin.z;
+		max.x = min.x + cellSize.x;
+		max.y = min.y + cellSize.y;
+		max.z = min.z + cellSize.z;
 
 	}
 
@@ -102,10 +129,15 @@ export class OctantWrapper<T> implements Node {
 	 * @return The squared distance.
 	 */
 
-	distanceToSquared(point: Vector3): number {
+	distanceToSquared(point: Vector3Like): number {
 
-		const clampedPoint = p.copy(point).clamp(this.min, this.max);
-		return clampedPoint.sub(point).lengthSq();
+		const { min, max } = this;
+		const clamped = p.set(
+			Math.max(min.x, Math.min(max.x, point.x)),
+			Math.max(min.y, Math.min(max.y, point.y)),
+			Math.max(min.z, Math.min(max.z, point.z))
+		);
+		return Vector3.distanceToSquared(clamped, point);
 
 	}
 
@@ -116,15 +148,9 @@ export class OctantWrapper<T> implements Node {
 	 * @return The squared distance.
 	 */
 
-	distanceToCenterSquared(point: Vector3): number {
+	distanceToCenterSquared(point: Vector3Like): number {
 
-		const center = this.getCenter(p);
-
-		const dx = point.x - center.x;
-		const dy = point.y - center.x;
-		const dz = point.z - center.z;
-
-		return dx * dx + dy * dy + dz * dz;
+		return Vector3.distanceToSquared(point, this.getCenter(p));
 
 	}
 
@@ -135,7 +161,7 @@ export class OctantWrapper<T> implements Node {
 	 * @return Whether the given point lies inside the boundaries.
 	 */
 
-	containsPoint(point: Vector3): boolean {
+	containsPoint(point: Vector3Like): boolean {
 
 		const min = this.min;
 		const max = this.max;

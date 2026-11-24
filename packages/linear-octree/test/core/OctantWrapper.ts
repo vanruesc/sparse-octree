@@ -19,8 +19,8 @@ describe("OctantWrapper", () => {
 	it("can compute its center", () => {
 
 		const octantWrapper = new OctantWrapper(new Octant());
-		octantWrapper.min.copy(box.min);
-		octantWrapper.max.copy(box.max);
+		octantWrapper.min = { ...box.min };
+		octantWrapper.max = { ...box.max };
 
 		assert.ok(
 			octantWrapper.getCenter(new Vector3()).equals(new Vector3(0, 0, 0)),
@@ -32,8 +32,8 @@ describe("OctantWrapper", () => {
 	it("can compute its dimensions", () => {
 
 		const octantWrapper = new OctantWrapper(new Octant());
-		octantWrapper.min.copy(box.min);
-		octantWrapper.max.copy(box.max);
+		octantWrapper.min = { ...box.min };
+		octantWrapper.max = { ...box.max };
 
 		assert.ok(
 			octantWrapper.getDimensions(new Vector3()).equals(new Vector3(2, 2, 2)),
@@ -45,8 +45,8 @@ describe("OctantWrapper", () => {
 	it("can check if it contains a point", () => {
 
 		const octantWrapper = new OctantWrapper(new Octant());
-		octantWrapper.min.copy(box.min);
-		octantWrapper.max.copy(box.max);
+		octantWrapper.min = { ...box.min };
+		octantWrapper.max = { ...box.max };
 
 		assert.ok(
 			octantWrapper.containsPoint(new Vector3(0, 0, 0)),

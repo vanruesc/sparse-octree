@@ -1,12 +1,20 @@
-import { Box3, Ray, Vector3 } from "three";
-import { layout, RaycastingFlags, findEntryOctant, findNextOctant, intersectOctree } from "sparse-octree";
+import {
+	layout,
+	Ray,
+	RaycastingFlags,
+	RayLike,
+	Vector3,
+	findEntryOctant,
+	findNextOctant,
+	intersectOctree
+} from "sparse-octree";
+
 import { IntermediateOctant } from "../core/IntermediateOctant.js";
 import { OctantWrapper } from "../core/OctantWrapper.js";
 import { Octree } from "../core/Octree.js";
 
 const octantWrapper = /* @__PURE__ */ new OctantWrapper<unknown>();
 const flags = /* @__PURE__ */ new RaycastingFlags();
-const bounds = /* @__PURE__ */ new Box3();
 const u = /* @__PURE__ */ new Vector3();
 const v = /* @__PURE__ */ new Vector3();
 
@@ -29,7 +37,7 @@ const v = /* @__PURE__ */ new Vector3();
  * @param result - An array to be filled with the intersecting octants.
  */
 
-function raycastOctant<T>(octree: Octree<T>, octant: IntermediateOctant<T>, ray: Ray,
+function raycastOctant<T>(octree: Octree<T>, octant: IntermediateOctant<T>, ray: RayLike,
 	keyX: number, keyY: number, keyZ: number, level: number,
 	tx0: number, ty0: number, tz0: number, tx1: number, ty1: number, tz1: number,
 	result: OctantWrapper<T>[]): void {
@@ -47,8 +55,7 @@ function raycastOctant<T>(octree: Octree<T>, octant: IntermediateOctant<T>, ray:
 		const cellSize = octree.getCellSize(level, u);
 		const octantWrapper = new OctantWrapper<T>(octant);
 		octantWrapper.id.set(keyDesign.packKey(keyX, keyY, keyZ), level);
-		octantWrapper.min.set(keyX, keyY, keyZ).multiply(cellSize).add(octree.min);
-		octantWrapper.max.copy(octantWrapper.min).add(cellSize);
+		octantWrapper.setBounds(keyX, keyY, keyZ, cellSize, octree.min);
 
 		result.push(octantWrapper);
 
@@ -253,14 +260,11 @@ export class OctreeRaycaster {
 	 * @return The intersecting octants. Sorted by distance, closest first.
 	 */
 
-	static intersectOctree<T>(octree: Octree<T>, ray: Ray): OctantWrapper<T>[] {
+	static intersectOctree<T>(octree: Octree<T>, ray: RayLike): OctantWrapper<T>[] {
 
 		const result: OctantWrapper<T>[] = [];
 
-		bounds.min.copy(octree.min);
-		bounds.max.copy(octree.max);
-
-		if(!ray.intersectsBox(bounds)) {
+		if(!Ray.intersectsBox(ray, octree)) {
 
 			return result;
 
@@ -287,8 +291,7 @@ export class OctreeRaycaster {
 			dimensions.z * (1 << bitDifference.z >>> 0)
 		);
 
-		octantWrapper.copy(octree.root);
-		octantWrapper.max.copy(octantWrapper.min).add(dimensions);
+		octantWrapper.setBounds(0, 0, 0, dimensions, octree.min);
 
 		if(rootOctant.children > 0) {
 

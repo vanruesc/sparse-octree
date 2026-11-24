@@ -1,7 +1,7 @@
 # Compatibility
 
-Sparse Octree accepts any point or vector with numeric `x`, `y`, and `z` coordinates. It works with plain objects
-and can be used independently of a renderer.
+Both `sparse-octree` and `linear-octree` accept points and vectors with numeric `x`, `y`, and `z` coordinates.
+Both libraries work with plain objects and can be used independently of a renderer.
 
 | Framework | How to use it |
 | --- | --- |
@@ -11,5 +11,7 @@ and can be used independently of a renderer.
 | **PixiJS** | With `@pixi/3d`, pass its `Vector3` values directly and use `{ ray: view.screenToRay(point), threshold }` for point raycasts. With 2D PixiJS, convert a `Point` to `{ x: point.x, y: point.y, z: 0 }` to index it on a plane. [PixiJS 3D coordinates](https://pixijs.com/3d/guides/concepts/view3d) · [2D Point](https://pixijs.download/release/docs/maths.Point.html) |
 | **CesiumJS** | Pass `Cartesian3` values directly. Wrap a Cesium `Ray` as `{ ray, threshold }` for point raycasts, and use `AxisAlignedBoundingBox.minimum` and `maximum` for tree bounds. [Ray](https://cesium.com/learn/cesiumjs/ref-doc/Ray.html) · [AxisAlignedBoundingBox](https://cesium.com/learn/cesiumjs/ref-doc/AxisAlignedBoundingBox.html) |
 
-Keep indexed points, bounds, and rays in the same coordinate space. Use a unit-length direction for point
-raycasts. For engine-specific culling, adapt the engine's visibility test to `intersectsBox({ min, max })`.
+Keep indexed points, bounds, and rays in the same coordinate space. The point raycast settings in the table apply
+to `PointOctree` in sparse-octree, which expects a unit-length direction. For node traversal in either library, call
+`getIntersectingNodes({ ray })` to query the forward ray. For engine-specific culling, adapt the engine's visibility
+test to `intersectsBox({ min, max })`.

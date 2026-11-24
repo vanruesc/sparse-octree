@@ -1,9 +1,7 @@
 import { Vector3Like } from "./Vector3Like.js";
 
 /**
- * Library-owned storage for three coordinates.
- *
- * @internal
+ * A mutable vector with three Cartesian coordinates.
  */
 
 export class Vector3 implements Vector3Like {

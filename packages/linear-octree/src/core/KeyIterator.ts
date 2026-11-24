@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3, Vector3Like } from "sparse-octree";
 import { KeyDesign } from "./KeyDesign.js";
 
 /**
@@ -17,13 +17,13 @@ export class KeyIterator implements Iterator<number>, Iterable<number> {
 	 * The lower index bounds.
 	 */
 
-	private readonly min: Vector3;
+	private readonly min: Vector3Like;
 
 	/**
 	 * The upper index bounds.
 	 */
 
-	private readonly max: Vector3;
+	private readonly max: Vector3Like;
 
 	/**
 	 * The base key coordinates.
@@ -59,7 +59,7 @@ export class KeyIterator implements Iterator<number>, Iterable<number> {
 	 * @param max - The upper index bounds (zero-based uint coordinates).
 	 */
 
-	constructor(keyDesign: KeyDesign, min: Vector3, max: Vector3) {
+	constructor(keyDesign: KeyDesign, min: Vector3Like, max: Vector3Like) {
 
 		this.keyDesign = keyDesign;
 		this.min = min;
@@ -85,14 +85,14 @@ export class KeyIterator implements Iterator<number>, Iterable<number> {
 
 			keyBase.set(min.x, min.y * keyDesign.rangeX, min.z * keyDesign.rangeXY);
 			limit.set(max.x, max.y * keyDesign.rangeX, max.z * keyDesign.rangeXY);
-			key.copy(keyBase);
+			key.set(keyBase.x, keyBase.y, keyBase.z);
 
 		} else {
 
 			// The range is invalid, return no keys.
 			keyBase.set(1, 1, 1);
 			limit.set(0, 0, 0);
-			key.copy(keyBase);
+			key.set(keyBase.x, keyBase.y, keyBase.z);
 
 			throw new Error("Invalid key range");
 

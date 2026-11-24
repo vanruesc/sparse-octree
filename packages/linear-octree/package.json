@@ -41,10 +41,8 @@
 		"dist"
 	],
 	"dependencies": {
-		"sparse-octree": "workspace:7.x.x"
-	},
-	"peerDependencies": {
-		"three": "catalog:peers"
+		"sparse-octree": "workspace:^",
+		"synthetic-event": "catalog:"
 	},
 	"devDependencies": {
 		"@types/node": "catalog:",

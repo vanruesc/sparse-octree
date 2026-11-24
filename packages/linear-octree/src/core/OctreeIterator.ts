@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3 } from "sparse-octree";
 import { Octant } from "./Octant.js";
 import { OctantWrapper } from "./OctantWrapper.js";
 import { Octree } from "./Octree.js";
@@ -95,9 +95,8 @@ export class OctreeIterator<T> implements Iterator<OctantWrapper<T>>, Iterable<O
 		if(internalResult.done !== true) {
 
 			const octantWrapper = new OctantWrapper<T>();
-			this.octree.keyDesign.unpackKey(value[0], octantWrapper.min);
-			octantWrapper.min.multiply(this.cellSize).add(this.octree.min);
-			octantWrapper.max.copy(octantWrapper.min).add(this.cellSize);
+			const { x, y, z } = this.octree.keyDesign.unpackKey(value[0], octantWrapper.min);
+			octantWrapper.setBounds(x, y, z, this.cellSize, this.octree.min);
 			octantWrapper.id.key = value[0];
 			octantWrapper.octant = value[1];
 

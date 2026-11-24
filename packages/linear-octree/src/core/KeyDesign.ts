@@ -1,4 +1,5 @@
-import { Box3, EventDispatcher, Vector3, Vector4 } from "three";
+import { Vector3, Vector3Like } from "sparse-octree";
+import { EventTarget } from "synthetic-event";
 import { Binary } from "../utils/Binary.js";
 import { BaseEventMap } from "./BaseEventMap.js";
 import { KeyIterator } from "./KeyIterator.js";
@@ -19,7 +20,7 @@ const LO_BITS = 32;
  * See {@link KeyDesign.BITS} for the total amount of available bits.
  */
 
-export class KeyDesign extends EventDispatcher<BaseEventMap> {
+export class KeyDesign extends EventTarget<BaseEventMap> {
 
 	/**
 	 * Triggers when a key design has changed.
@@ -71,7 +72,13 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 	 * The key range.
 	 */
 
-	private readonly range: Vector4;
+	private readonly range: Vector3;
+
+	/**
+	 * The number of distinct key values in the X and Y axes combined.
+	 */
+
+	private _rangeXY: number;
 
 	/**
 	 * A bit mask for the X-coordinate. The first item holds the low bits, the second one holds the high bits.
@@ -104,7 +111,8 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 		super();
 
 		this.bits = new Vector3(0, 0, 0);
-		this.range = new Vector4(1, 1, 1, 1);
+		this.range = new Vector3(1, 1, 1);
+		this._rangeXY = 1;
 
 		this.maskX = [0, 0];
 		this.maskY = [0, 0];
@@ -154,35 +162,39 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 	 * The amount of distinct integers that can be represented with X + Y bits.
 	 */
 
-	get rangeXY(): number { return this.range.w; }
+	get rangeXY(): number { return this._rangeXY; }
 
 	/**
 	 * Returns the lower key coordinate bounds.
 	 *
+	 * @param target - A vector to store the result in.
 	 * @return The minimum coordinates (always 0).
 	 */
 
-	getMinKeyCoordinates(target: Vector3): Vector3 {
+	getMinKeyCoordinates<V extends Vector3Like>(target: V): V {
 
-		return target.set(0, 0, 0);
+		target.x = 0;
+		target.y = 0;
+		target.z = 0;
+		return target;
 
 	}
 
 	/**
 	 * Returns the upper key coordinate bounds.
 	 *
+	 * @param target - A vector to store the result in.
 	 * @return The maximum coordinates.
 	 */
 
-	getMaxKeyCoordinates(target: Vector3): Vector3 {
+	getMaxKeyCoordinates<V extends Vector3Like>(target: V): V {
 
 		const range = this.range;
 
-		return target.set(
-			Math.max(range.x - 1, 0),
-			Math.max(range.y - 1, 0),
-			Math.max(range.z - 1, 0)
-		);
+		target.x = Math.max(range.x - 1, 0);
+		target.y = Math.max(range.y - 1, 0);
+		target.z = Math.max(range.z - 1, 0);
+		return target;
 
 	}
 
@@ -251,7 +263,8 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 		}
 
 		this.bits.set(x, y, z);
-		this.range.set(2 ** x, 2 ** y, 2 ** z, 2 ** (x + y));
+		this.range.set(2 ** x, 2 ** y, 2 ** z);
+		this._rangeXY = 2 ** (x + y);
 		this.updateBitMasks();
 		this.dispatchEvent({ type: KeyDesign.EVENT_CHANGE });
 
@@ -265,7 +278,7 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 	 * @return The extracted key coordinates.
 	 */
 
-	unpackKey(key: number, target: Vector3): Vector3 {
+	unpackKey<V extends Vector3Like>(key: number, target: V): V {
 
 		const maskX = this.maskX;
 		const maskY = this.maskY;
@@ -275,11 +288,10 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 		const hi = Math.trunc(key / RANGE_DWORD);
 		const lo = key % RANGE_DWORD;
 
-		return target.set(
-			(hi & maskX[1]) * RANGE_DWORD + ((lo & maskX[0]) >>> 0),
-			((hi & maskY[1]) * RANGE_DWORD + ((lo & maskY[0]) >>> 0)) / this.rangeX,
-			((hi & maskZ[1]) * RANGE_DWORD + ((lo & maskZ[0]) >>> 0)) / this.rangeXY
-		);
+		target.x = (hi & maskX[1]) * RANGE_DWORD + ((lo & maskX[0]) >>> 0);
+		target.y = ((hi & maskY[1]) * RANGE_DWORD + ((lo & maskY[0]) >>> 0)) / this.rangeX;
+		target.z = ((hi & maskZ[1]) * RANGE_DWORD + ((lo & maskZ[0]) >>> 0)) / this.rangeXY;
+		return target;
 
 	}
 
@@ -327,16 +339,21 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 	 * @return The bounds.
 	 */
 
-	calculateBounds(cellSize: Vector3, target: Box3): Box3 {
+	calculateBounds<B extends { min: Vector3Like; max: Vector3Like }>(cellSize: Vector3Like, target: B): B {
 
 		const range = this.range;
-		const bounds = target;
+		const x = range.x * 0.5 * cellSize.x;
+		const y = range.y * 0.5 * cellSize.y;
+		const z = range.z * 0.5 * cellSize.z;
 
-		bounds.max.set(range.x, range.y, range.z);
-		bounds.max.divideScalar(2).multiply(cellSize);
-		bounds.min.copy(bounds.max).negate();
+		target.min.x = -x;
+		target.min.y = -y;
+		target.min.z = -z;
+		target.max.x = x;
+		target.max.y = y;
+		target.max.z = z;
 
-		return bounds;
+		return target;
 
 	}
 
@@ -350,7 +367,7 @@ export class KeyDesign extends EventDispatcher<BaseEventMap> {
 	 * @return An iterator.
 	 */
 
-	keyRange(min: Vector3, max: Vector3): KeyIterator {
+	keyRange(min: Vector3Like, max: Vector3Like): KeyIterator {
 
 		return new KeyIterator(this, min, max);
 

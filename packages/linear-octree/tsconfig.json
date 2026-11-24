@@ -7,7 +7,6 @@
 	],
 	"compilerOptions": {
 		"rootDir": ".",
-		"outDir": "./dist",
-		"types": ["node", "three"]
+		"outDir": "./dist"
 	}
 }

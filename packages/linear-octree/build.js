@@ -14,7 +14,7 @@ const lib = {
 	entryPoints: ["./src/index.ts"],
 	outfile: "./dist/index.js",
 	banner: { js: banner },
-	external: ["three"],
+	external: ["sparse-octree", "synthetic-event"],
 	logLevel: "info",
 	format: "esm",
 	bundle: true

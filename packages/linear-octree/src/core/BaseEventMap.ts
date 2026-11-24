@@ -1,4 +1,4 @@
-import { BaseEvent } from "three";
+import { Event } from "synthetic-event";
 
 /**
  * Common events.
@@ -6,6 +6,10 @@ import { BaseEvent } from "three";
 
 export interface BaseEventMap {
 
-	change: BaseEvent;
+	/**
+	 * The key design has changed.
+	 */
+
+	change: Event<"change">;
 
 }
