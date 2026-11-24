@@ -6,6 +6,8 @@
 - [`linear-octree`](./packages/linear-octree/) — A sparse, linear octree library. [API documentation](https://vanruesc.github.io/sparse-octree/linear-octree/docs/)
 - [`octree-helper`](./packages/octree-helper/) — A Three.js wireframe helper for both octree libraries. [API documentation](https://vanruesc.github.io/sparse-octree/octree-helper/docs/)
 
+See the [compatibility guide](./COMPATIBILITY.md) for using sparse-octree with different rendering frameworks.
+
 ## Demos
 
 - [`sparse-octree-demo`](./apps/sparse-octree-demo/) — An interactive Three.js demo. [Live demo](https://vanruesc.github.io/sparse-octree/demo/)

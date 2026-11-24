@@ -83,6 +83,11 @@ export class CubicOctree extends Octree {
 - Can be extended to manage any data
 - Provides a point management implementation
 
+## Compatibility
+
+See the [compatibility guide](https://github.com/vanruesc/sparse-octree/blob/main/COMPATIBILITY.md) for renderer-specific
+examples of vectors, rays, and culling.
+
 ## Contributing
 
 Maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.
