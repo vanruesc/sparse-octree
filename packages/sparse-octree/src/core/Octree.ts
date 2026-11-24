@@ -1,11 +1,10 @@
-import { Box3, Raycaster, Vector3 } from "three";
 import { BoxIntersector } from "../math/BoxIntersector.js";
+import { RaycasterLike } from "../math/RaycasterLike.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { OctreeRaycaster } from "../raycasting/index.js";
 import { Node } from "./Node.js";
 import { OctreeIterator } from "./OctreeIterator.js";
 import { Tree } from "./Tree.js";
-
-const b = /* @__PURE__ */ new Box3();
 
 /**
  * Recursively calculates the depth of the given node.
@@ -52,10 +51,7 @@ function cull(node: Node, intersector: BoxIntersector, result: Node[]): void {
 
 	const children = node.children;
 
-	b.min = node.min;
-	b.max = node.max;
-
-	if(!intersector.intersectsBox(b)) {
+	if(!intersector.intersectsBox(node)) {
 
 		return;
 
@@ -134,13 +130,13 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 
 	}
 
-	get min(): Vector3 {
+	get min(): Vector3Like {
 
 		return this.root.min;
 
 	}
 
-	get max(): Vector3 {
+	get max(): Vector3Like {
 
 		return this.root.max;
 
@@ -152,13 +148,13 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 
 	}
 
-	getCenter(result: Vector3): Vector3 {
+	getCenter<V extends Vector3Like>(result: V): V {
 
 		return this.root.getCenter(result);
 
 	}
 
-	getDimensions(result: Vector3): Vector3 {
+	getDimensions<V extends Vector3Like>(result: V): V {
 
 		return this.root.getDimensions(result);
 
@@ -213,7 +209,7 @@ export class Octree<T extends Node = Node> implements Tree<T>, Iterable<T> {
 	 * @return The intersecting nodes.
 	 */
 
-	getIntersectingNodes(raycaster: Raycaster): T[] {
+	getIntersectingNodes(raycaster: RaycasterLike): T[] {
 
 		return OctreeRaycaster.intersectOctree(this.root, raycaster.ray) as T[];
 

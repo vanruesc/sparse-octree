@@ -1,8 +1,5 @@
-import { Box3 } from "three";
 import { BoxIntersector } from "../math/BoxIntersector.js";
 import { Node } from "./Node.js";
-
-const b = /* @__PURE__ */ new Box3();
 
 /**
  * An octree iterator.
@@ -72,10 +69,7 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 
 		if(root !== null) {
 
-			b.min = root.min;
-			b.max = root.max;
-
-			if(this.intersector === null || this.intersector.intersectsBox(b)) {
+			if(this.intersector === null || this.intersector.intersectsBox(root)) {
 
 				this.trace.push(root);
 				this.indices.push(0);
@@ -112,17 +106,10 @@ export class OctreeIterator<T extends Node = Node> implements Iterator<T>, Itera
 
 					const child = children[index];
 
-					if(intersector !== null) {
+					if(intersector !== null && !intersector.intersectsBox(child)) {
 
-						b.min = child.min;
-						b.max = child.max;
-
-						if(!intersector.intersectsBox(b)) {
-
-							// Cull this octant.
-							continue;
-
-						}
+						// Cull this octant.
+						continue;
 
 					}
 

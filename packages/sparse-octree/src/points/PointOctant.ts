@@ -1,5 +1,6 @@
-import { Vector3 } from "three";
 import { Octant } from "../core/Octant.js";
+import { Vector3 } from "../math/Vector3.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { PointData } from "./PointData.js";
 
 const p = /* @__PURE__ */ new Vector3();
@@ -19,7 +20,7 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 	 * @param max - The upper bounds.
 	 */
 
-	constructor(min: Vector3, max: Vector3) {
+	constructor(min: Vector3Like, max: Vector3Like) {
 
 		super(min, max);
 
@@ -32,10 +33,15 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 	 * @return The distance squared.
 	 */
 
-	distanceToSquared(point: Vector3): number {
+	distanceToSquared(point: Vector3Like): number {
 
-		const clampedPoint = p.copy(point).clamp(this.min, this.max);
-		return clampedPoint.sub(point).lengthSq();
+		const { min, max } = this;
+		const clampedPoint = p.set(
+			Math.max(min.x, Math.min(max.x, point.x)),
+			Math.max(min.y, Math.min(max.y, point.y)),
+			Math.max(min.z, Math.min(max.z, point.z))
+		);
+		return Vector3.distanceToSquared(clampedPoint, point);
 
 	}
 
@@ -46,15 +52,9 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 	 * @return The distance squared.
 	 */
 
-	distanceToCenterSquared(point: Vector3): number {
+	distanceToCenterSquared(point: Vector3Like): number {
 
-		const center = this.getCenter(p);
-
-		const dx = point.x - center.x;
-		const dy = point.y - center.y;
-		const dz = point.z - center.z;
-
-		return dx * dx + dy * dy + dz * dz;
+		return Vector3.distanceToSquared(point, this.getCenter(p));
 
 	}
 
@@ -68,7 +68,7 @@ export class PointOctant<T = unknown> extends Octant<PointData<T>> {
 	 * @return Whether the given point lies inside this octant.
 	 */
 
-	contains(point: Vector3, bias: number): boolean {
+	contains(point: Vector3Like, bias: number): boolean {
 
 		const min = this.min;
 		const max = this.max;

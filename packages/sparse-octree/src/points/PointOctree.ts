@@ -1,4 +1,6 @@
-import { Raycaster, Vector3 } from "three";
+import { RaycasterLike } from "../math/RaycasterLike.js";
+import { Vector3 } from "../math/Vector3.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { Octree } from "../core/Octree.js";
 import { PointContainer } from "./PointContainer.js";
 import { PointData } from "./PointData.js";
@@ -81,7 +83,7 @@ function countPoints<T>(octant: PointOctant<T>): number {
  * @return Whether the operation was successful.
  */
 
-function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOctant<T> | null,
+function set<T>(point: Vector3Like, data: T, octree: PointOctree<T>, octant: PointOctant<T> | null,
 	depth: number): boolean {
 
 	if(octant === null || !octant.contains(point, octree.getBias())) {
@@ -99,7 +101,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
-			if(points[i].equals(point)) {
+			if(Vector3.equals(points[i], point)) {
 
 				pointData.data[i] = data;
 				return true;
@@ -110,7 +112,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
 
 		if(points.length < octree.getMaxPoints() || depth === octree.getMaxDepth()) {
 
-			points.push(point.clone());
+			points.push(Vector3.from(point));
 			pointData.data.push(data);
 			return true;
 
@@ -148,7 +150,7 @@ function set<T>(point: Vector3, data: T, octree: PointOctree<T>, octant: PointOc
  * @return The data entry of the removed point, or NOT_FOUND if it didn't exist.
  */
 
-function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>,
+function remove<T>(point: Vector3Like, octree: PointOctree<T>, octant: PointOctant<T>,
 	parent: PointOctant<T> | null): T | typeof NOT_FOUND {
 
 	const children = octant.children;
@@ -176,7 +178,7 @@ function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
-			if(points[i].equals(point)) {
+			if(Vector3.equals(points[i], point)) {
 
 				result = data[i];
 				swapAndPop(pointData, i);
@@ -208,7 +210,7 @@ function remove<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T
  * @return The data entry that is associated with the given point, or NOT_FOUND if it doesn't exist.
  */
 
-function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>): T | typeof NOT_FOUND {
+function get<T>(point: Vector3Like, octree: PointOctree<T>, octant: PointOctant<T>): T | typeof NOT_FOUND {
 
 	const children = octant.children;
 	let result: T | typeof NOT_FOUND = NOT_FOUND;
@@ -235,7 +237,7 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
-			if(points[i].equals(point)) {
+			if(Vector3.equals(points[i], point)) {
 
 				return data[i];
 
@@ -258,7 +260,7 @@ function get<T>(point: Vector3, octree: PointOctree<T>, octant: PointOctant<T>):
  * @return The data entry of the updated point, or NOT_FOUND if it didn't exist.
  */
 
-function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>): T | typeof NOT_FOUND {
+function movePoint<T>(point: Vector3Like, position: Vector3Like, pointData: PointData<T>): T | typeof NOT_FOUND {
 
 	const points = pointData.points;
 	const data = pointData.data;
@@ -269,14 +271,14 @@ function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>
 
 	for(let i = 0, l = points.length; i < l; ++i) {
 
-		if(sourceIndex === -1 && points[i].equals(point)) {
+		if(sourceIndex === -1 && Vector3.equals(points[i], point)) {
 
 			// Found the point.
 			sourceIndex = i;
 
 		}
 
-		if(destinationIndex === -1 && points[i].equals(position)) {
+		if(destinationIndex === -1 && Vector3.equals(points[i], position)) {
 
 			// Found another point at the destination.
 			destinationIndex = i;
@@ -288,7 +290,10 @@ function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>
 	if(sourceIndex !== -1) {
 
 		// The point exists; update its position.
-		points[sourceIndex].copy(position);
+		const source = points[sourceIndex];
+		source.x = position.x;
+		source.y = position.y;
+		source.z = position.z;
 		result = data[sourceIndex];
 
 		if(destinationIndex !== -1) {
@@ -316,10 +321,10 @@ function movePoint<T>(point: Vector3, position: Vector3, pointData: PointData<T>
  * @return The data entry of the updated point, or NOT_FOUND if it didn't exist.
  */
 
-function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
+function move<T>(point: Vector3Like, position: Vector3Like, octree: PointOctree<T>,
 	octant: PointOctant<T>, parent: PointOctant<T> | null, depth: number): T | typeof NOT_FOUND {
 
-	if(point.equals(position)) {
+	if(Vector3.equals(point, position)) {
 
 		return get(point, octree, octant);
 
@@ -416,7 +421,7 @@ function move<T>(point: Vector3, position: Vector3, octree: PointOctree<T>,
  * @return The nearest point, or null if there is none.
  */
 
-function findNearestPoint<T>(point: Vector3, maxDistance: number,
+function findNearestPoint<T>(point: Vector3Like, maxDistance: number,
 	skipSelf: boolean, octant: PointOctant<T>, bias: number): PointContainer<T> | null {
 
 	let bestDistance = maxDistance;
@@ -480,7 +485,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 		for(let i = 0, l = points.length; i < l; ++i) {
 
-			if(points[i].equals(point)) {
+			if(Vector3.equals(points[i], point)) {
 
 				if(!skipSelf) {
 
@@ -490,7 +495,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
 
 			} else {
 
-				const distance = point.distanceTo(points[i]);
+				const distance = Math.sqrt(Vector3.distanceToSquared(point, points[i]));
 
 				if(distance < bestDistance) {
 
@@ -526,7 +531,7 @@ function findNearestPoint<T>(point: Vector3, maxDistance: number,
  * @param result - An array to be filled with points.
  */
 
-function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
+function findPoints<T>(point: Vector3Like, radius: number, skipSelf: boolean,
 	octant: PointOctant<T>, bias: number, result: PointContainer<T>[]): void {
 
 	const children = octant.children;
@@ -563,11 +568,11 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 
 		const p = points[i];
 
-		if(p.equals(point)) {
+		if(Vector3.equals(p, point)) {
 
 			if(!skipSelf) {
 
-				result.push(new PointContainer(p.clone(), data[i], 0.0));
+				result.push(new PointContainer(p, data[i], 0.0));
 
 			}
 
@@ -576,11 +581,11 @@ function findPoints<T>(point: Vector3, radius: number, skipSelf: boolean,
 		}
 
 		const rSq = radius * radius;
-		const dSq = p.distanceToSquared(point);
+		const dSq = Vector3.distanceToSquared(p, point);
 
 		if(dSq <= rSq) {
 
-			result.push(new PointContainer(p.clone(), data[i], Math.sqrt(dSq)));
+			result.push(new PointContainer(p, data[i], Math.sqrt(dSq)));
 
 		}
 
@@ -629,7 +634,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @param maxDepth - The maximum tree depth level, starting at 0.
 	 */
 
-	constructor(min: Vector3, max: Vector3, bias = 0.0, maxPoints = 8, maxDepth = 8) {
+	constructor(min: Vector3Like, max: Vector3Like, bias = 0.0, maxPoints = 8, maxDepth = 8) {
 
 		super(new PointOctant<T>(min, max));
 
@@ -698,7 +703,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return Whether the operation was successful.
 	 */
 
-	set(point: Vector3, data: T): boolean {
+	set(point: Vector3Like, data: T): boolean {
 
 		return set(point, data, this, this.root, 0);
 
@@ -711,7 +716,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The data entry of the removed point or null if it didn't exist.
 	 */
 
-	remove(point: Vector3): T | null {
+	remove(point: Vector3Like): T | null {
 
 		const result = remove(point, this, this.root, null);
 		return result === NOT_FOUND ? null : result;
@@ -725,7 +730,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The data that belongs to the given point, or null if it doesn't exist.
 	 */
 
-	get(point: Vector3): T | null {
+	get(point: Vector3Like): T | null {
 
 		const result = get(point, this, this.root);
 		return result === NOT_FOUND ? null : result;
@@ -740,7 +745,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The data of the updated point, or null if it didn't exist.
 	 */
 
-	move(point: Vector3, position: Vector3): T | null {
+	move(point: Vector3Like, position: Vector3Like): T | null {
 
 		const result = move(point, position, this, this.root, null, 0);
 		return result === NOT_FOUND ? null : result;
@@ -756,17 +761,9 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The nearest point, or null if there is none.
 	 */
 
-	findNearestPoint(point: Vector3, maxDistance = Number.POSITIVE_INFINITY, skipSelf = false): PointContainer<T> | null {
+	findNearestPoint(point: Vector3Like, maxDistance = Infinity, skipSelf = false): PointContainer<T> | null {
 
-		const result = findNearestPoint(point, maxDistance, skipSelf, this.root, this.bias);
-
-		if(result !== null && result.point !== null) {
-
-			result.point = result.point.clone();
-
-		}
-
-		return result;
+		return findNearestPoint(point, maxDistance, skipSelf, this.root, this.bias);
 
 	}
 
@@ -779,7 +776,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return A list of points.
 	 */
 
-	findPoints(point: Vector3, radius: number, skipSelf = false): PointContainer<T>[] {
+	findPoints(point: Vector3Like, radius: number, skipSelf = false): PointContainer<T>[] {
 
 		const result: PointContainer<T>[] = [];
 		findPoints(point, radius, skipSelf, this.root, this.bias, result);
@@ -794,7 +791,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The intersecting points, sorted by distance, closest first.
 	 */
 
-	raycast(raycaster: Raycaster): RayPointIntersection<T>[] {
+	raycast(raycaster: RaycasterLike): RayPointIntersection<T>[] {
 
 		return raycastPoints(this.root, raycaster, this.bias);
 
@@ -808,7 +805,7 @@ export class PointOctree<T = unknown> extends Octree<PointOctant<T>> {
 	 * @return The closest intersection, or null if there is no hit.
 	 */
 
-	raycastClosest(raycaster: Raycaster): RayPointIntersection<T> | null {
+	raycastClosest(raycaster: RaycasterLike): RayPointIntersection<T> | null {
 
 		return raycastClosestPoint(this.root, raycaster, this.bias);
 

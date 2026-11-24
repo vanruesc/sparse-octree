@@ -50,7 +50,9 @@ describe("OctreeRaycaster", () => {
 
 					const direction = new Vector3().setComponent((axis + 1) % 3, -1);
 					const raycaster = new Raycaster(origin, direction);
-					const expected = [...octree].filter(node => raycaster.ray.intersectsBox(new Box3(node.min, node.max)));
+					const expected = [...octree].filter(node => raycaster.ray.intersectsBox(
+						new Box3(new Vector3().copy(node.min), new Vector3().copy(node.max))
+					));
 
 					const result = octree.getIntersectingNodes(raycaster);
 					assert.ok(expected.length > 0);
@@ -142,7 +144,7 @@ describe("OctreeRaycaster", () => {
 		for(const { name, origin, direction, expected } of cases) {
 
 			const result = octree.getIntersectingNodes(new Raycaster(origin, direction));
-			assert.deepEqual(result.map(node => node.min.toArray()), expected, name);
+			assert.deepEqual(result.map(({ min }) => [min.x, min.y, min.z]), expected, name);
 
 		}
 

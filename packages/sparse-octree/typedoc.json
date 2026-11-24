@@ -7,13 +7,5 @@
 	"excludePrivate": true,
 	"excludeInternal": true,
 	"includeVersion": true,
-	"treatWarningsAsErrors": true,
-	"externalSymbolLinkMappings": {
-		"@types/three": {
-			"*": "https://threejs.org/docs/"
-		},
-		"three": {
-			"*": "https://threejs.org/docs/"
-		}
-	}
+	"treatWarningsAsErrors": true
 }

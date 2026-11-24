@@ -1,4 +1,5 @@
-import { Raycaster, Vector3 } from "three";
+import { getPointThreshold, RaycasterLike } from "../math/RaycasterLike.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { RayPointHit } from "./raycasting/RayPointHit.js";
 import { RayPointIntersection } from "./raycasting/RayPointIntersection.js";
 
@@ -16,7 +17,7 @@ export class PointData<T = unknown> {
 	 * The points.
 	 */
 
-	points: Vector3[];
+	points: Vector3Like[];
 
 	/**
 	 * The data entries.
@@ -42,9 +43,9 @@ export class PointData<T = unknown> {
 	 * @param result - An array to be filled with intersecting points.
 	 */
 
-	testPoints(raycaster: Raycaster, result: RayPointIntersection<T>[]): void {
+	testPoints(raycaster: RaycasterLike, result: RayPointIntersection<T>[]): void {
 
-		const threshold = raycaster.params.Points?.threshold ?? 0;
+		const threshold = getPointThreshold(raycaster);
 		const thresholdSq = threshold * threshold;
 		const points = this.points;
 		const data = this.data;
@@ -70,9 +71,9 @@ export class PointData<T = unknown> {
 	 * @internal
 	 */
 
-	testClosestPoint(raycaster: Raycaster, closest: RayPointIntersection<T> | null): RayPointIntersection<T> | null {
+	testClosestPoint(raycaster: RaycasterLike, closest: RayPointIntersection<T> | null): RayPointIntersection<T> | null {
 
-		const threshold = raycaster.params.Points?.threshold ?? 0;
+		const threshold = getPointThreshold(raycaster);
 		const thresholdSq = threshold * threshold;
 		const points = this.points;
 		const data = this.data;
@@ -92,7 +93,11 @@ export class PointData<T = unknown> {
 
 					result.distance = hit.distance;
 					result.distanceToRay = Math.sqrt(hit.distanceToRaySq);
-					result.point!.copy(hit.point);
+					const { x, y, z } = hit.point;
+					const point = result.point!;
+					point.x = x;
+					point.y = y;
+					point.z = z;
 					result.data = data[i] ?? null;
 
 				}

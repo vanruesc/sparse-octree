@@ -1,4 +1,5 @@
-import { Vector3 } from "three";
+import { Vector3 } from "../math/Vector3.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { DataContainer } from "./DataContainer.js";
 import { Node } from "./Node.js";
 import { layout } from "./layout.js";
@@ -13,8 +14,8 @@ const c = /* @__PURE__ */ new Vector3();
 
 export class Octant<T = unknown> implements Node, DataContainer<T> {
 
-	min: Vector3;
-	max: Vector3;
+	min: Vector3Like;
+	max: Vector3Like;
 	children: Octant<T>[] | null;
 	data: T | null;
 
@@ -25,24 +26,32 @@ export class Octant<T = unknown> implements Node, DataContainer<T> {
 	 * @param max - The upper bounds.
 	 */
 
-	constructor(min = new Vector3(), max = new Vector3()) {
+	constructor(min?: Vector3Like, max?: Vector3Like) {
 
-		this.min = min;
-		this.max = max;
+		this.min = (min === undefined) ? new Vector3() : Vector3.from(min);
+		this.max = (max === undefined) ? new Vector3() : Vector3.from(max);
 		this.children = null;
 		this.data = null;
 
 	}
 
-	getCenter(result: Vector3): Vector3 {
+	getCenter<V extends Vector3Like>(result: V): V {
 
-		return result.addVectors(this.min, this.max).multiplyScalar(0.5);
+		const { min, max } = this;
+		result.x = (min.x + max.x) * 0.5;
+		result.y = (min.y + max.y) * 0.5;
+		result.z = (min.z + max.z) * 0.5;
+		return result;
 
 	}
 
-	getDimensions(result: Vector3): Vector3 {
+	getDimensions<V extends Vector3Like>(result: V): V {
 
-		return result.subVectors(this.max, this.min);
+		const { min, max } = this;
+		result.x = max.x - min.x;
+		result.y = max.y - min.y;
+		result.z = max.z - min.z;
+		return result;
 
 	}
 
@@ -66,17 +75,13 @@ export class Octant<T = unknown> implements Node, DataContainer<T> {
 			const combination = layout[i];
 			const child = new (this.constructor as typeof Octant<T>)();
 
-			child.min.set(
-				(combination[0] === 0) ? min.x : mid.x,
-				(combination[1] === 0) ? min.y : mid.y,
-				(combination[2] === 0) ? min.z : mid.z
-			);
+			child.min.x = (combination[0] === 0) ? min.x : mid.x;
+			child.min.y = (combination[1] === 0) ? min.y : mid.y;
+			child.min.z = (combination[2] === 0) ? min.z : mid.z;
 
-			child.max.set(
-				(combination[0] === 0) ? mid.x : max.x,
-				(combination[1] === 0) ? mid.y : max.y,
-				(combination[2] === 0) ? mid.z : max.z
-			);
+			child.max.x = (combination[0] === 0) ? mid.x : max.x;
+			child.max.y = (combination[1] === 0) ? mid.y : max.y;
+			child.max.z = (combination[2] === 0) ? mid.z : max.z;
 
 			children[i] = child;
 

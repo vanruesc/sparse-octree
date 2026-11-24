@@ -338,7 +338,7 @@ describe("PointOctree", () => {
 		const result = octree.findNearestPoint(point, 0.01);
 
 		assert.notEqual(result, null, "should search the biased bounds of the leaf");
-		assert.deepEqual(result?.point, point);
+		assert.deepEqual({ ...result?.point }, { ...point });
 		assert.equal(result?.data, "A");
 		assert.equal(result?.distance, 0);
 
@@ -374,7 +374,7 @@ describe("PointOctree", () => {
 		const result = octree.findPoints(point, 0.01);
 
 		assert.equal(result.length, 1, "should search the biased bounds of the leaf");
-		assert.deepEqual(result[0].point, point);
+		assert.deepEqual({ ...result[0].point }, { ...point });
 		assert.equal(result[0].data, "A");
 		assert.equal(result[0].distance, 0);
 
@@ -532,12 +532,12 @@ describe("PointOctree", () => {
 		const raycaster = new Raycaster(new Vector3(0.0625, -0.5, 2), new Vector3(0, 0, -1));
 		raycaster.params.Points.threshold = 0.01;
 
-		const bounds = [...octree].map(node => new Box3(node.min.clone(), node.max.clone()));
+		const bounds = [...octree].map(node => ({ min: { ...node.min }, max: { ...node.max } }));
 		const result = octree.raycast(raycaster);
 
 		assert.deepEqual(result.map(point => point.data), ["A"]);
 		assert.equal(octree.get(point), "A");
-		assert.deepEqual([...octree].map(node => new Box3(node.min, node.max)), bounds);
+		assert.deepEqual([...octree].map(node => ({ min: { ...node.min }, max: { ...node.max } })), bounds);
 
 	});
 
@@ -556,7 +556,7 @@ describe("PointOctree", () => {
 		const result = octree.raycast(raycaster);
 		assert.deepEqual(result.map(point => point.data), ["B", "A"]);
 		assert.deepEqual(result.map(point => point.distance), [2.75, 3]);
-		assert.deepEqual(result.map(point => point.point), [new Vector3(0, 0, 0.25), new Vector3()]);
+		assert.deepEqual(result.map(({ point }) => ({ ...point })), [{ x: 0, y: 0, z: 0.25 }, { x: 0, y: 0, z: 0 }]);
 		assert.deepEqual(result.map(point => point.distanceToRay), [0.1, 0.1]);
 
 	});
@@ -578,7 +578,7 @@ describe("PointOctree", () => {
 		raycaster.near = 2;
 		raycaster.far = 2.5;
 		assert.equal(octree.raycastClosest(raycaster)?.data, "far");
-		assert.deepEqual(closest?.point, new Vector3(0, -0.5, 0.5));
+		assert.deepEqual({ ...closest?.point }, { x: 0, y: -0.5, z: 0.5 });
 
 		raycaster.far = 2;
 		assert.equal(octree.raycastClosest(raycaster), null);

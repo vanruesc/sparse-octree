@@ -1,4 +1,4 @@
-import { Box3 } from "three";
+import { Box3Like } from "./Box3Like.js";
 
 /**
  * Describes objects that can intersect a 3D box.
@@ -13,6 +13,6 @@ export interface BoxIntersector {
 	 * @return True if this object intersects the box. Otherwise false.
 	 */
 
-	intersectsBox(box: Box3): boolean;
+	intersectsBox(box: Box3Like): boolean;
 
 }

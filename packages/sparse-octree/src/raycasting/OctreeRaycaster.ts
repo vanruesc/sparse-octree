@@ -1,5 +1,6 @@
-import { Ray, Vector3 } from "three";
-import { Node } from "../core/index.js";
+import { Node } from "../core/Node.js";
+import { RayLike } from "../math/RayLike.js";
+import { Vector3 } from "../math/Vector3.js";
 import { RaycastingFlags } from "./RaycastingFlags.js";
 import { findEntryOctant } from "./findEntryOctant.js";
 import { findNextOctant } from "./findNextOctant.js";
@@ -28,7 +29,7 @@ const v = /* @__PURE__ */ new Vector3();
  * @param result - The array to append intersected leaves to, closest first.
  */
 
-function raycastOctant(node: Node, ray: Ray, tx0: number, ty0: number, tz0: number,
+function raycastOctant(node: Node, ray: RayLike, tx0: number, ty0: number, tz0: number,
 	tx1: number, ty1: number, tz1: number, result: Node[]): void {
 
 	if(!(tx1 >= 0.0 && ty1 >= 0.0 && tz1 >= 0.0)) {
@@ -131,7 +132,7 @@ export class OctreeRaycaster {
 	 * @return The intersecting octants. Sorted by distance, closest first.
 	 */
 
-	static intersectOctree(node: Node, ray: Ray): Node[] {
+	static intersectOctree(node: Node, ray: RayLike): Node[] {
 
 		const result: Node[] = [];
 		const t = intersectOctree(node, ray, flags);

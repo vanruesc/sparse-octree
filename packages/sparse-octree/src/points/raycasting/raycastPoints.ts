@@ -1,5 +1,5 @@
-import { Raycaster } from "three";
 import { RayAxis } from "../../math/RayAxis.js";
+import { getPointThreshold, RaycasterLike } from "../../math/RaycasterLike.js";
 import { PointData } from "../PointData.js";
 import { PointOctant } from "../PointOctant.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
@@ -98,10 +98,10 @@ function raycastOctant<T>(octant: PointOctant<T>, visit: (data: PointData<T>) =>
  * @param visit - The function that processes the point data of each intersecting leaf.
  */
 
-function visitLeaves<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number,
+function visitLeaves<T>(root: PointOctant<T>, raycaster: RaycasterLike, bias: number,
 	visit: (data: PointData<T>) => void): void {
 
-	const threshold = raycaster.params.Points?.threshold ?? 0;
+	const threshold = getPointThreshold(raycaster);
 
 	if(!(threshold * threshold > 0.0)) {
 
@@ -149,7 +149,8 @@ function visitLeaves<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number
  * @internal
  */
 
-export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bias: number): RayPointIntersection<T>[] {
+export function raycastPoints<T>(root: PointOctant<T>, raycaster: RaycasterLike,
+	bias: number): RayPointIntersection<T>[] {
 
 	const result: RayPointIntersection<T>[] = [];
 	visitLeaves(root, raycaster, bias, data => data.testPoints(raycaster, result));
@@ -167,7 +168,7 @@ export function raycastPoints<T>(root: PointOctant<T>, raycaster: Raycaster, bia
  * @internal
  */
 
-export function raycastClosestPoint<T>(root: PointOctant<T>, raycaster: Raycaster,
+export function raycastClosestPoint<T>(root: PointOctant<T>, raycaster: RaycasterLike,
 	bias: number): RayPointIntersection<T> | null {
 
 	let closest: RayPointIntersection<T> | null = null;

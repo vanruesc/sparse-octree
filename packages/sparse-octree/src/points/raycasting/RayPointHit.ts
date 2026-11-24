@@ -1,4 +1,6 @@
-import { Raycaster, Vector3 } from "three";
+import { RaycasterLike } from "../../math/RaycasterLike.js";
+import { Vector3 } from "../../math/Vector3.js";
+import { Vector3Like } from "../../math/Vector3Like.js";
 import { RayPointIntersection } from "./RayPointIntersection.js";
 
 /**
@@ -48,17 +50,33 @@ export class RayPointHit {
 	 * @return Whether the point hits. The stored hit data is valid when this method returns true.
 	 */
 
-	testPoint(raycaster: Raycaster, point: Vector3, thresholdSq: number): boolean {
+	testPoint(raycaster: RaycasterLike, point: Vector3Like, thresholdSq: number): boolean {
 
-		const ray = raycaster.ray;
-		ray.closestPointToPoint(point, this.point);
-		const distanceToRaySq = this.point.distanceToSquared(point);
+		const { origin, direction } = raycaster.ray;
+		const projection = (point.x - origin.x) * direction.x + (point.y - origin.y) * direction.y +
+			(point.z - origin.z) * direction.z;
+
+		if(projection < 0.0) {
+
+			this.point.set(origin.x, origin.y, origin.z);
+
+		} else {
+
+			this.point.set(
+				origin.x + direction.x * projection,
+				origin.y + direction.y * projection,
+				origin.z + direction.z * projection
+			);
+
+		}
+
+		const distanceToRaySq = Vector3.distanceToSquared(this.point, point);
 
 		if(distanceToRaySq < thresholdSq) {
 
-			const distance = ray.origin.distanceTo(this.point);
+			const distance = Math.sqrt(Vector3.distanceToSquared(origin, this.point));
 
-			if(distance >= raycaster.near && distance <= raycaster.far) {
+			if(distance >= (raycaster.near ?? 0) && distance <= (raycaster.far ?? Infinity)) {
 
 				this.distance = distance;
 				this.distanceToRaySq = distanceToRaySq;
@@ -82,7 +100,7 @@ export class RayPointHit {
 
 	toIntersection<T>(data: T): RayPointIntersection<T> {
 
-		return new RayPointIntersection<T>(this.distance, Math.sqrt(this.distanceToRaySq), this.point.clone(), data);
+		return new RayPointIntersection<T>(this.distance, Math.sqrt(this.distanceToRaySq), this.point, data);
 
 	}
 

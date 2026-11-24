@@ -1,5 +1,6 @@
-import { Vector3 } from "three";
 import { DataContainer } from "../core/DataContainer.js";
+import { Vector3 } from "../math/Vector3.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 
 /**
  * A container for a single point and its data.
@@ -15,7 +16,7 @@ export class PointContainer<T = unknown> implements DataContainer<T> {
 	 * The point.
 	 */
 
-	point: Vector3 | null;
+	point: Vector3Like | null;
 
 	/**
 	 * A contextual distance to another reference point.
@@ -34,9 +35,9 @@ export class PointContainer<T = unknown> implements DataContainer<T> {
 	 * @param distance - A distance.
 	 */
 
-	constructor(point: Vector3 | null = null, data: T | null = null, distance = 0.0) {
+	constructor(point: Vector3Like | null = null, data: T | null = null, distance = 0.0) {
 
-		this.point = point;
+		this.point = (point === null) ? null : Vector3.from(point);
 		this.data = data;
 		this.distance = distance;
 

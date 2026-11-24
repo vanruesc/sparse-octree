@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3Like } from "../../math/Vector3Like.js";
 import { PointContainer } from "../PointContainer.js";
 
 /**
@@ -24,7 +24,7 @@ export class RayPointIntersection<T = unknown> extends PointContainer<T> {
 	 * @param data - The point's data.
 	 */
 
-	constructor(distanceToOrigin: number, distanceToRay: number, point: Vector3, data: T | null = null) {
+	constructor(distanceToOrigin: number, distanceToRay: number, point: Vector3Like, data: T | null = null) {
 
 		super(point, data, distanceToOrigin);
 		this.distanceToRay = distanceToRay;

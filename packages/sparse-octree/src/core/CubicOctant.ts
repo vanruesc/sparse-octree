@@ -1,4 +1,5 @@
-import { Vector3 } from "three";
+import { Vector3 } from "../math/Vector3.js";
+import { Vector3Like } from "../math/Vector3Like.js";
 import { DataContainer } from "./DataContainer.js";
 import { Node } from "./Node.js";
 import { layout } from "./layout.js";
@@ -13,7 +14,7 @@ const c = /* @__PURE__ */ new Vector3();
 
 export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 
-	min: Vector3;
+	min: Vector3Like;
 	children: CubicOctant<T>[] | null;
 	data: T | null;
 
@@ -30,9 +31,9 @@ export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 	 * @param size - The size of the octant.
 	 */
 
-	constructor(min = new Vector3(), size = 0) {
+	constructor(min?: Vector3Like, size = 0) {
 
-		this.min = min;
+		this.min = (min === undefined) ? new Vector3() : Vector3.from(min);
 		this.size = size;
 		this.children = null;
 		this.data = null;
@@ -45,9 +46,10 @@ export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 	 * Attention: Accessing this property creates a new vector!
 	 */
 
-	get max(): Vector3 {
+	get max(): Vector3Like {
 
-		return this.min.clone().addScalar(this.size);
+		const { min, size } = this;
+		return new Vector3(min.x + size, min.y + size, min.z + size);
 
 	}
 
@@ -58,9 +60,14 @@ export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 	 * @return The center.
 	 */
 
-	getCenter(target: Vector3): Vector3 {
+	getCenter<V extends Vector3Like>(target: V): V {
 
-		return target.copy(this.min).addScalar(this.size * 0.5);
+		const { min } = this;
+		const halfSize = this.size * 0.5;
+		target.x = min.x + halfSize;
+		target.y = min.y + halfSize;
+		target.z = min.z + halfSize;
+		return target;
 
 	}
 
@@ -71,9 +78,13 @@ export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 	 * @return The size.
 	 */
 
-	getDimensions(target: Vector3): Vector3 {
+	getDimensions<V extends Vector3Like>(target: V): V {
 
-		return target.set(this.size, this.size, this.size);
+		const { size } = this;
+		target.x = size;
+		target.y = size;
+		target.z = size;
+		return target;
 
 	}
 
@@ -95,11 +106,9 @@ export class CubicOctant<T = unknown> implements Node, DataContainer<T> {
 			const combination = layout[i];
 			const child = new (this.constructor as typeof CubicOctant<T>)();
 
-			child.min.set(
-				(combination[0] === 0) ? min.x : mid.x,
-				(combination[1] === 0) ? min.y : mid.y,
-				(combination[2] === 0) ? min.z : mid.z
-			);
+			child.min.x = (combination[0] === 0) ? min.x : mid.x;
+			child.min.y = (combination[1] === 0) ? min.y : mid.y;
+			child.min.z = (combination[2] === 0) ? min.z : mid.z;
 
 			child.size = halfSize;
 			children[i] = child;

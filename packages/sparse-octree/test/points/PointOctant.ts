@@ -27,7 +27,7 @@ describe("PointOctant", () => {
 
 		assert.equal(
 			octant.distanceToSquared(point),
-			octant.max.distanceToSquared(point),
+			point.distanceToSquared(octant.max),
 			"should calculate the squared distance"
 		);
 

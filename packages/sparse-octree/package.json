@@ -36,9 +36,6 @@
 	"files": [
 		"dist"
 	],
-	"peerDependencies": {
-		"three": "catalog:peers"
-	},
 	"devDependencies": {
 		"@types/node": "catalog:",
 		"@types/three": "catalog:",
